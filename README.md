@@ -83,7 +83,7 @@ For a static deployment:
 node tools/build_static.mjs
 ```
 
-Publish the resulting `dist/` directory. A static host serves the interface, bundled assets and browser-accessible external layers; it does not execute Python. In particular, `/api/height`, `/api/live/atlas`, `/api/places` and `/api/imagery/moon/tycho` are unavailable unless you separately deploy and route a compatible backend. The app falls back to the available imagery, flat terrain and cached or unavailable data as appropriate. The optional Cesium layer still uses the token configured in the browser.
+Publish the resulting `dist/` directory. A static host serves the interface, bundled assets and browser-accessible external layers; it does not execute Python. In particular, `/api/height`, `/api/live/atlas`, `/api/places` and `/api/imagery/moon/tycho` are unavailable unless you separately deploy and route a compatible backend. The browser uses available imagery, an unmeasured ellipsoid, labelled orbital-model estimates, timestamped public NOAA readings and browser geocoding when the Python endpoints are absent. The optional Cesium layer still uses the token configured in the browser.
 
 Third-party tile services may restrict redistribution, caching or offline use. Keep their on-screen attributions and review their terms before changing how assets are served.
 
@@ -91,7 +91,7 @@ Third-party tile services may restrict redistribution, caching or offline use. K
 
 ```sh
 python3 -m unittest discover -s tests -v
-node --experimental-vm-modules --test tests/test_api_config.mjs tests/test_lunar_physics.mjs
+node --experimental-vm-modules --test tests/*.mjs
 node tools/build_static.mjs
 ```
 
@@ -116,3 +116,11 @@ RELIC est un projet open source ouvert aux idées, signalements et contributions
 Installez Python et les dépendances indiquées plus haut, puis lancez `python3 terrain_server.py` et ouvrez `http://localhost:8000/`. Le mode NASA de base n'exige aucune clé API. Pour les données JPL actualisées, renseignez votre propre contact public côté serveur. Pour Google 3D, ajoutez votre jeton Cesium ion dans **Réglages → Clés API** et enregistrez-le localement. Ne publiez aucune clé dans Git.
 
 Une publication statique reste possible avec `node tools/build_static.mjs`, mais elle n'exécute pas les routes Python de relief, de recherche et de données actualisées.
+
+## Interface and static hosting
+
+Earth, Moon and Mars share a responsive command bar, location search, imagery drawer and compact Font Awesome controls. Settings include English/French, light/dark appearance, an optional NASA-blue accent, motion preferences and adaptive/high rendering quality. Preferences apply across pages.
+
+GitHub Pages serves static files and cannot run the Python API. The browser detects that mode, avoids missing `/api` requests and falls back to clearly labelled NASA/JPL model positions, timestamped NOAA solar-wind observations, public geocoding, local destinations and coordinates. Model values are estimates, not telemetry; expired measurements are omitted. Without a terrain backend, the globe is an unmeasured ellipsoid with imagery. Optional Google 3D remains a separate provider layer.
+
+Build with `node tools/build_static.mjs` and publish only `dist/`; this also reconstructs both verified MP4 fallbacks. A custom GitHub Pages workflow must use **Settings → Pages → Source: GitHub Actions**. Branch/Jekyll publication serves the source tree without that build. GitHub Pages can still impose host-level IP or bandwidth limits; the application reduces request bursts, reuses cached modules and honours `Retry-After`, but cannot disable the hosting service’s protection.

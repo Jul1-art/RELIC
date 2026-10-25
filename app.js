@@ -3,6 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { SurfaceDetail } from './surface-detail.js?v=5';
 import { PLANET_SITES, NASA_IMAGERY } from './nasa-worlds.js';
 import { startLiveData, getLanguage, onLanguageChange } from './atlas-live.js?v=3';
+import { navigateTo } from './navigation.js';
 
 const $ = selector => document.querySelector(selector);
 const sceneHost = $('#scene');
@@ -23,10 +24,11 @@ function hideGestureHint() {
   gestureHint.hidden = true;
 }
 function preferredPixelRatio() {
-  const mobile = window.innerWidth <= 760;
-  const pixelBudget = mobile ? 1500000 : 4000000;
+  const mobile = window.innerWidth <= 760 || matchMedia('(pointer: coarse)').matches;
+  const high = document.documentElement.dataset.quality === 'high';
+  const pixelBudget = high ? mobile ? 3000000 : 6000000 : mobile ? 1500000 : 4000000;
   const area = Math.max(1, window.innerWidth * window.innerHeight);
-  return Math.min(window.devicePixelRatio || 1, mobile ? 1.6 : 1.75, Math.max(.85, Math.sqrt(pixelBudget / area)));
+  return Math.min(window.devicePixelRatio || 1, high ? 2 : mobile ? 1.6 : 1.75, Math.max(.85, Math.sqrt(pixelBudget / area)));
 }
 let renderPixelRatio = preferredPixelRatio();
 
@@ -406,7 +408,17 @@ function bodyData(id) {
   return planets.find(planet => planet.id === id);
 }
 
-function flyTo(target, position, duration = 1150) {
+function flyTo(target, position, duration = 720) {
+  const reduced = document.documentElement.dataset.motion === 'reduced'
+    || (!document.documentElement.dataset.motion && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  if (reduced) {
+    flight = null;
+    camera.position.copy(position);
+    controls.target.copy(target);
+    controls.update();
+    return;
+  }
+  duration = Math.min(duration, 820);
   flight = { fromPosition:camera.position.clone(), fromTarget:controls.target.clone(), toPosition:position.clone(), toTarget:target.clone(), start:performance.now(), duration };
 }
 
@@ -468,7 +480,7 @@ function updateDetail(id) {
 }
 
 function selectBody(id, recenter = false) {
-  if (id === 'earth') { window.location.assign('./earth.html'); return; }
+  if (id === 'earth') { navigateTo('./earth.html'); return; }
   if (selected === id && id !== 'overview') {
     if (!recenter) return;
     const target = worldPosition(id).clone();
@@ -649,6 +661,17 @@ function resize() {
   }
 }
 window.addEventListener('resize', resize);
+window.addEventListener('relic-preferences-change', () => {
+  renderPixelRatio = preferredPixelRatio();
+  renderer.setPixelRatio(renderPixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight, false);
+  if (document.documentElement.dataset.motion === 'reduced' && flight) {
+    camera.position.copy(flight.toPosition);
+    controls.target.copy(flight.toTarget);
+    flight = null;
+    controls.update();
+  }
+});
 
 updatePositions(0);
 livePanel = startLiveData($('#live-data'), () => selected, positions => {
@@ -668,7 +691,6 @@ onLanguageChange(lang => {
   $('.destinations').setAttribute('aria-label', english ? 'Choose a world' : 'Choisir un monde');
   $('.toolbar').setAttribute('aria-label', english ? 'Exploration controls' : 'Commandes de l’exploration');
   for (const [id, en, fr] of [
-    ['relic-settings','Settings','Paramètres'],
     ['relic-replay','Watch the film','Revoir le film'],
     ['relic-credits','Sources and creators','Sources et créateurs'],
   ]) {
@@ -709,11 +731,13 @@ let fastWindows = 0;
 let animationFrame = 0;
 let rendererSuspended = false;
 let renderPausedAt = 0;
+let pageInactive = false;
+let navigationActive = false;
 function requestSceneFrame() {
   if (!animationFrame && !rendererSuspended) animationFrame = requestAnimationFrame(animate);
 }
 function syncSceneActivity() {
-  const shouldSuspend = filmActive || document.hidden;
+  const shouldSuspend = filmActive || document.hidden || pageInactive || navigationActive;
   controls.enabled = !filmActive;
   document.body.dataset.filmActive = String(filmActive);
   for (const element of [sceneHost, labelHost, $('.topbar'), $('main'), $('.toolbar')]) element.inert = filmActive;
@@ -743,6 +767,13 @@ window.addEventListener('relic-film-state', event => {
   syncSceneActivity();
 });
 document.addEventListener('visibilitychange', syncSceneActivity);
+window.addEventListener('relic-navigation-state', event => { navigationActive = event.detail?.active === true; syncSceneActivity(); });
+window.addEventListener('pagehide', event => {
+  pageInactive = true;
+  syncSceneActivity();
+  if (!event.persisted) { controls.dispose(); renderer.dispose(); }
+});
+window.addEventListener('pageshow', () => { pageInactive = false; navigationActive = false; syncSceneActivity(); });
 function animate(time) {
   animationFrame = 0;
   if (rendererSuspended) return;
@@ -757,7 +788,8 @@ function animate(time) {
     const averageFrame = qualityFrameCount ? qualityFrameTime / qualityFrameCount : 0;
     const preferred = preferredPixelRatio();
     let nextRatio = renderPixelRatio;
-    if (averageFrame > .024) { nextRatio = Math.max(.75, renderPixelRatio - .12); fastWindows = 0; }
+    if (document.documentElement.dataset.quality === 'high') nextRatio = preferred;
+    else if (averageFrame > .024) { nextRatio = Math.max(.75, renderPixelRatio - .12); fastWindows = 0; }
     else if (averageFrame > 0 && averageFrame < .018 && renderPixelRatio < preferred) {
       if (++fastWindows >= 2) { nextRatio = Math.min(preferred, renderPixelRatio + .1); fastWindows = 0; }
     } else fastWindows = 0;

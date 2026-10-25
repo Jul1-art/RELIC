@@ -2,11 +2,12 @@ import { getLanguage, onLanguageChange } from './atlas-live.js?v=3';
 import { createPrologue } from './intro/prologue-v8.js';
 import { PROLOGUE, PROLOGUE_MEDIA } from './intro/prologue-data-v8.js';
 import * as offlineFilm from './intro/film-offline.js';
-import { registerApplicationWorker, RETURN_MARKER } from './world-bridge.js';
+import { registerApplicationWorker, warmOfflineShell, RETURN_MARKER } from './world-bridge.js';
 
 const INTRO_ROOT = new URL('./intro/', import.meta.url);
 const introduction = document.querySelector('#intro');
-const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+const reducedMotion = () => document.documentElement.dataset.motion === 'reduced'
+  || (!document.documentElement.dataset.motion && matchMedia('(prefers-reduced-motion: reduce)').matches);
 const french = () => getLanguage() === 'fr';
 const localize = value => typeof value === 'string' ? value : value?.[getLanguage()] || value?.en || '';
 const safeURL = value => {
@@ -87,6 +88,10 @@ async function showCredits(trigger) {
   const sources = document.createElement('div'); sources.className = 'relic-source-links'; content.append(sources);
   for (const [label, url] of [
     ['NASA Open Data','https://data.nasa.gov/'],['NASA / JPL Horizons','https://ssd.jpl.nasa.gov/horizons/'],
+    ['JPL approximate planetary positions · orbital model','https://ssd.jpl.nasa.gov/planets/approx_pos.html'],
+    ['NOAA SWPC · solar-wind measurements','https://www.swpc.noaa.gov/products/real-time-solar-wind'],
+    ['Photon / OpenStreetMap · place search','https://photon.komoot.io/'],
+    ['Open-Meteo / GeoNames · geocoding · CC BY 4.0','https://open-meteo.com/en/docs/geocoding-api'],
     ['NASA Solar System Exploration','https://science.nasa.gov/solar-system/'],['NASA / LRO lunar imagery','https://wms.lroc.asu.edu/lroc'],
     ['NASA Mars Trek','https://trek.nasa.gov/mars/'],['Solar System Scope textures · CC BY 4.0','https://www.solarsystemscope.com/textures/'],
     ['Three.js · MIT','https://threejs.org/'],['CesiumJS · Apache 2.0','https://cesium.com/platform/cesiumjs/'],
@@ -205,7 +210,7 @@ async function showOffline({ trigger } = {}) {
   download.addEventListener('click', async () => {
     if (attempt) return;
     errorText.hidden = true; attempt = new AbortController(); update({ state:'preparing', percent:0 });
-    try { await ensureFilmWorker(); await offlineFilm.download(PROLOGUE_MEDIA, { signal:attempt.signal, onProgress:update }); await refresh(); }
+    try { await ensureFilmWorker(); await warmOfflineShell({ signal:attempt.signal }); await offlineFilm.download(PROLOGUE_MEDIA, { signal:attempt.signal, onProgress:update }); await refresh(); }
     catch (error) { if (error.name !== 'AbortError') showError(error); await refresh(); }
     finally { attempt = null; }
   });
@@ -233,7 +238,7 @@ try {
   sessionStorage.removeItem(RETURN_MARKER);
   if (marker?.path === new URL('./', import.meta.url).pathname && Date.now() - marker.at < 5 * 60 * 1000) returningToAtlas = true;
 } catch { /* Direct visits continue to show the opening. */ }
-if (returningToAtlas) { introduction.classList.add('hidden'); setFilmActive(false); }
+if (returningToAtlas && !new URL(location.href).searchParams.has('film')) { introduction.classList.add('hidden'); setFilmActive(false); }
 else film.start();
 
 // A small diagnostic surface is useful to host pages and automated playback

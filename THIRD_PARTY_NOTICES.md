@@ -57,3 +57,9 @@ The ESA and other non-Apache media conditions remain relevant when repurposing t
 - New English and French narration uses stock Kokoro synthetic voices. It is not a human-actor recording or a clone of a historical speaker. The historical excerpts retain their genuine recordings.
 
 The asset and film source manifests record source URLs, credits, transformations, selected excerpts and checksums. Retain those records when redistributing the supplied assets; update them when replacing media.
+
+## Static-host data fallback
+
+- Calculated orbital distances and speeds use the NASA/JPL approximate planetary element model for 1800–2050, with source and model timestamps shown in the interface. They are estimates, not live telemetry: https://ssd.jpl.nasa.gov/planets/approx_pos.html .
+- Solar-wind readings come from NOAA SWPC real-time summary data and carry their observation timestamp. Missing or expired readings are omitted rather than invented.
+- Browser place-search fallback uses Photon / OpenStreetMap and the Open-Meteo geocoding API with GeoNames data. OpenStreetMap attribution and ODbL terms apply to its data; Open-Meteo and GeoNames data retain CC BY 4.0 terms. Preserve the displayed provider credits: https://open-meteo.com/en/docs/geocoding-api and https://www.geonames.org/ .

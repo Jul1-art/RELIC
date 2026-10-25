@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -18,7 +18,8 @@
   <link rel="stylesheet" href="./premium.css?v=8">
   <link rel="stylesheet" href="./theme.css?v=1">
   <link rel="stylesheet" href="./compact.css?v=3">
-  <link rel="stylesheet" href="./relic-worlds.css">
+  <link rel="stylesheet" href="./relic-worlds.css?v=2">
+  <link rel="stylesheet" href="./navigation.css">
   <script>window.CESIUM_BASE_URL = new URL('./vendor/cesium/', document.baseURI).href;</script>
 </head>
 <body class="earth-page relic-world">
@@ -27,22 +28,23 @@
 
   <header class="earth-topbar">
     <a class="back-link" href="./index.html"><span class="back-arrow" aria-hidden="true"><svg class="relic-brand-mark" viewBox="0 0 100 100" aria-hidden="true"><path d="M35 75V29h20c11 0 17 6 17 15 0 9-7 15-18 15H35m19 0 20 18"/><path class="relic-mark-orbit" d="M20 63C10 37 32 12 59 16c14 2 24 8 30 19"/><circle cx="89" cy="35" r="2"/></svg></span><span>RELIC</span></a>
-    <strong class="earth-page-title">Terre</strong>
-    <div class="header-actions"><button id="relic-settings" class="relic-api-settings" data-api-settings type="button" aria-label="API settings" title="API settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 6a4.5 4.5 0 1 1-3.9 6.75L3 20.35V23h2.65v-2.65H8.3V17.7h2.65l2.1-2.1A4.5 4.5 0 0 1 14.5 6Z" transform="translate(0 -3)"/><circle cx="16" cy="7.5" r=".8"/></svg></button><button class="header-language" data-language-toggle type="button" aria-label="Switch language">EN</button><button class="theme-toggle" data-theme-toggle type="button" aria-label="Passer en mode jour"><svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.7 13.1A8.8 8.8 0 0 1 10.9 3.3 8.9 8.9 0 1 0 20.7 13.1Z"/></svg></button></div>
-    <nav class="world-nav" aria-label="Changer de monde">
-      <a href="./terrain.html?body=mars">Mars</a>
-      <a href="./terrain.html?body=moon">Lune</a>
+    <strong class="earth-page-title">Earth</strong>
+    <div class="header-actions"><button class="world-settings-button" data-app-settings type="button" aria-label="Settings" title="Settings"><i class="world-icon" data-world-icon="gear" aria-hidden="true"></i></button><button class="header-language" data-language-toggle type="button" aria-label="Switch language">EN</button><button class="theme-toggle" data-theme-toggle type="button" aria-label="Passer en mode jour"><svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.7 13.1A8.8 8.8 0 0 1 10.9 3.3 8.9 8.9 0 1 0 20.7 13.1Z"/></svg></button></div>
+    <nav class="world-nav" aria-label="Choose a world">
+      <a href="./earth.html" data-world="earth" class="active" aria-current="page">Earth</a>
+      <a href="./terrain.html?body=mars" data-world="mars">Mars</a>
+      <a href="./terrain.html?body=moon" data-world="moon">Moon</a>
     </nav>
   </header>
 
   <main>
     <section class="explorer-panel" aria-labelledby="explorer-title">
-      <div class="panel-eyebrow"><h1 id="explorer-title">Terre</h1><button id="panel-toggle" type="button" aria-label="Réduire le panneau" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+      <div class="panel-eyebrow"><h1 id="explorer-title">Earth</h1><button id="panel-toggle" type="button" aria-label="Réduire le panneau" aria-expanded="true"><i class="world-icon" data-world-icon="chevron-down" aria-hidden="true"></i></button></div>
       <section id="earth-live-data" class="live-data" aria-live="polite"></section>
     </section>
 
     <aside class="map-options" id="map-options" aria-label="Imagerie" hidden>
-      <strong class="map-options-title">Imagerie</strong>
+      <div class="world-drawer-heading"><strong class="map-options-title">Imagery</strong><button type="button" data-world-close="map-options" aria-label="Close imagery"><i class="world-icon" data-world-icon="xmark" aria-hidden="true"></i></button></div>
       <div class="layer-switch" role="group" aria-label="Choisir l’imagerie terrestre">
         <button type="button" data-layer="satellite" class="active" aria-pressed="true"><strong>Satellite</strong><small>Esri</small></button>
         <button type="button" data-layer="blue" aria-pressed="false"><strong>Blue Marble</strong><small>NASA</small></button>
@@ -51,12 +53,12 @@
       <div class="date-field" id="date-field" hidden><label for="image-date">Date</label><input type="date" id="image-date"><span>Couverture variable selon la date.</span></div>
       <p class="layer-note" id="layer-note">Image satellite détaillée Esri sur relief NASA SRTM. La résolution dépend de la zone.</p>
 
-      <div class="google3d-control"><button id="google3d-toggle" type="button" aria-pressed="false">◈ GOOGLE 3D</button><span id="google3d-status" role="status">Jeton Cesium ion gratuit requis.</span></div>
+      <div class="google3d-control"><button id="google3d-toggle" type="button" aria-pressed="false"><i class="world-icon" data-world-icon="cube" aria-hidden="true"></i><span class="world-button-label">Google 3D</span></button><span id="google3d-status" role="status">Google 3D</span></div>
 
     </aside>
 
     <aside class="view-card" id="site-summary" aria-live="polite" hidden>
-      <div class="summary-head"><span class="card-kicker" id="location-tag">NASA</span><button id="site-close" type="button" aria-label="Fermer les détails du site">×</button></div>
+      <div class="summary-head"><span class="card-kicker" id="location-tag">NASA</span><button id="site-close" type="button" aria-label="Close place details"><i class="world-icon" data-world-icon="xmark" aria-hidden="true"></i></button></div>
       <h2 id="location-name"></h2>
       <p id="location-description"></p>
       <div class="view-facts"><div><span>Latitude</span><strong id="latitude">—</strong></div><div><span>Longitude</span><strong id="longitude">—</strong></div></div>
@@ -66,7 +68,7 @@
   </main>
 
   <form id="place-form" class="place-search" role="search" autocomplete="off">
-    <button class="search-toggle" id="search-toggle" type="button" aria-expanded="false" aria-controls="search-content"><svg class="search-glass" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m15.6 15.6 5 5"/></svg><svg class="search-close" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5 19 19M19 5 5 19"/></svg><span class="search-toggle-label">Rechercher</span><svg class="search-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+    <button class="search-toggle" id="search-toggle" type="button" aria-expanded="false" aria-controls="search-content"><i class="world-icon search-glass" data-world-icon="magnifying-glass" aria-hidden="true"></i><i class="world-icon search-close" data-world-icon="xmark" aria-hidden="true"></i><span class="search-toggle-label">Rechercher</span><i class="world-icon search-chevron" data-world-icon="chevron-down" aria-hidden="true"></i></button>
     <div class="search-content" id="search-content" inert>
       <div class="place-search-field"><input id="place-input" type="search" role="combobox" aria-label="Rechercher un lieu" aria-autocomplete="list" aria-expanded="false" aria-controls="suggestions" placeholder="Ville, adresse ou coordonnées" spellcheck="false" autocomplete="off"><button type="submit" aria-label="Aller au lieu">Aller</button></div>
       <div id="suggestions" class="place-search-results" role="listbox" hidden></div>
@@ -75,16 +77,17 @@
     </div>
   </form>
 
-  <div class="earth-controls" aria-label="Commandes du globe">
-    <button id="map-options-toggle" type="button" title="Imagerie" aria-label="Imagerie" aria-controls="map-options" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5"/></svg></button>
-    <button id="reset-view" type="button" class="reset-button">◎ <span>Vue globale</span></button>
+  <div class="earth-controls" aria-label="Globe controls">
+    <button id="map-options-toggle" type="button" title="Imagery" aria-label="Imagery" aria-controls="map-options" aria-expanded="false"><i class="world-icon" data-world-icon="layer-group" aria-hidden="true"></i><span data-world-copy="imagery">Imagery</span></button>
+    <button id="reset-view" type="button" class="reset-button" aria-label="Overview"><i class="world-icon" data-world-icon="globe" aria-hidden="true"></i><span>Overview</span></button>
   </div>
   <div class="earth-attribution">IMAGERIE · <a id="earth-imagery-credit" href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer" target="_blank" rel="noopener noreferrer">POWERED BY ESRI · ESRI, MAXAR, EARTHSTAR GEOGRAPHICS, GIS USER COMMUNITY</a><strong id="earth-terrain-status" data-available="true"> · RELIEF NASA SRTM MESURÉ · ×2</strong> · <a href="https://ourairports.com/data/" target="_blank" rel="noopener noreferrer">PISTES OURAIRPORTS</a></div>
   <div id="cesium-credits" class="cesium-credits"></div>
   <div id="earth-loading" class="earth-loading"><span class="loading-orbit"></span><span>Chargement…</span></div>
   <div id="earth-error" class="earth-error" hidden>Impossible de charger le globe. Rechargez la page pour réessayer.</div>
   <script type="module" src="./theme.js?v=2"></script>
-  <script type="module" src="./world-bridge.js?v=1"></script>
-  <script type="module" src="./earth-view.js?v=22"></script>
+  <script type="module" src="./world-bridge.js?v=private-1"></script>
+  <script type="module" src="./earth-view.js?v=private-1"></script>
+  <script type="module" src="./world-ui.js?v=2"></script>
 </body>
 </html>

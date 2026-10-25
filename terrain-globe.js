@@ -6,6 +6,8 @@ import { createDetailedEarthImagery, ESRI_IMAGERY_URL } from './earth-imagery.js
 import { createGoogle3D, askForCesiumToken } from './google-3d.js';
 import { createPlaceSearch } from './place-search.js?v=5';
 import { startLiveData, getLanguage, onLanguageChange } from './atlas-live.js?v=3';
+import { configureWorldPerformance, cameraDuration, flyToLocation } from './world-performance.js';
+import { backendFeatureAvailable, markBackendFeatureUnavailable } from './atlas-services.js';
 
 const $ = selector => document.querySelector(selector);
 const query = new URLSearchParams(location.search);
@@ -67,6 +69,10 @@ async function addImagery() {
     try {
       detailedEarthLayer = layers.addImageryProvider(await createDetailedEarthImagery(Cesium));
       earthImageryMode = 'detail';
+      $('#imagery-button').disabled = false;
+      $('#imagery-button span').textContent = 'SATELLITE';
+      $('#imagery-button').setAttribute('aria-pressed', 'true');
+      viewer.scene.requestRender();
     } catch (error) {
       console.warn('Imagerie satellite détaillée indisponible', error);
     }
@@ -88,13 +94,21 @@ async function addImagery() {
       'https://trek.nasa.gov/tiles/Moon/EQ/apollo11_26cm_mosaic_byte_geo_1_2_highContrast/1.0.0/default/default028mm/{z}/{y}/{x}.png',
       15, 'NASA Moon Trek · LROC NAC Apollo 11', geographic, moonLocal,
     ));
-    layers.addImageryProvider(new Cesium.UrlTemplateImageryProvider({
-      url:new URL('./api/imagery/moon/tycho/{z}/{x}/{y}.png', document.baseURI).href,
-      tilingScheme:geographic, rectangle:tychoLocal,
-      minimumLevel:7, maximumLevel:15,
-      credit:'NASA LRO · LROC NAC Tycho · orthophoto 2 m',
-      enablePickFeatures:false,
-    }));
+    if (backendFeatureAvailable('height:moon') && backendFeatureAvailable('tycho-imagery')) {
+      const imagery = new Cesium.UrlTemplateImageryProvider({
+        url:new URL('./api/imagery/moon/tycho/{z}/{x}/{y}.png', document.baseURI).href,
+        tilingScheme:geographic, rectangle:tychoLocal,
+        minimumLevel:7, maximumLevel:15,
+        credit:'NASA LRO · LROC NAC Tycho · orthophoto 2 m',
+        enablePickFeatures:false,
+      });
+      const layer = layers.addImageryProvider(imagery);
+      imagery.errorEvent.addEventListener(error => {
+        error.retry = false;
+        markBackendFeatureUnavailable('tycho-imagery', 60);
+        if (!viewer.isDestroyed() && layers.contains(layer)) layers.remove(layer, true);
+      });
+    }
   }
 }
 
@@ -153,11 +167,13 @@ function animateOrientation(changes) {
   orientationAnimation?.cancel?.();
   let cancelled = false;
   orientationAnimation = { cancel:() => { cancelled = true; } };
+  const duration = cameraDuration(.42) * 1000;
+  if (!duration) { setCameraFrame({ ...from, ...changes }); orientationAnimation = null; return; }
   const start = performance.now();
   const headingDelta = Cesium.Math.negativePiToPi((changes.heading ?? from.heading) - from.heading);
   const next = now => {
     if (cancelled) return;
-    const t = Cesium.Math.clamp((now - start) / 550, 0, 1);
+    const t = Cesium.Math.clamp((now - start) / duration, 0, 1);
     const ease = t * t * (3 - 2 * t);
     setCameraFrame({
       ...from,
@@ -207,14 +223,15 @@ function stopMovement(direction) {
   pressed.delete(direction);
 }
 
-function resetView(clearSearch = true) {
+function resetView(clearSearch = true, duration = .8) {
   if (!viewer) return;
   focusSerial++;
   orientationAnimation?.cancel?.();
+  viewer.camera.cancelFlight();
   viewer.camera.flyTo({
     destination:cartesian(18, 0, radius * 2.1),
     orientation:{ heading:0, pitch:-Math.PI / 2, roll:0 },
-    duration:1.2,
+    duration:cameraDuration(duration),
   });
   if (clearSearch) { $('#place-input').value = ''; placeSearch?.close(); }
 }
@@ -222,24 +239,9 @@ function resetView(clearSearch = true) {
 async function focus(lat, lon, range = radius * .15, duration = 1.1, label = '') {
   if (!viewer) return;
   const serial = ++focusSerial;
-  let groundHeight = 0;
-  try {
-    const [sample] = await Cesium.sampleTerrain(
-      viewer.terrainProvider,
-      body === 'moon' ? 10 : 9,
-      [Cesium.Cartographic.fromDegrees(lon, lat)],
-    );
-    if (Number.isFinite(sample.height)) groundHeight = sample.height;
-  } catch (error) {
-    console.warn('Altitude du point visé indisponible', error);
-  }
-  if (serial !== focusSerial) return;
-  const destination = cartesian(lat, lon, groundHeight * viewer.scene.verticalExaggeration);
-  const sphere = new Cesium.BoundingSphere(destination, 100);
-  viewer.camera.flyToBoundingSphere(sphere, {
-    offset:new Cesium.HeadingPitchRange(0, Cesium.Math.toRadians(-34), range),
-    duration,
-  });
+  orientationAnimation?.cancel?.();
+  flyToLocation(viewer, Cesium, { lat, lon, ellipsoid, range, duration,
+    current:() => serial === focusSerial && !document.hidden });
   $('#place-input').value = label || `${lat.toFixed(5)}, ${lon.toFixed(5)}`;
 }
 
@@ -332,9 +334,9 @@ function showGoogleState(state) {
   $('#terrain-google3d-status').textContent = state.status === 'ready'
     ? (en ? 'Active' : 'Actif')
     : state.status === 'loading' ? (en ? 'Loading…' : 'Chargement…')
-      : state.status === 'error' ? (en ? 'Access denied · change token' : 'Accès refusé · changer le jeton')
+      : state.status === 'error' ? (en ? 'Google 3D unavailable' : 'Google 3D indisponible')
         : state.status === 'off' ? (en ? 'NASA terrain' : 'Relief NASA')
-          : (en ? 'Cesium token required' : 'Jeton Cesium requis');
+          : (en ? 'Google 3D unavailable' : 'Google 3D indisponible');
   document.body.dataset.google3d = String(state.active);
   $('#height-button').disabled = state.active;
   $('#imagery-button').disabled = state.active || !detailedEarthLayer;
@@ -466,22 +468,6 @@ function initialLocation() {
   return item || null;
 }
 
-async function initialRange(point) {
-  if (Number.isFinite(point?.terrainRange)) return point.terrainRange;
-  if (!point?.id) return Math.max(1200, radius * .045);
-  try {
-    const response = await fetch(new URL('./assets/terrain/catalog.json', import.meta.url));
-    if (response.ok) {
-      const catalog = await response.json();
-      const widthKm = catalog.sites?.[`${body}-${point.id}`]?.widthKm;
-      if (Number.isFinite(widthKm) && widthKm > 0) return Math.max(1500, widthKm * 1800);
-    }
-  } catch (error) {
-    console.warn('Cadrage local indisponible', error);
-  }
-  return Math.max(1200, radius * .045);
-}
-
 async function start() {
   try {
     const terrainProvider = createMeasuredTerrain(body, ellipsoid, available => {
@@ -497,10 +483,7 @@ async function start() {
       infoBox:false, creditContainer:$('#cesium-credits'),
       msaaSamples:1,
     });
-    viewer.targetFrameRate = 60;
     viewer.clock.shouldAnimate = false;
-    viewer.scene.requestRenderMode = false;
-    viewer.scene.maximumRenderTimeChange = Infinity;
     viewer.scene.verticalExaggeration = 2;
     viewer.scene.highDynamicRange = false;
     if (viewer.scene.skyAtmosphere) viewer.scene.skyAtmosphere.show = false;
@@ -512,14 +495,28 @@ async function start() {
     viewer.scene.backgroundColor = Cesium.Color.fromCssColorString('#080f1a');
     viewer.scene.globe.enableLighting = false;
     viewer.scene.globe.depthTestAgainstTerrain = true;
-    viewer.scene.globe.maximumScreenSpaceError = window.innerWidth < 760 ? 2.3 : 1.55;
-    viewer.scene.globe.tileCacheSize = 120;
     viewer.scene.screenSpaceCameraController.minimumZoomDistance = 8;
     viewer.scene.screenSpaceCameraController.maximumZoomDistance = radius * 6;
     viewer.scene.screenSpaceCameraController.inertiaSpin = .75;
     viewer.scene.screenSpaceCameraController.inertiaTranslate = .72;
     viewer.scene.screenSpaceCameraController.inertiaZoom = .72;
-    await addImagery();
+    configureWorldPerformance(viewer, { onSuspend:() => {
+      focusSerial++;
+      pressed.clear();
+      cancelAnimationFrame(movementFrame);
+      movementFrame = 0;
+      previousMovementTime = 0;
+      orientationAnimation?.cancel?.();
+      viewer.camera.cancelFlight();
+    } });
+    viewer.scene.canvas.addEventListener('pointerdown', () => { focusSerial++; }, { passive:true });
+    viewer.scene.canvas.addEventListener('wheel', () => { focusSerial++; }, { passive:true });
+    viewer.scene.postRender.addEventListener(function ready() {
+      $('#loading').classList.add('done');
+      updateHud(true);
+      viewer.scene.postRender.removeEventListener(ready);
+    });
+    addImagery().catch(() => { /* Local and remote layers load independently of controls. */ });
     if (body === 'earth') {
       $('#terrain-google3d').hidden = false;
       google3D = createGoogle3D(viewer, showGoogleState);
@@ -537,11 +534,12 @@ async function start() {
       if (startPoint.id) {
         $('#site-title').textContent = startPoint.name;
       }
-      await focus(startPoint.lat, startPoint.lon, await initialRange(startPoint), 0, startPoint.name);
+      const range = Number.isFinite(startPoint.terrainRange) ? startPoint.terrainRange
+        : Number.isFinite(startPoint.range) ? startPoint.range : Math.max(1200, radius * .045);
+      focus(startPoint.lat, startPoint.lon, range, 0, startPoint.name);
     }
-    else resetView(false);
+    else resetView(false, 0);
     google3D?.enable();
-    setTimeout(() => { $('#loading').classList.add('done'); updateHud(true); }, 3200);
     viewer.scene.requestRender();
   } catch (error) {
     console.error(error);
@@ -604,7 +602,7 @@ onLanguageChange(lang => {
     ? en ? 'SATELLITE' : 'SATELLITE'
     : 'NASA';
   if (body === 'earth') {
-    $('#terrain-google3d-toggle').textContent = '◈ Google 3D';
+    ($('#terrain-google3d-toggle .world-button-label') || $('#terrain-google3d-toggle')).textContent = 'Google 3D';
     showGoogleState(googleState);
   }
   updateHud(true);

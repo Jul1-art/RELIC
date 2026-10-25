@@ -1,36 +1,56 @@
-/* RELIC's application shell. Film storage is a separate, explicit download. */
+/* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'integrated-v8-4-20261025-subtitles-1';
+const VERSION = 'interface-v1-20261025-public';
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
 const APP_PREFIX = `relic-atlas-${encodeURIComponent(SCOPE.pathname)}-`;
 const SHELL = `${APP_PREFIX}${VERSION}-shell`;
-const ASSETS = `${APP_PREFIX}${VERSION}-assets`;
+// Large, unchanged libraries and textures survive interface-only releases.
+const ASSETS = `${APP_PREFIX}cesium-1.138-three-164-assets-v1`;
 const local = path => new URL(path, SCOPE).href;
 const FILM_ROOT = new URL('intro/assets/prologue/', SCOPE).pathname;
+const MAX_ASSET_BYTES = 16 * 1024 * 1024;
+const FETCH_CONCURRENCY = 3;
+const EXCLUDED_PATH = /\/(?:api|auth|_auth|oauth|login|logout|signin|signout|\.netlify)(?:\/|$)/i;
+const PRIVATE_QUERY = /^(?:access[_-]?token|api[_-]?key|token|key|authorization|auth|signature|secret|password)$/i;
+const STATIC = /\.(?:html|css|js|mjs|json|webmanifest|jpe?g|png|svg|webp|avif|woff2?|wasm)$/i;
+
+// First install warms only navigation documents and install identity. The
+// already-open page continues loading its own resources normally, without a
+// second burst of dozens of script and library requests from the worker.
 const CORE = [
-  './', 'index.html', 'earth.html', 'terrain.html', 'base_lunaire_3d.html',
+  'index.html', 'earth.html', 'terrain.html', 'base_lunaire_3d.html',
+  'manifest.webmanifest', 'assets/icon.svg', 'assets/icon-192.png', 'assets/icon-512.png',
+].map(local);
+
+// Requested only when the visitor explicitly saves the film for offline use.
+// This also covers a first visit whose early imports preceded worker control.
+const OFFLINE_CORE = [
+  ...CORE,
   'styles.css', 'earth.css', 'terrain.css', 'lunar-base.css', 'live.css',
   'premium.css', 'theme.css', 'compact.css', 'relic-shell.css', 'relic-worlds.css',
-  'api-settings.css', 'film-bridge.css',
-  'app.js', 'atlas-live.js', 'theme.js', 'surface-detail.js', 'nasa-worlds.js',
-  'earth-view.js', 'earth-imagery.js', 'earth-terrain.js', 'terrain-globe.js', 'terrain-view.js',
-  'lunar-base.js', 'lunar-architecture.js', 'lunar-environment.js', 'lunar-physics.js',
-  'api-config.js', 'api-settings.js', 'google-3d.js', 'google3d.css',
-  'place-search.js', 'place-search.css', 'film-bridge.js', 'world-bridge.js',
+  'film-bridge.css', 'app-settings.css', 'navigation.css',
+  'app.js', 'atlas-live.js', 'atlas-services.js', 'orbital-data.js', 'theme.js',
+  'surface-detail.js', 'nasa-worlds.js', 'earth-view.js', 'earth-imagery.js',
+  'earth-terrain.js', 'terrain-globe.js', 'terrain-view.js', 'lunar-base.js',
+  'lunar-architecture.js', 'lunar-environment.js', 'lunar-physics.js',
+  'api-config.js', 'api-settings.js', 'api-settings.css', 'google-3d.js', 'google3d.css', 'place-search.js', 'place-search.css',
+  'film-bridge.js', 'world-bridge.js', 'app-settings.js', 'navigation.js',
+  'world-ui.js', 'world-icons.js', 'world-performance.js',
   'intro/prologue-v8.js', 'intro/prologue-data-v8.js', 'intro/prologue-v8.css',
   'intro/film-stream-v7.js', 'intro/film-offline.js', 'intro/film-cache.js',
   'intro/assets/vendor/hls.full.mjs', 'intro/assets/vendor/fontawesome-solid.js',
   'intro/assets/prologue/poster-v8.jpg', 'intro/assets/prologue/iss-backdrop-v7.jpg',
   'intro/assets/prologue/sources-v8.json', 'intro/assets/prologue/encoding-v8.json',
   'vendor/three.module.js', 'vendor/OrbitControls.js',
-  'manifest.webmanifest', 'assets/icon.svg', 'assets/icon-192.png', 'assets/icon-512.png',
-].map(local);
-const MAX_ASSET_BYTES = 8 * 1024 * 1024;
-const EXCLUDED_PATH = /\/(?:api|auth|_auth|oauth|login|logout|signin|signout|\.netlify)(?:\/|$)/i;
-const PRIVATE_QUERY = /^(?:access[_-]?token|api[_-]?key|token|key|authorization|auth|signature|secret|password)$/i;
-const STATIC = /\.(?:html|css|js|mjs|json|webmanifest|jpe?g|png|svg|webp|avif|woff2?|wasm)$/i;
+].map(path => /^https?:/.test(path) ? path : local(path));
+
+const pending = new Map();
+let cooldownUntil = 0;
+let cooldownLoaded;
+let offlineWarm;
+const COOLDOWN_KEY = local('__relic_host_cooldown__.json');
 
 function belongsToApp(url) {
   return url.origin === SCOPE.origin && url.pathname.startsWith(SCOPE.pathname)
@@ -39,9 +59,9 @@ function belongsToApp(url) {
 }
 function cacheKey(request) {
   const url = new URL(typeof request === 'string' ? request : request.url);
-  // Module imports carry release query parameters. Store one canonical copy,
-  // so a first offline navigation can resolve the shell's exact import URLs.
-  if ([...url.searchParams.keys()].every(key => key === 'v')) url.search = '';
+  if (url.pathname === SCOPE.pathname) url.pathname = new URL('index.html', SCOPE).pathname;
+  // Planet/coordinate parameters alter the viewer state, not its static HTML.
+  if (/\.html$/i.test(url.pathname) || [...url.searchParams.keys()].every(key => key === 'v')) url.search = '';
   return url.href;
 }
 function immutable(url) {
@@ -49,31 +69,108 @@ function immutable(url) {
     || url.pathname.startsWith(new URL('intro/assets/vendor/', SCOPE).pathname)
     || (url.pathname.startsWith(new URL('assets/', SCOPE).pathname) && !/\.json$/i.test(url.pathname));
 }
-function cacheable(response, url) {
+async function cacheable(response, url) {
   if (!response?.ok || response.redirected || response.type === 'opaque') return false;
   if (/private|no-store/i.test(response.headers.get('Cache-Control') || '')) return false;
   if (Number(response.headers.get('Content-Length') || 0) > MAX_ASSET_BYTES) return false;
-  return /\.html$/i.test(url.pathname) || !STATIC.test(url.pathname)
-    || !/text\/html/i.test(response.headers.get('Content-Type') || '');
+  if (/text\/html/i.test(response.headers.get('Content-Type') || '')) {
+    if (STATIC.test(url.pathname) && !/\.html$/i.test(url.pathname)) return false;
+    return /<title>[^<]*\bRELIC\b/i.test(await response.clone().text());
+  }
+  return true;
 }
 async function remember(cache, request, response) {
   const url = new URL(typeof request === 'string' ? request : request.url);
-  if (!cacheable(response, url)) return;
-  if ((response.headers.get('Content-Type') || '').includes('text/html')) {
-    const html = await response.clone().text();
-    if (!/<title>[^<]*\bRELIC\b/i.test(html)) return;
-  }
-  try { await cache.put(cacheKey(request), response.clone()); }
-  catch { /* Storage pressure must not prevent exploration. */ }
+  if (!await cacheable(response, url)) return false;
+  try { await cache.put(cacheKey(request), response.clone()); return true; }
+  catch { return false; } // A full cache must not interrupt online exploration.
+}
+async function readCooldown() {
+  if (!cooldownLoaded) cooldownLoaded = (async () => {
+    try {
+      const saved = await (await caches.open(ASSETS)).match(COOLDOWN_KEY);
+      const record = saved && await saved.json();
+      if (Number.isFinite(record?.until)) cooldownUntil = Math.max(cooldownUntil, record.until);
+    } catch { /* Treat missing or damaged metadata as no known cooldown. */ }
+  })();
+  await cooldownLoaded;
+  return Math.max(0, cooldownUntil - Date.now());
+}
+function retryDelay(response) {
+  const header = response.headers.get('Retry-After')?.trim();
+  if (header && /^\d+(?:\.\d+)?$/.test(header)) return Math.max(1000, Number(header) * 1000);
+  if (header) { const at = Date.parse(header); if (Number.isFinite(at)) return Math.max(1000, at - Date.now()); }
+  return response.status === 503 ? 20000 : 60000;
+}
+async function holdRequests(response) {
+  cooldownUntil = Math.max(cooldownUntil, Date.now() + retryDelay(response));
+  try {
+    await (await caches.open(ASSETS)).put(COOLDOWN_KEY, new Response(JSON.stringify({ until:cooldownUntil }), { headers:{ 'Content-Type':'application/json' } }));
+  } catch { /* The in-memory cooldown still applies when storage is full. */ }
+}
+function busyResponse(delay) {
+  return new Response('RELIC is temporarily offline. Previously opened views remain available.', {
+    status:503, headers:{ 'Content-Type':'text/plain; charset=utf-8', 'Retry-After':String(Math.max(1, Math.ceil(delay / 1000))), 'Cache-Control':'no-store' },
+  });
+}
+async function fallbackDocument(shell, request) {
+  if (request.mode !== 'navigate') return null;
+  return await shell.match(local('index.html')) || null;
+}
+async function load(request, { reload = false } = {}) {
+  const url = new URL(typeof request === 'string' ? request : request.url);
+  const normalized = typeof request === 'string' ? new Request(request) : request;
+  const key = cacheKey(normalized);
+  const shell = await caches.open(SHELL), assets = await caches.open(ASSETS);
+  const cached = await (immutable(url) ? assets : shell).match(key);
+  // A release has its own shell cache: immutable and mutable static resources
+  // can both be reused within that release instead of revalidated on each page.
+  if (cached && !reload && normalized.cache !== 'reload') return cached;
+  const delay = await readCooldown();
+  if (delay > 0) return cached || await fallbackDocument(shell, normalized) || busyResponse(delay);
+  if (pending.has(key)) return (await pending.get(key)).clone();
+  const operation = (async () => {
+    try {
+      const response = await fetch(normalized, { cache:reload ? 'reload' : 'default' });
+      const html = /text\/html/i.test(response.headers.get('Content-Type') || '');
+      const ratePage = html && /rate limit exceeded|too many requests/i.test(await response.clone().text());
+      if (response.status === 429 || response.status === 503 || ratePage) {
+        await holdRequests(response);
+        return cached || await fallbackDocument(shell, normalized) || busyResponse(await readCooldown());
+      }
+      if (response.status >= 500 && cached) return cached;
+      await remember(immutable(url) ? assets : shell, normalized, response);
+      return response;
+    } catch (error) {
+      const fallback = cached || await fallbackDocument(shell, normalized);
+      if (fallback) return fallback;
+      throw error;
+    }
+  })();
+  pending.set(key, operation);
+  try { return (await operation).clone(); }
+  finally { if (pending.get(key) === operation) pending.delete(key); }
+}
+async function warm(urls, reload = false) {
+  let next = 0;
+  const failures = [];
+  await Promise.all(Array.from({ length:Math.min(FETCH_CONCURRENCY, urls.length) }, async () => {
+    while (next < urls.length) {
+      const url = urls[next++];
+      try {
+        const response = await load(new Request(url, { credentials:'same-origin' }), { reload });
+        const target = await caches.open(immutable(new URL(url)) ? ASSETS : SHELL);
+        if (!response.ok || !await target.match(cacheKey(url))) failures.push(new URL(url).pathname);
+      } catch { failures.push(new URL(url).pathname); }
+    }
+  }));
+  return failures;
 }
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
-    const cache = await caches.open(SHELL);
-    await Promise.allSettled(CORE.map(async url => {
-      const response = await fetch(url, { cache: 'reload', credentials: 'same-origin' });
-      await remember(cache, url, response);
-    }));
+    const failures = await warm(CORE);
+    if (failures.length) throw new Error('The application update will wait until its navigation files are available.');
     await self.skipWaiting();
   })());
 });
@@ -85,8 +182,14 @@ self.addEventListener('activate', event => {
   })());
 });
 self.addEventListener('message', event => {
-  if (event.data?.type === 'RELIC_FILM_OFFLINE_PING')
+  if (event.data?.type === 'RELIC_FILM_OFFLINE_PING') {
     event.ports?.[0]?.postMessage({ type:'RELIC_FILM_OFFLINE_READY', version:1 });
+  } else if (event.data?.type === 'RELIC_CACHE_OFFLINE_SHELL') {
+    if (!offlineWarm) offlineWarm = warm(OFFLINE_CORE).finally(() => { offlineWarm = null; });
+    event.waitUntil(offlineWarm.then(failures => {
+      event.ports?.[0]?.postMessage(failures.length ? { ok:false, error:'Some application files are not available for offline playback.' } : { ok:true });
+    }, () => event.ports?.[0]?.postMessage({ ok:false, error:'The application could not be saved offline.' })));
+  }
 });
 self.addEventListener('fetch', event => {
   const request = event.request;
@@ -98,25 +201,6 @@ self.addEventListener('fetch', event => {
     return;
   }
   if (request.headers.has('Range')) return;
-  const navigation = request.mode === 'navigate';
-  if (!navigation && !STATIC.test(url.pathname)) return;
-  event.respondWith((async () => {
-    const shell = await caches.open(SHELL), assets = await caches.open(ASSETS);
-    const key = cacheKey(request);
-    const cached = await assets.match(key) || await shell.match(key);
-    if (immutable(url) && cached) return cached;
-    try {
-      const response = await fetch(request, { cache:immutable(url) ? 'default' : 'no-cache' });
-      if (response.status >= 500 && cached) return cached;
-      await remember(immutable(url) ? assets : shell, request, response);
-      return response;
-    } catch (error) {
-      if (cached) return cached;
-      if (navigation) {
-        const fallback = await shell.match(local('index.html')) || await shell.match(local('./'));
-        if (fallback) return fallback;
-      }
-      throw error;
-    }
-  })());
+  if (request.mode !== 'navigate' && !STATIC.test(url.pathname)) return;
+  event.respondWith(load(request));
 });

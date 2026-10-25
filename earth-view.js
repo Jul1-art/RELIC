@@ -6,6 +6,7 @@ import { createDetailedEarthImagery, ESRI_IMAGERY_URL } from './earth-imagery.js
 import { createGoogle3D, askForCesiumToken } from './google-3d.js';
 import { createPlaceSearch } from './place-search.js?v=5';
 import { startLiveData, getLanguage, onLanguageChange } from './atlas-live.js?v=3';
+import { configureWorldPerformance, cameraDuration, flyToLocation } from './world-performance.js';
 
 const $ = selector => document.querySelector(selector);
 const input = $('#place-input');
@@ -56,9 +57,9 @@ function showGoogleState(state) {
   $('#google3d-status').textContent = state.status === 'ready'
     ? (en ? 'Active' : 'Actif')
     : state.status === 'loading' ? (en ? 'Loading…' : 'Chargement…')
-      : state.status === 'error' ? (en ? 'Access denied · change token' : 'Accès refusé · changer le jeton')
+      : state.status === 'error' ? (en ? 'Google 3D unavailable' : 'Google 3D indisponible')
         : state.status === 'off' ? (en ? 'NASA terrain' : 'Relief NASA')
-          : (en ? 'Cesium token required' : 'Jeton Cesium requis');
+          : (en ? 'Google 3D unavailable' : 'Google 3D indisponible');
   $('.earth-attribution').hidden = state.active;
   document.body.dataset.google3d = String(state.active);
   $('#layer-note').textContent = layerNoteText();
@@ -91,18 +92,9 @@ async function selectSite(site) {
   $('#site-summary').hidden = false;
   status('');
   const serial = ++siteFocusSerial;
-  let groundHeight = 0;
-  try {
-    const [point] = await Cesium.sampleTerrain(viewer.terrainProvider, 9, [Cesium.Cartographic.fromDegrees(site.lon, site.lat)]);
-    if (Number.isFinite(point.height)) groundHeight = point.height;
-  } catch (error) {
-    console.warn('Altitude du site indisponible', error);
-  }
-  if (serial !== siteFocusSerial) return;
-  viewer.camera.flyToBoundingSphere(new Cesium.BoundingSphere(Cesium.Cartesian3.fromDegrees(site.lon, site.lat, groundHeight * viewer.scene.verticalExaggeration), 1000), {
-    offset:new Cesium.HeadingPitchRange(0, Cesium.Math.toRadians(-34), site.range || 460000),
-    duration:1.9,
-  });
+  flyToLocation(viewer, Cesium, { lat:site.lat, lon:site.lon, ellipsoid:Cesium.Ellipsoid.WGS84,
+    range:site.range || 460000, duration:.85, sphereRadius:1000,
+    current:() => serial === siteFocusSerial && !document.hidden });
   if (window.matchMedia('(max-width:760px)').matches) collapsePanel(true);
 }
 
@@ -144,7 +136,7 @@ async function setLayer(id) {
     if (id === 'satellite') return setLayer('blue');
     return;
   }
-  if (serial !== layerSerial) return;
+  if (serial !== layerSerial || viewer.isDestroyed()) return;
   const nextLayer = viewer.imageryLayers.addImageryProvider(provider);
   if (remoteLayer) viewer.imageryLayers.remove(remoteLayer, true);
   remoteLayer = nextLayer;
@@ -170,7 +162,7 @@ async function start() {
     const terrainProvider = createMeasuredTerrain('earth', Cesium.Ellipsoid.WGS84, available => {
       $('#earth-terrain-status').textContent = available
         ? (english() ? ` · MEASURED SRTM RELIEF · ×${viewer?.scene.verticalExaggeration || 2}` : ` · RELIEF SRTM MESURÉ · ×${viewer?.scene.verticalExaggeration || 2}`)
-        : (english() ? ' · RELIEF UNAVAILABLE · FLAT SURFACE' : ' · RELIEF INDISPONIBLE · SURFACE PLATE');
+        : (english() ? ' · WGS84 ELLIPSOID · IMAGERY' : ' · ELLIPSOÏDE WGS84 · IMAGERIE');
       $('#earth-terrain-status').dataset.available = String(available);
     });
     viewer = new Cesium.Viewer($('#globe'), {
@@ -180,7 +172,9 @@ async function start() {
       infoBox:false, baseLayer:false, terrainProvider, creditContainer:$('#cesium-credits'),
       msaaSamples:window.innerWidth <= 760 ? 1 : 2,
     });
-    viewer.targetFrameRate = 60;
+    configureWorldPerformance(viewer, { onSuspend:() => { siteFocusSerial++; viewer.camera.cancelFlight(); } });
+    viewer.scene.canvas.addEventListener('pointerdown', () => { siteFocusSerial++; }, { passive:true });
+    viewer.scene.canvas.addEventListener('wheel', () => { siteFocusSerial++; }, { passive:true });
     viewer.scene.globe.enableLighting = false;
     viewer.scene.globe.depthTestAgainstTerrain = true;
     viewer.scene.verticalExaggeration = 2;
@@ -190,14 +184,23 @@ async function start() {
     viewer.camera.setView({ destination:Cesium.Cartesian3.fromDegrees(12, 25, 16000000) });
     google3D = createGoogle3D(viewer, showGoogleState);
 
-    localLayer = viewer.imageryLayers.addImageryProvider(
-      await Cesium.SingleTileImageryProvider.fromUrl(new URL('./assets/earth-blue-marble-4k.webp', import.meta.url).href, {
-        credit:'NASA · Blue Marble',
-      }),
-    );
-    await setLayer('satellite');
+    // The globe is interactive as soon as its first frame exists. Imagery and
+    // optional photorealistic tiles refine it without holding the interface.
+    viewer.scene.postRender.addEventListener(function ready() {
+      $('#earth-loading').classList.add('done');
+      viewer.scene.postRender.removeEventListener(ready);
+    });
+    viewer.scene.requestRender();
+    Cesium.SingleTileImageryProvider.fromUrl(new URL('./assets/earth-blue-marble-4k.webp', import.meta.url).href, {
+      credit:'NASA · Blue Marble',
+    }).then(provider => {
+      if (viewer.isDestroyed()) return;
+      localLayer = viewer.imageryLayers.addImageryProvider(provider);
+      viewer.imageryLayers.lowerToBottom(localLayer);
+      viewer.scene.requestRender();
+    }).catch(() => { /* The live layer can still supply the map. */ });
+    setLayer('satellite');
     google3D.enable();
-    $('#earth-loading').classList.add('done');
   } catch (error) {
     console.error('Globe NASA indisponible :', error);
     $('#earth-error').textContent = 'Le rendu 3D est indisponible sur ce navigateur. Activez l’accélération graphique puis réessayez.';
@@ -220,15 +223,17 @@ placeSearch = createPlaceSearch({
   },
   onSelect:place => {
     if (place.source === 'nasa') return selectSite(EARTH_SITES.find(site => site.id === place.site.id));
+    const searched = ['photon', 'geocoder'].includes(place.source);
     const fromPhoton = place.source === 'photon';
     return selectSite({
       name:place.name,
       inputLabel:place.detail ? `${place.name}, ${place.detail}` : place.name,
       lat:place.lat, lon:place.lon, range:place.range,
-      tag:fromPhoton ? (english() ? 'SEARCHED PLACE' : 'LIEU RECHERCHÉ') : (english() ? 'COORDINATES' : 'COORDONNÉES'),
+      tag:searched ? (english() ? 'SEARCHED PLACE' : 'LIEU RECHERCHÉ') : (english() ? 'COORDINATES' : 'COORDONNÉES'),
       description:place.detail || (english() ? 'Geographic coordinates.' : 'Coordonnées géographiques.'),
-      source:fromPhoton ? `https://www.openstreetmap.org/?mlat=${place.lat}&mlon=${place.lon}#map=16/${place.lat}/${place.lon}` : undefined,
-      sourceLabel:fromPhoton ? (english() ? 'VIEW ON OPENSTREETMAP ↗' : 'VOIR SUR OPENSTREETMAP ↗') : undefined,
+      source:place.sourceUrl || (fromPhoton ? `https://www.openstreetmap.org/?mlat=${place.lat}&mlon=${place.lon}#map=16/${place.lat}/${place.lon}` : undefined),
+      sourceLabel:fromPhoton ? (english() ? 'VIEW ON OPENSTREETMAP ↗' : 'VOIR SUR OPENSTREETMAP ↗')
+        : searched ? (english() ? 'VIEW PLACE SOURCE ↗' : 'VOIR LA SOURCE DU LIEU ↗') : undefined,
     });
   },
 });
@@ -250,7 +255,8 @@ dateInput.addEventListener('change', () => setLayer('modis'));
 $('#reset-view').addEventListener('click', () => {
   siteFocusSerial++;
   if (viewer) viewer.scene.verticalExaggeration = 2;
-  viewer?.camera.flyTo({ destination:Cesium.Cartesian3.fromDegrees(12, 25, 16000000), duration:1.8 });
+  viewer?.camera.cancelFlight();
+  viewer?.camera.flyTo({ destination:Cesium.Cartesian3.fromDegrees(12, 25, 16000000), duration:cameraDuration(.85) });
   $('#site-summary').hidden = true;
   input.value = '';
   hideSuggestions();
@@ -270,8 +276,9 @@ onLanguageChange(lang => {
   document.title = en ? 'Earth — RELIC' : 'Terre — RELIC';
   $('.back-link span:last-child').textContent = 'RELIC';
   $('.earth-page-title').textContent = en ? 'Earth' : 'Terre';
-  $('.world-nav a:first-child').textContent = 'Mars';
-  $('.world-nav a:last-child').textContent = en ? 'Moon' : 'Lune';
+  $('.world-nav [data-world="earth"]')?.replaceChildren(document.createTextNode(en ? 'Earth' : 'Terre'));
+  $('.world-nav [data-world="mars"]')?.replaceChildren(document.createTextNode('Mars'));
+  $('.world-nav [data-world="moon"]')?.replaceChildren(document.createTextNode(en ? 'Moon' : 'Lune'));
   $('#explorer-title').textContent = en ? 'Earth' : 'Terre';
   $('.map-options-title').textContent = en ? 'Imagery' : 'Imagerie';
   $('#map-options-toggle').setAttribute('aria-label', en ? 'Imagery' : 'Imagerie');
@@ -284,10 +291,10 @@ onLanguageChange(lang => {
   placeSearch.setLanguage();
   $('#location-3d').firstChild.textContent = en ? 'Explore in 3D ' : 'Explorer en 3D ';
   $('#reset-view span').textContent = en ? 'Overview' : 'Vue globale';
-  $('#google3d-toggle').textContent = '◈ Google 3D';
+  ($('#google3d-toggle .world-button-label') || $('#google3d-toggle')).textContent = 'Google 3D';
   showGoogleState(googleState);
   $('#earth-terrain-status').textContent = $('#earth-terrain-status').dataset.available === 'false'
-    ? (en ? ' · RELIEF UNAVAILABLE · FLAT SURFACE' : ' · RELIEF INDISPONIBLE · SURFACE PLATE')
+    ? (en ? ' · WGS84 ELLIPSOID · IMAGERY' : ' · ELLIPSOÏDE WGS84 · IMAGERIE')
     : (en ? ` · MEASURED SRTM RELIEF · ×${viewer?.scene.verticalExaggeration || 2}` : ` · RELIEF SRTM MESURÉ · ×${viewer?.scene.verticalExaggeration || 2}`);
   $('#layer-note').textContent = layerNoteText();
   if (selectedSite) {

@@ -1,24 +1,21 @@
 import { getLanguage, onLanguageChange } from './atlas-live.js?v=3';
+import { getPreferences, setPreferences } from './app-settings.js';
 
-const button = document.querySelector('[data-theme-toggle]');
 const root = document.documentElement;
-const themeColor = document.querySelector('meta[name="theme-color"]');
-
 function render() {
   const night = root.dataset.theme !== 'day';
   const english = getLanguage() === 'en';
-  const label = night
-    ? (english ? 'Switch to day mode' : 'Passer en mode jour')
-    : (english ? 'Switch to night mode' : 'Passer en mode nuit');
-  button.setAttribute('aria-label', label);
-  button.setAttribute('aria-pressed', String(night));
-  button.title = label;
-  themeColor.content = night ? '#090e18' : '#eef2f8';
+  const label = night ? (english ? 'Switch to day mode' : 'Passer en mode jour') : (english ? 'Switch to night mode' : 'Passer en mode nuit');
+  for (const button of document.querySelectorAll('[data-theme-toggle]')) {
+    button.setAttribute('aria-label',label); button.title = label;
+    button.setAttribute('aria-pressed',String(night));
+  }
+  const color = document.querySelector('meta[name="theme-color"]');
+  if (color) color.content = night ? '#050505' : '#f5f5f3';
 }
-
-button.addEventListener('click', () => {
-  root.dataset.theme = root.dataset.theme === 'night' ? 'day' : 'night';
-  try { localStorage.setItem('nasa-atlas-theme', root.dataset.theme); } catch { /* Private mode. */ }
-  render();
-});
+for (const button of document.querySelectorAll('[data-theme-toggle]')) {
+  button.addEventListener('click',() => setPreferences({ theme:getPreferences().theme === 'night' ? 'day' : 'night' }));
+}
 onLanguageChange(render);
+window.addEventListener('relic-preferences-change',render);
+render();

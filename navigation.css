@@ -1,0 +1,14 @@
+@view-transition{navigation:auto}
+::view-transition-old(root){animation:relic-page-out .16s ease both}
+::view-transition-new(root){animation:relic-page-in .24s ease both}
+@keyframes relic-page-out{to{opacity:0;transform:translateY(-4px)}}
+@keyframes relic-page-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+html[data-relic-navigating=true]{cursor:progress}
+html[data-relic-navigating=true]::after{content:"";position:fixed;z-index:10000;inset:0 auto auto 0;width:100%;height:2px;pointer-events:none;background:linear-gradient(90deg,transparent,#fff,transparent);transform-origin:left;animation:relic-route-progress 1.1s ease-in-out infinite}
+html[data-relic-navigating=true] body{transition:opacity .14s ease;opacity:.86}
+.relic-page-entering body{animation:relic-page-in .22s ease both}
+@keyframes relic-route-progress{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+html[data-motion=reduced]::view-transition-old(root),html[data-motion=reduced]::view-transition-new(root){animation:none}
+html[data-motion=reduced] .relic-page-entering body,html[data-motion=reduced].relic-page-entering body{animation:none}
+html[data-motion=reduced][data-relic-navigating=true]::after{animation:none;background:#ffffffb3}
+@media(prefers-reduced-motion:reduce){html:not([data-motion=full])::view-transition-old(root),html:not([data-motion=full])::view-transition-new(root),html:not([data-motion=full]).relic-page-entering body{animation:none}html:not([data-motion=full])[data-relic-navigating=true]::after{animation:none;background:#ffffffb3}}
