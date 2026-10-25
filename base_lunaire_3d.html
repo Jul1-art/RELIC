@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#050505">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./assets/icon-192.png">
+  <meta name="theme-color" content="#080808">
+  <meta name="description" content="Avant-poste lunaire 3D interactif : modules détaillés, inspection intérieure et simulation des systèmes de survie.">
+  <link rel="icon" href="data:,">
+  <title>Lunar outpost — RELIC</title>
+  <link rel="stylesheet" href="./lunar-base.css?v=3">
+  <link rel="stylesheet" href="./relic-worlds.css">
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/controls/OrbitControls.js":"./vendor/OrbitControls.js"}}</script>
+</head>
+<body class="relic-lunar">
+  <div id="scene" aria-label="Avant-poste lunaire interactif en trois dimensions"></div>
+  <div id="marker-layer" aria-label="Modules de la base"></div>
+  <div class="scene-vignette" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="back" href="./terrain.html?body=moon" aria-label="Retour à la Lune"><span class="back-icon" aria-hidden="true">←</span><span>Moon</span></a>
+    <a class="identity relic-lunar-brand" href="./index.html" aria-label="Return to the RELIC atlas"><svg class="relic-brand-mark" viewBox="0 0 100 100" aria-hidden="true"><path d="M35 75V29h20c11 0 17 6 17 15 0 9-7 15-18 15H35m19 0 20 18"/><path class="relic-mark-orbit" d="M20 63C10 37 32 12 59 16c14 2 24 8 30 19"/><circle cx="89" cy="35" r="2"/></svg><span><strong>RELIC</strong><small>LUNAR OUTPOST · SIMULATION</small></span></a>
+    <div class="relic-lunar-actions"><button id="relic-settings" class="relic-api-settings" data-api-settings type="button" aria-label="API settings" title="API settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 6a4.5 4.5 0 1 1-3.9 6.75L3 20.35V23h2.65v-2.65H8.3V17.7h2.65l2.1-2.1A4.5 4.5 0 0 1 14.5 6Z" transform="translate(0 -3)"/><circle cx="16" cy="7.5" r=".8"/></svg></button><div class="status" role="status"><span class="status-dot"></span><span id="status-label">Systèmes nominaux</span></div></div>
+  </header>
+
+  <div class="heading" id="heading">
+    <p>EXPLORATION / BASE LUNAIRE</p>
+    <h1>Habiter<br><em>la Lune.</em></h1>
+    <span>Glisser pour tourner · Molette ou pincement pour zoomer</span>
+  </div>
+
+  <aside class="console" aria-label="Panneau de la base">
+    <div class="console-head">
+      <div><span class="eyebrow">POSTE DE CONTRÔLE</span><h2 id="panel-title">Vue d’ensemble</h2></div>
+      <button id="panel-toggle" class="icon-button" type="button" aria-label="Réduire le panneau" aria-expanded="true">⌄</button>
+    </div>
+    <div class="console-body">
+      <div class="metrics" aria-label="État des ressources">
+        <div><span>BATTERIE</span><strong id="power-value">—</strong><i class="meter"><i id="power-bar"></i></i></div>
+        <div><span>OXYGÈNE</span><strong id="oxygen-value">—</strong><i class="meter"><i id="oxygen-bar"></i></i></div>
+        <div><span>PRESSION</span><strong id="pressure-value">—</strong><small>habitat</small></div>
+        <div><span>TEMPÉRATURE</span><strong id="temperature-value">—</strong><small>habitat</small></div>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Panneau">
+        <button id="tab-explore" type="button" role="tab" aria-selected="true" aria-controls="explore-panel">Explorer</button>
+        <button id="tab-systems" type="button" role="tab" aria-selected="false" aria-controls="systems-panel">Systèmes</button>
+      </div>
+      <div id="explore-panel" role="tabpanel" aria-labelledby="tab-explore">
+        <div id="locations" class="locations"></div>
+        <button id="interior-button" class="action-wide" type="button" aria-pressed="false"><span>Voir l’intérieur</span><span id="interior-state">ACTIVER ↗</span></button>
+        <div class="module-detail" id="module-detail"><span>MODULE</span><p>Sélectionnez un élément de la base.</p></div>
+      </div>
+      <div id="systems-panel" role="tabpanel" aria-labelledby="tab-systems" hidden>
+        <div class="section-label">OPÉRATIONS</div>
+        <div class="switch-list">
+          <button id="airlock-button" type="button"><span>Sas extérieur</span><strong id="airlock-state">FERMÉ</strong></button>
+          <button id="rover-button" type="button"><span>Rover</span><strong id="rover-state">EN ATTENTE</strong></button>
+          <button id="rover-return-button" type="button"><span>Retour rover</span><strong>↶</strong></button>
+          <button id="solar-button" type="button"><span>Panneaux solaires</span><strong id="solar-state">DÉPLOYÉS</strong></button>
+          <button id="greenhouse-button" type="button"><span>Serre</span><strong id="greenhouse-state">ACTIVE</strong></button>
+          <button id="isru-button" type="button"><span>Extraction ISRU</span><strong id="isru-state">VEILLE</strong></button>
+        </div>
+        <div class="section-label">CIRCUITS</div>
+        <dl class="systems-grid">
+          <div><dt>Production</dt><dd id="production-value">—</dd></div>
+          <div><dt>Charge</dt><dd id="load-value">—</dd></div>
+          <div><dt>CO₂</dt><dd id="co2-value">—</dd></div>
+          <div><dt>Eau</dt><dd id="water-value">—</dd></div>
+          <div><dt>Sas</dt><dd id="chamber-value">—</dd></div>
+          <div><dt>Éclairement</dt><dd id="sunlight-value">—</dd></div>
+          <div><dt>Gaz de réserve</dt><dd id="gas-value">—</dd></div>
+          <div><dt>Gravité</dt><dd id="gravity-value">—</dd></div>
+        </dl>
+        <div class="section-label">SCÉNARIO</div>
+        <label class="scenario-control" for="scenario-select"><span>Incident simulé</span><select id="scenario-select"><option value="none">Aucun</option><option value="solarDust">Poussière sur panneaux</option><option value="solarArray">Panne solaire</option><option value="pressureLeak">Fuite de pression</option><option value="co2Scrubber">Filtre CO₂ en panne</option></select></label>
+        <div class="section-label">JOURNAL</div>
+        <ol id="event-list" class="event-list"></ol>
+      </div>
+    </div>
+  </aside>
+
+  <div class="bottom-bar" role="group" aria-label="Contrôles de la vue">
+    <button id="overview-button" type="button" title="Vue globale"><span aria-hidden="true">◎</span><span>Vue globale</span></button>
+    <span class="bar-divider"></span>
+    <button id="sun-button" type="button" title="Changer l’éclairage" aria-pressed="false"><span id="sun-icon" aria-hidden="true">☼</span><span id="sun-label">Nuit</span></button>
+    <button id="pause-button" type="button" title="Mettre en pause" aria-pressed="false"><span id="pause-icon" aria-hidden="true">Ⅱ</span><span id="pause-label">Pause</span></button>
+    <label class="speed-control" title="Vitesse de simulation"><span>×</span><select id="speed-select" aria-label="Vitesse de simulation"><option value="1">1</option><option value="30" selected>30</option><option value="360">360</option></select></label>
+    <span class="bar-divider"></span>
+    <span class="simulation-note">CONCEPT · PARAMÈTRES SIMULÉS</span>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <div id="loading" class="loading" role="status"><span class="loading-orbit"></span>Construction de la base lunaire…</div>
+  <div id="error" class="error" role="alert" hidden>La scène 3D ne peut pas démarrer sur cet appareil.</div>
+  <script type="module" src="./world-bridge.js?v=1"></script>
+  <script type="module" src="./lunar-base.js?v=3"></script>
+</body>
+</html>

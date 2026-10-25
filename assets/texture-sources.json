@@ -1,0 +1,100 @@
+{
+  "purpose": "Provider-derived planet texture source credits and documented WebP transformations.",
+  "textures": [
+    {
+      "path": "assets/moon-wac-8k.webp",
+      "format": "WEBP",
+      "dimensions": [
+        8192,
+        4096
+      ],
+      "bytes": 6488608,
+      "sha256": "429740c38660fe1be6fe6b387b83be497420e3e9f6b076d6473698cfbbf4e386",
+      "git_blob_sha1": "b3510c4ce20823af269f8fcef006a67f5831e623",
+      "source": {
+        "provider": "NASA Scientific Visualization Studio; NASA/GSFC/Arizona State University",
+        "title": "CGI Moon Kit: 2019 LROC WAC color map with poles",
+        "page": "https://svs.gsfc.nasa.gov/4720/",
+        "download_url": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_poles_8k.tif",
+        "source_dimensions": [
+          8192,
+          4096
+        ],
+        "source_sha256": "4af8b0cd4d50c30851359d98e7e72040240dd8d03256b58b345b5b76e9edb4ef",
+        "credits": "NASA’s Scientific Visualization Studio; Ernie Wright (USRA); NASA/GSFC/Arizona State University",
+        "terms": "NASA media usage guidelines; preserve attribution and do not imply NASA endorsement.",
+        "terms_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+      },
+      "processing": {
+        "mode": "RGB",
+        "webp_quality": 90,
+        "webp_method": 6,
+        "orientation": "north up; longitude -180 degrees at left edge, +180 at right, 0 at center; no horizontal flip, rotation or meridian shift"
+      }
+    },
+    {
+      "path": "assets/mars-viking-global.webp",
+      "format": "WEBP",
+      "dimensions": [
+        8192,
+        4096
+      ],
+      "bytes": 8764892,
+      "sha256": "8bcf9ebe254696074a7e9b6166df6649676c01a1770ed54bbeddb44e11b2cd7d",
+      "git_blob_sha1": "c5256ead13f1f438b92e3daf8fbac8b74db4f038",
+      "source": {
+        "provider": "NASA Mars Trek / USGS",
+        "title": "Mars Viking MDIM 2.1 global color mosaic, 232 m source product",
+        "page": "https://trek.nasa.gov/tiles/apidoc/trekAPI.html?body=mars",
+        "download_url_template": "https://trek.nasa.gov/tiles/Mars/EQ/Mars_Viking_MDIM21_ClrMosaic_global_232m/1.0.0/default/default028mm/{z}/{y}/{x}.jpg",
+        "zoom": 4,
+        "tile_size": 256,
+        "matrix_columns": 32,
+        "matrix_rows": 16,
+        "tile_count": 512,
+        "tile_sha256_manifest": "/workspace/github-transfer/mars-restoration-tiles.json",
+        "credits": "NASA Mars Trek; NASA Viking; USGS Astrogeology",
+        "terms": "NASA media usage guidelines; preserve attribution and do not imply NASA endorsement.",
+        "terms_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+      },
+      "processing": {
+        "mode": "RGB",
+        "webp_quality": 90,
+        "webp_method": 6,
+        "orientation": "north up; longitude -180 degrees at left edge, +180 at right, 0 at center; no horizontal flip, rotation or meridian shift"
+      }
+    },
+    {
+      "path": "assets/mercury-scope.webp",
+      "format": "WEBP",
+      "dimensions": [
+        4096,
+        2048
+      ],
+      "bytes": 3417698,
+      "sha256": "1bef14b2ba93cc3bcfd7e53d19685c2a478601ddb6077d5e3b76ae24ac288def",
+      "git_blob_sha1": "3f1b991bc392b96b6c7430f5aaaddb133998d071",
+      "source": {
+        "provider": "Solar System Scope / INOVE",
+        "title": "Mercury 8K texture",
+        "page": "https://www.solarsystemscope.com/textures/",
+        "download_url": "https://www.solarsystemscope.com/textures/download/8k_mercury.jpg",
+        "source_dimensions": [
+          8192,
+          4096
+        ],
+        "source_sha256": "5c8bd885ae3571c6ba2cd34b3446b9c6d767e314bf0ee8c1d5c147cadd388fc3",
+        "credits": "Solar System Scope / INOVE — https://www.solarsystemscope.com/textures/",
+        "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "modifications": "Resized from 8192×4096 to 4096×2048 using Lanczos and converted from JPEG to WebP."
+      },
+      "processing": {
+        "mode": "RGB",
+        "webp_quality": 94,
+        "webp_method": 6,
+        "orientation": "north up; longitude -180 degrees at left edge, +180 at right, 0 at center; no horizontal flip, rotation or meridian shift"
+      }
+    }
+  ]
+}

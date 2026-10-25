@@ -1,0 +1,392 @@
+/* RELIC world views. Scientific imagery and provider credits keep their colors. */
+html[data-theme] body.relic-world,
+body.relic-lunar {
+  --ui-ink: #f5f5f2;
+  --ui-muted: #b5b5b2;
+  --ui-soft: #858582;
+  --ui-stroke: #ffffff20;
+  --ui-glass: linear-gradient(145deg, #171717d9, #090909e8);
+  --ui-shadow: 0 18px 50px #0005, inset 0 1px #ffffff0d;
+  --ui-blue: #ededeb;
+  --ui-blue-hover: #fff;
+  --compact-control: #ffffff0b;
+  --compact-active: #ffffff14;
+  --compact-popup: #121212;
+  --accent: #efefec;
+  color: var(--ui-ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+html[data-theme="day"] body.relic-world {
+  --ui-ink: #131313;
+  --ui-muted: #555552;
+  --ui-soft: #777774;
+  --ui-stroke: #00000020;
+  --ui-glass: linear-gradient(145deg, #ffffffeb, #f3f3f0e8);
+  --ui-shadow: 0 18px 50px #0002, inset 0 1px #fff;
+  --ui-blue: #161616;
+  --ui-blue-hover: #000;
+  --compact-control: #00000008;
+  --compact-active: #ffffffd9;
+  --compact-popup: #fafaf8;
+}
+body.relic-world :is(button, a, input):focus-visible,
+body.relic-lunar :is(button, a, select):focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+body.relic-world [hidden],
+body.relic-lunar [hidden] { display: none !important; }
+.relic-brand-mark {
+  display: block;
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 4.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+.relic-brand-mark .relic-mark-orbit { stroke-width: 2; }
+.relic-brand-mark circle { fill: currentColor; stroke: none; }
+html[data-theme] body.relic-world :is(.earth-topbar, .topbar) {
+  display: grid;
+  grid-template-columns: auto minmax(70px, 1fr) auto auto;
+  grid-template-areas: "brand title worlds actions";
+  align-items: center;
+  gap: 18px;
+  top: max(17px, env(safe-area-inset-top));
+  left: max(22px, env(safe-area-inset-left));
+  right: max(22px, env(safe-area-inset-right));
+  height: auto;
+  min-height: 44px;
+  padding: 0;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+html[data-theme] body.relic-world .back-link {
+  grid-area: brand;
+  min-height: 44px;
+  gap: 7px;
+  padding: 0 13px 0 3px;
+  border: 1px solid var(--ui-stroke);
+  border-radius: 16px;
+  background: var(--ui-glass);
+  color: var(--ui-ink);
+  font-size: 11px;
+  font-weight: 450;
+  letter-spacing: 3px;
+  box-shadow: var(--ui-shadow);
+}
+html[data-theme] body.relic-world .back-link .back-arrow {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: currentColor;
+}
+html[data-theme] body.relic-world .back-link .relic-brand-mark { width: 31px; height: 31px; }
+html[data-theme] body.relic-world :is(.earth-page-title, .topbar-title) {
+  grid-area: title;
+  margin: 0;
+  justify-self: start;
+  color: var(--ui-ink);
+  text-align: left;
+  text-shadow: 0 2px 20px #0008;
+}
+html[data-theme] body.relic-world .earth-page-title,
+html[data-theme] body.relic-world .topbar-title strong {
+  font-size: 13px;
+  font-weight: 450;
+  letter-spacing: .2px;
+}
+html[data-theme] body.relic-world .topbar-title > span { display: none; }
+html[data-theme] body.relic-world .world-nav {
+  grid-area: worlds;
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  min-height: 44px;
+  gap: 3px;
+  padding: 4px;
+  border-color: var(--ui-stroke);
+  border-radius: 16px;
+  background: var(--ui-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--ui-shadow);
+}
+html[data-theme] body.relic-world .world-nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 11px;
+  color: var(--ui-muted);
+  font-size: 11px;
+  font-weight: 450;
+  letter-spacing: .1px;
+  white-space: nowrap;
+}
+html[data-theme] body.relic-world .world-nav a.active,
+html[data-theme] body.relic-world .world-nav a:hover {
+  background: var(--compact-active);
+  color: var(--ui-ink);
+}
+html[data-theme] body.relic-world .header-actions {
+  grid-area: actions;
+  display: flex;
+  min-height: 44px;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--ui-stroke);
+  border-radius: 16px;
+  background: var(--ui-glass);
+  box-shadow: var(--ui-shadow);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.relic-api-settings {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 36px;
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  padding: 8px;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.relic-api-settings svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.relic-api-settings:hover { background: #ffffff14; }
+html[data-theme] body.relic-world :is(.header-language, .theme-toggle),
+html[data-theme] body.relic-world .header-language:hover,
+html[data-theme] body.relic-world .theme-toggle:hover {
+  background: var(--compact-control) !important;
+  color: var(--ui-muted);
+}
+html[data-theme] body.relic-world .back-link .back-arrow { background: transparent !important; }
+html[data-theme] body.relic-world :is(#panel-toggle, .summary-head button) {
+  background: var(--compact-control) !important;
+  color: var(--ui-ink);
+}
+html[data-theme] body.relic-world .theme-toggle::before,
+html[data-theme] body.relic-world .header-language span {
+  box-shadow: none;
+}
+html[data-theme] body.relic-world :is(.explorer-panel, .view-card, .site-panel, .map-options) {
+  border: 1px solid var(--ui-stroke);
+  border-radius: 22px;
+  background: var(--ui-glass);
+  color: var(--ui-ink);
+  box-shadow: var(--ui-shadow);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+html[data-theme] body.relic-world :is(.explorer-panel, .site-panel) {
+  top: 83px;
+  left: max(22px, env(safe-area-inset-left));
+  width: min(290px, calc(100vw - 44px));
+  padding: 17px;
+  max-height: calc(100dvh - 190px);
+}
+html[data-theme] body.relic-world :is(.explorer-panel h1, .site-panel h1) {
+  color: var(--ui-ink);
+  font-size: 22px;
+  font-weight: 470;
+  letter-spacing: -.6px;
+}
+html[data-theme] body.relic-world :is(.eyebrow, .panel-eyebrow, .site-facts dt, .source-row a, .source-link, .layer-note, .map-options-title) {
+  color: var(--ui-muted);
+}
+html[data-theme] body.relic-world :is(.site-facts dd, .view-card h2, .view-facts strong) { color: var(--ui-ink); }
+html[data-theme] body.relic-world :is(.earth-controls, .view-controls, .move-pad button, #place-form) {
+  border-color: var(--ui-stroke);
+  border-radius: 17px;
+  background: var(--ui-glass);
+  color: var(--ui-ink);
+  box-shadow: var(--ui-shadow);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+html[data-theme] body.relic-world :is(.earth-controls button, .view-controls button, .move-pad button, .search-toggle) {
+  min-height: 42px;
+  border-radius: 11px;
+  color: var(--ui-ink);
+}
+html[data-theme] body.relic-world :is(.earth-controls button:hover, .view-controls button:hover, .move-pad button:hover, .search-toggle:hover) {
+  background: var(--compact-active);
+}
+html[data-theme] body.relic-world :is(.earth-controls .reset-button, .google3d-control button, .terrain-google3d button, .terrain-site-list button, .layer-switch button, .source-link) {
+  border-color: var(--ui-stroke);
+  border-radius: 12px;
+  background: var(--compact-control);
+  color: var(--ui-ink);
+  box-shadow: none;
+}
+html[data-theme] body.relic-world :is(.google3d-control button[aria-pressed="true"], .terrain-google3d button[aria-pressed="true"], .layer-switch button.active, .terrain-site-list button.active) {
+  border-color: var(--ui-muted);
+  background: var(--compact-active);
+  color: var(--ui-ink);
+}
+html[data-theme] body.relic-world .terrain-link {
+  border-color: transparent;
+  border-radius: 12px;
+  background: var(--ui-ink);
+  color: #111;
+  box-shadow: none;
+}
+html[data-theme="day"] body.relic-world .terrain-link { color: #fff; }
+html[data-theme] body.relic-world :is(.earth-attribution, .cesium-credits, .esri-attribution) {
+  border: 0;
+  background: transparent;
+  color: #dededc;
+  box-shadow: none;
+  line-height: 1.45;
+  text-shadow: 0 1px 5px #000;
+}
+html[data-theme] body.relic-world :is(.earth-attribution a, .cesium-credits a, .esri-attribution a, .earth-attribution #earth-terrain-status) { color: inherit; }
+html[data-theme] body.relic-world .scene-credit { color: #dededc; text-shadow: 0 1px 5px #000; }
+html[data-theme] body.relic-world :is(.loading, .earth-loading, .error, .earth-error) {
+  background: #080808f2;
+  color: #f4f4f1;
+  letter-spacing: .08em;
+}
+html[data-theme] body.relic-world .loading-orbit { border-color: #ffffff28; border-top-color: #ededeb; }
+html[data-theme] body.relic-world .vignette,
+html[data-theme] body.relic-world .scene-vignette {
+  background: linear-gradient(0deg, #0005, transparent 25%), linear-gradient(180deg, #0003, transparent 16%);
+}
+body.relic-lunar { background: #080808; }
+body.relic-lunar .topbar {
+  top: max(16px, env(safe-area-inset-top));
+  left: max(22px, env(safe-area-inset-left));
+  right: max(22px, env(safe-area-inset-right));
+  height: 46px;
+  gap: 18px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
+}
+body.relic-lunar .back { font-size: 11px; font-weight: 450; }
+body.relic-lunar .back-icon,
+body.relic-lunar .relic-lunar-actions {
+  border: 1px solid var(--ui-stroke);
+  border-radius: 14px;
+  background: var(--ui-glass);
+  box-shadow: var(--ui-shadow);
+}
+body.relic-lunar .back-icon { width: 42px; height: 42px; }
+body.relic-lunar .relic-lunar-brand { gap: 10px; color: inherit; text-decoration: none; }
+body.relic-lunar .relic-lunar-brand strong { font-size: 12px; font-weight: 450; letter-spacing: 4px; }
+body.relic-lunar .relic-lunar-brand small { margin-top: 3px; font-size: 7px; font-weight: 450; letter-spacing: 1px; }
+body.relic-lunar .relic-lunar-actions { display: flex; align-items: center; gap: 10px; padding: 3px 11px 3px 3px; }
+body.relic-lunar .status { min-width: 0; font-size: 10px; }
+body.relic-lunar .console,
+body.relic-lunar .bottom-bar {
+  border-color: var(--ui-stroke);
+  border-radius: 22px;
+  background: var(--ui-glass);
+  box-shadow: var(--ui-shadow);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+body.relic-lunar .console { top: 84px; }
+body.relic-lunar .heading { top: 100px; }
+body.relic-lunar .heading h1 { font-weight: 450; }
+body.relic-lunar :is(.eyebrow, .section-label, .module-detail > span) { color: #b9b9b5; }
+body.relic-lunar :is(.action-wide, .switch-list button, .scenario-control, .metrics > div, .module-detail) {
+  border-color: #ffffff1b;
+  background: #ffffff06;
+}
+body.relic-lunar .action-wide[aria-pressed="true"],
+body.relic-lunar .tabs button[aria-selected="true"] { background: #ffffff17; }
+body.relic-lunar .console h2 { font-weight: 500; }
+body.relic-redirect {
+  display: grid;
+  min-height: 100dvh;
+  margin: 0;
+  place-items: center;
+  background: #080808;
+  color: #f5f5f2;
+  font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+body.relic-redirect a { color: inherit; text-underline-offset: 5px; }
+@media (max-width: 760px) {
+  html[data-theme] body.relic-world :is(.earth-topbar, .topbar) {
+    top: max(12px, env(safe-area-inset-top));
+    left: max(12px, env(safe-area-inset-left));
+    right: max(12px, env(safe-area-inset-right));
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: "brand title actions" "worlds worlds worlds";
+    gap: 9px;
+  }
+  html[data-theme] body.relic-world .back-link { min-height: 42px; padding-right: 10px; font-size: 10px; letter-spacing: 2px; }
+  html[data-theme] body.relic-world .back-link > span:last-child { display: inline; }
+  html[data-theme] body.relic-world :is(.earth-page-title, .topbar-title) { justify-self: end; }
+  html[data-theme] body.relic-world .header-actions { gap: 3px; min-height: 42px; }
+  html[data-theme] body.relic-world .header-language { width: 54px; }
+  html[data-theme] body.relic-world .theme-toggle { width: 50px; flex-basis: 50px; }
+  html[data-theme] body.relic-world .relic-api-settings { width: 36px; min-width: 36px; flex-basis: 36px; height: 36px; padding: 8px; }
+  html[data-theme] body.relic-world .world-nav { justify-self: center; min-height: 38px; margin-left: 0; border-radius: 14px; }
+  html[data-theme] body.relic-world .world-nav a { min-height: 30px; padding: 0 13px; font-size: 10px; }
+  html[data-theme] body.relic-world :is(.explorer-panel, .site-panel) {
+    top: max(112px, calc(env(safe-area-inset-top) + 100px));
+    left: max(12px, env(safe-area-inset-left));
+    width: min(276px, calc(100vw - 24px));
+    max-height: min(29dvh, 240px);
+    padding: 13px;
+    border-radius: 18px;
+  }
+  html[data-theme] body.relic-world .explorer-panel.collapsed { max-height: 50px; }
+  html[data-theme] body.relic-world :is(.explorer-panel h1, .site-panel h1) { font-size: 19px; }
+  html[data-theme] body.relic-world .view-card { border-radius: 18px; }
+  html[data-theme] body.relic-world .nav-hint { display: none; }
+  html[data-theme] body.relic-world :is(.earth-attribution, .cesium-credits, .esri-attribution) { font-size: 7px; }
+  html[data-theme] body.relic-world .scene-credit { font-size: 7px; letter-spacing: .1px; }
+  body.relic-lunar .topbar { left: 12px; right: 12px; gap: 9px; }
+  body.relic-lunar .relic-lunar-brand { gap: 6px; }
+  body.relic-lunar .relic-lunar-brand small { font-size: 6px; letter-spacing: .5px; }
+  body.relic-lunar .relic-lunar-actions { gap: 6px; padding-right: 8px; }
+  body.relic-lunar .status { font-size: 0; }
+  body.relic-lunar .console { top: auto; border-radius: 20px; }
+  body.relic-lunar .heading { top: 83px; left: 18px; }
+}
+@media (max-width: 370px) {
+  html[data-theme] body.relic-world :is(.earth-page-title, .topbar-title) { display: none; }
+  html[data-theme] body.relic-world :is(.earth-topbar, .topbar) { grid-template-columns: auto 1fr auto; }
+  html[data-theme] body.relic-world .header-actions { justify-self: end; }
+  body.relic-lunar .relic-lunar-brand small { display: none; }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  html[data-theme] body.relic-world :is(.earth-topbar, .topbar) { grid-template-columns: auto minmax(35px, 1fr) auto auto; grid-template-areas: "brand title worlds actions"; top: max(8px, env(safe-area-inset-top)); gap: 10px; }
+  html[data-theme] body.relic-world .world-nav { min-height: 38px; }
+  html[data-theme] body.relic-world :is(.explorer-panel, .site-panel) { top: 66px; max-height: calc(100dvh - 140px); }
+  html[data-theme] body.relic-world .earth-page-title { display: none; }
+  body.relic-lunar .heading { display: none; }
+  body.relic-lunar .console { left: auto; right: 10px; top: 70px; bottom: 67px; width: 286px; max-height: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.relic-world *, body.relic-world *::before, body.relic-world *::after,
+  body.relic-lunar *, body.relic-lunar *::before, body.relic-lunar *::after { transition-duration: 0s !important; animation-duration: 0s !important; }
+}

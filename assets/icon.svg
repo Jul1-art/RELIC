@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <title>RELIC</title>
+  <desc>A white R with an orbital arc on a black field.</desc>
+  <rect width="512" height="512" rx="112" fill="#050507"/>
+  <rect x="8" y="8" width="496" height="496" rx="104" fill="none" stroke="#242429" stroke-width="2"/>
+  <path d="M184 345V166h78c44 0 67 26 67 58 0 36-27 60-69 60h-76m71 0 79 66" fill="none" stroke="#fff" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M126 301C83 197 172 99 280 112c53 7 93 31 116 73" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="396" cy="185" r="13" fill="#fff"/>
+</svg>

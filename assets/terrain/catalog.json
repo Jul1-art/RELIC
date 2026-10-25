@@ -1,0 +1,185 @@
+{
+  "grid": 257,
+  "sites": {
+    "earth-kennedy": {
+      "body": "earth",
+      "site": "kennedy",
+      "lat": 28.5,
+      "lon": -80.5,
+      "widthKm": 32,
+      "meshMeters": 125.0,
+      "bounds": [
+        -80.66354914569563,
+        28.356270212001437,
+        -80.33645085430437,
+        28.643729787998563
+      ],
+      "minMeters": -10,
+      "maxMeters": 115,
+      "elevation": "NASA SRTMGL1 · 1 arcsec",
+      "elevationUrl": "https://lpdaac.usgs.gov/products/srtmgl1v003/",
+      "imagery": "NASA GIBS · Landsat WELD 1999 · 30 m",
+      "imageryUrl": "https://gibs.earthdata.nasa.gov/"
+    },
+    "earth-grand-canyon": {
+      "body": "earth",
+      "site": "grand-canyon",
+      "lat": 36.4,
+      "lon": -112.2,
+      "widthKm": 42,
+      "meshMeters": 164.1,
+      "bounds": [
+        -112.4343729661824,
+        36.21135465325189,
+        -111.96562703381761,
+        36.58864534674811
+      ],
+      "minMeters": 662,
+      "maxMeters": 2813,
+      "elevation": "NASA SRTMGL1 · 1 arcsec",
+      "elevationUrl": "https://lpdaac.usgs.gov/products/srtmgl1v003/",
+      "imagery": "NASA GIBS · Landsat WELD 1999 · 30 m",
+      "imageryUrl": "https://gibs.earthdata.nasa.gov/"
+    },
+    "earth-nile": {
+      "body": "earth",
+      "site": "nile",
+      "lat": 30.0,
+      "lon": 31.0,
+      "widthKm": 70,
+      "meshMeters": 273.4,
+      "bounds": [
+        30.63695186091202,
+        29.685591088753146,
+        31.36304813908798,
+        30.314408911246854
+      ],
+      "minMeters": -8,
+      "maxMeters": 317,
+      "elevation": "NASA SRTMGL1 · 1 arcsec",
+      "elevationUrl": "https://lpdaac.usgs.gov/products/srtmgl1v003/",
+      "imagery": "NASA GIBS · Landsat WELD 1999 · 30 m",
+      "imageryUrl": "https://gibs.earthdata.nasa.gov/"
+    },
+    "mars-jezero": {
+      "body": "mars",
+      "site": "jezero",
+      "lat": 18.488,
+      "lon": 77.403,
+      "widthKm": 38,
+      "meshMeters": 148.4,
+      "bounds": [
+        77.22303278508384,
+        18.317320876751705,
+        77.58296721491617,
+        18.658679123248294
+      ],
+      "minMeters": -2683,
+      "maxMeters": -1696,
+      "elevation": "NASA MGS MOLA MEGDR · 128 pixels/degré",
+      "elevationUrl": "https://pds-geosciences.wustl.edu/missions/mgs/megdr.html",
+      "imagery": "NASA Mars Trek · HiRISE Jezero + mosaïque globale dans les lacunes",
+      "imageryUrl": "https://trek.nasa.gov/"
+    },
+    "mars-olympus": {
+      "body": "mars",
+      "site": "olympus",
+      "lat": 18.0,
+      "lon": -135.0,
+      "widthKm": 600,
+      "meshMeters": 2343.8,
+      "bounds": [
+        -137.83362079834245,
+        15.30506647502695,
+        -132.16637920165755,
+        20.694933524973052
+      ],
+      "minMeters": 1651,
+      "maxMeters": 21244,
+      "elevation": "NASA MGS MOLA MEGDR · 128 pixels/degré",
+      "elevationUrl": "https://pds-geosciences.wustl.edu/missions/mgs/megdr.html",
+      "imagery": "NASA Mars Trek · Viking MDIM21",
+      "imageryUrl": "https://trek.nasa.gov/"
+    },
+    "mars-hellas": {
+      "body": "mars",
+      "site": "hellas",
+      "lat": -45.0,
+      "lon": 70.0,
+      "widthKm": 650,
+      "meshMeters": 2539.1,
+      "bounds": [
+        65.87118749756328,
+        -47.91951131872081,
+        74.12881250243672,
+        -42.08048868127919
+      ],
+      "minMeters": -7455,
+      "maxMeters": -5045,
+      "elevation": "NASA MGS MOLA MEGDR · 128 pixels/degré",
+      "elevationUrl": "https://pds-geosciences.wustl.edu/missions/mgs/megdr.html",
+      "imagery": "NASA Mars Trek · Viking MDIM21",
+      "imageryUrl": "https://trek.nasa.gov/"
+    },
+    "moon-apollo11": {
+      "body": "moon",
+      "site": "apollo11",
+      "lat": 0.67416,
+      "lon": 23.47314,
+      "widthKm": 5,
+      "meshMeters": 19.5,
+      "bounds": [
+        23.45068066593966,
+        0.6517022206252245,
+        23.49559933406034,
+        0.6966177793747754
+      ],
+      "minMeters": -1967,
+      "maxMeters": -1912,
+      "elevation": "NASA LRO LROC NAC DTM · 2 m/pixel",
+      "elevationUrl": "https://pds.lroc.im-ldi.com/data/LRO-L-LROC-5-RDR-V1.0/LROLRC_2001/DATA/SDP/NAC_DTM/APOLLO11/",
+      "imagery": "NASA Moon Trek · LROC NAC Apollo 11 + mosaïque globale dans les lacunes",
+      "imageryUrl": "https://trek.nasa.gov/"
+    },
+    "moon-tycho": {
+      "body": "moon",
+      "site": "tycho",
+      "lat": -43.37,
+      "lon": -11.32,
+      "widthKm": 200,
+      "meshMeters": 781.2,
+      "bounds": [
+        -12.555752857570525,
+        -44.26831117499101,
+        -10.084247142429476,
+        -42.47168882500898
+      ],
+      "minMeters": -3490,
+      "maxMeters": 1025,
+      "elevation": "NASA LRO LOLA · 16 pixels/degré",
+      "elevationUrl": "https://svs.gsfc.nasa.gov/4720/",
+      "imagery": "NASA Moon Trek · LROC WAC",
+      "imageryUrl": "https://trek.nasa.gov/"
+    },
+    "moon-surveyor7": {
+      "body": "moon",
+      "site": "surveyor7",
+      "lat": -40.97,
+      "lon": -11.44,
+      "widthKm": 40,
+      "meshMeters": 156.2,
+      "bounds": [
+        -11.677946525270041,
+        -41.1496622349982,
+        -11.202053474729958,
+        -40.790337765001794
+      ],
+      "minMeters": 41,
+      "maxMeters": 369,
+      "elevation": "NASA LRO LOLA · 16 pixels/degré",
+      "elevationUrl": "https://svs.gsfc.nasa.gov/4720/",
+      "imagery": "NASA Moon Trek · LROC WAC",
+      "imageryUrl": "https://trek.nasa.gov/"
+    }
+  }
+}

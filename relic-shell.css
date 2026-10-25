@@ -1,0 +1,212 @@
+/* RELIC's interface sits lightly over the existing planetary renderer. */
+html body.atlas-page,
+html[data-theme="night"] body.atlas-page {
+  --bg:#050505;
+  --text:#f6f6f6;
+  --muted:#a1a1a1;
+  --accent:#f4f4f4;
+  --line:#ffffff1c;
+  --ui-ink:#f6f6f6;
+  --ui-muted:#a7a7a7;
+  --ui-soft:#838383;
+  --ui-stroke:#ffffff1c;
+  --ui-glass:linear-gradient(145deg,#222222c9,#101010e3);
+  --ui-shadow:0 16px 46px #0005,inset 0 1px #ffffff09;
+  --ui-blue:#f0f0f0;
+  --ui-blue-hover:#fff;
+  --compact-control:#ffffff08;
+  --compact-active:#ffffff13;
+  --compact-popup:#141414;
+  --planet-dock-bottom:18px;
+  background:#050505;
+  color:var(--ui-ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+html[data-theme="day"] body.atlas-page {
+  --ui-ink:#1b1b1b;
+  --ui-muted:#616161;
+  --ui-soft:#747474;
+  --ui-stroke:#ffffff35;
+  --ui-glass:linear-gradient(145deg,#f5f5f5e8,#e9e9e9e0);
+  --compact-control:#00000006;
+  --compact-active:#fff;
+  --compact-popup:#f4f4f4;
+  --ui-blue:#262626;
+  --ui-blue-hover:#111;
+}
+html[data-accent="nasa"] body.atlas-page { --ui-blue:#8bafff; --ui-blue-hover:#b1c7ff; }
+.atlas-page :is(button,a) { touch-action:manipulation; }
+.atlas-page :is(button,a):focus-visible { outline:2px solid currentColor; outline-offset:4px; }
+.atlas-page #scene { background:#050505; }
+.atlas-page .topbar,
+html[data-theme="night"] .atlas-page .topbar {
+  top:max(22px,env(safe-area-inset-top)); left:max(26px,env(safe-area-inset-left)); right:max(26px,env(safe-area-inset-right));
+  min-height:46px; height:46px; gap:12px;
+}
+.atlas-page .identity {
+  min-height:44px; padding:0; gap:9px; border:0; border-radius:0; background:none;
+  box-shadow:none; backdrop-filter:none; -webkit-backdrop-filter:none; color:#fff;
+}
+.atlas-page .relic-mark { width:35px; height:35px; overflow:visible; fill:none; stroke:currentColor; stroke-width:13; stroke-linecap:round; stroke-linejoin:round; }
+.atlas-page .relic-mark circle { fill:currentColor; stroke:none; }
+.atlas-page .identity-copy { gap:4px; }
+.atlas-page .identity-copy strong { font-size:19px; font-weight:600; letter-spacing:.25em; line-height:1; }
+.atlas-page .identity-copy small { font-size:8px; letter-spacing:.16em; color:#ffffff7a; font-weight:400; }
+.atlas-page .header-actions {
+  min-height:44px; gap:2px; padding:3px; border-radius:16px;
+  border-color:var(--ui-stroke); background:var(--ui-glass); box-shadow:var(--ui-shadow);
+}
+.atlas-page .header-language,
+html[data-theme="night"] .atlas-page .header-language {
+  height:38px; width:66px; padding:4px; border-radius:12px; background:transparent; font-size:10px;
+}
+.atlas-page .header-language span { height:30px; border-radius:9px; }
+.atlas-page .theme-toggle,
+html[data-theme="night"] .atlas-page .theme-toggle {
+  height:38px; width:56px; flex-basis:56px; padding:4px; border-radius:12px; background:transparent; border:0;
+}
+.atlas-page .theme-toggle::before { top:4px; left:4px; width:25px; height:30px; border-radius:9px; background:var(--compact-active); }
+html[data-theme="night"] .atlas-page .theme-toggle::before { transform:translateX(23px); }
+.atlas-page .relic-icon-button {
+  display:grid; place-items:center; width:42px; height:42px; min-width:42px; padding:11px;
+  border:0; border-radius:12px; background:transparent; color:var(--ui-ink);
+  transition:background .2s ease,transform .2s ease;
+}
+.atlas-page .header-actions .relic-icon-button { width:38px; height:38px; min-width:38px; padding:10px; }
+.atlas-page .relic-icon-button:hover { background:var(--compact-active); }
+.atlas-page .relic-icon-button:active { transform:scale(.94); }
+.atlas-page .relic-icon-button svg,.atlas-page .overview-button svg { width:100%; height:100%; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+.atlas-page .topbar-hint { display:none; }
+.atlas-page .destinations,
+html[data-theme="night"] .atlas-page .destinations {
+  width:min(940px,calc(100vw - 48px)); height:82px; bottom:calc(18px + env(safe-area-inset-bottom));
+  padding:7px; border-radius:24px; border-color:var(--ui-stroke); background:var(--ui-glass); box-shadow:var(--ui-shadow);
+  backdrop-filter:blur(28px) saturate(.5); -webkit-backdrop-filter:blur(28px) saturate(.5);
+}
+.atlas-page .planet-navigation { gap:3px; overscroll-behavior-x:contain; scroll-snap-type:x proximity; }
+.atlas-page .planet-link,
+html[data-theme="night"] .atlas-page .planet-link {
+  min-width:74px; padding:8px 5px; gap:7px; border-radius:17px; color:var(--ui-muted); scroll-snap-align:center;
+}
+.atlas-page .planet-link:hover,
+html[data-theme="night"] .atlas-page .planet-link:hover { color:var(--ui-ink); background:var(--compact-control); transform:translateY(-1px); }
+.atlas-page .planet-link.active,
+html[data-theme="night"] .atlas-page .planet-link.active { color:var(--ui-ink); border-color:var(--ui-stroke); background:var(--compact-active); box-shadow:inset 0 1px #ffffff06; }
+.atlas-page .planet-orb { width:25px; height:25px; flex-basis:25px; box-shadow:inset -7px -3px 9px #0008; }
+.atlas-page .planet-link.active .planet-orb { transform:scale(1.06); box-shadow:inset -7px -3px 9px #0008; }
+.atlas-page .planet-copy strong { font-size:10px; font-weight:500; letter-spacing:.01em; }
+.atlas-page .planet-label,
+html[data-theme="night"] .atlas-page .planet-label {
+  min-height:28px; padding:7px 10px; gap:6px; border:1px solid #ffffff15; border-radius:999px;
+  background:#0c0c0ca3; color:#ffffffbd; box-shadow:0 2px 12px #0002;
+  font-family:inherit; font-size:10px; font-weight:400; letter-spacing:.01em; text-transform:none;
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+}
+.atlas-page .planet-label::before { display:none; }
+.atlas-page .planet-label-dot { width:3px; height:3px; flex-basis:3px; border-radius:50%; background:#ffffff8a; box-shadow:none; }
+.atlas-page .planet-label:hover,
+html[data-theme="night"] .atlas-page .planet-label:hover { background:#282828db; color:#fff; box-shadow:0 3px 16px #0004; }
+.atlas-page .details,
+html[data-theme="night"] .atlas-page .details,
+html .atlas-page[data-world] .details {
+  top:92px; right:26px; width:304px; padding:18px; max-height:calc(100dvh - 240px);
+  border:1px solid var(--ui-stroke); border-radius:24px; background:var(--ui-glass); box-shadow:var(--ui-shadow);
+  scrollbar-color:#ffffff35 transparent; backdrop-filter:blur(28px); -webkit-backdrop-filter:blur(28px);
+}
+.atlas-page .details.collapsed { max-height:110px; }
+.atlas-page .detail-top { color:var(--ui-soft); font-size:9px; font-weight:500; letter-spacing:.1em; }
+.atlas-page .detail-top button,
+html[data-theme="night"] .atlas-page .detail-top button { width:32px; height:32px; flex-basis:32px; border:0; border-radius:10px; color:var(--ui-ink); background:var(--compact-control); }
+.atlas-page .detail-identity { margin-top:9px; gap:12px; }
+.atlas-page .detail-orb { width:38px; height:38px; flex-basis:38px; box-shadow:inset -8px -3px 11px #0008; }
+.atlas-page .detail-identity h2 { font-size:24px; font-weight:500; letter-spacing:-.04em; }
+.atlas-page .detail-identity p { margin-top:4px; color:var(--ui-muted); font-size:11px; line-height:1.5; }
+.atlas-page .detail-action,
+html[data-theme="night"] .atlas-page .detail-action { min-height:42px; padding:10px 12px; border:1px solid var(--ui-stroke); border-radius:12px; background:var(--compact-control); color:var(--ui-ink); font-size:11px; font-weight:500; letter-spacing:0; }
+.atlas-page .detail-action.primary,
+html[data-theme="night"] .atlas-page .detail-action.primary { border-color:#fff; background:#f5f5f5; color:#151515; }
+.atlas-page .detail-action:hover,
+html[data-theme="night"] .atlas-page .detail-action:hover { background:var(--compact-active); }
+.atlas-page .detail-action.primary:hover,
+html[data-theme="night"] .atlas-page .detail-action.primary:hover { background:#fff; }
+.atlas-page .live-data { border-color:var(--ui-stroke); }
+.atlas-page .live-metric { padding:8px 0; border-color:var(--ui-stroke); }
+.atlas-page .live-metric span { color:var(--ui-muted); font-size:11px; }
+.atlas-page .live-metric strong { color:var(--ui-ink); font-size:11px; font-weight:500; }
+.atlas-page .live-title { color:var(--ui-muted); font-size:10px; }
+.atlas-page .live-source { color:var(--ui-soft); font-size:9px; }
+.atlas-page .live-source a { color:var(--ui-muted); }
+.atlas-page .toolbar,
+html[data-theme="night"] .atlas-page .toolbar {
+  left:26px; right:26px; bottom:calc(118px + env(safe-area-inset-bottom)); height:48px; padding:0;
+  gap:8px; justify-content:space-between; border:0; border-radius:0; background:none!important; box-shadow:none!important;
+  width:auto; transform:none; backdrop-filter:none!important; -webkit-backdrop-filter:none!important; pointer-events:none;
+}
+.atlas-page .toolbar > * { pointer-events:auto; }
+.atlas-page .relic-secondary-actions { display:flex; gap:2px; padding:3px; border:1px solid var(--ui-stroke); border-radius:16px; background:var(--ui-glass); box-shadow:var(--ui-shadow); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); }
+.atlas-page .overview-button,
+html[data-theme="night"] .atlas-page .overview-button { display:flex; align-items:center; gap:8px; min-height:46px; padding:0 15px; border:1px solid var(--ui-stroke); border-radius:16px; background:var(--ui-glass); color:var(--ui-ink); font-size:11px; font-weight:500; letter-spacing:0; backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); }
+.atlas-page .overview-button svg { width:21px; height:21px; }
+body.atlas-page[data-mode="overview"] .overview-button { display:none; }
+.atlas-page .imagery-credit,
+html[data-theme="night"] .atlas-page .imagery-credit { left:132px; right:auto; bottom:calc(125px + env(safe-area-inset-bottom)); max-width:calc(100vw - 340px); padding:5px 8px; border:0; border-radius:8px; background:#080808b0; color:#ffffff7a; font-size:8px; box-shadow:none; }
+.atlas-page .imagery-credit a { color:#ffffffb8; }
+.atlas-page .gesture-hint { bottom:calc(176px + env(safe-area-inset-bottom)); max-width:calc(100vw - 32px); padding:9px 12px; border-color:#ffffff15; background:#151515d9; color:#ffffffa8; font-size:8px; font-weight:400; letter-spacing:.04em; text-align:center; white-space:normal; }
+.atlas-page .gesture-hint span { color:#ffffff60; }
+.atlas-page .loading,.atlas-page .error-screen { background:#050505; color:#c5c5c5; letter-spacing:.08em; }
+.atlas-page .loading-orbit { border-color:#ffffff18; border-top-color:#fff; box-shadow:none; }
+.atlas-page .error-screen { padding:28px; line-height:1.6; }
+.atlas-page .error-screen p { max-width:420px; }
+.atlas-page .intro:empty { display:none; }
+.atlas-page[data-film-active="true"] :is(.topbar,.destinations,.details,.toolbar,#planet-labels,.imagery-credit,.gesture-hint) { visibility:hidden; pointer-events:none; }
+
+@media(max-width:760px) {
+  .atlas-page .topbar,
+  html[data-theme="night"] .atlas-page .topbar { top:max(14px,env(safe-area-inset-top)); left:max(14px,env(safe-area-inset-left)); right:max(14px,env(safe-area-inset-right)); height:44px; min-height:44px; }
+  .atlas-page .identity { gap:7px; }
+  .atlas-page .relic-mark { width:29px; height:29px; }
+  .atlas-page .identity-copy strong { font-size:17px; letter-spacing:.2em; }
+  .atlas-page .identity-copy small { display:none; }
+  .atlas-page .header-actions { min-height:42px; padding:2px; gap:0; border-radius:15px; }
+  .atlas-page .header-language,
+  html[data-theme="night"] .atlas-page .header-language { width:60px; }
+  .atlas-page .destinations,
+  html[data-theme="night"] .atlas-page .destinations { bottom:calc(14px + env(safe-area-inset-bottom)); width:calc(100vw - 24px); height:74px; padding:5px; border-radius:22px; }
+  .atlas-page .planet-link,
+  html[data-theme="night"] .atlas-page .planet-link { min-width:65px; gap:6px; padding:6px 4px; border-radius:16px; }
+  .atlas-page .planet-orb { width:23px; height:23px; flex-basis:23px; }
+  .atlas-page .planet-copy strong { font-size:10px; }
+  .atlas-page .planet-label { min-height:25px; padding:6px 8px; font-size:9px; }
+  .atlas-page .toolbar,
+  html[data-theme="night"] .atlas-page .toolbar { left:14px; right:14px; bottom:calc(100px + env(safe-area-inset-bottom)); }
+  .atlas-page .details,
+  html[data-theme="night"] .atlas-page .details,
+  html .atlas-page[data-world] .details { top:auto; bottom:calc(160px + env(safe-area-inset-bottom)); left:14px; right:14px; width:auto; max-height:calc(100dvh - 240px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); padding:16px; border-radius:22px; }
+  .atlas-page .details.collapsed { max-height:82px; }
+  .atlas-page .details.collapsed .detail-top { top:22px; right:16px; }
+  .atlas-page .details.collapsed .detail-identity { padding-right:40px; }
+  .atlas-page .details.collapsed .detail-orb { width:36px; height:36px; flex-basis:36px; }
+  .atlas-page .details.collapsed .detail-identity h2 { font-size:21px; }
+  .atlas-page .imagery-credit,
+  html[data-theme="night"] .atlas-page .imagery-credit { left:14px; bottom:calc(91px + env(safe-area-inset-bottom)); max-width:calc(100vw - 28px); padding:0; background:transparent; font-size:7px; }
+  .atlas-page .gesture-hint { bottom:calc(250px + env(safe-area-inset-bottom)); font-size:8px; }
+}
+@media(max-width:359px) {
+  .atlas-page .theme-toggle,html[data-theme="night"] .atlas-page .theme-toggle { display:none; }
+}
+@media(max-height:500px) and (orientation:landscape) {
+  .atlas-page .topbar,html[data-theme="night"] .atlas-page .topbar { top:10px; }
+  .atlas-page .destinations,html[data-theme="night"] .atlas-page .destinations { bottom:calc(9px + env(safe-area-inset-bottom)); width:min(760px,calc(100vw - 148px)); height:54px; }
+  .atlas-page .planet-link,html[data-theme="night"] .atlas-page .planet-link { min-width:57px; flex-direction:row; gap:6px; padding:7px; border-radius:13px; }
+  .atlas-page .planet-orb { width:17px; height:17px; flex-basis:17px; }
+  .atlas-page .toolbar,html[data-theme="night"] .atlas-page .toolbar { bottom:calc(74px + env(safe-area-inset-bottom)); }
+  .atlas-page .details,html[data-theme="night"] .atlas-page .details,html .atlas-page[data-world] .details { top:68px; bottom:auto; left:auto; right:14px; width:280px; max-height:calc(100dvh - 145px); padding:13px; border-radius:18px; }
+  .atlas-page .details.collapsed { max-height:75px; }
+  .atlas-page .details.collapsed .detail-top { top:18px; right:12px; }
+  .atlas-page .imagery-credit,html[data-theme="night"] .atlas-page .imagery-credit { bottom:calc(65px + env(safe-area-inset-bottom)); }
+  .atlas-page .gesture-hint { bottom:130px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .atlas-page :is(.planet-link,.relic-icon-button,.details,.overview-button,.detail-action,.planet-label) { animation:none!important; transition:none!important; }
+}
