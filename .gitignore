@@ -1,0 +1,38 @@
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*.json
+*service-account*.json
+
+# Generated builds, dependencies and caches
+/dist/
+/node_modules/
+/.venv/
+/venv/
+__pycache__/
+*.py[cod]
+/.cache/
+/cache/
+/media-work/
+/release/
+/.openai/
+*.log
+*.tmp
+*.tar
+*.tar.gz
+*.tgz
+
+# Local editor and operating-system files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Automatically reconstructed documentary fallbacks
+/intro/assets/prologue/relic-prologue-v8-4-en.mp4
+/intro/assets/prologue/relic-prologue-v8-4-fr.mp4

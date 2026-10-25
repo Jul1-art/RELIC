@@ -1,0 +1,24 @@
+CesiumJS 1.138.0
+Copyright 2011-2022 CesiumJS Contributors
+
+The vendored CesiumJS distribution is derived from the published cesium 1.138.0
+npm package. Its original header identifies the Apache License, Version 2.0.
+The complete upstream license, including dependency copyright and license texts,
+is retained in CESIUM-LICENSE.txt. The upstream dependency catalog is retained
+in CESIUM-THIRD-PARTY.json.
+
+License source:
+https://cdn.jsdelivr.net/npm/cesium@1.138.0/LICENSE.md
+SHA-256: 5cf5c218c0b18b9e02e228bc045ff1afd55babc2dc811bd219e1a535c4c0ebdc
+
+Dependency catalog source:
+https://cdn.jsdelivr.net/npm/cesium@1.138.0/ThirdParty.json
+SHA-256: 730b2755e6764e0d0612ba71c2bf703b93d787264b56096d2b8c3f7e135ddf4f
+
+The repository's original code license does not replace the separate licenses
+of these dependencies or the service terms for third-party map tiles.
+
+RELIC's public distribution removes the SDK's bundled demonstration access-token
+literal. Optional authenticated layers use an access token supplied by the user.
+Preserve the original copyright/license headers and identify modifications in
+the affected SDK files.
