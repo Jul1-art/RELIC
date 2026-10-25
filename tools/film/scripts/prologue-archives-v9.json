@@ -1,0 +1,564 @@
+{
+  "schema": "relic.archive-subtitles.v9",
+  "version": 9,
+  "timing": "Seconds relative to the start of each selected original source WAV; add the mix track at offset and subtract track in to obtain film time.",
+  "policy": "Caption every intelligible word of delivered historical speech in readable successive clauses. Preserve original voices. Translate faithfully into English/French. Exclude competing/unverified distant field announcements from the mix rather than invent a transcript or stack unrelated captions.",
+  "timingPrecision": "Clause timing is approximate and checked against local ASR plus primary transcripts where available; not word-exact forced alignment.",
+  "tracks": [
+    {
+      "audioId": "gagarin-poyekhali-1961",
+      "sourceFile": "v6-early-history/gagarin-poyekhali-normalized.wav",
+      "sourceSha256": "b37d838dd868354092917e7f9307eb9c2a2ff9f844becef59a26ce9fc81612d9",
+      "sourceWindow": {
+        "in": 0,
+        "length": 1.486
+      },
+      "originalLanguage": "ru",
+      "speaker": {
+        "en": "Yuri Gagarin · 1961",
+        "fr": "Youri Gagarine · 1961"
+      },
+      "classification": "speech",
+      "clauses": [
+        {
+          "start": 0,
+          "end": 1.486,
+          "text": {
+            "en": "Let’s go!",
+            "fr": "C’est parti !"
+          }
+        }
+      ],
+      "originalText": "Поехали!",
+      "verification": "The selected genuine Russian launch exclamation is Поехали!, translated completely.",
+      "evidence": [
+        "media-work/v6-early-history/provenance.json"
+      ],
+      "fullText": {
+        "en": "Let’s go!",
+        "fr": "C’est parti !"
+      },
+      "speechRanges": [
+        {
+          "start": 0,
+          "end": 1.486
+        }
+      ]
+    },
+    {
+      "audioId": "jfk-rice-1962",
+      "sourceFile": "v5-audio/jfk-rice-complete-20_75-normalized.wav",
+      "sourceSha256": "9f0a6b337aeaab83499c9fac25466a6d5a0e60f572003f2cd40929de19b5dc22",
+      "sourceWindow": {
+        "in": 0,
+        "length": 18.95
+      },
+      "originalLanguage": "en",
+      "speaker": {
+        "en": "John F. Kennedy · 1962",
+        "fr": "John F. Kennedy · 1962"
+      },
+      "classification": "speech",
+      "clauses": [
+        {
+          "start": 0,
+          "end": 2.2,
+          "text": {
+            "en": "We choose to go to the Moon.",
+            "fr": "Nous choisissons d’aller sur la Lune."
+          }
+        },
+        {
+          "start": 2.2,
+          "end": 10.3,
+          "text": {
+            "en": "We choose to go to the Moon.",
+            "fr": "Nous choisissons d’aller sur la Lune."
+          }
+        },
+        {
+          "start": 10.3,
+          "end": 12.4,
+          "text": {
+            "en": "We choose to go to the Moon",
+            "fr": "Nous choisissons d’aller sur la Lune"
+          }
+        },
+        {
+          "start": 12.4,
+          "end": 14.95,
+          "text": {
+            "en": "in this decade and do the other things,",
+            "fr": "cette décennie, et de faire ces autres choses,"
+          }
+        },
+        {
+          "start": 14.95,
+          "end": 16.85,
+          "text": {
+            "en": "not because they are easy,",
+            "fr": "non parce qu’elles sont faciles,"
+          }
+        },
+        {
+          "start": 16.85,
+          "end": 18.95,
+          "text": {
+            "en": "but because they are hard.",
+            "fr": "mais parce qu’elles sont difficiles."
+          }
+        }
+      ],
+      "verification": "Includes all three audible rhetorical repetitions and the entire selected sentence through hard. The following because-that-goal sentence begins after the selected 18.95-second audio window. Wording checked against JFK Library, existing provenance, and local base.en ASR; approximate clause boundaries retain applause and pauses.",
+      "evidence": [
+        "https://www.jfklibrary.org/archives/other-resources/john-f-kennedy-speeches/rice-university-19620912",
+        "media-work/v5-audio/jfk-provenance.json",
+        "media-work/v9/jfk-rice-complete-20_75-normalized.asr.json"
+      ],
+      "fullText": {
+        "en": "We choose to go to the Moon. We choose to go to the Moon. We choose to go to the Moon in this decade and do the other things, not because they are easy, but because they are hard.",
+        "fr": "Nous choisissons d’aller sur la Lune. Nous choisissons d’aller sur la Lune. Nous choisissons d’aller sur la Lune cette décennie, et de faire ces autres choses, non parce qu’elles sont faciles, mais parce qu’elles sont difficiles."
+      },
+      "speechRanges": [
+        {
+          "start": 0,
+          "end": 2.2
+        },
+        {
+          "start": 2.2,
+          "end": 10.3
+        },
+        {
+          "start": 10.3,
+          "end": 12.4
+        },
+        {
+          "start": 12.4,
+          "end": 14.95
+        },
+        {
+          "start": 14.95,
+          "end": 16.85
+        },
+        {
+          "start": 16.85,
+          "end": 18.95
+        }
+      ]
+    },
+    {
+      "audioId": "apollo11-countdown-liftoff",
+      "sourceFile": "v5-audio/apollo11-countdown-liftoff-16s.wav",
+      "sourceSha256": "4c149e0c88657a062efec54190077ce8eb827b1aee75747cec62f2eec971aa4f",
+      "sourceWindow": {
+        "in": 0,
+        "length": 16
+      },
+      "originalLanguage": "en",
+      "speaker": {
+        "en": "Jack King · Apollo 11",
+        "fr": "Jack King · Apollo 11"
+      },
+      "classification": "speech",
+      "clauses": [
+        {
+          "start": 0,
+          "end": 7.2,
+          "text": {
+            "en": "6, 5, 4, 3, 2, 1, 0.",
+            "fr": "6, 5, 4, 3, 2, 1, 0."
+          }
+        },
+        {
+          "start": 7.2,
+          "end": 9.2,
+          "text": {
+            "en": "All engines running.",
+            "fr": "Tous les moteurs fonctionnent."
+          }
+        },
+        {
+          "start": 9.2,
+          "end": 11.4,
+          "text": {
+            "en": "Liftoff. We have a liftoff.",
+            "fr": "Décollage. Nous avons décollé."
+          }
+        },
+        {
+          "start": 11.4,
+          "end": 13.6,
+          "text": {
+            "en": "32 minutes past the hour.",
+            "fr": "32 minutes après l’heure."
+          }
+        },
+        {
+          "start": 13.6,
+          "end": 16,
+          "text": {
+            "en": "Liftoff on Apollo 11.",
+            "fr": "Décollage d’Apollo 11."
+          }
+        }
+      ],
+      "verification": "Entire selected source119.2–135.2 excerpt, including all countdown numbers and the complete time/liftoff announcement. NASA Day1 official transcript corrects ASR and to on in liftoff on Apollo11.",
+      "evidence": [
+        "https://www.nasa.gov/wp-content/uploads/2015/03/Apollo-11_Day-01-Highlights.pdf",
+        "media-work/v5-audio/apollo11-countdown-liftoff-provenance.json",
+        "media-work/v9/apollo11-countdown-liftoff-16s.asr.json"
+      ],
+      "fullText": {
+        "en": "6, 5, 4, 3, 2, 1, 0. All engines running. Liftoff. We have a liftoff. 32 minutes past the hour. Liftoff on Apollo 11.",
+        "fr": "6, 5, 4, 3, 2, 1, 0. Tous les moteurs fonctionnent. Décollage. Nous avons décollé. 32 minutes après l’heure. Décollage d’Apollo 11."
+      },
+      "speechRanges": [
+        {
+          "start": 0,
+          "end": 7.2
+        },
+        {
+          "start": 7.2,
+          "end": 9.2
+        },
+        {
+          "start": 9.2,
+          "end": 11.4
+        },
+        {
+          "start": 11.4,
+          "end": 13.6
+        },
+        {
+          "start": 13.6,
+          "end": 16
+        }
+      ]
+    },
+    {
+      "audioId": "armstrong-first-step-1969",
+      "sourceFile": "v5-audio/armstrong-small-step-normalized.wav",
+      "sourceSha256": "42b2537d94a79320aaa799bb11eea345cdfe37efcde0a1336805012e0c14aa4e",
+      "sourceWindow": {
+        "in": 0,
+        "length": 9.412646
+      },
+      "originalLanguage": "en",
+      "speaker": {
+        "en": "Neil Armstrong · 1969",
+        "fr": "Neil Armstrong · 1969"
+      },
+      "classification": "speech",
+      "clauses": [
+        {
+          "start": 0,
+          "end": 6.05,
+          "text": {
+            "en": "That’s one small step for man,",
+            "fr": "C’est un petit pas pour l’homme,"
+          }
+        },
+        {
+          "start": 6.05,
+          "end": 9.412646,
+          "text": {
+            "en": "one giant leap for mankind.",
+            "fr": "un bond de géant pour l’humanité."
+          }
+        }
+      ],
+      "verification": "Complete audible selected quote. The disputed a before man is not newly inserted. Natural historical pause retained; timing based on exact normalized WAV and existing waveform-aligned provenance.",
+      "evidence": [
+        "media-work/v5-audio/armstrong-provenance.json",
+        "media-work/v9/armstrong-small-step-normalized.asr.json"
+      ],
+      "fullText": {
+        "en": "That’s one small step for man, one giant leap for mankind.",
+        "fr": "C’est un petit pas pour l’homme, un bond de géant pour l’humanité."
+      },
+      "speechRanges": [
+        {
+          "start": 0,
+          "end": 6.05
+        },
+        {
+          "start": 6.05,
+          "end": 9.412646
+        }
+      ]
+    },
+    {
+      "audioId": "challenger-original-broadcast",
+      "sourceFile": "v6-international/challenger-loss-original-audio-6s.wav",
+      "sourceSha256": "133e890963a23946f5360154d2114417ff2e71d629877c74e6b2b2c2aa02f27a",
+      "sourceWindow": {
+        "in": 0,
+        "length": 5.36
+      },
+      "originalLanguage": "en",
+      "speaker": {
+        "en": "NASA mission commentary · 1986",
+        "fr": "Commentaire de mission NASA · 1986"
+      },
+      "classification": "speech",
+      "clauses": [
+        {
+          "start": 3.5,
+          "end": 5.36,
+          "text": {
+            "en": "One minute, fifteen seconds.",
+            "fr": "Une minute, quinze secondes."
+          }
+        }
+      ],
+      "verification": "Full 6-second research source begins the next velocity number at~5.50 and cuts it at6.00. Recommended delivered excerpt ends5.36, after the complete fifteen-seconds phrase and before Velocity, avoiding an artificially completed number.",
+      "recommendedDeliveredLength": 5.36,
+      "sourceResearchLength": 6,
+      "evidence": [
+        "media-work/v9/challenger-loss-original-audio-6s.base-asr.json",
+        "media-work/v9/challenger-loss-original-audio-6s.tiny-asr.json"
+      ],
+      "fullText": {
+        "en": "One minute, fifteen seconds.",
+        "fr": "Une minute, quinze secondes."
+      },
+      "speechRanges": [
+        {
+          "start": 3.5,
+          "end": 5.36
+        }
+      ]
+    },
+    {
+      "audioId": "perseverance-2021-edl",
+      "sourceFile": "v6-international/perseverance-descent-original-audio-12s.wav",
+      "sourceSha256": "e91f595e3b4f8a5c7cf18b8fb51d23b6f46a8477fd3aedfdbe50bc05f9275693",
+      "sourceWindow": {
+        "in": 0,
+        "length": 12
+      },
+      "originalLanguage": "en",
+      "speaker": {
+        "en": "NASA/JPL mission control · 2021",
+        "fr": "Contrôle de mission NASA/JPL · 2021"
+      },
+      "classification": "speech",
+      "clauses": [
+        {
+          "start": 0,
+          "end": 2.15,
+          "text": {
+            "en": "…to conduct the sky crane maneuver.",
+            "fr": "…pour effectuer la manœuvre de la grue aérienne."
+          }
+        },
+        {
+          "start": 4.25,
+          "end": 6.3,
+          "text": {
+            "en": "Sky crane maneuver has started.",
+            "fr": "La manœuvre de la grue aérienne a commencé."
+          }
+        },
+        {
+          "start": 8.15,
+          "end": 10.2,
+          "text": {
+            "en": "About 20 meters off the surface.",
+            "fr": "À environ 20 mètres de la surface."
+          }
+        }
+      ],
+      "verification": "Selected NASA original source168–180 contains only these three spoken clauses. The opening begins mid-sentence, so a leading ellipsis marks the real source cut. Official NASA SRT confirms wording and source times167.960–169.960,172.500–174.000,176.260–177.953. No touchdown/MRO call is heard within this selected excerpt; do not add it.",
+      "evidence": [
+        "https://images-assets.nasa.gov/video/JPL-20210222-M2020f-0001-Perseverance%20Rover%E2%80%99s%20Descent%20and%20Touchdown%20on%20Mars/JPL-20210222-M2020f-0001-Perseverance%20Rover%E2%80%99s%20Descent%20and%20Touchdown%20on%20Mars.srt",
+        "media-work/v9/perseverance-official-0.txt",
+        "media-work/v9/perseverance-descent-original-audio-12s.base-asr.json"
+      ],
+      "fullText": {
+        "en": "…to conduct the sky crane maneuver. Sky crane maneuver has started. About 20 meters off the surface.",
+        "fr": "…pour effectuer la manœuvre de la grue aérienne. La manœuvre de la grue aérienne a commencé. À environ 20 mètres de la surface."
+      },
+      "speechRanges": [
+        {
+          "start": 0,
+          "end": 2.15
+        },
+        {
+          "start": 4.25,
+          "end": 6.3
+        },
+        {
+          "start": 8.15,
+          "end": 10.2
+        }
+      ]
+    },
+    {
+      "audioId": "sts1-original-launch-1981",
+      "sourceFile": "v6-international/sts1-first-shuttle-launch-original-audio-14s.wav",
+      "sourceSha256": "bf630758d06f80947062de94a01ce78e3808ad86d06c4b6a25140b57390384e6",
+      "sourceWindow": {
+        "in": 0,
+        "length": 14
+      },
+      "originalLanguage": "en",
+      "speaker": {
+        "en": "NASA launch commentary · 1981",
+        "fr": "Commentaire de lancement NASA · 1981"
+      },
+      "classification": "field-speech",
+      "clauses": [
+        {
+          "start": 0.08,
+          "end": 1.512,
+          "text": {
+            "en": "Five, four…",
+            "fr": "Cinq, quatre…"
+          }
+        },
+        {
+          "start": 1.512,
+          "end": 3.006,
+          "text": {
+            "en": "We’ve gone for main engine start.",
+            "fr": "Nous avons donné le feu vert au démarrage des moteurs principaux."
+          }
+        },
+        {
+          "start": 3.006,
+          "end": 5.397,
+          "text": {
+            "en": "We have main engine start.",
+            "fr": "Les moteurs principaux ont démarré."
+          }
+        },
+        {
+          "start": 9.357,
+          "end": 10.135,
+          "text": {
+            "en": "And we have liftoff.",
+            "fr": "Et nous avons décollé."
+          }
+        },
+        {
+          "start": 10.135,
+          "end": 12.741,
+          "text": {
+            "en": "Liftoff of America’s first Space Shuttle.",
+            "fr": "Décollage de la première navette spatiale américaine."
+          }
+        }
+      ],
+      "verification": "Research source contains announcer speech under the engine roar, missed by low-confidence ASR. Official NASA SRT establishes the five complete clauses. Another sentence begins at13.305 and is cut by the14-second research source; it must not be completed from the later transcript in the delivered mix. To preserve the new narrator without competing speech, root selected only the nonspoken interval5.5–9.2 in the delivered film. These research captions are not to be overlaid over the narrator.",
+      "recommendedMixRange": {
+        "in": 5.5,
+        "length": 3.7
+      },
+      "speechRanges": [
+        {
+          "start": 0,
+          "end": 5.4
+        },
+        {
+          "start": 9.35,
+          "end": 14
+        }
+      ],
+      "omittedSourceSpeechTail": {
+        "start": 13.305,
+        "end": 14,
+        "reason": "Beginning of the next announcer sentence, cut by the research WAV; excluded from delivered mix."
+      },
+      "evidence": [
+        "media-work/v9/sts1-official-0.txt",
+        "media-work/v9/sts1-first-shuttle-launch-original-audio-14s.base-asr.json"
+      ],
+      "fullText": {
+        "en": "Five, four… We’ve gone for main engine start. We have main engine start. And we have liftoff. Liftoff of America’s first Space Shuttle.",
+        "fr": "Cinq, quatre… Nous avons donné le feu vert au démarrage des moteurs principaux. Les moteurs principaux ont démarré. Et nous avons décollé. Décollage de la première navette spatiale américaine."
+      }
+    },
+    {
+      "audioId": "sputnik-original-signal",
+      "sourceFile": "v6-early-history/sputnik-signal-10s.wav",
+      "sourceSha256": "c27ff641c826cd881014c1058178d1e479fbc9edb723830c2dcfbe46ec6bd676",
+      "sourceWindow": {
+        "in": 0,
+        "length": 10
+      },
+      "originalLanguage": "en",
+      "speaker": {
+        "en": "",
+        "fr": ""
+      },
+      "classification": "field-ambience",
+      "clauses": [],
+      "verification": "Genuine beacon beeps, no spoken words.",
+      "speechRanges": [],
+      "recommendedMixRange": null,
+      "evidence": [
+        "media-work/v6-early-history/provenance.json"
+      ],
+      "fullText": {
+        "en": "",
+        "fr": ""
+      }
+    },
+    {
+      "audioId": "falcon-heavy-ground-audio-2019",
+      "sourceFile": "v6-falcon/falcon-heavy-launch-stp2-normalized-12s.wav",
+      "sourceSha256": "3235214ef836aa3a2d8495cd6775fbf95f01bb91b1e763243ab5b3c713743e26",
+      "sourceWindow": {
+        "in": 0,
+        "length": 12
+      },
+      "originalLanguage": "en",
+      "speaker": {
+        "en": "",
+        "fr": ""
+      },
+      "classification": "field-ambience",
+      "clauses": [],
+      "verification": "Original field engine sound with a distant PA announcement during approximately0–3.5. Base.en suggests Zero then an unreliable phrase; do not publish its hallucinated wording. The engine-only interval from4s avoids unverified speech.",
+      "speechRanges": [],
+      "recommendedMixRange": {
+        "in": 4,
+        "length": 8
+      },
+      "evidence": [
+        "media-work/v6-falcon/provenance.json"
+      ],
+      "fullText": {
+        "en": "",
+        "fr": ""
+      }
+    },
+    {
+      "audioId": "falcon9-landing-ground-audio-2020",
+      "sourceFile": "v6-falcon/falcon9-sentinel6-normalized-12s.wav",
+      "sourceSha256": "365b476d8e734436ba1e99d87bacc0676c0c79024a29bc69c559904f05877da8",
+      "sourceWindow": {
+        "in": 0,
+        "length": 12
+      },
+      "originalLanguage": "en",
+      "speaker": {
+        "en": "",
+        "fr": ""
+      },
+      "classification": "field-ambience",
+      "clauses": [],
+      "verification": "Original USSF camera engine/sonic-boom/wind ambience. Base.en returns a single low-confidence You over noise; this is not evidence of intelligible speech.",
+      "speechRanges": [],
+      "recommendedMixRange": null,
+      "evidence": [
+        "media-work/v6-falcon/provenance.json"
+      ],
+      "fullText": {
+        "en": "",
+        "fr": ""
+      }
+    }
+  ]
+}

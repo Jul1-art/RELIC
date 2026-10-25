@@ -1,0 +1,581 @@
+{
+  "version": 7,
+  "duration": 516,
+  "crossfadeSeconds": 0.75,
+  "posterAt": 75,
+  "shots": [
+    {
+      "id": "prologue",
+      "duration": 14
+    },
+    {
+      "id": "origins",
+      "file": "v6-origins/origins-continuous-65s.mp4",
+      "duration": 65
+    },
+    {
+      "id": "dinosaurs",
+      "file": "v7-early-life/dinosaur-trex-original.mp4",
+      "duration": 8,
+      "in": 1,
+      "preserveSpeed": true
+    },
+    {
+      "id": "dinosaur-storm",
+      "file": "v7-early-life/dinosaur-storm-original.mp4",
+      "duration": 6,
+      "in": 14,
+      "preserveSpeed": true
+    },
+    {
+      "id": "early-humans",
+      "file": "v7-early-life/mans-genesis-original.mp4",
+      "duration": 8,
+      "in": 304,
+      "preserveSpeed": true
+    },
+    {
+      "id": "fire",
+      "file": "v7-early-life/nps-bow-drill-original-1080p.mp4",
+      "duration": 8,
+      "in": 254,
+      "preserveSpeed": true
+    },
+    {
+      "id": "humanity",
+      "file": "v6-origins/humanity-nightlights-9s.mp4",
+      "duration": 8
+    },
+    {
+      "id": "v1",
+      "file": "v6-early-history/v1-launch-1944-10s.mp4",
+      "duration": 8,
+      "monochrome": true
+    },
+    {
+      "id": "v2",
+      "file": "v6-early-history/v2-captured-rocket-white-sands-1946-12s.mp4",
+      "duration": 12,
+      "monochrome": true
+    },
+    {
+      "id": "von-braun",
+      "file": "v6-early-history/von-braun-nasa-1962-native720p-10s.mp4",
+      "duration": 10
+    },
+    {
+      "id": "sputnik-wide",
+      "file": "archive/sputnik1-flight-spare-museum-6s.mp4",
+      "duration": 4,
+      "monochrome": true
+    },
+    {
+      "id": "sputnik",
+      "file": "v5-origins/sputnik/sputnik1-spare-closeup-13s.mp4",
+      "duration": 10,
+      "monochrome": true
+    },
+    {
+      "id": "laika",
+      "file": "v7-race-apollo/laika-vintage-space-original.mp4",
+      "duration": 8,
+      "in": 48,
+      "preserveSpeed": true,
+      "monochrome": true
+    },
+    {
+      "id": "gagarin",
+      "file": "archive/gagarin-helmet-archive-5s.mp4",
+      "duration": 10,
+      "monochrome": true
+    },
+    {
+      "id": "kennedy",
+      "file": "v5-audio/jfk-rice-complete-20_75.mp4",
+      "duration": 20,
+      "monochrome": true,
+      "preserveSpeed": true
+    },
+    {
+      "id": "saturn-v",
+      "file": "v7-race-apollo/apollo11-broll-original.mp4",
+      "duration": 8,
+      "in": 300,
+      "preserveSpeed": true
+    },
+    {
+      "id": "apollo-engines",
+      "file": "archive/apollo11-launch-original.mp4",
+      "in": 48,
+      "duration": 6,
+      "monochrome": true
+    },
+    {
+      "id": "apollo-liftoff",
+      "file": "archive/apollo11-launch-original.mp4",
+      "in": 66,
+      "duration": 10,
+      "monochrome": true
+    },
+    {
+      "id": "eagle-orbit",
+      "file": "v7-race-apollo/apollo11-broll-original.mp4",
+      "duration": 8,
+      "in": 1195,
+      "preserveSpeed": true
+    },
+    {
+      "id": "eagle-descent",
+      "file": "v7-race-apollo/apollo11-broll-original.mp4",
+      "duration": 8,
+      "in": 1204,
+      "preserveSpeed": true
+    },
+    {
+      "id": "moon",
+      "file": "archive/apollo11-moonwalk-original.mp4",
+      "in": 105,
+      "duration": 14,
+      "monochrome": true
+    },
+    {
+      "id": "eagle-landed",
+      "file": "v7-race-apollo/apollo11-broll-original.mp4",
+      "duration": 8,
+      "in": 1518,
+      "preserveSpeed": true
+    },
+    {
+      "id": "lunar-orbiter",
+      "file": "v6-origins/apollo17-flyover-original.mp4",
+      "in": 13,
+      "duration": 8
+    },
+    {
+      "id": "sts1",
+      "file": "v6-international/sts1-first-shuttle-launch-14s.mp4",
+      "duration": 14,
+      "preserveSpeed": true
+    },
+    {
+      "id": "challenger",
+      "file": "v6-international/challenger-loss-6s.mp4",
+      "duration": 6,
+      "preserveSpeed": true
+    },
+    {
+      "id": "remembrance",
+      "duration": 5
+    },
+    {
+      "id": "hubble",
+      "file": "v5-spaceflight/hubble-deployment-10s.mp4",
+      "duration": 10
+    },
+    {
+      "id": "voyager",
+      "file": "v7-deep-space/voyager-cme-original.mp4",
+      "duration": 8,
+      "in": 4,
+      "preserveSpeed": true
+    },
+    {
+      "id": "heliopause",
+      "file": "v7-deep-space/voyager-heliosphere-pullout-original.mp4",
+      "duration": 6,
+      "in": 3,
+      "preserveSpeed": true
+    },
+    {
+      "id": "iss-capture",
+      "file": "v6-international/iss1998-zarya-capture-12s.mp4",
+      "duration": 10
+    },
+    {
+      "id": "iss-unity",
+      "file": "v6-international/iss1998-unity-zarya-overview-12s.mp4",
+      "duration": 10
+    },
+    {
+      "id": "europe",
+      "file": "v6-international/columbus-installation-10s.mp4",
+      "duration": 10
+    },
+    {
+      "id": "iss-whole",
+      "file": "v7-deep-space/iss-sts119-original.ogv",
+      "duration": 12,
+      "in": 114,
+      "preserveSpeed": true
+    },
+    {
+      "id": "iss-life",
+      "file": "v5-spaceflight/iss-interior-12s.mp4",
+      "duration": 8
+    },
+    {
+      "id": "soyuz",
+      "file": "v7-race-apollo/soyuz-ms24-2023-original.mp4",
+      "duration": 10,
+      "in": 402,
+      "preserveSpeed": true
+    },
+    {
+      "id": "new-horizons",
+      "file": "v5-probe-iss/new-horizons-launch-12s.mp4",
+      "duration": 10
+    },
+    {
+      "id": "philae-approach",
+      "file": "v7-deep-space/philae-dlr-original.webm",
+      "duration": 7,
+      "in": 287.5,
+      "sourceLength": 4.5
+    },
+    {
+      "id": "philae-landing",
+      "file": "v7-deep-space/philae-dlr-original.webm",
+      "duration": 7,
+      "in": 365.8,
+      "sourceLength": 4.5
+    },
+    {
+      "id": "webb",
+      "file": "v5-spaceflight/webb-separation-10s.mp4",
+      "duration": 10
+    },
+    {
+      "id": "perseverance-up",
+      "file": "v6-international/perseverance-descent-12s.mp4",
+      "duration": 6,
+      "in": 0,
+      "preserveSpeed": true,
+      "crop": "crop=460:358:94:4"
+    },
+    {
+      "id": "perseverance-down",
+      "file": "v6-international/perseverance-descent-12s.mp4",
+      "duration": 6,
+      "in": 6,
+      "preserveSpeed": true,
+      "crop": "crop=460:344:94:372"
+    },
+    {
+      "id": "mars",
+      "file": "archive/curiosity-panorama-2012-original.mov",
+      "in": 26,
+      "duration": 8
+    },
+    {
+      "id": "falcon-launch",
+      "file": "v6-falcon/falcon-heavy-launch-stp2-12s.mp4",
+      "duration": 12,
+      "preserveSpeed": true
+    },
+    {
+      "id": "falcon-dual-return",
+      "file": "v6-falcon/falcon-heavy-dual-landing-stp2-14s.mp4",
+      "duration": 14,
+      "preserveSpeed": true
+    },
+    {
+      "id": "falcon-return",
+      "file": "v6-falcon/falcon9-sentinel6-landing-12s.mp4",
+      "duration": 12,
+      "preserveSpeed": true
+    },
+    {
+      "id": "hardware",
+      "file": "v6-finale/curiosity-rover-close-9_75s.mp4",
+      "duration": 9
+    },
+    {
+      "id": "mars-pullout",
+      "file": "v6-origins/curiosity-site-to-mars-reversed-12s.mp4",
+      "duration": 12
+    },
+    {
+      "id": "solar-system",
+      "file": "v6-origins/solar-system-pullout-crop-20s.mp4",
+      "in": 3,
+      "duration": 17
+    },
+    {
+      "id": "relic",
+      "file": "v6-origins/solar-system-pullout-crop-20s.mp4",
+      "in": 19,
+      "duration": 8,
+      "preserveSpeed": true
+    }
+  ],
+  "audio": [
+    {
+      "id": "v2-newsreel-1946",
+      "file": "v6-early-history/v2-newsreel-war-and-peace-complete-8_84s.wav",
+      "at": 126,
+      "length": 8.84,
+      "role": "archival"
+    },
+    {
+      "id": "sputnik-original-signal",
+      "file": "v6-early-history/sputnik-signal-10s.wav",
+      "at": 151,
+      "length": 9,
+      "role": "archival",
+      "gain": 0.6
+    },
+    {
+      "id": "gagarin-poyekhali-1961",
+      "file": "v6-early-history/gagarin-poyekhali-normalized.wav",
+      "at": 175,
+      "length": 1.486,
+      "role": "archival"
+    },
+    {
+      "id": "jfk-rice-1962",
+      "file": "v5-audio/jfk-rice-complete-20_75-normalized.wav",
+      "at": 179,
+      "length": 18.95,
+      "role": "archival"
+    },
+    {
+      "id": "apollo11-countdown-liftoff",
+      "file": "v5-audio/apollo11-countdown-liftoff-16s.wav",
+      "at": 207,
+      "length": 16,
+      "role": "archival"
+    },
+    {
+      "id": "armstrong-first-step-1969",
+      "file": "v5-audio/armstrong-small-step-normalized.wav",
+      "at": 240,
+      "length": 9.412646,
+      "role": "archival"
+    },
+    {
+      "id": "sts1-original-launch-1981",
+      "file": "v6-international/sts1-first-shuttle-launch-original-audio-14s.wav",
+      "at": 269,
+      "length": 14,
+      "role": "field"
+    },
+    {
+      "id": "challenger-original-broadcast",
+      "file": "v6-international/challenger-loss-original-audio-6s.wav",
+      "at": 283,
+      "length": 6,
+      "role": "archival",
+      "gain": 0.8
+    },
+    {
+      "id": "perseverance-2021-edl",
+      "file": "v6-international/perseverance-descent-original-audio-12s.wav",
+      "at": 412,
+      "length": 12,
+      "role": "archival"
+    },
+    {
+      "id": "falcon-heavy-ground-audio-2019",
+      "file": "v6-falcon/falcon-heavy-launch-stp2-normalized-12s.wav",
+      "at": 432,
+      "length": 12,
+      "role": "field"
+    },
+    {
+      "id": "falcon9-landing-ground-audio-2020",
+      "file": "v6-falcon/falcon9-sentinel6-normalized-12s.wav",
+      "at": 458,
+      "length": 12,
+      "role": "field"
+    }
+  ],
+  "effects": [
+    {
+      "id": "typing-one",
+      "file": "v6-sound/typing-7s-48k.wav",
+      "at": 0.35,
+      "length": 2.6,
+      "role": "effect",
+      "gain": 0.2
+    },
+    {
+      "id": "typing-two",
+      "file": "v6-sound/typing-7s-48k.wav",
+      "at": 6.7,
+      "length": 3.2,
+      "role": "effect",
+      "gain": 0.2
+    },
+    {
+      "id": "big-bang-impact",
+      "file": "v6-sound/impact-48k.wav",
+      "at": 14,
+      "length": 3,
+      "role": "effect",
+      "gain": 0.55
+    },
+    {
+      "id": "transition-origins",
+      "file": "v6-sound/transition-whoosh-1_3s.wav",
+      "at": 13.65,
+      "length": 1.3,
+      "gain": 0.2
+    },
+    {
+      "id": "transition-dinosaurs",
+      "file": "v6-sound/transition-whoosh-1_3s.wav",
+      "at": 78.65,
+      "length": 1.3,
+      "gain": 0.2
+    },
+    {
+      "id": "transition-early-humans",
+      "file": "v6-sound/transition-whoosh-1_3s.wav",
+      "at": 92.65,
+      "length": 1.3,
+      "gain": 0.2
+    },
+    {
+      "id": "transition-v1",
+      "file": "v6-sound/transition-whoosh-1_3s.wav",
+      "at": 116.65,
+      "length": 1.3,
+      "gain": 0.2
+    },
+    {
+      "id": "transition-sputnik-wide",
+      "file": "v6-sound/transition-whoosh-1_3s.wav",
+      "at": 146.65,
+      "length": 1.3,
+      "gain": 0.2
+    },
+    {
+      "id": "transition-kennedy",
+      "file": "v6-sound/transition-whoosh-1_3s.wav",
+      "at": 178.65,
+      "length": 1.3,
+      "gain": 0.2
+    },
+    {
+      "id": "transition-hubble",
+      "file": "v6-sound/transition-whoosh-1_3s.wav",
+      "at": 293.65,
+      "length": 1.3,
+      "gain": 0.2
+    },
+    {
+      "id": "transition-voyager",
+      "file": "v6-sound/transition-whoosh-1_3s.wav",
+      "at": 303.65,
+      "length": 1.3,
+      "gain": 0.2
+    },
+    {
+      "id": "transition-iss-capture",
+      "file": "v6-sound/transition-whoosh-1_3s.wav",
+      "at": 317.65,
+      "length": 1.3,
+      "gain": 0.2
+    },
+    {
+      "id": "transition-europe",
+      "file": "v6-sound/transition-whoosh-1_3s.wav",
+      "at": 337.65,
+      "length": 1.3,
+      "gain": 0.2
+    },
+    {
+      "id": "transition-philae-approach",
+      "file": "v6-sound/transition-whoosh-1_3s.wav",
+      "at": 387.65,
+      "length": 1.3,
+      "gain": 0.2
+    },
+    {
+      "id": "transition-perseverance-up",
+      "file": "v6-sound/transition-whoosh-1_3s.wav",
+      "at": 411.65,
+      "length": 1.3,
+      "gain": 0.2
+    },
+    {
+      "id": "transition-hardware",
+      "file": "v6-sound/transition-whoosh-1_3s.wav",
+      "at": 469.65,
+      "length": 1.3,
+      "gain": 0.2
+    },
+    {
+      "id": "transition-mars-pullout",
+      "file": "v6-sound/transition-whoosh-1_3s.wav",
+      "at": 478.65,
+      "length": 1.3,
+      "gain": 0.2
+    },
+    {
+      "id": "transition-solar-system",
+      "file": "v6-sound/transition-whoosh-1_3s.wav",
+      "at": 490.65,
+      "length": 1.3,
+      "gain": 0.2
+    }
+  ],
+  "music": [
+    {
+      "at": 14,
+      "in": 0,
+      "length": 187,
+      "id": "helios-part-1",
+      "file": "v6-sound/helios-48k-normalized.wav",
+      "fadeIn": 1.5,
+      "fadeOut": 2,
+      "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
+      "license": "CC-BY-4.0",
+      "sourcePage": "https://www.scottbuckley.com.au/library/helios/"
+    },
+    {
+      "at": 199,
+      "in": 171,
+      "length": 67,
+      "id": "helios-part-2",
+      "file": "v6-sound/helios-48k-normalized.wav",
+      "fadeIn": 2,
+      "fadeOut": 2,
+      "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
+      "license": "CC-BY-4.0",
+      "sourcePage": "https://www.scottbuckley.com.au/library/helios/"
+    },
+    {
+      "at": 264,
+      "in": 171,
+      "length": 67,
+      "id": "helios-part-3",
+      "file": "v6-sound/helios-48k-normalized.wav",
+      "fadeIn": 2,
+      "fadeOut": 2,
+      "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
+      "license": "CC-BY-4.0",
+      "sourcePage": "https://www.scottbuckley.com.au/library/helios/"
+    },
+    {
+      "at": 329,
+      "in": 171,
+      "length": 187,
+      "id": "helios-part-4",
+      "file": "v6-sound/helios-48k-normalized.wav",
+      "fadeIn": 2,
+      "fadeOut": 6,
+      "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
+      "license": "CC-BY-4.0",
+      "sourcePage": "https://www.scottbuckley.com.au/library/helios/"
+    }
+  ],
+  "musicDuckDb": 14,
+  "silenceMusic": [
+    {
+      "start": 282.65,
+      "end": 294
+    }
+  ],
+  "narration": "Bilingual stock synthetic voices expressly approved by the user; original historical recordings preserved."
+}
