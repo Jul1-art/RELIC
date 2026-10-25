@@ -1,0 +1,52 @@
+/* Only the film's layout foundation and application dialogs live here. The
+   movie's framing, typography, typing and final card stay in prologue-v8.css. */
+.intro { position:fixed; inset:0; z-index:100; width:100%; height:100%; height:100dvh; overflow:hidden; background:#000; }
+.intro.hidden { display:none!important; }
+.relic-dialog {
+  width:min(570px,calc(100vw - 32px)); max-height:calc(100dvh - 48px); margin:auto; padding:26px;
+  overflow:auto; border:1px solid #ffffff21; border-radius:28px; background:#111; color:#f4f4f4;
+  box-shadow:0 30px 100px #000b; font:13px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  scrollbar-width:thin; scrollbar-color:#ffffff40 transparent;
+}
+.relic-dialog::backdrop { background:#0009; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); }
+.relic-dialog [hidden] { display:none!important; }
+.relic-dialog-header { display:flex; justify-content:space-between; align-items:flex-start; gap:18px; margin-bottom:24px; }
+.relic-dialog-header p { margin:0 0 7px; font-size:9px; letter-spacing:.23em; color:#ffffff75; }
+.relic-dialog h2 { margin:0; font-size:25px; line-height:1.2; font-weight:500; letter-spacing:-.04em; }
+.relic-dialog h3 { margin:28px 0 9px; font-size:14px; font-weight:500; }
+.relic-dialog p { color:#aaa; }
+.relic-dialog button { border:0; color:inherit; background:#ffffff0b; font:inherit; cursor:pointer; }
+.relic-dialog .relic-dialog-close { display:grid; place-items:center; flex:0 0 40px; width:40px; height:40px; padding:11px; border-radius:13px; }
+.relic-dialog-close svg { width:100%; height:100%; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; }
+.relic-dialog :is(a,button):focus-visible { outline:2px solid #fff; outline-offset:4px; }
+.relic-dialog button:hover { background:#ffffff17; }
+.relic-dialog button:disabled { opacity:.35; cursor:default; }
+.relic-dialog .relic-dialog-lead { margin:0 0 13px; max-width:420px; font-size:21px; line-height:1.35; letter-spacing:-.025em; color:#f0f0f0; }
+.relic-people { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:24px 0; }
+.relic-people > div { padding:15px; border:1px solid #ffffff12; border-radius:16px; }
+.relic-people h3 { margin:0 0 4px; font-size:17px; }
+.relic-people p { margin:0; font-size:11px; }
+.relic-source-links { display:flex; flex-direction:column; margin:20px 0; border-top:1px solid #ffffff12; }
+.relic-source-links a { padding:11px 0; border-bottom:1px solid #ffffff12; color:#d6d6d6; font-size:11px; text-decoration:none; overflow-wrap:anywhere; }
+.relic-source-links a:hover { color:#fff; }
+.relic-source-links a::after { content:' ↗'; color:#777; }
+.relic-dialog .relic-dialog-note { color:#757575; font-size:11px; line-height:1.6; }
+.relic-dialog .relic-music-credit { color:#dedede; font-size:12px; }
+.relic-offline-card { margin:24px 0; padding:20px; border:1px solid #ffffff1c; border-radius:20px; background:#ffffff03; }
+.relic-offline-card .relic-offline-badge { margin:0 0 15px; color:#ddd; font-size:10px; letter-spacing:.1em; }
+.relic-offline-card progress { width:100%; height:3px; margin:12px 0; border:0; border-radius:10px; overflow:hidden; accent-color:#eee; }
+.relic-offline-card progress::-webkit-progress-bar { background:#ffffff16; }
+.relic-offline-card progress::-webkit-progress-value { background:#eee; transition:width .2s ease; }
+.relic-offline-card progress::-moz-progress-bar { background:#eee; }
+.relic-dialog-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:21px; }
+.relic-dialog-actions button { min-height:43px; padding:10px 17px; border-radius:12px; font-size:12px; }
+.relic-dialog-actions .relic-dialog-primary { background:#f1f1f1; color:#111; }
+.relic-dialog-actions .relic-dialog-primary:hover { background:#fff; }
+.relic-dialog .relic-dialog-error { color:#e6aaa0; font-size:12px; }
+@media(max-width:600px) {
+  .relic-dialog { width:calc(100vw - 24px); max-height:calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); padding:22px; border-radius:24px; }
+  .relic-dialog h2 { font-size:23px; }
+  .relic-dialog-header { margin-bottom:20px; }
+  .relic-people { gap:8px; }
+  .relic-people > div { padding:12px; }
+}

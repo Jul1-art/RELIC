@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "description": "Byte-identical fallback MP4 files, split for transport. The Python server and Node static build restore them automatically.",
+  "partSize": 8388608,
+  "files": [
+    {
+      "path": "intro/assets/prologue/relic-prologue-v8-4-en.mp4",
+      "size": 23995471,
+      "sha256": "f1c1f9e3175041ec20c2f634cc720815e1e2f98d5f342a4a3bc4ffbd3868e814",
+      "parts": [
+        {
+          "path": "intro/assets/prologue/mp4-parts/relic-prologue-v8-4-en.mp4.part00",
+          "size": 8388608,
+          "sha256": "b69e029cc7dcfa6f8fd42ad185844e3b2c5f978bd97c6a06a6a5bb70b869645f"
+        },
+        {
+          "path": "intro/assets/prologue/mp4-parts/relic-prologue-v8-4-en.mp4.part01",
+          "size": 8388608,
+          "sha256": "3aabd1e4ddb2570f84768ba73e0582bed61b27c3601d5032faf29c735d7d606e"
+        },
+        {
+          "path": "intro/assets/prologue/mp4-parts/relic-prologue-v8-4-en.mp4.part02",
+          "size": 7218255,
+          "sha256": "7b9d6e326f6fce16c0f8286ef3e8d36a06c1dfa5b32bd889b59f7cb44d3eebc9"
+        }
+      ]
+    },
+    {
+      "path": "intro/assets/prologue/relic-prologue-v8-4-fr.mp4",
+      "size": 23983819,
+      "sha256": "360b4ee3b891d5215954a081aa64f8df031ccb51b93d06718b9649eb7137683e",
+      "parts": [
+        {
+          "path": "intro/assets/prologue/mp4-parts/relic-prologue-v8-4-fr.mp4.part00",
+          "size": 8388608,
+          "sha256": "cb6ff0d6c49dcc5378e654e05e0508c363fb4fb5276f698dfbb390d1b9e663c2"
+        },
+        {
+          "path": "intro/assets/prologue/mp4-parts/relic-prologue-v8-4-fr.mp4.part01",
+          "size": 8388608,
+          "sha256": "fb5f750a4e29ff17937c7be8d55716994f2b3ebfc53525a18400321df2edb51c"
+        },
+        {
+          "path": "intro/assets/prologue/mp4-parts/relic-prologue-v8-4-fr.mp4.part02",
+          "size": 7206603,
+          "sha256": "cc0816f2a4687601941fde0559a47479a25e03a90fadb9bdd64677eb1605cda0"
+        }
+      ]
+    }
+  ]
+}

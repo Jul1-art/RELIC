@@ -1,0 +1,45 @@
+{
+  "duration": 200,
+  "bytes": 25924350,
+  "sha256": "ddc4d4de4f93b1e77507d0807d9409f85114dc1403fc051977ce91a3ddf1bf3a",
+  "width": 1280,
+  "height": 720,
+  "fps": 24,
+  "videoCodec": "H.264",
+  "audioCodec": "AAC",
+  "audioBitrate": 96000,
+  "audioSources": [
+    {
+      "id": "jfk-rice-1962",
+      "start": 68,
+      "duration": 18.95,
+      "source": "v5-audio/jfk-rice-complete-20_75-normalized.wav",
+      "sha256": "9f0a6b337aeaab83499c9fac25466a6d5a0e60f572003f2cd40929de19b5dc22"
+    },
+    {
+      "id": "apollo11-countdown-liftoff",
+      "start": 88,
+      "duration": 16,
+      "source": "v5-audio/apollo11-countdown-liftoff-16s.wav",
+      "sha256": "4c149e0c88657a062efec54190077ce8eb827b1aee75747cec62f2eec971aa4f"
+    },
+    {
+      "id": "armstrong-first-step-1969",
+      "start": 105,
+      "duration": 9.412646,
+      "source": "v5-audio/armstrong-small-step-normalized.wav",
+      "sha256": "42b2537d94a79320aaa799bb11eea345cdfe37efcde0a1336805012e0c14aa4e"
+    },
+    {
+      "id": "discovery-sts133-broadcast-2011",
+      "start": 118,
+      "duration": 12,
+      "source": "v5-audio/discovery-launch-broadcast-normalized-12s.wav",
+      "sha256": "3e60f04d1ce674d4aab007f87cf2eff6a4331c44a4498a4ad46e3ae04cb2512f"
+    }
+  ],
+  "crossfadeSeconds": 0.75,
+  "sound": "Genuine JFK, Armstrong, Apollo 11 and Discovery launch recordings, with an original ambient score ducked beneath the archive. User gesture enables sound.",
+  "titles": "Bilingual media-clock captions; source details remain in Credits.",
+  "historicalTreatment": "Actual footage edited with dissolves; space-race scenes in black and white. Ancient scenes are NASA scientific visualizations."
+}

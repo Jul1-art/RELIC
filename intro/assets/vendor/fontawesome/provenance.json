@@ -1,0 +1,70 @@
+{
+  "project": "Font Awesome Free",
+  "version": "6.7.2",
+  "creator": "Fonticons, Inc.",
+  "source": "https://github.com/FortAwesome/Font-Awesome/tree/6.7.2",
+  "license": "Icons: CC BY 4.0; font and code licences are documented in LICENSE.txt. This subset uses only SVG icon paths.",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "assets": [
+    {
+      "name": "play",
+      "source": "https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.7.2/svgs/solid/play.svg",
+      "sha256": "2450714e90ceba7026b56f3a926a73b13772210cb9b4ec50b7f3baeacaa439c9"
+    },
+    {
+      "name": "pause",
+      "source": "https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.7.2/svgs/solid/pause.svg",
+      "sha256": "4b15ab1213bb3101628d4ab50da5bf91d28b8ec202fb878eef131237db000bdf"
+    },
+    {
+      "name": "arrow-right",
+      "source": "https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.7.2/svgs/solid/arrow-right.svg",
+      "sha256": "8184baa12892006d1b801a4dc1c89b3df14f35a2e70b7670376a4e967225b26d"
+    },
+    {
+      "name": "volume-xmark",
+      "source": "https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.7.2/svgs/solid/volume-xmark.svg",
+      "sha256": "72878ed70a6ddfbb1630dad58af41bc218b04fefaee35b3b0e5072e849b09cdc"
+    },
+    {
+      "name": "volume-high",
+      "source": "https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.7.2/svgs/solid/volume-high.svg",
+      "sha256": "aedb54e5b7ed3e576b19c7cf89ee9af6d84b12467b0cdd5474c0e7b0ca2c1b84"
+    },
+    {
+      "name": "eye-slash",
+      "source": "https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.7.2/svgs/solid/eye-slash.svg",
+      "sha256": "384e418a1ed8c1af68e16cb3b6786418bdba4522fa9e73ba18ae022a8c557461"
+    },
+    {
+      "name": "closed-captioning",
+      "source": "https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.7.2/svgs/solid/closed-captioning.svg",
+      "sha256": "20a99320e06584d2eca1c7a72c97f2356075eb246461dd878cf93b32458bd8b6"
+    },
+    {
+      "name": "expand",
+      "source": "https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.7.2/svgs/solid/expand.svg",
+      "sha256": "be25e8043757263dc0ad97471bfee392fa11ca2fd6412974e10c49faaf73567e"
+    },
+    {
+      "name": "compress",
+      "source": "https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.7.2/svgs/solid/compress.svg",
+      "sha256": "aea43d6ff86c9e14dd05925a8f48fbddf6cf7fa44d6449aa708b352747244fa2"
+    },
+    {
+      "name": "download",
+      "source": "https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.7.2/svgs/solid/download.svg",
+      "sha256": "248eb4f0060a7eb889bcdc608d0c5258a1f6d6b74fdf0b0652697f6b13faef15"
+    },
+    {
+      "name": "check",
+      "source": "https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.7.2/svgs/solid/check.svg",
+      "sha256": "238257f08a1167f608209d7ef44fa3eaa59859811a2cedeab34cd9b63667e410"
+    },
+    {
+      "name": "xmark",
+      "source": "https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.7.2/svgs/solid/xmark.svg",
+      "sha256": "591fea2ae19d968cac870da11a403068f083a84bb909ee248e11353ed319ec8d"
+    }
+  ]
+}

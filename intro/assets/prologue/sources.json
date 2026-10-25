@@ -1,0 +1,1208 @@
+{
+  "schema": "relic.prologue.sources.v1",
+  "version": 5,
+  "checkedOn": "2026-10-21",
+  "durationSeconds": 200,
+  "movie": "relic-prologue-v5.mp4",
+  "movieSha256": "ddc4d4de4f93b1e77507d0807d9409f85114dc1403fc051977ce91a3ddf1bf3a",
+  "movieBytes": 25924350,
+  "sourceAudioReused": true,
+  "score": "Original synthesized ambient score for RELIC, ducked beneath genuine historical recordings. Sound is off by default and enabled by user gesture. No historical voice is synthesized.",
+  "scientificContext": "Ancient universe, disk, young-Earth and molten-surface scenes are NASA scientific artist visualizations. The blue globe is a modern PACE/VIIRS data visualization, not a record of ancient oceans or life. Sputnik is a flight spare filmed in a museum in 2017. Spaceflight shots are actual recorded camera footage. Mars is a pan over authentic 2012 Curiosity photographs. Discovery is a Shuttle orbiter; New Horizons is the planetary probe launch. Active and retired equipment may both remain beyond Earth; Curiosity is not described as abandoned.",
+  "sourcesPending": false,
+  "visualizations": [
+    {
+      "id": "big-bang",
+      "file": "big-bang-1080-original.mov",
+      "builderSource": "cosmos/big-bang-1080-original.mov",
+      "title": "Big Bang Animation--5k Resolution",
+      "svs_id": 12656,
+      "source_page": "https://svs.gsfc.nasa.gov/12656/",
+      "source_url": "https://svs.gsfc.nasa.gov/vis/a010000/a012600/a012656/12656_Big_Bang_1080.mov",
+      "credit": "NASA's Goddard Space Flight Center/CI Lab",
+      "visual_type": "artist_visualization",
+      "scientific_context": "Artist interpretation; not a camera recording. The bright expanding point is a visual metaphor, not a literal explosion into pre-existing empty space.",
+      "actual_camera_footage": false,
+      "rights_status": "NASA-origin media generally are not subject to copyright in the United States. Factual educational/informational use with source acknowledgement and no implied endorsement follows NASA media guidelines; separately credited third-party material and identifiable-person restrictions remain applicable.",
+      "rights_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "original_sha256": "1d1e9b54c4ee243798570e3b18dbe73cb2aacc2ef7119e62b8d39e14b180abec",
+      "finalFilmUsage": [
+        {
+          "shotId": "big-bang",
+          "startSeconds": 0,
+          "endSeconds": 8
+        }
+      ],
+      "builderInputSha256": "1d1e9b54c4ee243798570e3b18dbe73cb2aacc2ef7119e62b8d39e14b180abec"
+    },
+    {
+      "id": "solar-nebula",
+      "file": "01-protoplanetary-disk-9s.mp4",
+      "builderSource": "v5-origins/01-protoplanetary-disk-9s.mp4",
+      "source": "Shot_09_Protoplanetary_Disk_4k.webm",
+      "sourceStartSeconds": 3.0,
+      "providedExcerptSeconds": 9.0,
+      "filters": "crop=3840:2160:960:0,scale=1920:1080,setsar=1,fps=24,format=yuv420p",
+      "source_page": "https://svs.gsfc.nasa.gov/20221/",
+      "source_url": "https://svs.gsfc.nasa.gov/vis/a020000/a020200/a020221/Shot_09_Protoplanetary_Disk_4k.webm",
+      "credit": "NASA's Goddard Space Flight Center Conceptual Image Lab",
+      "visual_type": "artist_concept",
+      "scientific_context": "Conceptual protoplanetary disk with jets and material around a young star; not observed footage.",
+      "actual_camera_footage": false,
+      "rights_status": "NASA-origin media generally are not subject to copyright in the United States. Factual educational/informational use with source acknowledgement and no implied endorsement follows NASA media guidelines; separately credited third-party material and identifiable-person restrictions remain applicable.",
+      "rights_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "sha256": "cc6b0feaabe909a22f1942868de18385c4a757d8cc1fb15f7dbdc82601e2d5b4",
+      "original_sha256": "a8daa4832e171e88a80568695bf166b22f05cf68452b563f309c517e77bc062e",
+      "finalFilmUsage": [
+        {
+          "shotId": "solar-nebula",
+          "startSeconds": 8,
+          "endSeconds": 16
+        }
+      ],
+      "builderInputSha256": "cc6b0feaabe909a22f1942868de18385c4a757d8cc1fb15f7dbdc82601e2d5b4"
+    },
+    {
+      "id": "early-earth-globe",
+      "file": "optional-early-earth-globe-7.5s.mp4",
+      "builderSource": "v5-origins/optional-early-earth-globe-7.5s.mp4",
+      "source": "early-earth-original.mov",
+      "sourceStartSeconds": 12.0,
+      "providedExcerptSeconds": 7.5,
+      "filters": "scale=1920:1080,setsar=1,fps=24,format=yuv420p",
+      "source_page": "https://svs.gsfc.nasa.gov/10810/",
+      "source_url": "https://svs.gsfc.nasa.gov/vis/a010000/a010800/a010810/meteorite_early_earth_youtube_hq.mov",
+      "credit": "NASA/Goddard; visualization by Chris Smith (HTSI)",
+      "visual_type": "artist_concept",
+      "scientific_context": "NASA describes the source as an animation depicting a meteorite heading toward an early Earth. This later excerpt shows a complete red Earth globe; it does not directly depict the assembly of Earth from planetesimals.",
+      "actual_camera_footage": false,
+      "rights_status": "NASA-origin media generally are not subject to copyright in the United States. Factual educational/informational use with source acknowledgement and no implied endorsement follows NASA media guidelines; separately credited third-party material and identifiable-person restrictions remain applicable.",
+      "rights_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "sha256": "4b24ff18cb26e65ebb25b113f419027634d9d8a0e811717a4f726e2a4f57e4e9",
+      "original_sha256": "fdc041899a2e7fb482f707251faa71b3d524e4e179b36ceff719cfa42741ba65",
+      "finalFilmUsage": [
+        {
+          "shotId": "early-earth-globe",
+          "startSeconds": 16,
+          "endSeconds": 24
+        }
+      ],
+      "builderInputSha256": "4b24ff18cb26e65ebb25b113f419027634d9d8a0e811717a4f726e2a4f57e4e9"
+    },
+    {
+      "id": "earth-bombardment",
+      "file": "02-young-earth-bombardment-7.5s.mp4",
+      "builderSource": "v5-origins/02-young-earth-bombardment-7.5s.mp4",
+      "source": "Shot_21_Protoplanet_Bombardment_4k.webm",
+      "sourceStartSeconds": 0.2,
+      "providedExcerptSeconds": 7.5,
+      "filters": "crop=3840:2160:960:0,scale=1920:1080,setsar=1,fps=24,format=yuv420p",
+      "source_page": "https://svs.gsfc.nasa.gov/20221/",
+      "source_url": "https://svs.gsfc.nasa.gov/vis/a020000/a020200/a020221/Shot_21_Protoplanet_Bombardment_4k.webm",
+      "credit": "NASA's Goddard Space Flight Center Conceptual Image Lab",
+      "visual_type": "artist_concept",
+      "scientific_context": "NASA identifies this Bennu film view as an artist concept of young Earth during bombardment. The original shot emphasizes the globe limb and surface, rather than displaying a whole Earth sphere.",
+      "actual_camera_footage": false,
+      "rights_status": "NASA-origin media generally are not subject to copyright in the United States. Factual educational/informational use with source acknowledgement and no implied endorsement follows NASA media guidelines; separately credited third-party material and identifiable-person restrictions remain applicable.",
+      "rights_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "sha256": "eae3a48cb29a3cde163ade4442b2d157e4e3cc5d7954054f631d0a9557a782c6",
+      "original_sha256": "f0827a14a2d79d30f68e8171c8870d296515f3a564542a8c6cc766bf2781b733",
+      "finalFilmUsage": [
+        {
+          "shotId": "earth-bombardment",
+          "startSeconds": 24,
+          "endSeconds": 30
+        }
+      ],
+      "builderInputSha256": "eae3a48cb29a3cde163ade4442b2d157e4e3cc5d7954054f631d0a9557a782c6"
+    },
+    {
+      "id": "molten-earth",
+      "file": "03-molten-earth-surface-7.5s.mp4",
+      "builderSource": "v5-origins/03-molten-earth-surface-7.5s.mp4",
+      "source": "Shot_21pt2_Protoplanets_Surface_4k.webm",
+      "sourceStartSeconds": 0.2,
+      "providedExcerptSeconds": 7.5,
+      "filters": "crop=3840:2160:960:0,scale=1920:1080,setsar=1,fps=24,format=yuv420p",
+      "source_page": "https://svs.gsfc.nasa.gov/20221/",
+      "source_url": "https://svs.gsfc.nasa.gov/vis/a020000/a020200/a020221/Shot_21pt2_Protoplanets_Surface_4k.webm",
+      "credit": "NASA's Goddard Space Flight Center Conceptual Image Lab",
+      "visual_type": "artist_concept",
+      "scientific_context": "Prehistoric planetary surface reconstruction with lava and impacts; not calibrated to a precise year or location.",
+      "actual_camera_footage": false,
+      "rights_status": "NASA-origin media generally are not subject to copyright in the United States. Factual educational/informational use with source acknowledgement and no implied endorsement follows NASA media guidelines; separately credited third-party material and identifiable-person restrictions remain applicable.",
+      "rights_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "sha256": "b93ffd758a4eb8ebe954e6d097cf8af0238bb2bf8a6d4099250e517588bd5c2b",
+      "original_sha256": "05c720d92b045a396117214f5289a8d88553f4dc26e494d4a4a90efd17a002b4",
+      "finalFilmUsage": [
+        {
+          "shotId": "molten-earth",
+          "startSeconds": 30,
+          "endSeconds": 36
+        }
+      ],
+      "builderInputSha256": "b93ffd758a4eb8ebe954e6d097cf8af0238bb2bf8a6d4099250e517588bd5c2b"
+    },
+    {
+      "id": "living-earth",
+      "file": "earth-oceans-original.mp4",
+      "builderSource": "cosmos/earth-oceans-original.mp4",
+      "source": "earth-oceans-original.mp4",
+      "sourceStartSeconds": 3.0,
+      "source_page": "https://svs.gsfc.nasa.gov/31365/",
+      "source_url": "https://svs.gsfc.nasa.gov/vis/a030000/a031300/a031365/pace_sfrefl_rotating_globe_1080p30.mp4",
+      "credit": "NASA Scientific Visualization Studio; Marit Jentoft-Nilsen (Global Science and Technology, Inc.); PACE OCI and VIIRS/NPP data",
+      "visual_type": "modern_satellite_data_visualization",
+      "scientific_context": "Modern true-color PACE/VIIRS imagery from 24 September 2024 wrapped on a rotating sphere. Not a record of ancient oceans or the origin of life.",
+      "actual_camera_footage": false,
+      "rights_status": "NASA-origin media generally are not subject to copyright in the United States. Factual educational/informational use with source acknowledgement and no implied endorsement follows NASA media guidelines; separately credited third-party material and identifiable-person restrictions remain applicable.",
+      "rights_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "original_sha256": "b47714f9783b9769490df772c1fa6179b0394ee5de0f015fc963db7345d20172",
+      "observation_date": "2024-09-24",
+      "data_sources": [
+        "https://doi.org/10.5067/PACE/OCI/L2/SFREFL/3.1",
+        "https://doi.org/10.5067/VIIRS/VNP02IMG.002"
+      ],
+      "finalFilmUsage": [
+        {
+          "shotId": "living-earth",
+          "startSeconds": 36,
+          "endSeconds": 46
+        }
+      ],
+      "builderInputSha256": "b47714f9783b9769490df772c1fa6179b0394ee5de0f015fc963db7345d20172"
+    }
+  ],
+  "archives": [
+    {
+      "id": "sputnik-spare",
+      "clip": "sputnik1-flight-spare-museum-6s.mp4",
+      "sourceFile": "sputnik-anniversary-esa-original.mp4",
+      "sourceStartSeconds": 60.5,
+      "durationSeconds": 6,
+      "title": "Sputnik1 flight spare at the RSC Energia museum",
+      "historicalDate": "1957-10-04",
+      "filmingDate": "2017",
+      "sourcePage": "https://www.esa.int/esatv/Videos/2017/09/Sputnik_60th_anniversary",
+      "downloadUrl": "https://dlmultimedia.esa.int/download/public/videos/2017/09/016/1709_016_AR_EN.mp4",
+      "credit": "© ESA",
+      "rights": "Copyright ESA. Educational, editorial and informational reuse with appropriate on-screen or end credit under the ESA media terms. This footage is not designated public domain. Original source music/narration removed.",
+      "rightsUrl": "https://www.esa.int/ESA_Multimedia/Terms_and_conditions_of_use_of_images_and_videos_available_on_the_esa_website",
+      "actualMotionFootage": true,
+      "eventVerified": true,
+      "caveats": [
+        "Original Sputnik 1 flight spare filmed in the RSC Energia museum in 2017. It is not the launched spacecraft in orbit and was not filmed in 1957."
+      ],
+      "builderSource": "archive/sputnik1-flight-spare-museum-6s.mp4",
+      "classification": "actual museum camera footage",
+      "finalFilmUsage": [
+        {
+          "shotId": "sputnik-wide",
+          "startSeconds": 46,
+          "endSeconds": 49
+        }
+      ],
+      "builderInputSha256": "628d95ac3d4be1b4e689d9a71e4151e347b5998d9a9e6813955e36dec8985911"
+    },
+    {
+      "id": "sputnik-spare-closeup",
+      "clip": "sputnik1-spare-closeup-13s.mp4",
+      "builderSource": "v5-origins/sputnik/sputnik1-spare-closeup-13s.mp4",
+      "sourceFile": "energia-museum-original.mp4",
+      "sourceStartSeconds": 64.5,
+      "durationSeconds": 13,
+      "title": "Sputnik 1 flight-spare closeup at the RSC Energia museum",
+      "historicalDate": "1957-10-04",
+      "filmingDate": "2017",
+      "sourcePage": "https://www.esa.int/esatv/Videos/2017/09/Sputnik_60th_anniversary/GVs_Energia_Museum_Moscow_and_Kaleri_set-up_shots",
+      "downloadUrl": "https://dlmultimedia.esa.int/download/public/videos/2017/09/016/1709_016_BR_006.mp4",
+      "credit": "© ESA",
+      "rights": "ESA copyrighted video; educational/editorial/informational reuse with appropriate on-screen or end credit under ESA media terms. Not public domain.",
+      "rightsUrl": "https://www.esa.int/ESA_Multimedia/Terms_and_conditions_of_use_of_images_and_videos_available_on_the_esa_website",
+      "classification": "actual museum camera footage",
+      "actualMotionFootage": true,
+      "eventVerified": true,
+      "identificationSource": "https://www.esa.int/esatv/Videos/2017/09/Sputnik_60th_anniversary",
+      "identificationEvidence": "Official ESA production script states that one of the original Sputnik flight spares hangs in the RSC Energia private museum. This B-roll resource provides close views of the same museum exhibit.",
+      "caveats": [
+        "Original Sputnik flight spare filmed in 2017, not the launched satellite or a recording from 1957.",
+        "768×432 official web source, ordinarily upscaled; no extra native detail or AI enhancement."
+      ],
+      "sha256": "5a7a8c180c35828a52599232e4412bc940cef00104d8cd94b5e38b7d7042ae99",
+      "finalFilmUsage": [
+        {
+          "shotId": "sputnik-closeup",
+          "startSeconds": 49,
+          "endSeconds": 60
+        }
+      ],
+      "builderInputSha256": "5a7a8c180c35828a52599232e4412bc940cef00104d8cd94b5e38b7d7042ae99"
+    },
+    {
+      "id": "gagarin",
+      "clip": "gagarin-helmet-archive-5s.mp4",
+      "sourceFile": "gagarin-anniversary-esa-original.mp4",
+      "durationSeconds": 5,
+      "title": "Yuri Gagarin preparing for flight, historical archive distributed by ESA",
+      "historicalDate": "1961-04-12",
+      "sourcePage": "https://www.esa.int/esatv/Videos/2011/04/50th_Anniversary_of_Gagarin_s_flight",
+      "downloadUrl": "https://dlmultimedia.esa.int/download/public/videos/2011/04/004/1104_004_AR_EN.mp4",
+      "credit": "© ESA — historical Gagarin footage",
+      "rights": "Copyright ESA. Educational, editorial and informational reuse with appropriate on-screen or end credit under the ESA media terms. This footage is not designated public domain. Original source music/narration removed.",
+      "rightsUrl": "https://www.esa.int/ESA_Multimedia/Terms_and_conditions_of_use_of_images_and_videos_available_on_the_esa_website",
+      "actualMotionFootage": true,
+      "eventVerified": true,
+      "caveats": [
+        "Historical preparation/helmet archive in ESA’s official 50th-anniversary documentary; not a camera recording from orbit."
+      ],
+      "builderSource": "archive/gagarin-helmet-archive-5s.mp4",
+      "classification": "actual historical preparation footage",
+      "sourceStartSeconds": 17,
+      "finalFilmUsage": [
+        {
+          "shotId": "gagarin",
+          "startSeconds": 60,
+          "endSeconds": 68
+        }
+      ],
+      "builderInputSha256": "eed785eedd3835f4a52ac8d3b3c3949e9183fa57bf009636d6bc005c932f0f7d",
+      "sourceEndSeconds": 22,
+      "sourceTrimVerification": "Decoded-frame comparison matches selected excerpt frames at 0, 1, 2, 3, 4s to master frames at 17, 18, 19, 20, 21s. Native 25fps; 125 frames, 5.000s."
+    },
+    {
+      "id": "apollo11-launch",
+      "clip": "apollo11-launch-original.mp4",
+      "sourceFile": "apollo11-launch-original.mp4",
+      "title": "Apollo 11 Saturn V launch",
+      "historicalDate": "1969-07-16",
+      "sourcePage": "https://science.nasa.gov/resource/apollo-11-launch/",
+      "downloadUrl": "https://assets.science.nasa.gov/content/dam/science/psd/lunar-science/2023/09/NHQ_07_16_1969_Apollo_11_Launch_HD__No_Audio__orig.mp4",
+      "credit": "NASA",
+      "rights": "NASA media generally not subject to copyright in the United States; educational/informational use allowed with acknowledgement and no implied endorsement, subject to NASA guidelines.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "actualMotionFootage": true,
+      "eventVerified": true,
+      "readyForUse": true,
+      "caveats": [
+        "Actual Apollo 11 launch film in a later NASA montage. Two original-source windows are used: engine imagery and liftoff; see editTimeline. Final montage is monochrome."
+      ],
+      "builderSource": "archive/apollo11-launch-original.mp4",
+      "classification": "actual historical launch film",
+      "finalFilmUsage": [
+        {
+          "shotId": "apollo-engines",
+          "startSeconds": 88,
+          "endSeconds": 94
+        },
+        {
+          "shotId": "apollo-liftoff",
+          "startSeconds": 94,
+          "endSeconds": 104
+        }
+      ],
+      "builderInputSha256": "d836bb23299793833c2a92b9d30a75ce8060726001783e6bf9546bc83dbffffd"
+    },
+    {
+      "id": "apollo11-moonwalk",
+      "clip": "apollo11-moonwalk-original.mp4",
+      "sourceFile": "apollo11-moonwalk-original.mp4",
+      "sourceStartSeconds": 105,
+      "title": "Apollo 11 astronauts and flag on the lunar surface",
+      "historicalDate": "1969-07-21",
+      "dateContext": "21 July UTC; conventionally dated 20 July 1969 in U.S. mission coverage (EDT)",
+      "sourcePage": "https://www.nasa.gov/missions/apollo-11-hd-videos/",
+      "downloadUrl": "https://images-assets.nasa.gov/video/Apollo_11_moonwalk_montage_720p/Apollo_11_moonwalk_montage_720p~medium.mp4",
+      "credit": "NASA — restored Apollo 11 television footage",
+      "rights": "NASA media generally not subject to copyright in the United States; educational/informational use allowed with acknowledgement and no implied endorsement, subject to NASA guidelines.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "actualMotionFootage": true,
+      "eventVerified": true,
+      "readyForUse": true,
+      "caveats": [
+        "Restored NASA television imagery of Apollo 11 astronauts and flag on the lunar surface. The authentic first-step radio quotation is used as documentary audio; it does not establish exact audiovisual synchronization with every selected image.",
+        "First lunar steps occurred 21 July 1969 UTC, or 20 July in U.S. EDT coverage."
+      ],
+      "builderSource": "archive/apollo11-moonwalk-original.mp4",
+      "classification": "actual restored historical lunar television footage",
+      "finalFilmUsage": [
+        {
+          "shotId": "moonwalk",
+          "startSeconds": 104,
+          "endSeconds": 118
+        }
+      ],
+      "builderInputSha256": "9a7e992383f3b0c7460ea6b3ceb3bca369bda5ce9dd9a27dda51a4bf0f10970a"
+    },
+    {
+      "id": "curiosity-panorama",
+      "clip": "curiosity-panorama-2012-original.mov",
+      "sourceFile": "curiosity-panorama-2012-original.mov",
+      "sourceStartSeconds": 26,
+      "title": "Curiosity panorama of its Gale Crater landing site",
+      "historicalDate": "2012-08-08",
+      "releaseDate": "2012-08-10",
+      "sourcePage": "https://science.nasa.gov/resource/curiositys-first-low-resolution-color-panorama/",
+      "downloadUrl": "https://assets.science.nasa.gov/content/dam/science/psd/mars/downloadable_items/30437_msl20120810_pano-1280.mov",
+      "credit": "NASA/JPL-Caltech/MSSS",
+      "rights": "NASA/JPL media educational/informational use with full source acknowledgement; see NASA and JPL image-use policies.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "additionalRightsUrl": "https://www.jpl.nasa.gov/jpl-image-use-policy/",
+      "actualMotionFootage": false,
+      "authenticSpacecraftImagery": true,
+      "eventVerified": true,
+      "readyForUse": true,
+      "caveats": [
+        "Real Curiosity Mastcam photographs captured 8 August 2012, stitched into a panorama. The editorial pan is not real-time moving-camera footage and does not show a rover in motion.",
+        "The illustrated source introduction is excluded. Curiosity is not characterized as abandoned or shut down."
+      ],
+      "builderSource": "archive/curiosity-panorama-2012-original.mov",
+      "classification": "pan across authentic stitched spacecraft photographs",
+      "finalFilmUsage": [
+        {
+          "shotId": "mars",
+          "startSeconds": 182,
+          "endSeconds": 192
+        }
+      ],
+      "builderInputSha256": "559f4c3357badd3d11a9d5074ac26e43b0ee577b474bac3b166601734a7639f7"
+    },
+    {
+      "id": "jfk-rice-1962",
+      "clip": "jfk-rice-complete-20_75.mp4",
+      "builderSource": "v5-audio/jfk-rice-complete-20_75.mp4",
+      "sourceFile": "jfk-rice-context-33s.mp4",
+      "sourceStartSeconds": 3.75,
+      "sourceEndSeconds": 24.5,
+      "sourceRangeReference": "Verified local 33-second context file, not an asserted exact global master time.",
+      "title": "John F. Kennedy address at Rice University",
+      "historicalDate": "1962-09-12",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:President_Kennedy%27s_Speech_at_Rice_University.ogv",
+      "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/1/16/President_Kennedy%27s_Speech_at_Rice_University.ogv",
+      "primaryTranscriptUrl": "https://www.jfklibrary.org/archives/other-resources/john-f-kennedy-speeches/rice-university-19620912",
+      "primaryAudioCatalogUrl": "https://www.jfklibrary.org/asset-viewer/archives/jfkwha-127-002",
+      "primaryAudioUrl": "https://static.jfklibrary.org/2311tr5g0r14552308p8qs05546cv6c1.mp3",
+      "credit": "John F. Kennedy Presidential Library and Museum / NASA",
+      "rights": "Public domain in the United States; JFK Library catalog explicitly states Copyright Status: Public Domain; NASA video Commons metadata also marks Public domain.",
+      "actualMotionFootage": true,
+      "eventVerified": true,
+      "classification": "actual historical speech film with matching live audio",
+      "caveats": [
+        "Original speech pace and crowd applause retained. The delivered handle includes the beginning of the next sentence at approximately 19.23 seconds; the final audio edit ends at 18.95 seconds, after “hard”.",
+        "Primary Library transcript establishes wording; ASR is unreliable over applause."
+      ],
+      "transcript": "We choose to go to the Moon in this decade and do the other things, not because they are easy, but because they are hard.",
+      "finalFilmUsage": [
+        {
+          "shotId": "kennedy",
+          "startSeconds": 68,
+          "endSeconds": 88
+        }
+      ],
+      "builderInputSha256": "17a98df3adba350fe7108711b1a9cc86d7fa40afbf4f5fbf5e33eb78c567cfbd"
+    },
+    {
+      "id": "discovery-sts133",
+      "clip": "discovery-launch-12s.mp4",
+      "builderSource": "v5-spaceflight/discovery-launch-12s.mp4",
+      "sourceFile": "discovery-launch-original.mp4",
+      "sourceStartSeconds": 11.5,
+      "sourceEndSeconds": 23.5,
+      "durationSeconds": 12,
+      "title": "Space Shuttle Discovery · STS-133 launch",
+      "historicalDate": "2011-02-24",
+      "releaseDate": "2011-02-24",
+      "sourcePage": "https://images.nasa.gov/details/ksc_022411_sts133_launch",
+      "downloadUrl": "https://images-assets.nasa.gov/video/ksc_022411_sts133_launch/ksc_022411_sts133_launch~orig.mp4",
+      "credit": "NASA / Kennedy Space Center",
+      "rights": "NASA-origin factual archive footage; generally not subject to copyright in the United States under NASA media usage guidelines; source attribution required; no endorsement implied.",
+      "rightsDetails": {
+        "classification": "NASA-origin factual archive footage; generally not subject to copyright in the United States under NASA media usage guidelines; source attribution required; no endorsement implied.",
+        "rights_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+        "rights_evidence_local": "nasa-media-guidelines.txt",
+        "use_context": "Factual educational/editorial history montage. Identifiable-person, third-party and NASA identifier restrictions remain applicable under the linked guidelines."
+      },
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "classification": "actual ground-camera footage of Space Shuttle Discovery launching on STS-133",
+      "actualMotionFootage": true,
+      "eventVerified": true,
+      "sha256": "a4974ffc9ecca14896cdf5bda1858fe29990a03c6244c3ca8710d61620213317",
+      "sourceSha256": "f047722e242ad811d17b1335ccadea31856843965ad13b58f24ad6424e54d725",
+      "sourceNativeDimensions": [
+        800,
+        450
+      ],
+      "modifications": "Embedded black border cropped to 600x338 at x100 y56, Lanczos resized 1280x720, 24fps, H264 CRF19, no audio.",
+      "caveats": [
+        "Discovery is a crewed Space Shuttle orbiter, not a probe. This is STS-133 in 2011, distinct from Hubble deployment on STS-31 in 1990."
+      ],
+      "audioCompanionUsed": true,
+      "finalFilmUsage": [
+        {
+          "shotId": "discovery",
+          "startSeconds": 118,
+          "endSeconds": 130
+        }
+      ],
+      "builderInputSha256": "a4974ffc9ecca14896cdf5bda1858fe29990a03c6244c3ca8710d61620213317"
+    },
+    {
+      "id": "hubble-sts31",
+      "clip": "hubble-deployment-10s.mp4",
+      "builderSource": "v5-spaceflight/hubble-deployment-10s.mp4",
+      "sourceFile": "hubble-bestof-original.webm",
+      "sourceStartSeconds": 254.0,
+      "sourceEndSeconds": 264.0,
+      "durationSeconds": 10,
+      "title": "Hubble Space Telescope · STS-31 deployment",
+      "historicalDate": "1990-04-25",
+      "releaseDate": "2015-04-20",
+      "sourcePage": "https://svs.gsfc.nasa.gov/11856/",
+      "downloadUrl": "https://svs.gsfc.nasa.gov/vis/a010000/a011800/a011856/Best_of_Hubble_youtube_hq.webm",
+      "credit": "NASA's Goddard Space Flight Center",
+      "rights": "NASA U.S. Government media; generally not subject to U.S. copyright; source credit retained; no NASA endorsement implied. Excerpt contains picture only; source audio removed.",
+      "rightsDetails": {
+        "status": "NASA U.S. Government media; generally not subject to U.S. copyright; source credit retained; no NASA endorsement implied. Excerpt contains picture only; source audio removed.",
+        "guidelines_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+      },
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "classification": "actual archival camera footage; STS-31; 16mm orbital film",
+      "actualMotionFootage": true,
+      "eventVerified": true,
+      "sha256": "87492091a04d0c2d3b4d506964ccdd8ff6a2adc168f08cfa5ae40cb53021d78a",
+      "sourceSha256": "b8e249e928227db082dd12a1921f3c7847895c2b5970ea4327e51ca341ee9000",
+      "sourceNativeDimensions": [
+        1280,
+        720
+      ],
+      "modifications": "Original 4:3 pillarboxing preserved within 1280x720; 24fps, H264 CRF19, no audio.",
+      "verification": {
+        "method": "Reviewed full source contact sheet and 1-second contact frames through selected 254–264s. Actual Hubble and robotic arm above Earth in one uninterrupted shot. Confirmed identical 1990 deployment camera sequence in NASA SVS 10321 item 23, explicitly documented as upconverted 16mm film of STS-31 HST deployment April 25 1990.",
+        "corroboration_page": "https://svs.gsfc.nasa.gov/10321/",
+        "corroboration_media_url": "https://svs.gsfc.nasa.gov/vis/a010000/a010300/a010321/23-resource-hst_deployment-resourcereelreference_MPEG-1.webmhd.webm",
+        "not_used": "The 2010 ksc_042310_hubble source at 158–182s is CGI and excluded.",
+        "full_decode": "ffmpeg -v error -i hubble-deployment-10s.mp4 -f null - completed without errors"
+      },
+      "fullCredits": {
+        "editors": [
+          "Swarupa Nune (InuTeq)",
+          "Michael McClare (HTSI)"
+        ],
+        "technical_support": [
+          "Swarupa Nune (InuTeq)"
+        ],
+        "producers": [
+          "Michael McClare (HTSI)",
+          "Michelle Handleman (USRA)"
+        ]
+      },
+      "caveats": [
+        "Actual STS-31 deployment film, 25 April 1990. Original 4:3 archival framing is preserved inside the 16:9 resource file. The unrelated 2010 anniversary source at 158–182 seconds is CGI and is excluded."
+      ],
+      "finalFilmUsage": [
+        {
+          "shotId": "hubble",
+          "startSeconds": 130,
+          "endSeconds": 140
+        }
+      ],
+      "builderInputSha256": "87492091a04d0c2d3b4d506964ccdd8ff6a2adc168f08cfa5ae40cb53021d78a"
+    },
+    {
+      "id": "iss-interior",
+      "clip": "iss-interior-12s.mp4",
+      "builderSource": "v5-spaceflight/iss-interior-12s.mp4",
+      "sourceFile": "iss-broll-original.mp4",
+      "sourceStartSeconds": 65,
+      "sourceEndSeconds": 77,
+      "durationSeconds": 12,
+      "title": "International Space Station · life in orbit",
+      "historicalDate": null,
+      "releaseDate": "2020-10-28",
+      "sourcePage": "https://images.nasa.gov/details/GRC-2020-CM-0152",
+      "downloadUrl": "https://images-assets.nasa.gov/video/GRC-2020-CM-0152/GRC-2020-CM-0152~medium.mp4",
+      "credit": "NASA / Glenn Research Center’s Imaging Technology Center",
+      "rights": "NASA-origin factual archive footage; generally not subject to copyright in the United States under NASA media usage guidelines; source attribution required; no endorsement implied.",
+      "rightsDetails": {
+        "classification": "NASA-origin factual archive footage; generally not subject to copyright in the United States under NASA media usage guidelines; source attribution required; no endorsement implied.",
+        "rights_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+        "rights_evidence_local": "nasa-media-guidelines.txt",
+        "use_context": "Factual educational/editorial history montage. Identifiable-person, third-party and NASA identifier restrictions remain applicable under the linked guidelines."
+      },
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "classification": "actual onboard interior camera footage of ISS crewmembers using exercise equipment",
+      "actualMotionFootage": true,
+      "eventVerified": true,
+      "sha256": "90dbaa7f9609dd0a69a65136fbe75006eba063f66ab0182098dc9d63f4d14db0",
+      "sourceSha256": "0dc7b4af39fe1b084706c0a277311a82d730ba42b351b0ca151c987f40001c32",
+      "sourceNativeDimensions": [
+        1280,
+        720
+      ],
+      "modifications": "1280x720, 24fps, H264 CRF19, no audio. Source CGI exterior at approximately 10–23s excluded.",
+      "caveats": [
+        "Exact original recording dates and expedition identifiers are not provided in this compilation metadata. Do not caption the footage as shot in 2020.",
+        "Only real interior footage is selected; the source reel CGI exterior is excluded."
+      ],
+      "finalFilmUsage": [
+        {
+          "shotId": "iss-interior",
+          "startSeconds": 148,
+          "endSeconds": 160
+        }
+      ],
+      "builderInputSha256": "90dbaa7f9609dd0a69a65136fbe75006eba063f66ab0182098dc9d63f4d14db0"
+    },
+    {
+      "id": "webb-separation",
+      "clip": "webb-separation-10s.mp4",
+      "builderSource": "v5-spaceflight/webb-separation-10s.mp4",
+      "sourceFile": "webb-separation-original.mp4",
+      "sourceStartSeconds": 20,
+      "sourceEndSeconds": 30,
+      "durationSeconds": 10,
+      "title": "James Webb Space Telescope · Ariane 5 separation",
+      "historicalDate": "2021-12-25",
+      "releaseDate": "2021-12-30",
+      "sourcePage": "https://www.esa.int/ESA_Multimedia/Videos/2021/12/Webb_separation_from_Ariane_5",
+      "downloadUrl": "https://dlmultimedia.esa.int/download/public/videos/2021/12/050/2112_050_AR_EN.mp4",
+      "credit": "© ESA/Arianespace; camera: Réaltra Space Systems Engineering",
+      "rights": "ESA Standard Licence — educational, editorial and/or informational use; not public domain or Creative Commons.",
+      "rightsDetails": {
+        "classification": "ESA Standard Licence — educational, editorial and/or informational use; not public domain or Creative Commons.",
+        "rights_url": "https://www.esa.int/ESA_Multimedia/Terms_and_Conditions",
+        "rights_evidence_local": "esa-media-terms.txt",
+        "credit_requirement": "Credit copyright in appropriate on-screen space or end credits. Source ESA and Arianespace marks remain embedded in excerpt.",
+        "use_context": "Factual educational/editorial history montage. Commercial uses require separate written authorization under ESA terms.",
+        "music_excluded": "Original program credits “Lonely Waltz” by Charlotte Hatherley, used with permission. No program audio is included in the delivered silent excerpt."
+      },
+      "rightsUrl": "https://www.esa.int/ESA_Multimedia/Terms_and_Conditions",
+      "classification": "actual Ariane 5 upper-stage camera video of James Webb Space Telescope separating, with Earth in the background",
+      "actualMotionFootage": true,
+      "eventVerified": true,
+      "sha256": "6e056e2b8df623ce416b58c42eb229b1c46783d2d58e3cbe35fd1b1ab574346e",
+      "sourceSha256": "cd5de56e2e718562566948076b35dc5eb025a3f157c5cb1f3cbcd68090f03388",
+      "sourceNativeDimensions": [
+        768,
+        432
+      ],
+      "modifications": "Lanczos resized 1280x720, 24fps, H264 CRF19, no audio; original ESA/Arianespace marks retained.",
+      "caveats": [
+        "Actual Ariane 5 upper-stage camera footage of Webb separating. Original program music “Lonely Waltz” by Charlotte Hatherley is excluded. Embedded ESA/Arianespace marks retained.",
+        "ESA Standard Licence covers educational/editorial/informational use; it is not a public-domain designation."
+      ],
+      "finalFilmUsage": [
+        {
+          "shotId": "webb",
+          "startSeconds": 170,
+          "endSeconds": 182
+        }
+      ],
+      "builderInputSha256": "6e056e2b8df623ce416b58c42eb229b1c46783d2d58e3cbe35fd1b1ab574346e"
+    },
+    {
+      "id": "new-horizons-launch-2006",
+      "clip": "new-horizons-launch-12s.mp4",
+      "builderSource": "v5-probe-iss/new-horizons-launch-12s.mp4",
+      "sourceFile": "ksc_011906_nh_launch~orig.mp4",
+      "sourceStartSeconds": 10,
+      "sourceEndSeconds": 22,
+      "durationSeconds": 12,
+      "title": "New Horizons lifts off — Atlas V launch",
+      "historicalDate": "2006-01-19",
+      "sourcePage": "https://images.nasa.gov/details/ksc_011906_nh_launch",
+      "downloadUrl": "https://images-assets.nasa.gov/video/ksc_011906_nh_launch/ksc_011906_nh_launch~orig.mp4",
+      "metadataUrl": "https://images-assets.nasa.gov/video/ksc_011906_nh_launch/metadata.json",
+      "assetApi": "https://images-api.nasa.gov/asset/ksc_011906_nh_launch",
+      "contextPage": null,
+      "credit": "NASA / Kennedy Space Center",
+      "rights": "NASA metadata identifies photographer as NASA or National Aeronautics and Space Administration. NASA media generally available for informational/editorial use under NASA media guidelines; no item-specific third-party copyright restriction appears in metadata.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "actualMotionFootage": true,
+      "eventVerified": true,
+      "classification": "actual camera footage",
+      "scientificContext": "Ground launch cameras show Atlas V carrying New Horizons planetary probe lifting off from Cape Canaveral. Camera cuts from closeup of vehicle to wide liftoff/ascending rocket. No animation.",
+      "nativeResolution": "800x450 with existing 4:3 pillarboxing",
+      "modifications": "Source 10–22 seconds; audio removed; Lanczos upscale; H.264 yuv420p30fps; no speed change.",
+      "sha256": "f6927113db2942a4223c80e9abb274119396254e8d5d6f25af446cb758e0cc09",
+      "caveats": [
+        "Official source is lower resolution than the 720p output; scaling creates no additional source detail."
+      ],
+      "finalFilmUsage": [
+        {
+          "shotId": "new-horizons",
+          "startSeconds": 160,
+          "endSeconds": 170
+        }
+      ],
+      "builderInputSha256": "f6927113db2942a4223c80e9abb274119396254e8d5d6f25af446cb758e0cc09"
+    },
+    {
+      "id": "iss-exterior-crew2-2021",
+      "clip": "iss-exterior-crew2-10s.mp4",
+      "builderSource": "v5-probe-iss/iss-exterior-crew2-10s.mp4",
+      "sourceFile": "jsc2021m000259_SpaceX_Crew-2_Flight_Day_3_Highlights~orig.mp4",
+      "sourceStartSeconds": 550,
+      "sourceEndSeconds": 560,
+      "durationSeconds": 10,
+      "title": "International Space Station exterior during Crew-2 fly-around",
+      "historicalDate": "2021-11-08",
+      "sourcePage": "https://images.nasa.gov/details/jsc2021m000259_SpaceX_Crew-2_Flight_Day_3_Highlights",
+      "downloadUrl": "https://images-assets.nasa.gov/video/jsc2021m000259_SpaceX_Crew-2_Flight_Day_3_Highlights/jsc2021m000259_SpaceX_Crew-2_Flight_Day_3_Highlights~orig.mp4",
+      "metadataUrl": "https://images-assets.nasa.gov/video/jsc2021m000259_SpaceX_Crew-2_Flight_Day_3_Highlights/metadata.json",
+      "assetApi": "https://images-api.nasa.gov/asset/jsc2021m000259_SpaceX_Crew-2_Flight_Day_3_Highlights",
+      "contextPage": "https://www.nasa.gov/blogs/commercialcrew/2021/11/08/crew-2-astronauts-conduct-first-fly-around-from-inside-crew-dragon/",
+      "credit": "NASA / SpaceX",
+      "rights": "NASA/JSC-hosted Crew-2 resource reel. No item-specific third-party copyright restriction appears in available NASA metadata. NASA media guidelines apply, including caveat for any separately credited material. Metadata AVAIL photographer field is empty.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "actualMotionFootage": true,
+      "eventVerified": true,
+      "classification": "actual camera footage",
+      "scientificContext": "Sunlit external ISS viewed from SpaceX Crew Dragon Endeavour during Crew-2 departure/fly-around on Nov 8 2021. Black space background, no Earth. NASA metadata explicitly states capsule performed fly-around observation before starting journey home. XMP source entry at 547.9807667s, duration 14.36435s names SEND-6-HD_2021_312_2009_46000_1553056.mxf (camera downlink). No CGI.",
+      "nativeResolution": "1280x720",
+      "modifications": "Source550–560 seconds acquired by FFmpeg HTTP seeking; original 1.775GB not downloaded in full. Audio removed; H.264 yuv420p30fps; no speed change.",
+      "sha256": "f0991b73bd7080b180b0aaf5b67626eb2b7977e651683c37fced14221a0f9138",
+      "caveats": [
+        "Original camera exposure is bright; lower array tips are cut off by original camera framing."
+      ],
+      "finalFilmUsage": [
+        {
+          "shotId": "iss-exterior",
+          "startSeconds": 140,
+          "endSeconds": 148
+        }
+      ],
+      "builderInputSha256": "f0991b73bd7080b180b0aaf5b67626eb2b7977e651683c37fced14221a0f9138",
+      "releaseDate": "2021-11-09"
+    }
+  ],
+  "audio": [
+    {
+      "id": "jfk-rice-1962",
+      "file": "jfk-rice-complete-20_75-normalized.wav",
+      "speaker": "John F. Kennedy",
+      "eventDate": "1962-09-12",
+      "filmStartSeconds": 68,
+      "filmEndSeconds": 86.95,
+      "sourcePage": "https://www.jfklibrary.org/asset-viewer/archives/jfkwha-127-002",
+      "sourceMediaUrl": "https://static.jfklibrary.org/2311tr5g0r14552308p8qs05546cv6c1.mp3",
+      "selectedRecordingUrl": "https://upload.wikimedia.org/wikipedia/commons/1/16/President_Kennedy%27s_Speech_at_Rice_University.ogv",
+      "selectedRecordingPage": "https://commons.wikimedia.org/wiki/File:President_Kennedy%27s_Speech_at_Rice_University.ogv",
+      "credit": "John F. Kennedy Presidential Library and Museum / NASA",
+      "rights": "Public domain in the United States; JFK Library catalog explicitly states Copyright Status: Public Domain; NASA video Commons metadata also marks Public domain.",
+      "sourceRangeReference": "Local matching context file jfk-rice-context-33s.mp4",
+      "sourceStartSeconds": 3.75,
+      "sourceEndSeconds": 22.7,
+      "selectedFileStartSeconds": 0,
+      "selectedFileEndSeconds": 18.95,
+      "transcript": "We choose to go to the Moon in this decade and do the other things, not because they are easy, but because they are hard.",
+      "transcriptWithRepetitions": "We choose to go to the Moon. We choose to go to the Moon. We choose to go to the Moon in this decade and do the other things, not because they are easy, but because they are hard.",
+      "primaryTranscriptUrl": "https://www.jfklibrary.org/archives/other-resources/john-f-kennedy-speeches/rice-university-19620912",
+      "processing": "Source segment and matched speech film at original pace; loudness normalization to -18 LUFS / -2 dBTP, 48 kHz mono. Short final mix fades; next sentence excluded.",
+      "globalMasterOffsetStatus": "Context start is approximately 540 seconds in the source; exact global extraction offset is not established. Do not use an approximate global offset as exact.",
+      "sha256": "9f0a6b337aeaab83499c9fac25466a6d5a0e60f572003f2cd40929de19b5dc22",
+      "bytes": 1992078,
+      "authenticHistoricalRecording": true,
+      "syntheticVoice": false,
+      "originalSpeedPreserved": true
+    },
+    {
+      "id": "apollo11-countdown-liftoff",
+      "file": "apollo11-countdown-liftoff-16s.wav",
+      "speaker": "Jack King, NASA Public Affairs announcer",
+      "eventDate": "1969-07-16",
+      "filmStartSeconds": 88,
+      "filmEndSeconds": 104,
+      "sourcePage": "https://www.nasa.gov/history/apollo-11-audio-highlights/",
+      "sourceMediaUrl": "https://www.nasa.gov/wp-content/uploads/2015/03/Apollo-11_Day-01-Highlights.mp3",
+      "sourceTranscriptUrl": "https://www.nasa.gov/wp-content/uploads/2015/03/Apollo-11_Day-01-Highlights.pdf",
+      "sourceStartSeconds": 119.2,
+      "sourceEndSeconds": 135.2,
+      "selectedFileStartSeconds": 0,
+      "selectedFileEndSeconds": 16,
+      "credit": "Jack King / NASA",
+      "rights": "NASA-produced U.S. federal government archival recording; public domain in the United States under 17 USC 105; no endorsement implied.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "transcript": "6, 5, 4, 3, 2, 1, 0. All engines running. Liftoff. We have a liftoff, 32 minutes past the hour, liftoff on Apollo 11.",
+      "processing": "Source trim only (119.2–135.2 s), mono downmix, 55 Hz high-pass, loudness normalization to -17 LUFS / -2 dBTP, 48 kHz resampling. Original speed maintained.",
+      "verification": "NASA official Day 1 transcript page 1; base.en ASR independently confirms all countdown numbers and complete liftoff announcement. Word offsets in apollo11-launch-last22s.asr.json (source117seconds).",
+      "sha256": "4c149e0c88657a062efec54190077ce8eb827b1aee75747cec62f2eec971aa4f",
+      "bytes": 1536170,
+      "authenticHistoricalRecording": true,
+      "syntheticVoice": false,
+      "originalSpeedPreserved": true
+    },
+    {
+      "id": "armstrong-first-step-1969",
+      "file": "armstrong-small-step-normalized.wav",
+      "speaker": "Neil A. Armstrong",
+      "eventDate": "1969-07-21",
+      "dateContext": "21 July 1969 UTC; 20 July in EDT mission coverage.",
+      "filmStartSeconds": 105,
+      "filmEndSeconds": 114.412646,
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Armstrong_Small_Step.ogg",
+      "sourceMediaUrl": "https://upload.wikimedia.org/wikipedia/commons/d/dd/Armstrong_Small_Step.ogg",
+      "primaryArchiveReference": "https://science.ksc.nasa.gov/history/apollo/apollo-11/apollo-11-info.html",
+      "corroboratingPrimaryAudio": "https://science.ksc.nasa.gov/history/apollo/apollo-11/sounds/a11step.wav",
+      "sourceStartSeconds": 14.6,
+      "sourceEndSeconds": 24.012646,
+      "selectedFileStartSeconds": 0,
+      "selectedFileEndSeconds": 9.412646,
+      "credit": "Neil Armstrong / NASA",
+      "rights": "Public domain in the United States; NASA work; Wikimedia Commons marks PD NASA / Public domain",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "transcriptAudible": "That's one small step for man, one giant leap for mankind.",
+      "transcriptEditorial": "That's one small step for [a] man, one giant leap for mankind.",
+      "transcriptNote": "The article a is disputed and is not clearly audible. Brackets are editorial, not a newly inserted spoken word.",
+      "processing": "Natural radio pause and original pace retained. Loudness normalization to -18 LUFS / -2 dBTP; 48 kHz mono. No word or article is synthesized or inserted.",
+      "audiovisualContext": "Authentic first-step radio recording laid over historical Apollo 11 moonwalk montage; not asserted as synchronized first-footfall footage.",
+      "sha256": "42b2537d94a79320aaa799bb11eea345cdfe37efcde0a1336805012e0c14aa4e",
+      "bytes": 903692,
+      "authenticHistoricalRecording": true,
+      "syntheticVoice": false,
+      "originalSpeedPreserved": true
+    },
+    {
+      "id": "discovery-sts133-broadcast-2011",
+      "file": "discovery-launch-broadcast-normalized-12s.wav",
+      "speaker": "NASA live launch announcer",
+      "eventDate": "2011-02-24",
+      "filmStartSeconds": 118,
+      "filmEndSeconds": 130,
+      "sourcePage": "https://images.nasa.gov/details/ksc_022411_sts133_launch",
+      "sourceMediaUrl": "https://images-assets.nasa.gov/video/ksc_022411_sts133_launch/ksc_022411_sts133_launch~orig.mp4",
+      "sourceStartSeconds": 11.5,
+      "sourceEndSeconds": 23.5,
+      "selectedFileStartSeconds": 0,
+      "selectedFileEndSeconds": 12,
+      "credit": "NASA / Kennedy Space Center",
+      "rights": "NASA-origin factual archival recording; generally public domain in the United States under NASA media guidelines; no endorsement implied.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "transcript": "And the final liftoff of Discovery, a tribute to the dedication, hard work, and pride of America’s space shuttle team. The shuttle has cleared the tower.",
+      "processing": "Stereo-to-mono downmix; two-pass loudnorm target -18 LUFS / -2 dBTP; 48 kHz PCM16; exact 12s, original speed.",
+      "authenticity": "Original NASA live broadcast commentary and rocket rumble; no synthetic speech, no speed changes.",
+      "musicAssessment": "No apparent music bed: source metadata identifies NASA STS-133 launch, ASR identifies live narration, spectrogram shows speech and broadband engine noise without a sustained melodic line. Bounded analysis; no isolated stems available.",
+      "sha256": "3e60f04d1ce674d4aab007f87cf2eff6a4331c44a4498a4ad46e3ae04cb2512f",
+      "bytes": 1152078,
+      "authenticHistoricalRecording": true,
+      "syntheticVoice": false,
+      "originalSpeedPreserved": true,
+      "audiovisualContext": "Original NASA STS-133 live broadcast narration and engine rumble; not isolated field-recorded engine sound. Picture has an outgoing dissolve handle; audio remains at original pace."
+    }
+  ],
+  "editPlan": "scripts/prologue-edit.json",
+  "editPlanSha256": "87986ea0860a73721b75c42b3ff82be5e4e1ac21adaf51a6e322d926d065a6e5",
+  "crossfadeSeconds": 0.75,
+  "editTimeline": [
+    {
+      "id": "big-bang",
+      "filmStartSeconds": 0,
+      "filmEndSeconds": 8,
+      "nominalDurationSeconds": 8,
+      "renderedSegmentSeconds": 8.75,
+      "overlapHandleSeconds": 0.75,
+      "sourceId": "big-bang",
+      "builderSource": "cosmos/big-bang-1080-original.mov",
+      "builderInputStartSeconds": 0.5,
+      "builderInputEndSeconds": 9.25,
+      "originalSpeedPreserved": false,
+      "presentationDurationMultiplier": 1.0,
+      "monochrome": false,
+      "fit": "cover",
+      "originalSourceStartSeconds": 0.5,
+      "originalSourceEndSeconds": 9.25
+    },
+    {
+      "id": "solar-nebula",
+      "filmStartSeconds": 8,
+      "filmEndSeconds": 16,
+      "nominalDurationSeconds": 8,
+      "renderedSegmentSeconds": 8.75,
+      "overlapHandleSeconds": 0.75,
+      "sourceId": "solar-nebula",
+      "builderSource": "v5-origins/01-protoplanetary-disk-9s.mp4",
+      "builderInputStartSeconds": 0,
+      "builderInputEndSeconds": 8.75,
+      "originalSpeedPreserved": false,
+      "presentationDurationMultiplier": 1.0,
+      "monochrome": false,
+      "fit": "cover",
+      "originalSourceStartSeconds": 3.0,
+      "originalSourceEndSeconds": 11.75
+    },
+    {
+      "id": "early-earth-globe",
+      "filmStartSeconds": 16,
+      "filmEndSeconds": 24,
+      "nominalDurationSeconds": 8,
+      "renderedSegmentSeconds": 8.75,
+      "overlapHandleSeconds": 0.75,
+      "sourceId": "early-earth-globe",
+      "builderSource": "v5-origins/optional-early-earth-globe-7.5s.mp4",
+      "builderInputStartSeconds": 0,
+      "builderInputEndSeconds": 7.5,
+      "originalSpeedPreserved": false,
+      "presentationDurationMultiplier": 1.16666667,
+      "monochrome": false,
+      "fit": "cover",
+      "originalSourceStartSeconds": 12.0,
+      "originalSourceEndSeconds": 19.5
+    },
+    {
+      "id": "earth-bombardment",
+      "filmStartSeconds": 24,
+      "filmEndSeconds": 30,
+      "nominalDurationSeconds": 6,
+      "renderedSegmentSeconds": 6.75,
+      "overlapHandleSeconds": 0.75,
+      "sourceId": "earth-bombardment",
+      "builderSource": "v5-origins/02-young-earth-bombardment-7.5s.mp4",
+      "builderInputStartSeconds": 0,
+      "builderInputEndSeconds": 6.75,
+      "originalSpeedPreserved": false,
+      "presentationDurationMultiplier": 1.0,
+      "monochrome": false,
+      "fit": "cover",
+      "originalSourceStartSeconds": 0.2,
+      "originalSourceEndSeconds": 6.95
+    },
+    {
+      "id": "molten-earth",
+      "filmStartSeconds": 30,
+      "filmEndSeconds": 36,
+      "nominalDurationSeconds": 6,
+      "renderedSegmentSeconds": 6.75,
+      "overlapHandleSeconds": 0.75,
+      "sourceId": "molten-earth",
+      "builderSource": "v5-origins/03-molten-earth-surface-7.5s.mp4",
+      "builderInputStartSeconds": 0,
+      "builderInputEndSeconds": 6.75,
+      "originalSpeedPreserved": false,
+      "presentationDurationMultiplier": 1.0,
+      "monochrome": false,
+      "fit": "cover",
+      "originalSourceStartSeconds": 0.2,
+      "originalSourceEndSeconds": 6.95
+    },
+    {
+      "id": "living-earth",
+      "filmStartSeconds": 36,
+      "filmEndSeconds": 46,
+      "nominalDurationSeconds": 10,
+      "renderedSegmentSeconds": 10.75,
+      "overlapHandleSeconds": 0.75,
+      "sourceId": "living-earth",
+      "builderSource": "cosmos/earth-oceans-original.mp4",
+      "builderInputStartSeconds": 3,
+      "builderInputEndSeconds": 13.75,
+      "originalSpeedPreserved": false,
+      "presentationDurationMultiplier": 1.0,
+      "monochrome": false,
+      "fit": "cover",
+      "originalSourceStartSeconds": 3,
+      "originalSourceEndSeconds": 13.75
+    },
+    {
+      "id": "sputnik-wide",
+      "filmStartSeconds": 46,
+      "filmEndSeconds": 49,
+      "nominalDurationSeconds": 3,
+      "renderedSegmentSeconds": 3.75,
+      "overlapHandleSeconds": 0.75,
+      "sourceId": "sputnik-spare",
+      "builderSource": "archive/sputnik1-flight-spare-museum-6s.mp4",
+      "builderInputStartSeconds": 0,
+      "builderInputEndSeconds": 3.75,
+      "originalSpeedPreserved": false,
+      "presentationDurationMultiplier": 1.0,
+      "monochrome": true,
+      "fit": "cover",
+      "originalSourceStartSeconds": 60.5,
+      "originalSourceEndSeconds": 64.25
+    },
+    {
+      "id": "sputnik-closeup",
+      "filmStartSeconds": 49,
+      "filmEndSeconds": 60,
+      "nominalDurationSeconds": 11,
+      "renderedSegmentSeconds": 11.75,
+      "overlapHandleSeconds": 0.75,
+      "sourceId": "sputnik-spare-closeup",
+      "builderSource": "v5-origins/sputnik/sputnik1-spare-closeup-13s.mp4",
+      "builderInputStartSeconds": 0,
+      "builderInputEndSeconds": 11.75,
+      "originalSpeedPreserved": false,
+      "presentationDurationMultiplier": 1.0,
+      "monochrome": true,
+      "fit": "cover",
+      "originalSourceStartSeconds": 64.5,
+      "originalSourceEndSeconds": 76.25
+    },
+    {
+      "id": "gagarin",
+      "filmStartSeconds": 60,
+      "filmEndSeconds": 68,
+      "nominalDurationSeconds": 8,
+      "renderedSegmentSeconds": 8.75,
+      "overlapHandleSeconds": 0.75,
+      "sourceId": "gagarin",
+      "builderSource": "archive/gagarin-helmet-archive-5s.mp4",
+      "builderInputStartSeconds": 0,
+      "builderInputEndSeconds": 5.0,
+      "originalSpeedPreserved": false,
+      "presentationDurationMultiplier": 1.75,
+      "monochrome": true,
+      "fit": "cover",
+      "originalSourceStartSeconds": 17,
+      "originalSourceEndSeconds": 22
+    },
+    {
+      "id": "kennedy",
+      "filmStartSeconds": 68,
+      "filmEndSeconds": 88,
+      "nominalDurationSeconds": 20,
+      "renderedSegmentSeconds": 20.75,
+      "overlapHandleSeconds": 0.75,
+      "sourceId": "jfk-rice-1962",
+      "builderSource": "v5-audio/jfk-rice-complete-20_75.mp4",
+      "builderInputStartSeconds": 0,
+      "builderInputEndSeconds": 20.75,
+      "originalSpeedPreserved": true,
+      "presentationDurationMultiplier": 1,
+      "monochrome": true,
+      "fit": "contain",
+      "originalSourceStartSeconds": 3.75,
+      "originalSourceEndSeconds": 24.5
+    },
+    {
+      "id": "apollo-engines",
+      "filmStartSeconds": 88,
+      "filmEndSeconds": 94,
+      "nominalDurationSeconds": 6,
+      "renderedSegmentSeconds": 6.75,
+      "overlapHandleSeconds": 0.75,
+      "sourceId": "apollo11-launch",
+      "builderSource": "archive/apollo11-launch-original.mp4",
+      "builderInputStartSeconds": 48,
+      "builderInputEndSeconds": 54.75,
+      "originalSpeedPreserved": false,
+      "presentationDurationMultiplier": 1.0,
+      "monochrome": true,
+      "fit": "cover",
+      "originalSourceStartSeconds": 48,
+      "originalSourceEndSeconds": 54.75
+    },
+    {
+      "id": "apollo-liftoff",
+      "filmStartSeconds": 94,
+      "filmEndSeconds": 104,
+      "nominalDurationSeconds": 10,
+      "renderedSegmentSeconds": 10.75,
+      "overlapHandleSeconds": 0.75,
+      "sourceId": "apollo11-launch",
+      "builderSource": "archive/apollo11-launch-original.mp4",
+      "builderInputStartSeconds": 66,
+      "builderInputEndSeconds": 76.75,
+      "originalSpeedPreserved": false,
+      "presentationDurationMultiplier": 1.0,
+      "monochrome": true,
+      "fit": "cover",
+      "originalSourceStartSeconds": 66,
+      "originalSourceEndSeconds": 76.75
+    },
+    {
+      "id": "moonwalk",
+      "filmStartSeconds": 104,
+      "filmEndSeconds": 118,
+      "nominalDurationSeconds": 14,
+      "renderedSegmentSeconds": 14.75,
+      "overlapHandleSeconds": 0.75,
+      "sourceId": "apollo11-moonwalk",
+      "builderSource": "archive/apollo11-moonwalk-original.mp4",
+      "builderInputStartSeconds": 105,
+      "builderInputEndSeconds": 119.75,
+      "originalSpeedPreserved": false,
+      "presentationDurationMultiplier": 1.0,
+      "monochrome": true,
+      "fit": "cover",
+      "originalSourceStartSeconds": 105,
+      "originalSourceEndSeconds": 119.75
+    },
+    {
+      "id": "discovery",
+      "filmStartSeconds": 118,
+      "filmEndSeconds": 130,
+      "nominalDurationSeconds": 12,
+      "renderedSegmentSeconds": 12.75,
+      "overlapHandleSeconds": 0.75,
+      "sourceId": "discovery-sts133",
+      "builderSource": "v5-spaceflight/discovery-launch-12s.mp4",
+      "builderInputStartSeconds": 0,
+      "builderInputEndSeconds": 12.0,
+      "originalSpeedPreserved": false,
+      "presentationDurationMultiplier": 1.0625,
+      "monochrome": false,
+      "fit": "cover",
+      "originalSourceStartSeconds": 11.5,
+      "originalSourceEndSeconds": 23.5
+    },
+    {
+      "id": "hubble",
+      "filmStartSeconds": 130,
+      "filmEndSeconds": 140,
+      "nominalDurationSeconds": 10,
+      "renderedSegmentSeconds": 10.75,
+      "overlapHandleSeconds": 0.75,
+      "sourceId": "hubble-sts31",
+      "builderSource": "v5-spaceflight/hubble-deployment-10s.mp4",
+      "builderInputStartSeconds": 0,
+      "builderInputEndSeconds": 10.0,
+      "originalSpeedPreserved": false,
+      "presentationDurationMultiplier": 1.075,
+      "monochrome": false,
+      "fit": "cover",
+      "originalSourceStartSeconds": 254.0,
+      "originalSourceEndSeconds": 264.0
+    },
+    {
+      "id": "iss-exterior",
+      "filmStartSeconds": 140,
+      "filmEndSeconds": 148,
+      "nominalDurationSeconds": 8,
+      "renderedSegmentSeconds": 8.75,
+      "overlapHandleSeconds": 0.75,
+      "sourceId": "iss-exterior-crew2-2021",
+      "builderSource": "v5-probe-iss/iss-exterior-crew2-10s.mp4",
+      "builderInputStartSeconds": 0,
+      "builderInputEndSeconds": 8.75,
+      "originalSpeedPreserved": false,
+      "presentationDurationMultiplier": 1.0,
+      "monochrome": false,
+      "fit": "cover",
+      "originalSourceStartSeconds": 550,
+      "originalSourceEndSeconds": 558.75
+    },
+    {
+      "id": "iss-interior",
+      "filmStartSeconds": 148,
+      "filmEndSeconds": 160,
+      "nominalDurationSeconds": 12,
+      "renderedSegmentSeconds": 12.75,
+      "overlapHandleSeconds": 0.75,
+      "sourceId": "iss-interior",
+      "builderSource": "v5-spaceflight/iss-interior-12s.mp4",
+      "builderInputStartSeconds": 0,
+      "builderInputEndSeconds": 12.0,
+      "originalSpeedPreserved": false,
+      "presentationDurationMultiplier": 1.0625,
+      "monochrome": false,
+      "fit": "cover",
+      "originalSourceStartSeconds": 65,
+      "originalSourceEndSeconds": 77.0
+    },
+    {
+      "id": "new-horizons",
+      "filmStartSeconds": 160,
+      "filmEndSeconds": 170,
+      "nominalDurationSeconds": 10,
+      "renderedSegmentSeconds": 10.75,
+      "overlapHandleSeconds": 0.75,
+      "sourceId": "new-horizons-launch-2006",
+      "builderSource": "v5-probe-iss/new-horizons-launch-12s.mp4",
+      "builderInputStartSeconds": 0,
+      "builderInputEndSeconds": 10.75,
+      "originalSpeedPreserved": false,
+      "presentationDurationMultiplier": 1.0,
+      "monochrome": false,
+      "fit": "cover",
+      "originalSourceStartSeconds": 10,
+      "originalSourceEndSeconds": 20.75
+    },
+    {
+      "id": "webb",
+      "filmStartSeconds": 170,
+      "filmEndSeconds": 182,
+      "nominalDurationSeconds": 12,
+      "renderedSegmentSeconds": 12.75,
+      "overlapHandleSeconds": 0.75,
+      "sourceId": "webb-separation",
+      "builderSource": "v5-spaceflight/webb-separation-10s.mp4",
+      "builderInputStartSeconds": 0,
+      "builderInputEndSeconds": 10.0,
+      "originalSpeedPreserved": false,
+      "presentationDurationMultiplier": 1.275,
+      "monochrome": false,
+      "fit": "cover",
+      "originalSourceStartSeconds": 20,
+      "originalSourceEndSeconds": 30.0
+    },
+    {
+      "id": "mars",
+      "filmStartSeconds": 182,
+      "filmEndSeconds": 192,
+      "nominalDurationSeconds": 10,
+      "renderedSegmentSeconds": 10.75,
+      "overlapHandleSeconds": 0.75,
+      "sourceId": "curiosity-panorama",
+      "builderSource": "archive/curiosity-panorama-2012-original.mov",
+      "builderInputStartSeconds": 26,
+      "builderInputEndSeconds": 36.75,
+      "originalSpeedPreserved": false,
+      "presentationDurationMultiplier": 1.0,
+      "monochrome": false,
+      "fit": "cover",
+      "originalSourceStartSeconds": 26,
+      "originalSourceEndSeconds": 36.75
+    },
+    {
+      "id": "relic",
+      "filmStartSeconds": 192,
+      "filmEndSeconds": 200,
+      "nominalDurationSeconds": 8,
+      "renderedSegmentSeconds": 8,
+      "overlapHandleSeconds": 0
+    }
+  ],
+  "editorialTreatment": {
+    "video": "0.75-second dissolves; early space-race archive sequences converted to monochrome, later spaceflight footage in restrained source color. Aspect-correct scaling/cropping; JFK 4:3 film contained in frame. Some silent imagery is slowed to fit the edit; individual presentation multipliers and source windows are recorded in editTimeline.",
+    "audio": "Genuine JFK speech, Apollo 11 countdown/liftoff, Armstrong radio and Discovery STS-133 broadcast at original pace and with original pauses. Source program music and unrelated narration excluded; no cloned or synthetic speech. Short mix fades and ducked original ambient score.",
+    "sourceRangeConvention": "Asset records describe verified delivered source clips. editTimeline records the original-source ranges consumed by the final builder, including the extra outgoing dissolve handle; filmStart/End are nominal narrative boundaries. Local prepared-excerpt ranges and original master ranges are distinguished.",
+    "generation": "No generated archive images, voice cloning, AI frame enhancement or AI motion interpolation."
+  },
+  "excludedSources": [
+    {
+      "source": "2010 ksc_042310_hubble anniversary source, approximately 158–182s",
+      "reason": "CGI Hubble sequence; replaced with actual STS-31 deployment film."
+    },
+    {
+      "source": "GRC-2020-CM-0152 ISS compilation exterior, approximately 10–23s",
+      "reason": "CGI station exterior; final ISS exterior comes from actual Crew-2 camera footage."
+    },
+    {
+      "source": "apollo11-launch-quote.wav",
+      "reason": "Superseded audio with uncertain engine-test context. Final film uses verified Apollo 11 countdown/liftoff at official source 119.2–135.2s."
+    },
+    {
+      "source": "ESA Webb/Sputnik/Gagarin program soundtracks",
+      "reason": "Not used in the final audio mix. Webb program music has separate copyright credit."
+    }
+  ],
+  "provenanceRecords": [
+    "media-work/cosmos/provenance.json",
+    "media-work/archive/provenance.json",
+    "media-work/v5-origins/provenance.json",
+    "media-work/v5-origins/sputnik/provenance.json",
+    "media-work/v5-spaceflight/provenance.json",
+    "media-work/v5-probe-iss/provenance.json",
+    "media-work/v5-audio/audio-delivery-provenance.json",
+    "media-work/v5-audio/jfk-provenance.json",
+    "media-work/v5-audio/armstrong-provenance.json",
+    "media-work/v5-audio/apollo11-countdown-liftoff-provenance.json",
+    "media-work/v5-audio/discovery-launch-broadcast-provenance.json"
+  ],
+  "verification": {
+    "sourceReview": "Official source descriptions and sampled/contact frames inspected; delivered excerpts fully decoded. Gagarin original offset independently matched from decoded frames.",
+    "finalAudio": "Root verified full AAC decode and correlations to original selected recordings: JFK 0.9976, Apollo 0.9991, Armstrong 0.9998, Discovery 0.9994.",
+    "finalVideo": "Encoding metadata and movie hash match the delivered 200-second MP4; final playback/browser checks are tracked by the project QA.",
+    "finalStereoPeakDbfs": -1.835
+  }
+}
