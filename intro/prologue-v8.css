@@ -170,3 +170,12 @@
   .prologue[data-cue-kind=bridge] #intro-line{font-size:27px}
   .prologue.prologue-label-only .prologue-context{margin-bottom:0}
 }
+
+/* Larger desktop subtitles stay at the lower edge during clean playback,
+   with room above the transport when it is visible. Title cards stay centred. */
+@media(min-width:900px) and (min-height:601px){
+  .prologue:not(.prologue-gated):is([data-cue-kind=narration],[data-cue-kind=quote]) .prologue-caption{bottom:calc(144px + env(safe-area-inset-bottom));width:min(1200px,calc(100% - 96px));transition:bottom .28s ease}
+  .prologue.prologue-chrome-hidden:not(.prologue-gated):is([data-cue-kind=narration],[data-cue-kind=quote]) .prologue-caption{bottom:max(32px,calc(3.5vh + env(safe-area-inset-bottom)))}
+  .prologue:not(.prologue-gated):is([data-cue-kind=narration],[data-cue-kind=quote]) #intro-line{max-width:none;font-size:clamp(34px,3vw,54px);font-weight:500;line-height:1.28;letter-spacing:-.01em;text-shadow:0 2px 4px #000d,0 0 18px #000b}
+  .prologue:not(.prologue-gated):is([data-cue-kind=narration],[data-cue-kind=quote]) #intro-speaker{font-size:13px;line-height:1.4}
+}

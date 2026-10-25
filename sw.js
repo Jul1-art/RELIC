@@ -1,7 +1,7 @@
 /* RELIC's application shell. Film storage is a separate, explicit download. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'integrated-v8-4-20261025';
+const VERSION = 'integrated-v8-4-20261025-subtitles-1';
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
 const APP_PREFIX = `relic-atlas-${encodeURIComponent(SCOPE.pathname)}-`;
