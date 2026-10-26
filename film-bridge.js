@@ -33,7 +33,6 @@ let currentDialog = null;
 function createDialog(title, trigger) {
   currentDialog?.close();
   const previousFocus = trigger || document.activeElement;
-  const filmWasPlaying = Boolean(introduction.querySelector('video') && !introduction.querySelector('video').paused);
   const video = introduction.querySelector('video');
   if (window.__relicFilmActive) { video?.pause(); introduction.inert = true; }
   const dialog = document.createElement('dialog');
@@ -55,7 +54,6 @@ function createDialog(title, trigger) {
     introduction.inert = false;
     dialog.remove();
     if (previousFocus?.isConnected && !previousFocus.closest('[inert]')) previousFocus.focus({ preventScroll:true });
-    if (filmWasPlaying && window.__relicFilmActive && video?.isConnected) video.play().catch(() => {});
   }, { once:true });
   document.body.append(dialog);
   currentDialog = dialog;

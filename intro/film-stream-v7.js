@@ -2,7 +2,7 @@ import Hls from './assets/vendor/hls.full.mjs';
 
 /** One continuous media clock, with local HLS segments and an MP4 fallback.
  * Instantiated only when the viewer actually starts the film. */
-export function attachFilmSource(video, media = {}) {
+export function attachFilmSource(video, media = {}, { shouldResume = () => false } = {}) {
   let player = null;
   let destroyed = false;
   let fallbackActive = false;
@@ -20,7 +20,7 @@ export function attachFilmSource(video, media = {}) {
   function recover() {
     if (destroyed || fallbackActive || !media.src || controller.mode === 'mp4') return false;
     const position = Number.isFinite(video.currentTime) ? video.currentTime : 0;
-    const resume = !video.paused;
+    const resume = Boolean(shouldResume());
     fallbackActive = true;
     controller.mode = 'mp4';
     player?.destroy(); player = null;
@@ -28,7 +28,8 @@ export function attachFilmSource(video, media = {}) {
     video.addEventListener('loadedmetadata', () => {
       if (destroyed) return;
       if (position > 0 && position < video.duration) video.currentTime = position;
-      if (resume) video.play().catch(() => {});
+      // A stale recovery must not restart a film the viewer has since paused.
+      if (resume && shouldResume()) video.play().catch(() => {});
     }, { once: true });
     video.load();
     return true;

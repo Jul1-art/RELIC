@@ -1,5 +1,7 @@
 import { attachFilmSource } from './film-stream-v7.js';
 import { solidIcon } from './assets/vendor/fontawesome-solid.js';
+import { worldIcon } from '../world-icons.js';
+import { createOpeningTyping } from './prologue-typing.js';
 
 const COPY = {
   en: {
@@ -12,6 +14,7 @@ const COPY = {
     blocked: 'Start the film with sound.',
     loading: 'Loading the film…',
     unavailable: 'The film is unavailable. Your journey can still begin.',
+    ready:'Press play when you are ready.', volume:'Volume', settings:'Playback settings', speed:'Playback speed', cinema:'Cinema mode (T)', shortcuts:'Keyboard shortcuts (?)', help:'Shortcuts', restart:'Replay film',
   },
   fr: {
     skip: 'Explorer le système solaire', play: 'Voir avec le son', enter: 'Explorer le système solaire', watchSound: 'Activer le son',
@@ -23,6 +26,7 @@ const COPY = {
     blocked: 'Lancez le film avec le son.',
     loading: 'Chargement du film…',
     unavailable: 'Le film est indisponible. Votre voyage peut commencer.',
+    ready:'Lancez le film quand vous le souhaitez.', volume:'Volume', settings:'Réglages du lecteur', speed:'Vitesse de lecture', cinema:'Mode cinéma (T)', shortcuts:'Raccourcis clavier (?)', help:'Raccourcis', restart:'Revoir le film',
   },
 };
 const ICONS = Object.freeze({
@@ -35,31 +39,6 @@ const icon = name => solidIcon(ICONS[name] || name);
 const clock = seconds => {
   const total = Math.max(0, Math.floor(Number(seconds) || 0));
   return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`;
-};
-
-// Segment visible letters rather than UTF-16 units: accents and joined glyphs
-// appear together. The media clock owns every keystroke, pause and soft reveal.
-const graphemes = (value, language) => typeof Intl.Segmenter === 'function'
-  ? Array.from(new Intl.Segmenter(language, { granularity:'grapheme' }).segment(value), part => part.segment)
-  : Array.from(value.normalize('NFC'));
-
-// A short pause between lines and at punctuation gives the opening a deliberate
-// rhythm. The deterministic schedule also restores exactly after a scrub.
-const typingStops = characters => {
-  let total = 0;
-  const stops = characters.map((character, index) => {
-    const previous = characters[index - 1] || '';
-    const variation = ((character.codePointAt(0) * 11 + index * 7) % 9) / 28;
-    let weight = character === '\n' ? .04 : character === ' ' ? .38 : .8 + variation;
-    if (!index) weight = .28;
-    if (previous === '\n') weight += 3.4;
-    else if (/[.!?]/.test(previous)) weight += 2.8;
-    else if (/[,;:]/.test(previous)) weight += 1.9;
-    else if (previous === ' ') weight += .28;
-    total += weight;
-    return total;
-  });
-  return stops.map(stop => stop / Math.max(1, total));
 };
 
 /** A film-led opening. Editorial cues always follow the video's media clock. */
@@ -77,6 +56,7 @@ export function createPrologue({
   if (!element?.ownerDocument) throw new TypeError('A prologue element is required.');
   const document = element.ownerDocument;
   const view = document.defaultView;
+  if(!document.querySelector('link[data-prologue-player],link[href*="prologue-player.css"]')){const sheet=document.createElement('link');sheet.rel='stylesheet';sheet.href=new URL('./prologue-player.css',import.meta.url).href;sheet.dataset.prologuePlayer='';document.head.append(sheet);}
   const defaultCues = [...timeline].sort((a, b) => a.start - b.start);
   let session = null;
   let closing = null;
@@ -124,6 +104,8 @@ export function createPrologue({
     active.cancelFrame();
     active.cancelLoading();
     active.cancelChrome();
+    active.cancelFeedback();
+    active.typing.dispose();
     if (document.fullscreenElement === element) document.exitFullscreen?.().catch(() => {});
     active.video.pause();
     active.video.muted = true;
@@ -149,7 +131,7 @@ export function createPrologue({
     const filmMedia = { ...media, ...(media.languages?.[language()] ?? {}) };
     const cues = [...(media.captions?.[language()] ?? defaultCues)].sort((a,b)=>a.start-b.start);
     element.classList.add('prologue');
-    element.classList.remove('hidden', 'leaving', 'prologue-failed', 'prologue-backdrop-ready');
+    element.classList.remove('hidden', 'leaving', 'prologue-failed', 'prologue-backdrop-ready', 'prologue-theater');
     for (const name of ['--end-blur', '--end-brightness', '--end-scale', '--end-progress']) element.style.removeProperty(name);
     element.classList.toggle('prologue-reduced', Boolean(reducedMotion()));
     element.setAttribute('role', 'dialog');
@@ -167,7 +149,22 @@ export function createPrologue({
         <div class="prologue-gate" hidden><p id="intro-status" role="status"></p><div class="prologue-gate-actions"><button class="prologue-play-film">${icon('play')}<span></span></button><button class="prologue-enter"><span></span></button></div></div>
       </div>
       <p class="prologue-loading" role="status" hidden></p>
-      <footer class="prologue-controls"><time class="prologue-time" aria-hidden="true">0:00</time><label class="prologue-scrubber"><span class="prologue-visually-hidden"></span><input type="range" min="0" max="1" step="0.01" value="0"></label><div class="prologue-transport"><button class="prologue-pause" type="button"></button><button class="prologue-sound-cta" type="button">${icon('sound')}<span></span></button><button class="prologue-audio" type="button" aria-pressed="false"></button><button class="prologue-captions" type="button" aria-pressed="true">${icon('captions')}</button><button class="prologue-clean" type="button">${icon('clean')}</button><button class="prologue-fullscreen" type="button">${icon('fullscreen')}</button><button class="prologue-download" type="button" hidden>${icon('download')}</button></div></footer>`;
+      <p class="prologue-feedback" role="status" aria-live="polite" hidden></p>
+      <footer class="prologue-controls">
+        <label class="prologue-scrubber"><span class="prologue-visually-hidden"></span><input type="range" min="0" max="1" step="0.01" value="0" disabled></label>
+        <div class="prologue-transport">
+          <div class="prologue-main-controls"><button class="prologue-pause" type="button"></button><div class="prologue-volume-group"><button class="prologue-audio" type="button" aria-pressed="false"></button><label class="prologue-inline-volume"><span class="prologue-visually-hidden"></span><input class="prologue-volume-input" data-player-volume type="range" min="0" max="100" step="1" value="100"><output class="prologue-volume-value">100%</output></label></div><time class="prologue-time">0:00 / 8:49</time></div>
+          <div class="prologue-extra-controls"><button class="prologue-captions" type="button" aria-pressed="true">${icon('captions')}</button><button class="prologue-settings" type="button" aria-controls="prologue-player-menu" aria-expanded="false">${worldIcon('gear')}</button><button class="prologue-theater-toggle" type="button" aria-pressed="false"><span class="prologue-theater-icon" aria-hidden="true"></span></button><button class="prologue-fullscreen" type="button">${icon('fullscreen')}</button></div>
+        </div>
+        <section class="prologue-player-menu" id="prologue-player-menu" role="dialog" aria-modal="false" aria-labelledby="prologue-player-menu-title" hidden>
+          <header><h2 id="prologue-player-menu-title"></h2><button class="prologue-menu-close" type="button">${icon('close')}</button></header>
+          <div class="prologue-menu-volume-row"><label><span data-player-copy="volume"></span><input class="prologue-menu-volume" data-player-volume type="range" min="0" max="100" step="1" value="100"></label><label class="prologue-volume-number-wrap"><input class="prologue-volume-number" type="number" min="0" max="100" step="1" value="100" inputmode="numeric"><span aria-hidden="true">%</span></label></div>
+          <fieldset class="prologue-speed"><legend data-player-copy="speed"></legend><div>${[.25,.5,.75,1,1.25,1.5,1.75,2].map(rate=>`<button type="button" data-player-rate="${rate}" aria-pressed="${rate===1}">${rate}×</button>`).join('')}</div></fieldset>
+          <button class="prologue-menu-cinema" type="button" aria-pressed="false"><span data-player-copy="cinema"></span><span class="prologue-toggle-indicator" aria-hidden="true"></span></button>
+          <div class="prologue-menu-actions"><button class="prologue-clean" type="button">${icon('clean')}<span></span></button><button class="prologue-download" type="button" hidden>${icon('download')}<span></span></button><button class="prologue-shortcut-toggle" type="button" aria-expanded="false"><span aria-hidden="true">?</span><span data-player-copy="help"></span></button></div>
+          <div class="prologue-shortcuts" hidden></div>
+        </section>
+      </footer>`;
     const video = element.querySelector('#intro-video');
     const backdrop = element.querySelector('.prologue-backdrop');
     const backdropContext = backdrop.getContext('2d', { alpha: false });
@@ -185,8 +182,7 @@ export function createPrologue({
     const controls = element.querySelector('.prologue-controls');
     const pause = element.querySelector('.prologue-pause');
     const audio = element.querySelector('.prologue-audio');
-    const soundCTA = element.querySelector('.prologue-sound-cta');
-    const range = element.querySelector('input[type="range"]');
+    const range = element.querySelector('.prologue-scrubber input');
     const time = element.querySelector('.prologue-time');
     const loading = element.querySelector('.prologue-loading');
     const header = element.querySelector('.prologue-header');
@@ -196,6 +192,18 @@ export function createPrologue({
     const fullscreen = element.querySelector('.prologue-fullscreen');
     const transcript = element.querySelector('#intro-transcript');
     const download = element.querySelector('.prologue-download');
+    const volumeInputs = [...element.querySelectorAll('[data-player-volume]')];
+    const volumeNumber = element.querySelector('.prologue-volume-number');
+    const volumeOutput = element.querySelector('.prologue-volume-value');
+    const settings = element.querySelector('.prologue-settings');
+    const menu = element.querySelector('.prologue-player-menu');
+    const menuClose = element.querySelector('.prologue-menu-close');
+    const theater = element.querySelector('.prologue-theater-toggle');
+    const cinemaOption = element.querySelector('.prologue-menu-cinema');
+    const helpToggle = element.querySelector('.prologue-shortcut-toggle');
+    const shortcuts = element.querySelector('.prologue-shortcuts');
+    const feedback = element.querySelector('.prologue-feedback');
+    const typing = createOpeningTyping({element:title,getLanguage:language,reducedMotion});
     download.hidden = typeof onOffline !== 'function';
     const reveal = element.querySelector('.prologue-reveal');
     const canFullscreen = Boolean(document.fullscreenEnabled && element.requestFullscreen);
@@ -208,7 +216,7 @@ export function createPrologue({
     let frameKind = null;
     let cueIndex = -2;
     let cueLanguage = '';
-    let resumeWhenVisible = false;
+    let explicitPlaybackIntent = false;
     let gateReason = null;
     let failed = false;
     let attempt = 0;
@@ -220,14 +228,11 @@ export function createPrologue({
     let chromeVisible = true;
     let captionsVisible = true;
     let lastPointer = null;
-    let typedNode = null;
     let typedValue = '';
-    let typedCharacters = [];
-    let typedGlyphs = [];
-    let typedCadence = [];
-    let typedCount = -1;
-    let typedCaret = null;
-    let typingViewport = '';
+    let theaterMode = false;
+    let menuOpen = false;
+    let lastAudibleVolume = 1;
+    let feedbackTimer = null;
     let offlineReady = false;
     let offlineCheck = null;
     let backdropPainted = false;
@@ -235,7 +240,7 @@ export function createPrologue({
     let backdropPaintAt = -Infinity;
     let backdropPosition = -Infinity;
     let backdropScene = '';
-    const active = { controller, video, backdrop, caption, cancelFrame, cancelLoading, cancelChrome, stream: null };
+    const active = { controller, video, backdrop, caption, cancelFrame, cancelLoading, cancelChrome, typing, cancelFeedback, stream: null };
     session = active;
     const current = () => session === active && !signal.aborted;
     const duration = () => Number.isFinite(video.duration) && video.duration > 0
@@ -246,7 +251,7 @@ export function createPrologue({
       chromeTimer = null;
     }
     function canHideChrome() {
-      return !video.paused && !video.ended && !gateReason && !failed && loading.hidden;
+      return !video.paused && !video.ended && !gateReason && !failed && loading.hidden && !menuOpen;
     }
     function scheduleChrome() {
       cancelChrome();
@@ -291,6 +296,44 @@ export function createPrologue({
         else await element.requestFullscreen();
       } catch { /* The viewport-sized player remains usable when full screen is unavailable. */ }
       render();
+    }
+    function cancelFeedback(){if(feedbackTimer!==null)view.clearTimeout(feedbackTimer);feedbackTimer=null;}
+    function showFeedback(text){cancelFeedback();feedback.textContent=text;feedback.hidden=false;feedbackTimer=view.setTimeout(()=>{feedback.hidden=true;feedbackTimer=null;},1000);}
+    function syncVolume(){
+      const amount=Math.round((video.muted?0:video.volume)*100);
+      for(const input of volumeInputs){if(document.activeElement!==input)input.value=String(amount);input.style.setProperty('--volume-progress',`${amount}%`);input.setAttribute('aria-valuetext',`${amount}%`);}
+      if(document.activeElement!==volumeNumber)volumeNumber.value=String(amount);
+      volumeOutput.textContent=`${amount}%`;
+    }
+    function setVolume(amount){
+      const volume=Math.round(Math.max(0,Math.min(1,Number(amount)||0))*100)/100;
+      if(volume>0)lastAudibleVolume=volume;
+      video.volume=volume;video.muted=volume===0;soundChoice=true;render();setChrome(true);showFeedback(`${copy().volume} ${Math.round(volume*100)}%`);
+    }
+    function toggleMute(){
+      soundChoice=true;
+      if(video.muted||video.volume===0){video.volume=lastAudibleVolume||1;video.muted=false;}
+      else{lastAudibleVolume=video.volume;video.muted=true;}
+      render();setChrome(true);showFeedback(`${copy().volume} ${Math.round((video.muted?0:video.volume)*100)}%`);
+    }
+    function setRate(value){video.playbackRate=Math.max(.25,Math.min(2,Math.round(Number(value)*4)/4));render();setChrome(true);showFeedback(`${video.playbackRate}×`);}
+    function seekTo(value){
+      if(!hasSource||failed||video.readyState<1)return;
+      try{video.currentTime=Math.max(0,Math.min(duration(),Number(value)||0));}catch{}
+      render();setChrome(true);
+    }
+    function toggleTheater(){theaterMode=!theaterMode;element.classList.toggle('prologue-theater',theaterMode);render();setChrome(true);}
+    function setMenu(open,help=false){
+      menuOpen=Boolean(open);menu.hidden=!menuOpen;settings.setAttribute('aria-expanded',String(menuOpen));
+      if(help){shortcuts.hidden=false;helpToggle.setAttribute('aria-expanded','true');}
+      if(menuOpen){setChrome(true,false);menuClose.focus({preventScroll:true});}
+      else{settings.focus({preventScroll:true});scheduleChrome();}
+    }
+    function renderShortcuts(){
+      const fr=language()==='fr';
+      const items=[['Space / K',fr?'Lecture / pause':'Play / pause'],['F',fr?'Plein écran':'Full screen'],['T',fr?'Mode cinéma':'Cinema mode'],['M',fr?'Couper / activer le son':'Mute / unmute'],['C',fr?'Sous-titres':'Captions'],['J / L',fr?'Reculer / avancer de 10 s':'Back / forward 10 seconds'],['← / →',fr?'Reculer / avancer de 5 s':'Back / forward 5 seconds'],['↑ / ↓',fr?'Volume ±5 %':'Volume ±5%'],['0–9',fr?'Position 0–90 %':'Seek 0–90%'],['Home / End',fr?'Début / fin':'Beginning / end'],[', / .',fr?'Image précédente / suivante en pause':'Previous / next frame while paused'],['< / >',fr?'Vitesse ±0,25×':'Speed ±0.25×'],['H',fr?'Masquer les commandes':'Hide controls'],['?',fr?'Raccourcis clavier':'Keyboard shortcuts']];
+      shortcuts.replaceChildren(...items.map(([key,label])=>{const row=document.createElement('p');const code=document.createElement('kbd');code.textContent=key;const text=document.createElement('span');text.textContent=label;row.append(code,text);return row;}));
+      helpToggle.setAttribute('aria-label',copy().shortcuts);
     }
     function cancelFrame() {
       if (frame !== null) {
@@ -379,38 +422,12 @@ export function createPrologue({
         element.dataset.framing = cue?.framing === 'wide' ? 'wide' : 'immersive';
         kicker.textContent = localize(cue?.kicker);
         typedValue = localize(cue?.title);
-        typedCharacters = graphemes(typedValue, lang);
         title.setAttribute('aria-label', typedValue);
         title.dataset.fullTitle = typedValue;
         transcript.textContent = cue?.kind === 'visual' ? '' : typedValue;
-        typedNode = null;
-        typedCaret = null;
-        typedGlyphs = [];
-        typedCount = -1;
-        typingViewport = '';
         title.hidden = !typedValue;
-        if (cue?.kind === 'typing') {
-          typedNode = document.createElement('span');
-          typedNode.className = 'prologue-type-text';
-          typedNode.setAttribute('aria-hidden', 'true');
-          typedNode.dataset.visibleText = '';
-          typedNode.dataset.typedCount = '0';
-          typedCadence = typingStops(typedCharacters);
-          // Hidden glyphs reserve their final line boxes. Revealing a character
-          // never recentres an unfinished word or moves the preceding letters.
-          typedGlyphs = typedCharacters.map(character => {
-            const glyph = document.createElement('span');
-            glyph.className = 'prologue-type-glyph';
-            glyph.textContent = character;
-            glyph.style.opacity = '0';
-            typedNode.append(glyph);
-            return glyph;
-          });
-          typedCaret = document.createElement('span');
-          typedCaret.className = 'prologue-type-caret';
-          typedNode.append(typedCaret);
-          title.replaceChildren(typedNode);
-        } else title.textContent = typedValue;
+        if (cue?.kind === 'typing') typing.setCue(cue,typedValue);
+        else { typing.clear(); title.textContent = typedValue; }
         speaker.textContent = localize(cue?.speaker);
         // Source and rights attribution lives in the app's Sources space.
         source.textContent = '';
@@ -453,74 +470,7 @@ export function createPrologue({
       // rather than dialogue subtitles. Switching captions off preserves them.
       const titleCard = ['typing', 'bridge', 'end'].includes(cue?.kind);
       caption.classList.toggle('prologue-caption-hidden', !gateReason && ((cue?.kind === 'visual' && !pictureLabel) || (!captionsVisible && !titleCard)));
-      if (typedNode && cue) {
-        const delay = Number(cue.typingStart ?? .35);
-        const span = Math.max(.1, Number(cue.typingDuration ?? Math.min(4.5, cue.end - cue.start - 1.5)));
-        // Both the irregular keystrokes and caret use the media clock, never
-        // wall-clock time. A pause holds the exact glyphs and a seek restores them.
-        const progress = clamp((position - cue.start - delay) / span);
-        // A static glyph reveal does not move the image or text layout. Keep it
-        // after explicit Play even with reduced motion; do not replace it with
-        // an instantly visible sentence on phones with that preference enabled.
-        const count = gateReason ? 0 : typedCadence.filter(stop => stop <= progress).length;
-        const changed = count !== typedCount;
-        if (changed) {
-          for (let i = Math.min(Math.max(typedCount, 0), count); i < Math.max(typedCount, count); i += 1) {
-            if (typedGlyphs[i]) {
-              typedGlyphs[i].style.visibility = i < count ? 'visible' : 'hidden';
-              if (i >= count) typedGlyphs[i].style.opacity = '0';
-            }
-          }
-          typedNode.dataset.visibleText = typedCharacters.slice(0, count).join('');
-          typedNode.dataset.typedCount = String(count);
-          typedCount = count;
-        }
-        // The very short letter entrance is sampled from video time, rather
-        // than a CSS transition. Pausing freezes it; rewinding reverses it.
-        // Reduced motion retains readable keystrokes without the extra fade.
-        const inkDuration = reducedMotion() ? 0 : Math.min(.085, span / Math.max(1, typedCharacters.length) * .72);
-        for (let i = 0; i < count; i += 1) {
-          const ink = inkDuration ? smooth((position - cue.start - delay - typedCadence[i] * span) / inkDuration) : 1;
-          const opacity = String(Math.round(ink * 1000) / 1000);
-          if (typedGlyphs[i].style.opacity !== opacity) typedGlyphs[i].style.opacity = opacity;
-        }
-        // The play gate hides the heading with display:none. Re-measure when
-        // it closes, even if no character has appeared yet.
-        const viewport = `${view.innerWidth}:${view.innerHeight}:${Boolean(gateReason)}`;
-        if (typedCaret && (changed || viewport !== typingViewport)) {
-          let index = count ? count - 1 : 0;
-          let beginsLine = !count || typedCharacters[index] === '\n';
-          if (beginsLine) {
-            if (count) index = count;
-            while (typedCharacters[index] === '\n' && index < typedGlyphs.length - 1) index += 1;
-          }
-          const glyph = typedGlyphs[Math.min(index, typedGlyphs.length - 1)];
-          if (glyph) {
-            const fontSize = parseFloat(view.getComputedStyle(title).fontSize) || 30;
-            let bounds = glyph.getBoundingClientRect();
-            // A collapsed space at an automatic line wrap can have a zero-size
-            // box. Anchor the caret before the next glyph on that line instead
-            // of briefly jumping to the heading's origin.
-            if (!beginsLine && /\s/.test(typedCharacters[index])) {
-              let next = count;
-              while (typedCharacters[next] === '\n' && next < typedGlyphs.length - 1) next += 1;
-              const nextBounds = typedGlyphs[next]?.getBoundingClientRect();
-              if (nextBounds && (bounds.width < .01 || nextBounds.top > bounds.top + fontSize * .5)) {
-                bounds = nextBounds;
-                beginsLine = true;
-              }
-            }
-            const box = typedNode.getBoundingClientRect();
-            typedCaret.style.left = `${((beginsLine ? bounds.left : bounds.right) - box.left + 2).toFixed(2)}px`;
-            typedCaret.style.top = `${(bounds.top - box.top + fontSize * .04).toFixed(2)}px`;
-            typedCaret.style.height = `${(fontSize * .92).toFixed(2)}px`;
-          }
-          typingViewport = viewport;
-        }
-        const cursor = !gateReason && position < cue.start + delay + span + .8;
-        const typing = progress > 0 && progress < 1;
-        title.style.setProperty('--cursor-opacity', cursor && (typing || reducedMotion() || Math.floor(Math.max(0, position - cue.start) * 2.4) % 2 === 0) ? '1' : '0');
-      }
+      if (cue?.kind === 'typing') typing.render({position,gated:Boolean(gateReason)});
       const endProgress = cue?.kind === 'end' ? smooth((position - cue.start) / 1.8) : 0;
       // Inherit the ending treatment on both picture layers. The portrait
       // backdrop otherwise stays clear while only the small contained film blurs.
@@ -552,6 +502,7 @@ export function createPrologue({
       if (gateReason && index < 0 && cues.length) index = 0;
       setCaption(index, position);
       const length = duration();
+      range.disabled = !hasSource || failed || video.readyState < 1;
       range.max = String(length);
       range.value = String(Math.min(position, length));
       range.style.setProperty('--prologue-progress', `${Math.max(0, Math.min(100, position / length * 100))}%`);
@@ -560,7 +511,8 @@ export function createPrologue({
         time.textContent = clockText;
         range.setAttribute('aria-valuetext', clockText);
       }
-      const nextTransport = `${language()}|${video.paused}|${video.muted}|${gateReason}|${soundChoice}|${captionsVisible}|${document.fullscreenElement === element}`;
+      syncVolume();
+      const nextTransport = `${language()}|${video.paused}|${video.ended}|${video.muted}|${gateReason}|${soundChoice}|${captionsVisible}|${theaterMode}|${video.playbackRate}|${document.fullscreenElement === element}`;
       if (transportState !== nextTransport) {
         transportState = nextTransport;
         range.setAttribute('aria-label', copy().position);
@@ -572,26 +524,41 @@ export function createPrologue({
         play.querySelector('span').textContent = copy().play;
         enter.querySelector('span').textContent = copy().enter;
         pause.innerHTML = icon(video.paused ? 'play' : 'pause');
-        pause.setAttribute('aria-label', video.paused ? copy().resume : copy().pause);
-        audio.innerHTML = icon(video.muted ? 'muted' : 'sound');
-        audio.setAttribute('aria-label', video.muted ? copy().unmute : copy().mute);
-        audio.setAttribute('aria-pressed', String(!video.muted));
-        soundCTA.querySelector('span').textContent = copy().watchSound;
-        soundCTA.setAttribute('aria-label', copy().watchSound);
-        soundCTA.hidden = !video.muted || soundChoice || Boolean(gateReason) || failed;
+        pause.setAttribute('aria-label', video.ended ? copy().restart : video.paused ? copy().resume : copy().pause);
+        pause.title = `${video.ended ? copy().restart : video.paused ? copy().resume : copy().pause} (Space / K)`;
+        pause.setAttribute('aria-keyshortcuts','Space k');
+        const silent = video.muted || video.volume === 0;
+        audio.innerHTML = icon(silent ? 'muted' : 'sound');
+        audio.setAttribute('aria-label', silent ? copy().unmute : copy().mute);
+        audio.setAttribute('aria-pressed', String(!silent));
+        audio.title = `${silent ? copy().unmute : copy().mute} (M)`;
         captions.setAttribute('aria-label', captionsVisible ? copy().hideCaptions : copy().captions);
         captions.setAttribute('aria-pressed', String(captionsVisible));
         clean.setAttribute('aria-label', copy().clean);
+        clean.querySelector('span').textContent = copy().clean;
+        settings.setAttribute('aria-label',copy().settings); settings.title=copy().settings;
+        menu.querySelector('h2').textContent=copy().settings;
+        menuClose.setAttribute('aria-label',language()==='fr'?'Fermer les réglages':'Close settings');
+        for(const node of element.querySelectorAll('[data-player-copy]'))node.textContent=copy()[node.dataset.playerCopy];
+        for(const node of volumeInputs){node.setAttribute('aria-label',copy().volume);node.title=copy().volume;}
+        volumeNumber.setAttribute('aria-label',`${copy().volume} (%)`);
+        theater.setAttribute('aria-label',copy().cinema); theater.title=copy().cinema;
+        theater.setAttribute('aria-pressed',String(theaterMode)); cinemaOption.setAttribute('aria-pressed',String(theaterMode));
+        captions.title=captionsVisible?copy().hideCaptions:copy().captions;
+        download.querySelector('span').textContent=copy().offline;
+        for(const button of menu.querySelectorAll('[data-player-rate]'))button.setAttribute('aria-pressed',String(Number(button.dataset.playerRate)===video.playbackRate));
+        renderShortcuts();
         clean.disabled = video.paused || Boolean(gateReason) || failed;
         fullscreen.innerHTML = icon(document.fullscreenElement === element ? 'exitFullscreen' : 'fullscreen');
         fullscreen.setAttribute('aria-label', document.fullscreenElement === element ? copy().exitFullscreen : copy().fullscreen);
+        fullscreen.title=fullscreen.getAttribute('aria-label');
       }
     }
     function showGate(reason) {
       if (!current()) return;
       gateReason = reason;
       gate.hidden = false;
-      controls.hidden = true;
+      controls.hidden = reason === 'unavailable';
       play.hidden = reason === 'unavailable';
       status.textContent = copy()[reason];
       element.classList.add('prologue-gated');
@@ -616,7 +583,9 @@ export function createPrologue({
       return ready;
     }
     async function playFilm() {
-      if (!current() || failed) return;
+      if (!current() || failed || document.hidden || element.inert) return;
+      explicitPlaybackIntent = true;
+      if (video.ended) { try { video.currentTime=0; } catch {} }
       const request = ++attempt;
       if (view.navigator.onLine === false && !await offlinePlayable()) {
         if (current() && request === attempt) fail();
@@ -627,10 +596,10 @@ export function createPrologue({
       if (!hasSource) {
         hasSource = true;
         video.preload = 'auto';
-        try { active.stream = attachFilmSource(video, filmMedia); }
+        try { active.stream = attachFilmSource(video, filmMedia, {shouldResume:()=>current()&&explicitPlaybackIntent&&!document.hidden&&!element.inert}); }
         catch { fail(); return; }
       }
-      if (document.hidden) { resumeWhenVisible = true; return; }
+      if (document.hidden || element.inert) { explicitPlaybackIntent = false; return; }
       hideGate();
       try {
         await video.play();
@@ -643,7 +612,7 @@ export function createPrologue({
     }
     function pauseFilm() {
       attempt += 1;
-      resumeWhenVisible = false;
+      explicitPlaybackIntent = false;
       video.pause();
       render();
     }
@@ -651,7 +620,7 @@ export function createPrologue({
       if (!current() || failed) return;
       failed = true;
       attempt += 1;
-      resumeWhenVisible = false;
+      explicitPlaybackIntent = false;
       cancelFrame();
       cancelLoading();
       active.stream?.destroy();
@@ -662,15 +631,8 @@ export function createPrologue({
       showGate('unavailable');
     }
     function visibilityChanged() {
-      if (!current()) return;
-      if (document.hidden) {
-        resumeWhenVisible = !video.paused && !video.ended;
-        attempt += 1;
-        video.pause();
-      } else if (resumeWhenVisible && !failed) {
-        resumeWhenVisible = false;
-        playFilm();
-      }
+      if (!current() || !document.hidden) return;
+      explicitPlaybackIntent=false;attempt+=1;video.pause();setChrome(true,false);
     }
     function trapFocus(event) {
       if (!current() || element.inert) return;
@@ -685,25 +647,36 @@ export function createPrologue({
       else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
     }
     function keyboardControls(event) {
-      if (!current() || element.inert || event.metaKey || event.ctrlKey || event.altKey) return;
-      if (event.key === 'Escape' && document.fullscreenElement === element) {
-        event.preventDefault(); event.stopPropagation();
-        document.exitFullscreen?.().catch(() => {});
-        setChrome(true); return;
-      }
-      const target = event.target;
-      if (target?.matches?.('input, textarea, select') || target?.isContentEditable) { setChrome(true); return; }
-      const key = event.key.toLowerCase();
-      if (key === 'h') { event.preventDefault(); event.stopPropagation(); setChrome(!chromeVisible); return; }
+      if (!current() || element.inert || event.metaKey || event.ctrlKey || event.altKey || document.querySelector('dialog[open]')) return;
+      if (event.key === 'Escape' && menuOpen) {event.preventDefault();event.stopPropagation();setMenu(false);return;}
+      if (event.key === 'Escape' && document.fullscreenElement === element) {event.preventDefault();event.stopPropagation();document.exitFullscreen?.().catch(()=>{});setChrome(true);return;}
+      const target=event.target;
+      if(target?.closest?.('input,textarea,select,[contenteditable=true],.prologue-player-menu'))return;
+      const key=event.key.toLowerCase();
+      const handled=[' ','k','f','t','m','c','h','j','l','arrowleft','arrowright','arrowup','arrowdown','home','end',',','.','<','>','?'].includes(key)||/^[0-9]$/.test(key);
+      if(!handled)return;
+      // Space on a focused button keeps the browser's one native activation.
+      if(key===' '&&target?.closest?.('button'))return;
+      event.preventDefault();event.stopPropagation();
+      if(key==='h'){if(!event.repeat)setChrome(!chromeVisible);return;}
       setChrome(true);
-      if (key === 'c' && !gateReason) { event.preventDefault(); event.stopPropagation(); toggleCaptions(); }
-      else if (key === 'f' && canFullscreen) { event.preventDefault(); event.stopPropagation(); toggleFullscreen(); }
-      else if (key === 'm' && !gateReason) { event.preventDefault(); event.stopPropagation(); soundChoice = true; video.muted = !video.muted; render(); scheduleChrome(); }
-      else if ((key === 'k' || key === ' ') && !target?.closest?.('button') && !gateReason) { event.preventDefault(); event.stopPropagation(); video.paused ? playFilm() : pauseFilm(); }
+      if(event.repeat&&[' ','k','f','t','m','c','h','?'].includes(key))return;
+      if(key===' '||key==='k'){video.paused?playFilm():pauseFilm();return;}
+      if(key==='f'){toggleFullscreen();return;}
+      if(key==='t'){toggleTheater();return;}
+      if(key==='m'){toggleMute();return;}
+      if(key==='c'){toggleCaptions();return;}
+      if(key==='?'){setMenu(true,true);return;}
+      if(key==='arrowup'||key==='arrowdown'){setVolume((video.muted?0:video.volume)+(key==='arrowup'?.05:-.05));return;}
+      if(key==='>'||key==='<'){setRate(video.playbackRate+(key==='>'?.25:-.25));return;}
+      if(key===','||key==='.'){if(video.paused)seekTo(video.currentTime+(key==='.'?1/24:-1/24));return;}
+      if(key==='home'||key==='end'){seekTo(key==='home'?0:Math.max(0,duration()-.01));return;}
+      if(/^[0-9]$/.test(key)){seekTo(duration()*Number(key)/10);return;}
+      seekTo(video.currentTime+(['j','arrowleft'].includes(key)?-1:1)*(['j','l'].includes(key)?10:5));
     }
     element.addEventListener('pointerdown', event => {
       lastPointer = { x: event.clientX, y: event.clientY };
-      if (event.target.closest('button, input, label, a, .prologue-gate')) { setChrome(true); return; }
+      if (event.target.closest('button, input, label, a, .prologue-gate, .prologue-player-menu')) { setChrome(true); return; }
       setChrome(!chromeVisible);
     }, { signal });
     element.addEventListener('pointermove', event => {
@@ -721,36 +694,39 @@ export function createPrologue({
       setChrome(true, false);
       onOffline?.({ language: language(), media: filmMedia, element, trigger: download, signal });
     }, { signal });
+    for(const input of volumeInputs)input.addEventListener('input',()=>setVolume(Number(input.value)/100),{signal});
+    volumeNumber.addEventListener('input',()=>{if(volumeNumber.value!==''&&volumeNumber.validity.valid)setVolume(Number(volumeNumber.value)/100);},{signal});
+    volumeNumber.addEventListener('change',()=>{volumeNumber.value=String(Math.round((video.muted?0:video.volume)*100));},{signal});
+    settings.addEventListener('click',()=>setMenu(!menuOpen),{signal});
+    menuClose.addEventListener('click',()=>setMenu(false),{signal});
+    theater.addEventListener('click',toggleTheater,{signal});cinemaOption.addEventListener('click',toggleTheater,{signal});
+    helpToggle.addEventListener('click',()=>{shortcuts.hidden=!shortcuts.hidden;helpToggle.setAttribute('aria-expanded',String(!shortcuts.hidden));},{signal});
+    for(const button of menu.querySelectorAll('[data-player-rate]'))button.addEventListener('click',()=>setRate(Number(button.dataset.playerRate)),{signal});
+    document.addEventListener('pointerdown',event=>{if(menuOpen&&!menu.contains(event.target)&&!settings.contains(event.target))setMenu(false);},{signal});
     document.addEventListener('fullscreenchange', render, { signal });
     document.addEventListener('keydown', keyboardControls, { signal, capture: true });
     skip.addEventListener('click', finish, { signal });
     enter.addEventListener('click', finish, { signal });
-    play.addEventListener('click', () => { soundChoice = true; video.muted = false; playFilm(); }, { signal });
+    play.addEventListener('click', () => { soundChoice = true; playFilm(); }, { signal });
     pause.addEventListener('click', () => video.paused ? playFilm() : pauseFilm(), { signal });
-    audio.addEventListener('click', () => { soundChoice = true; video.muted = !video.muted; render(); setChrome(true); }, { signal });
-    soundCTA.addEventListener('click', () => {
-      soundChoice = true; video.muted = false;
-      if (video.paused && !failed) playFilm();
-      render();
-      setChrome(true);
-    }, { signal });
+    audio.addEventListener('click', toggleMute, { signal });
     range.addEventListener('input', () => {
       if (!hasSource || failed) return;
-      try { video.currentTime = Number(range.value); } catch { /* Metadata may still be arriving. */ }
+      seekTo(Number(range.value));
       render();
     }, { signal });
     video.addEventListener('play', () => {
-      if (document.hidden) { resumeWhenVisible = true; video.pause(); return; }
+      if (document.hidden || element.inert || !explicitPlaybackIntent) { explicitPlaybackIntent=false; video.pause(); return; }
       hideGate(); render(); queueFrame(); scheduleChrome();
     }, { signal });
-    video.addEventListener('pause', () => { cancelFrame(); cancelLoading(); render(); setChrome(true, false); }, { signal });
+    video.addEventListener('pause', () => { explicitPlaybackIntent=false; cancelFrame(); cancelLoading(); render(); setChrome(true, false); }, { signal });
     video.addEventListener('playing', cancelLoading, { signal });
     video.addEventListener('waiting', waiting, { signal });
     video.addEventListener('stalled', waiting, { signal });
-    for (const event of ['timeupdate', 'seeked', 'durationchange', 'loadedmetadata', 'loadeddata', 'volumechange']) {
+    for (const event of ['timeupdate', 'seeked', 'durationchange', 'loadedmetadata', 'loadeddata', 'volumechange', 'ratechange']) {
       video.addEventListener(event, render, { signal });
     }
-    video.addEventListener('ended', finish, { signal });
+    video.addEventListener('ended', () => {explicitPlaybackIntent=false;cancelFrame();render();setChrome(true,false);}, { signal });
     video.addEventListener('error', () => {
       try { if (active.stream?.recover()) return; } catch { /* Fall back to the readable error state. */ }
       fail();
@@ -764,17 +740,10 @@ export function createPrologue({
     view.addEventListener('resize', render, { signal });
     render();
     onOpen();
-    if (keyboard) skip.focus({ preventScroll: true });
-    // Cache readiness is asynchronous; a closed session must never attach media.
-    (async () => {
-      if (view.navigator.onLine === false && !await offlinePlayable()) {
-        if (current()) fail();
-        return;
-      }
-      if (!current()) return;
-      if (reducedMotion()) showGate('reduced');
-      else playFilm();
-    })();
+    // Opening is a ready state, never an autoplay attempt or a media download.
+    showGate('ready');
+    if (keyboard) play.focus({ preventScroll: true });
+
   }
 
   return {

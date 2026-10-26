@@ -36,7 +36,6 @@ function createDialog(trigger) {
   const previousFocus = trigger || document.activeElement;
   const introduction = document.querySelector('#intro');
   const video = introduction?.querySelector('video');
-  const filmWasPlaying = Boolean(window.__relicFilmActive && video && !video.paused);
   if (window.__relicFilmActive && introduction) { video?.pause(); introduction.inert = true; }
   const request = new AbortController();
   const dialog = document.createElement('dialog'); dialog.className = 'relic-sources-dialog';
@@ -59,7 +58,6 @@ function createDialog(trigger) {
     const target = previousFocus?.isConnected && previousFocus.getClientRects().length && !previousFocus.closest('[inert],[hidden]')
       ? previousFocus : document.querySelector('#relic-credits');
     target?.focus({preventScroll:true});
-    if (filmWasPlaying && window.__relicFilmActive && video?.isConnected) video.play().catch(() => {});
   }, {once:true});
   document.body.append(dialog); activeDialog = dialog; dialog.showModal(); close.focus({preventScroll:true});
   return {dialog, content:dialog.querySelector('.relic-sources-content'), signal:request.signal};

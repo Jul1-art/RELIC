@@ -1,7 +1,7 @@
 /* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'polish-v4-20261026-public';
+const VERSION = 'player-v6-20261026-public';
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
 const APP_PREFIX = `relic-atlas-${encodeURIComponent(SCOPE.pathname)}-`;
@@ -41,6 +41,7 @@ const OFFLINE_CORE = [
   'planet-dashboard.js', 'planet-dashboard.css', 'view-loading.js', 'view-loading.css',
   'app-sources.js', 'app-sources.css', 'provider-credits.js', 'provider-credits.css', 'atlas-presentation.css',
   'intro/prologue-v8.js', 'intro/prologue-data-v8.js', 'intro/prologue-v8.css',
+  'intro/prologue-player.css', 'intro/prologue-typing.js', 'intro/prologue-typing.css',
   'intro/film-stream-v7.js', 'intro/film-offline.js', 'intro/film-cache.js',
   'intro/assets/vendor/hls.full.mjs', 'intro/assets/vendor/fontawesome-solid.js',
   'intro/assets/prologue/poster-v8.jpg', 'intro/assets/prologue/iss-backdrop-v7.jpg',

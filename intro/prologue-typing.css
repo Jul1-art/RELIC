@@ -1,0 +1,13 @@
+/* Opening typography is reserved in full, then inked letter by letter. */
+.prologue[data-cue-kind=typing] #intro-line.relic-opening-title{position:relative;display:block;width:100%;max-width:920px;margin:0 auto;padding:0;color:#f7f7f5;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:var(--opening-type-size,clamp(20px,5.9vw,52px));font-weight:300;line-height:1.5;letter-spacing:-.022em;font-kerning:none;font-variant-ligatures:none;white-space:normal;text-wrap:initial;text-shadow:none;clip-path:none;filter:none}
+.prologue[data-cue-kind=typing] .relic-opening-typing{position:relative;display:block;width:100%;margin:0 auto;color:inherit;text-align:center}
+.prologue .relic-type-line{position:relative;display:block;width:max-content;max-width:none;min-height:1.5em;margin:0 auto;line-height:1.5;white-space:pre}
+.prologue .relic-type-track{display:inline;white-space:pre}
+.prologue .relic-type-letter{display:inline;white-space:pre;color:inherit;opacity:0;animation:none!important;transition:none!important}
+.prologue .relic-type-cursor{position:absolute;left:0;top:0;display:block;width:max(1px,.028em);height:1.03em;margin:0;padding:0;border:0;border-radius:0;background:#f7f7f5;opacity:0;pointer-events:none;animation:none!important;transition:none!important;will-change:transform}
+.prologue[data-cue-kind=typing] .prologue-caption{width:min(940px,calc(100% - 64px))}
+.prologue.prologue-gated[data-cue-kind=typing] #intro-line.relic-opening-title{display:none}
+@media(max-width:650px){.prologue[data-cue-kind=typing] .prologue-caption{width:calc(100% - 44px)}}
+@media(max-height:550px) and (orientation:landscape){.prologue[data-cue-kind=typing] .prologue-caption{width:min(900px,calc(100% - 72px))}}
+@media(prefers-reduced-motion:reduce){html:not([data-motion=full]) .prologue .relic-type-cursor{display:none}}
+html[data-motion=reduced] .prologue .relic-type-cursor{display:none}

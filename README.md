@@ -116,9 +116,30 @@ Installez Python et les dépendances indiquées plus haut, puis lancez `python3 
 
 Une publication statique reste possible avec `node tools/build_static.mjs`, mais elle n'exécute pas les routes Python de relief, de recherche et de données actualisées.
 
+
+## Film player
+
+The English/French introduction opens paused and loads its video only after **Play**. The monochrome player includes a full-width timeline, captions, cinema mode, playback speed and volume adjustable in 1% steps or by entering an exact percentage in the player settings. Opening and closing Sources or the offline dialog keeps playback paused.
+
+Keyboard shortcuts work while the film is open, outside editable fields and other dialogs. Press **?** for the in-player reference.
+
+| Key | Action |
+| --- | --- |
+| Space / K | Play or pause (Space activates a focused button) |
+| F / T | Fullscreen / cinema mode |
+| M / C / H | Mute / captions / hide controls while playing |
+| J / L | Back / forward 10 seconds |
+| Left / Right | Back / forward 5 seconds |
+| Up / Down | Volume up / down 5% |
+| 0–9 | Seek to 0–90% |
+| Home / End | Beginning / end |
+| , / . | Previous / next frame while paused |
+| < / > | Playback speed down / up 0.25× |
+| Escape | Close the player menu or exit fullscreen |
+
 ## Interface and static hosting
 
-Earth, Moon and Mars share a responsive command bar, location search, imagery drawer and compact Font Awesome controls. Settings include English/French, light/dark appearance, an optional NASA-blue accent, motion preferences and adaptive/high rendering quality. Preferences apply across pages.
+Earth, Moon and Mars share a responsive command bar, location search and compact Font Awesome controls. Settings include English/French, light/dark appearance, an optional NASA-blue accent, motion preferences and adaptive/high rendering quality. Preferences apply across pages.
 
 GitHub Pages serves static files and cannot run the Python API. The browser detects that mode, avoids missing `/api` requests and falls back to clearly labelled NASA/JPL model positions, timestamped NOAA solar-wind observations, public geocoding, local destinations and coordinates. Model values are estimates, not telemetry; expired measurements are omitted. Without a terrain backend, the globe is an unmeasured ellipsoid with imagery. Optional Google 3D remains a separate provider layer.
 
