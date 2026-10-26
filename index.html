@@ -7,8 +7,8 @@
   <meta name="description" content="RELIC — Explore the solar system and the stories we left among the stars.">
   <title>RELIC — Explore our solar system</title>
   <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="./assets/icon-192.png">
+  <link rel="icon" href="./assets/relic-icon-v1-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/relic-icon-v1-192.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <script>try{document.documentElement.dataset.theme=localStorage.getItem('nasa-atlas-theme')==='day'?'day':'night'}catch{document.documentElement.dataset.theme='night'}</script>
@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="./app-settings.css?v=polish-4">
   <link rel="stylesheet" href="./navigation.css?v=2">
   <link rel="stylesheet" href="./film-bridge.css?v=1">
-  <link rel="stylesheet" href="./intro/prologue-v8.css?v=8.4-player-6">
+  <link rel="stylesheet" href="./intro/prologue-v8.css?v=8.4-player-7">
   <link rel="stylesheet" href="./intro/prologue-player.css">
   <link rel="stylesheet" href="./intro/prologue-typing.css">
   <link rel="stylesheet" href="./planet-dashboard.css?v=polish-4">
@@ -29,6 +29,7 @@
   <link rel="stylesheet" href="./provider-credits.css?v=polish-4">
   <link rel="stylesheet" href="./atlas-presentation.css?v=polish-4">
   <script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/controls/OrbitControls.js":"./vendor/OrbitControls.js"}}</script>
+  <link rel="stylesheet" href="./branding.css?v=brand-7">
 </head>
 <body class="atlas-page" data-mode="overview">
   <div id="scene" aria-label="Interactive solar system"></div>
@@ -36,7 +37,7 @@
 
   <header class="topbar">
     <a class="identity" href="#" id="brand-home" aria-label="RELIC — return to the solar system">
-      <svg class="relic-mark" viewBox="100 85 320 285" aria-hidden="true"><path d="M184 345V166h78c44 0 67 26 67 58 0 36-27 60-69 60h-76m71 0 79 66"/><path d="M126 301C83 197 172 99 280 112c53 7 93 31 116 73"/><circle cx="396" cy="185" r="10"/></svg>
+      <img class="relic-mark relic-official-logo" src="./assets/relic-logo-v1.png" alt="" width="64" height="56">
       <span class="identity-copy"><strong>RELIC</strong><small>Beyond the journey</small></span>
     </a>
     <span class="topbar-hint">GLISSER POUR TOURNER <span>·</span> PINCER OU DÉFILER POUR ZOOMER</span>
@@ -74,11 +75,11 @@
     <button class="overview-button" id="overview-button" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><ellipse cx="12" cy="12" rx="10" ry="5" transform="rotate(-25 12 12)"/></svg><span>Solar system</span></button>
   </footer>
 
-  <div class="loading" id="loading" role="status"><span class="view-loading-mark" aria-hidden="true">R</span><span>Opening the solar system</span></div>
+  <div class="loading" id="loading" role="status"><span class="view-loading-mark" aria-hidden="true"><img src="./assets/relic-logo-v1.png" alt="" width="30" height="27"></span><span>Opening the solar system</span></div>
   <div class="error-screen" id="error-screen" role="alert" hidden><strong>The 3D view could not start.</strong><p id="error-message">Reload the page to try again.</p></div>
   <section id="intro" class="intro" aria-label="RELIC — the story of exploration"></section>
   <script type="module" src="./theme.js?v=polish-4"></script>
-  <script type="module" src="./film-bridge.js?v=player-6"></script>
+  <script type="module" src="./film-bridge.js?v=player-7"></script>
   <script type="module" src="./app.js?v=polish-4"></script>
 </body>
 </html>

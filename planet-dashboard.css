@@ -154,8 +154,13 @@ html[data-motion=reduced] .planet-dashboard *,html[data-motion=reduced] .planet-
 @media(max-width:960px){.planet-dashboard[data-panel-open=true] .pd-inspector{animation:pd-inspector-enter .2s cubic-bezier(.2,.7,.3,1) both}}
 @keyframes pd-inspector-enter{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
 
-/* Keep the reset control available even when the atlas is already in overview. */
-.planet-dashboard .pd-tools #overview-button{display:inline-flex!important}
+/* Atlas navigation lives in the world picker; its scene uses the freed row. */
+.planet-dashboard[data-dashboard-view=atlas]{grid-template-rows:60px 62px minmax(0,1fr)}
+.planet-dashboard[data-dashboard-view=atlas] .pd-command>.pd-inspector-toggle{align-self:flex-start;min-height:48px;height:48px;min-width:48px;width:48px;margin:0;padding:0;border:1px solid var(--pd-border);border-radius:14px;background:var(--pd-panel)!important}
+.planet-dashboard[data-dashboard-view=atlas] .pd-command>.pd-inspector-toggle>span{display:none}
+@media(max-width:960px){.planet-dashboard[data-dashboard-view=atlas]{grid-template-rows:58px 58px minmax(0,1fr)}}
+@media(max-width:650px){.planet-dashboard[data-dashboard-view=atlas]{grid-template-rows:50px 54px minmax(0,1fr)}.planet-dashboard[data-dashboard-view=atlas] .pd-command{gap:8px}}
+@media(max-height:550px) and (orientation:landscape){.planet-dashboard[data-dashboard-view=atlas]{grid-template-rows:44px 44px minmax(0,1fr)}.planet-dashboard[data-dashboard-view=atlas] .pd-command>.pd-inspector-toggle{min-height:40px;height:40px;width:40px;min-width:40px}}
 
 .planet-dashboard .pd-tools :is(#atlas-zoom-in,#atlas-zoom-out)>span{display:block!important;font-size:22px;font-weight:300;line-height:1}
 

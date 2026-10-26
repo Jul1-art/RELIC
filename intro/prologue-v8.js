@@ -5,7 +5,7 @@ import { createOpeningTyping } from './prologue-typing.js';
 
 const COPY = {
   en: {
-    skip: 'Explore the solar system', play: 'Play with sound', enter: 'Explore the solar system', watchSound: 'Watch with sound',
+    skip: 'Explore the solar system', play: 'Play', enter: 'Explore the solar system', watchSound: 'Watch with sound',
     pause: 'Pause film', resume: 'Resume film', mute: 'Turn sound off', unmute: 'Turn sound on',
     position: 'Film position', introduction: 'RELIC introduction', preview: 'Preview', offline: 'Save film offline', offlineReady: 'Film available offline',
     clean: 'Hide controls (H)', show: 'Show controls (H)', captions: 'Show story captions (C)', hideCaptions: 'Hide story captions (C)',
@@ -14,10 +14,10 @@ const COPY = {
     blocked: 'Start the film with sound.',
     loading: 'Loading the film…',
     unavailable: 'The film is unavailable. Your journey can still begin.',
-    ready:'Press play when you are ready.', volume:'Volume', settings:'Playback settings', speed:'Playback speed', cinema:'Cinema mode (T)', shortcuts:'Keyboard shortcuts (?)', help:'Shortcuts', restart:'Replay film',
+    ready:'Press play when you are ready.', volume:'Volume', settings:'Playback settings', speed:'Playback speed', shortcuts:'Keyboard shortcuts (?)', help:'Shortcuts', restart:'Replay film',
   },
   fr: {
-    skip: 'Explorer le système solaire', play: 'Voir avec le son', enter: 'Explorer le système solaire', watchSound: 'Activer le son',
+    skip: 'Explorer le système solaire', play: 'Lire', enter: 'Explorer le système solaire', watchSound: 'Activer le son',
     pause: 'Mettre le film en pause', resume: 'Reprendre le film', mute: 'Couper le son', unmute: 'Activer le son',
     position: 'Position dans le film', introduction: 'Introduction de RELIC', preview: 'Aperçu', offline: 'Garder le film hors ligne', offlineReady: 'Film disponible hors ligne',
     clean: 'Masquer les commandes (H)', show: 'Afficher les commandes (H)', captions: 'Afficher les textes (C)', hideCaptions: 'Masquer les textes (C)',
@@ -26,9 +26,10 @@ const COPY = {
     blocked: 'Lancez le film avec le son.',
     loading: 'Chargement du film…',
     unavailable: 'Le film est indisponible. Votre voyage peut commencer.',
-    ready:'Lancez le film quand vous le souhaitez.', volume:'Volume', settings:'Réglages du lecteur', speed:'Vitesse de lecture', cinema:'Mode cinéma (T)', shortcuts:'Raccourcis clavier (?)', help:'Raccourcis', restart:'Revoir le film',
+    ready:'Lancez le film quand vous le souhaitez.', volume:'Volume', settings:'Réglages du lecteur', speed:'Vitesse de lecture', shortcuts:'Raccourcis clavier (?)', help:'Raccourcis', restart:'Revoir le film',
   },
 };
+const BRAND_ASSET = new URL('../assets/relic-logo-v1.png', import.meta.url).href;
 const ICONS = Object.freeze({
   play: 'play', pause: 'pause', muted: 'volume-xmark',
   clean: 'eye-slash', captions: 'closed-captioning', fullscreen: 'expand',
@@ -131,7 +132,7 @@ export function createPrologue({
     const filmMedia = { ...media, ...(media.languages?.[language()] ?? {}) };
     const cues = [...(media.captions?.[language()] ?? defaultCues)].sort((a,b)=>a.start-b.start);
     element.classList.add('prologue');
-    element.classList.remove('hidden', 'leaving', 'prologue-failed', 'prologue-backdrop-ready', 'prologue-theater');
+    element.classList.remove('hidden', 'leaving', 'prologue-failed', 'prologue-backdrop-ready');
     for (const name of ['--end-blur', '--end-brightness', '--end-scale', '--end-progress']) element.style.removeProperty(name);
     element.classList.toggle('prologue-reduced', Boolean(reducedMotion()));
     element.setAttribute('role', 'dialog');
@@ -143,10 +144,10 @@ export function createPrologue({
     // Only static interface markup uses HTML. Every supplied cue uses textContent.
     element.innerHTML = `<canvas class="prologue-backdrop" width="0" height="0" aria-hidden="true"></canvas><video id="intro-video" class="prologue-film" playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
       <div class="prologue-shade" aria-hidden="true"></div>
-      <header class="prologue-header"><span class="prologue-brand" aria-hidden="true">RELIC</span><span class="prologue-preview" hidden></span><button id="skip-intro" class="prologue-skip"><span></span></button></header>
+      <header class="prologue-header"><span class="prologue-brand" aria-hidden="true"><img src="${BRAND_ASSET}" alt="" width="32" height="28">RELIC</span><span class="prologue-preview" hidden></span><button id="skip-intro" class="prologue-skip"><span></span></button></header>
       <button class="prologue-reveal prologue-visually-hidden" type="button" hidden></button>
-      <div class="prologue-caption"><svg class="prologue-endmark" viewBox="0 0 100 100" aria-hidden="true"><path d="M35 75V29h20c11 0 17 6 17 15 0 9-7 15-18 15H35m19 0 20 18"/><path class="prologue-orbit" d="M20 63C10 37 32 12 59 16c14 2 24 8 30 19"/><circle cx="89" cy="35" r="2"/></svg><div class="prologue-context"><p id="intro-kicker"></p><p id="intro-speaker"></p></div><h1 id="intro-line"></h1><span class="prologue-visually-hidden" id="intro-transcript" aria-live="polite" aria-atomic="true"></span><p id="intro-source" hidden></p>
-        <div class="prologue-gate" hidden><p id="intro-status" role="status"></p><div class="prologue-gate-actions"><button class="prologue-play-film">${icon('play')}<span></span></button><button class="prologue-enter"><span></span></button></div></div>
+      <div class="prologue-caption"><img class="prologue-endmark" src="${BRAND_ASSET}" alt="" width="128" height="112" aria-hidden="true"><div class="prologue-context"><p id="intro-kicker"></p><p id="intro-speaker"></p></div><h1 id="intro-line"></h1><span class="prologue-visually-hidden" id="intro-transcript" aria-live="polite" aria-atomic="true"></span><p id="intro-source" hidden></p>
+        <div class="prologue-gate" hidden><p id="intro-status" role="status"></p><div class="prologue-gate-actions"><button class="prologue-play-film" type="button">${icon('play')}</button><button class="prologue-enter"><span></span></button></div></div>
       </div>
       <p class="prologue-loading" role="status" hidden></p>
       <p class="prologue-feedback" role="status" aria-live="polite" hidden></p>
@@ -154,13 +155,12 @@ export function createPrologue({
         <label class="prologue-scrubber"><span class="prologue-visually-hidden"></span><input type="range" min="0" max="1" step="0.01" value="0" disabled></label>
         <div class="prologue-transport">
           <div class="prologue-main-controls"><button class="prologue-pause" type="button"></button><div class="prologue-volume-group"><button class="prologue-audio" type="button" aria-pressed="false"></button><label class="prologue-inline-volume"><span class="prologue-visually-hidden"></span><input class="prologue-volume-input" data-player-volume type="range" min="0" max="100" step="1" value="100"><output class="prologue-volume-value">100%</output></label></div><time class="prologue-time">0:00 / 8:49</time></div>
-          <div class="prologue-extra-controls"><button class="prologue-captions" type="button" aria-pressed="true">${icon('captions')}</button><button class="prologue-settings" type="button" aria-controls="prologue-player-menu" aria-expanded="false">${worldIcon('gear')}</button><button class="prologue-theater-toggle" type="button" aria-pressed="false"><span class="prologue-theater-icon" aria-hidden="true"></span></button><button class="prologue-fullscreen" type="button">${icon('fullscreen')}</button></div>
+          <div class="prologue-extra-controls"><button class="prologue-captions" type="button" aria-pressed="true">${icon('captions')}</button><button class="prologue-settings" type="button" aria-controls="prologue-player-menu" aria-expanded="false">${worldIcon('gear')}</button><button class="prologue-fullscreen" type="button">${icon('fullscreen')}</button></div>
         </div>
         <section class="prologue-player-menu" id="prologue-player-menu" role="dialog" aria-modal="false" aria-labelledby="prologue-player-menu-title" hidden>
           <header><h2 id="prologue-player-menu-title"></h2><button class="prologue-menu-close" type="button">${icon('close')}</button></header>
           <div class="prologue-menu-volume-row"><label><span data-player-copy="volume"></span><input class="prologue-menu-volume" data-player-volume type="range" min="0" max="100" step="1" value="100"></label><label class="prologue-volume-number-wrap"><input class="prologue-volume-number" type="number" min="0" max="100" step="1" value="100" inputmode="numeric"><span aria-hidden="true">%</span></label></div>
           <fieldset class="prologue-speed"><legend data-player-copy="speed"></legend><div>${[.25,.5,.75,1,1.25,1.5,1.75,2].map(rate=>`<button type="button" data-player-rate="${rate}" aria-pressed="${rate===1}">${rate}×</button>`).join('')}</div></fieldset>
-          <button class="prologue-menu-cinema" type="button" aria-pressed="false"><span data-player-copy="cinema"></span><span class="prologue-toggle-indicator" aria-hidden="true"></span></button>
           <div class="prologue-menu-actions"><button class="prologue-clean" type="button">${icon('clean')}<span></span></button><button class="prologue-download" type="button" hidden>${icon('download')}<span></span></button><button class="prologue-shortcut-toggle" type="button" aria-expanded="false"><span aria-hidden="true">?</span><span data-player-copy="help"></span></button></div>
           <div class="prologue-shortcuts" hidden></div>
         </section>
@@ -198,8 +198,6 @@ export function createPrologue({
     const settings = element.querySelector('.prologue-settings');
     const menu = element.querySelector('.prologue-player-menu');
     const menuClose = element.querySelector('.prologue-menu-close');
-    const theater = element.querySelector('.prologue-theater-toggle');
-    const cinemaOption = element.querySelector('.prologue-menu-cinema');
     const helpToggle = element.querySelector('.prologue-shortcut-toggle');
     const shortcuts = element.querySelector('.prologue-shortcuts');
     const feedback = element.querySelector('.prologue-feedback');
@@ -228,8 +226,10 @@ export function createPrologue({
     let chromeVisible = true;
     let captionsVisible = true;
     let lastPointer = null;
+    let screenPress = null;
+    let screenDragged = false;
+    let dismissingPlayerMenu = false;
     let typedValue = '';
-    let theaterMode = false;
     let menuOpen = false;
     let lastAudibleVolume = 1;
     let feedbackTimer = null;
@@ -322,7 +322,6 @@ export function createPrologue({
       try{video.currentTime=Math.max(0,Math.min(duration(),Number(value)||0));}catch{}
       render();setChrome(true);
     }
-    function toggleTheater(){theaterMode=!theaterMode;element.classList.toggle('prologue-theater',theaterMode);render();setChrome(true);}
     function setMenu(open,help=false){
       menuOpen=Boolean(open);menu.hidden=!menuOpen;settings.setAttribute('aria-expanded',String(menuOpen));
       if(help){shortcuts.hidden=false;helpToggle.setAttribute('aria-expanded','true');}
@@ -331,7 +330,7 @@ export function createPrologue({
     }
     function renderShortcuts(){
       const fr=language()==='fr';
-      const items=[['Space / K',fr?'Lecture / pause':'Play / pause'],['F',fr?'Plein écran':'Full screen'],['T',fr?'Mode cinéma':'Cinema mode'],['M',fr?'Couper / activer le son':'Mute / unmute'],['C',fr?'Sous-titres':'Captions'],['J / L',fr?'Reculer / avancer de 10 s':'Back / forward 10 seconds'],['← / →',fr?'Reculer / avancer de 5 s':'Back / forward 5 seconds'],['↑ / ↓',fr?'Volume ±5 %':'Volume ±5%'],['0–9',fr?'Position 0–90 %':'Seek 0–90%'],['Home / End',fr?'Début / fin':'Beginning / end'],[', / .',fr?'Image précédente / suivante en pause':'Previous / next frame while paused'],['< / >',fr?'Vitesse ±0,25×':'Speed ±0.25×'],['H',fr?'Masquer les commandes':'Hide controls'],['?',fr?'Raccourcis clavier':'Keyboard shortcuts']];
+      const items=[['Space / K',fr?'Lecture / pause':'Play / pause'],['F',fr?'Plein écran':'Full screen'],['M',fr?'Couper / activer le son':'Mute / unmute'],['C',fr?'Sous-titres':'Captions'],['J / L',fr?'Reculer / avancer de 10 s':'Back / forward 10 seconds'],['← / →',fr?'Reculer / avancer de 5 s':'Back / forward 5 seconds'],['↑ / ↓',fr?'Volume ±5 %':'Volume ±5%'],['0–9',fr?'Position 0–90 %':'Seek 0–90%'],['Home / End',fr?'Début / fin':'Beginning / end'],[', / .',fr?'Image précédente / suivante en pause':'Previous / next frame while paused'],['< / >',fr?'Vitesse ±0,25×':'Speed ±0.25×'],['H',fr?'Masquer les commandes':'Hide controls'],['?',fr?'Raccourcis clavier':'Keyboard shortcuts']];
       shortcuts.replaceChildren(...items.map(([key,label])=>{const row=document.createElement('p');const code=document.createElement('kbd');code.textContent=key;const text=document.createElement('span');text.textContent=label;row.append(code,text);return row;}));
       helpToggle.setAttribute('aria-label',copy().shortcuts);
     }
@@ -449,6 +448,7 @@ export function createPrologue({
       if (kicker.textContent !== kickerText) kicker.textContent = kickerText;
       kicker.hidden = !kickerText;
       element.classList.toggle('prologue-timed-label', Boolean(timedLabel) && Boolean(pictureLabel));
+      element.classList.toggle('prologue-earth-label', showPictureLabel && scene?.id === 'origins' && Boolean(timedLabel));
       caption.classList.toggle('prologue-label-only', Boolean(pictureLabel) && !typedValue);
       const composition=scene ?? cue;
       const focusFrames = composition?.focusTimeline ?? [];
@@ -512,7 +512,7 @@ export function createPrologue({
         range.setAttribute('aria-valuetext', clockText);
       }
       syncVolume();
-      const nextTransport = `${language()}|${video.paused}|${video.ended}|${video.muted}|${gateReason}|${soundChoice}|${captionsVisible}|${theaterMode}|${video.playbackRate}|${document.fullscreenElement === element}`;
+      const nextTransport = `${language()}|${video.paused}|${video.ended}|${video.muted}|${gateReason}|${soundChoice}|${captionsVisible}|${video.playbackRate}|${document.fullscreenElement === element}`;
       if (transportState !== nextTransport) {
         transportState = nextTransport;
         range.setAttribute('aria-label', copy().position);
@@ -521,7 +521,8 @@ export function createPrologue({
         download.setAttribute('aria-label', copy().offline);
         download.title = copy().offline;
         skip.querySelector('span').textContent = copy().skip;
-        play.querySelector('span').textContent = copy().play;
+        play.setAttribute('aria-label', copy().play);
+        play.title = copy().play;
         enter.querySelector('span').textContent = copy().enter;
         pause.innerHTML = icon(video.paused ? 'play' : 'pause');
         pause.setAttribute('aria-label', video.ended ? copy().restart : video.paused ? copy().resume : copy().pause);
@@ -542,8 +543,6 @@ export function createPrologue({
         for(const node of element.querySelectorAll('[data-player-copy]'))node.textContent=copy()[node.dataset.playerCopy];
         for(const node of volumeInputs){node.setAttribute('aria-label',copy().volume);node.title=copy().volume;}
         volumeNumber.setAttribute('aria-label',`${copy().volume} (%)`);
-        theater.setAttribute('aria-label',copy().cinema); theater.title=copy().cinema;
-        theater.setAttribute('aria-pressed',String(theaterMode)); cinemaOption.setAttribute('aria-pressed',String(theaterMode));
         captions.title=captionsVisible?copy().hideCaptions:copy().captions;
         download.querySelector('span').textContent=copy().offline;
         for(const button of menu.querySelectorAll('[data-player-rate]'))button.setAttribute('aria-pressed',String(Number(button.dataset.playerRate)===video.playbackRate));
@@ -561,6 +560,7 @@ export function createPrologue({
       controls.hidden = reason === 'unavailable';
       play.hidden = reason === 'unavailable';
       status.textContent = copy()[reason];
+      status.hidden = reason === 'ready';
       element.classList.add('prologue-gated');
       element.classList.toggle('prologue-failed', reason === 'unavailable');
       render();
@@ -653,17 +653,16 @@ export function createPrologue({
       const target=event.target;
       if(target?.closest?.('input,textarea,select,[contenteditable=true],.prologue-player-menu'))return;
       const key=event.key.toLowerCase();
-      const handled=[' ','k','f','t','m','c','h','j','l','arrowleft','arrowright','arrowup','arrowdown','home','end',',','.','<','>','?'].includes(key)||/^[0-9]$/.test(key);
+      const handled=[' ','k','f','m','c','h','j','l','arrowleft','arrowright','arrowup','arrowdown','home','end',',','.','<','>','?'].includes(key)||/^[0-9]$/.test(key);
       if(!handled)return;
       // Space on a focused button keeps the browser's one native activation.
       if(key===' '&&target?.closest?.('button'))return;
       event.preventDefault();event.stopPropagation();
       if(key==='h'){if(!event.repeat)setChrome(!chromeVisible);return;}
       setChrome(true);
-      if(event.repeat&&[' ','k','f','t','m','c','h','?'].includes(key))return;
+      if(event.repeat&&[' ','k','f','m','c','h','?'].includes(key))return;
       if(key===' '||key==='k'){video.paused?playFilm():pauseFilm();return;}
       if(key==='f'){toggleFullscreen();return;}
-      if(key==='t'){toggleTheater();return;}
       if(key==='m'){toggleMute();return;}
       if(key==='c'){toggleCaptions();return;}
       if(key==='?'){setMenu(true,true);return;}
@@ -674,12 +673,24 @@ export function createPrologue({
       if(/^[0-9]$/.test(key)){seekTo(duration()*Number(key)/10);return;}
       seekTo(video.currentTime+(['j','arrowleft'].includes(key)?-1:1)*(['j','l'].includes(key)?10:5));
     }
+    const isPlayerControl = target => Boolean(target.closest('button, input, label, a, .prologue-header, .prologue-controls, .prologue-gate, .prologue-player-menu'));
     element.addEventListener('pointerdown', event => {
       lastPointer = { x: event.clientX, y: event.clientY };
-      if (event.target.closest('button, input, label, a, .prologue-gate, .prologue-player-menu')) { setChrome(true); return; }
-      setChrome(!chromeVisible);
+      screenPress = { x: event.clientX, y: event.clientY };
+      screenDragged = false;
+      dismissingPlayerMenu = menuOpen;
+      if (isPlayerControl(event.target)) setChrome(true);
+    }, { signal });
+    element.addEventListener('pointercancel', () => { screenPress = null; screenDragged = true; }, { signal });
+    // A single click or tap on the picture is a playback action. Pointerdown
+    // only records the gesture so dragging a control never toggles playback.
+    element.addEventListener('click', event => {
+      if (!current() || element.inert || isPlayerControl(event.target) || screenDragged || dismissingPlayerMenu) return;
+      setChrome(true);
+      video.paused ? playFilm() : pauseFilm();
     }, { signal });
     element.addEventListener('pointermove', event => {
+      if (screenPress && Math.hypot(event.clientX - screenPress.x, event.clientY - screenPress.y) > 10) screenDragged = true;
       if (event.pointerType === 'touch') return;
       if (lastPointer && Math.hypot(event.clientX - lastPointer.x, event.clientY - lastPointer.y) < 7) return;
       lastPointer = { x: event.clientX, y: event.clientY };
@@ -699,7 +710,6 @@ export function createPrologue({
     volumeNumber.addEventListener('change',()=>{volumeNumber.value=String(Math.round((video.muted?0:video.volume)*100));},{signal});
     settings.addEventListener('click',()=>setMenu(!menuOpen),{signal});
     menuClose.addEventListener('click',()=>setMenu(false),{signal});
-    theater.addEventListener('click',toggleTheater,{signal});cinemaOption.addEventListener('click',toggleTheater,{signal});
     helpToggle.addEventListener('click',()=>{shortcuts.hidden=!shortcuts.hidden;helpToggle.setAttribute('aria-expanded',String(!shortcuts.hidden));},{signal});
     for(const button of menu.querySelectorAll('[data-player-rate]'))button.addEventListener('click',()=>setRate(Number(button.dataset.playerRate)),{signal});
     document.addEventListener('pointerdown',event=>{if(menuOpen&&!menu.contains(event.target)&&!settings.contains(event.target))setMenu(false);},{signal});

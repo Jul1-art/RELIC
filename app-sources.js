@@ -40,7 +40,7 @@ function createDialog(trigger) {
   const request = new AbortController();
   const dialog = document.createElement('dialog'); dialog.className = 'relic-sources-dialog';
   dialog.id = 'relic-app-sources'; dialog.setAttribute('aria-labelledby', 'relic-sources-title');
-  dialog.innerHTML = `<header class="relic-sources-header"><div><p class="relic-sources-eyebrow">RELIC</p><h2 id="relic-sources-title"></h2></div><button type="button" class="relic-sources-close">${worldIcon('xmark')}</button></header><div class="relic-sources-content"></div>`;
+  dialog.innerHTML = `<header class="relic-sources-header"><div><p class="relic-sources-eyebrow"><img class="relic-dialog-logo" src="./assets/relic-logo-v1.png" alt="" width="26" height="23">RELIC</p><h2 id="relic-sources-title"></h2></div><button type="button" class="relic-sources-close">${worldIcon('xmark')}</button></header><div class="relic-sources-content"></div>`;
   dialog.querySelector('h2').textContent = french() ? 'Sources et créateurs' : 'Sources and creators';
   const close = dialog.querySelector('.relic-sources-close');
   close.setAttribute('aria-label', french() ? 'Fermer les sources' : 'Close sources');

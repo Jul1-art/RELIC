@@ -1,0 +1,10 @@
+/* One shared emblem across the atlas, planetary views and documentary. */
+.relic-official-logo{display:block;object-fit:contain;object-position:center;flex-shrink:0}
+html[data-theme=day] .relic-official-logo,html[data-theme=day] .relic-dialog-logo{filter:invert(1)}
+.prologue .prologue-brand{display:inline-flex;align-items:center;gap:11px}
+.prologue .prologue-brand img{display:block;width:32px;height:28px;object-fit:contain}
+.prologue img.prologue-endmark{width:128px;height:112px;object-fit:contain}
+.view-loading-mark img{display:block;width:30px;height:27px;object-fit:contain}
+.relic-dialog-logo{display:inline-block;width:26px;height:23px;object-fit:contain;vertical-align:middle;margin-right:9px}
+.relic-dialog-eyebrow{display:flex;align-items:center;font-size:10px;letter-spacing:3px}
+@media(max-width:650px){.prologue .prologue-brand{gap:8px}.prologue .prologue-brand img{width:27px;height:24px}.prologue img.prologue-endmark{width:108px;height:95px}}

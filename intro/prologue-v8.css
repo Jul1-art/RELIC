@@ -144,7 +144,7 @@
   .prologue .prologue-shade{background:linear-gradient(180deg,#0006,transparent 20%,transparent 48%,#0009)}
 }
 @media(orientation:portrait){
-  .prologue .prologue-film{object-position:50% 29%!important}
+  .prologue .prologue-film{object-position:50% 50%!important}
   .prologue[data-cue-kind=quote] #intro-line{font-size:clamp(21px,2.4vw,32px);line-height:1.32;letter-spacing:-.4px}
 }
 
@@ -156,7 +156,7 @@
 /* A short, narrow portrait screen needs room for complete archive clauses and
    the longest bilingual narration while keeping the source image unobstructed. */
 @media(max-width:350px) and (orientation:portrait){
-  .prologue .prologue-film{object-position:50% 20%!important}
+  .prologue .prologue-film{object-position:50% 50%!important}
   .prologue[data-cue-kind=narration] #intro-line{font-size:21px;line-height:1.34;letter-spacing:-.35px}
 }
 
@@ -192,3 +192,7 @@
  .prologue[data-cue-kind=typing] .prologue-caption{width:calc(100% - 90px)}
  .prologue[data-cue-kind=typing] #intro-line{font-size:clamp(25px,4vw,32px);line-height:1.4}
 }
+
+/* The Earth formation label introduces the planet clearly, at title scale. */
+.intro.prologue.prologue-earth-label #intro-kicker{font-size:clamp(22px,2.8vw,38px);font-weight:400;line-height:1.3;letter-spacing:-.015em;text-transform:none;text-wrap:balance;text-shadow:0 2px 20px #000a}
+@media(max-width:650px){.intro.prologue.prologue-earth-label #intro-kicker{font-size:clamp(21px,6.4vw,29px);line-height:1.35}}

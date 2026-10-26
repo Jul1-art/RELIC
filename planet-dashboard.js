@@ -109,7 +109,11 @@ export function initializePlanetDashboard(options = {}) {
     for (const element of document.querySelectorAll('#planet-labels,#imagery-credit,#gesture-hint')) viewport.append(element);
     const details=document.querySelector('#details');if(details)inspector.append(details);
     const dock=document.querySelector('.destinations');if(dock){dock.hidden=true;dock.dataset.dashboardLegacy='';header.append(dock);}
-    const toolbar=document.querySelector('.toolbar');if(toolbar)tools.append(toolbar);
+    // The world picker already returns to the solar system. Keep legacy nodes
+    // connected for the atlas adapter, without retaining a second bottom rail.
+    const toolbar=document.querySelector('.toolbar');
+    if(toolbar){toolbar.hidden=true;toolbar.inert=true;toolbar.setAttribute('aria-hidden','true');header.append(toolbar);}
+    footer.hidden=true;
   } else {
     for(const element of [...document.querySelectorAll('.vignette,.scene-vignette')])viewport.append(element);
     const panel=document.querySelector('.explorer-panel,.site-panel');if(panel)inspector.append(panel);
@@ -129,6 +133,7 @@ export function initializePlanetDashboard(options = {}) {
   if(!search && atlas){search=createAtlasSearch();atlasSearch=search;}
   if(search){search.dataset.dashboardSearch='persistent';command.append(search);const content=search.querySelector('#search-content');if(content)content.inert=false;search.classList.add('expanded');}
   const commandLabel=node('p','pd-command-context');commandLabel.dataset.dashboardCopy='context';command.append(commandLabel);
+  if(atlas)command.append(panelButton);
   for(const oldMain of [...document.body.children].filter(element=>element.tagName==='MAIN')){
     for(const hint of oldMain.querySelectorAll('.nav-hint'))viewport.append(hint);
     if(!oldMain.children.length)oldMain.remove();

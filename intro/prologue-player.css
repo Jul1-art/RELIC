@@ -27,10 +27,9 @@
 .intro.prologue [data-player-volume]::-moz-range-progress{height:3px;background:#fff}
 .intro.prologue [data-player-volume]::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:11px;height:11px;margin-top:-4px;border:0;border-radius:50%;background:#fff}
 .intro.prologue [data-player-volume]::-moz-range-thumb{width:11px;height:11px;border:0;border-radius:50%;background:#fff}
-.prologue-theater-icon{display:block;width:21px;height:13px;border:2px solid currentColor;border-radius:2px}
 .intro.prologue .prologue-captions[aria-pressed=true]::after{content:"";position:absolute;bottom:5px;width:16px;height:2px;border-radius:2px;background:#fff}
 .intro.prologue .prologue-captions{position:relative}
-.intro.prologue .prologue-theater-toggle[aria-pressed=true],.intro.prologue .prologue-settings[aria-expanded=true]{background:#ffffff18}
+.intro.prologue .prologue-settings[aria-expanded=true]{background:#ffffff18}
 .intro.prologue .prologue-player-menu{position:absolute;z-index:15;right:max(18px,env(safe-area-inset-right));bottom:calc(100% - 15px);display:block;width:min(390px,calc(100vw - 32px));max-height:min(620px,calc(100dvh - 120px));overflow:auto;overscroll-behavior:contain;margin:0;padding:17px;border:1px solid #ffffff21;border-radius:19px;background:#151515f7;color:#eee;box-shadow:0 12px 55px #0009;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);font:12px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;letter-spacing:0;scrollbar-width:thin;scrollbar-color:#777 transparent}
 .prologue-player-menu header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:17px}
 .prologue-player-menu h2{margin:0;color:#fff;font-size:14px;font-weight:500;line-height:1.4;letter-spacing:0}
@@ -48,11 +47,6 @@
 .prologue-speed>div{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
 .intro.prologue .prologue-speed button{border:1px solid #ffffff18;background:#ffffff04;color:#ccc;font-variant-numeric:tabular-nums}
 .intro.prologue .prologue-speed button[aria-pressed=true]{border-color:#eee;background:#f1f1f1;color:#111}
-.intro.prologue .prologue-player-menu .prologue-menu-cinema{display:flex;justify-content:space-between;width:100%;padding:4px 0;margin-bottom:13px}
-.prologue-toggle-indicator{display:block;width:28px;height:16px;padding:3px;border-radius:10px;background:#ffffff22}
-.prologue-toggle-indicator::before{content:"";display:block;width:10px;height:10px;border-radius:50%;background:#a5a5a5;transition:transform .15s ease}
-[aria-pressed=true]>.prologue-toggle-indicator{background:#eee}
-[aria-pressed=true]>.prologue-toggle-indicator::before{background:#111;transform:translateX(12px)}
 .prologue-menu-actions{display:grid;gap:4px;border-top:1px solid #ffffff1a;padding-top:11px}
 .intro.prologue .prologue-player-menu .prologue-menu-actions button{justify-content:flex-start;gap:11px;text-align:left;padding:0 7px;color:#ccc}
 .intro.prologue .prologue-menu-actions svg.fas{width:16px;height:16px}
@@ -62,18 +56,16 @@
 .prologue-shortcuts kbd{display:block;flex:0 0 85px;color:#eee;font:500 10px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:0}
 .prologue-shortcuts p>span{text-align:right}
 .prologue-feedback{position:absolute;left:50%;top:50%;z-index:8;max-width:calc(100% - 50px);margin:0;padding:10px 16px;border:1px solid #ffffff20;border-radius:12px;background:#111c;color:#fff;font:500 14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;transform:translate(-50%,-50%);pointer-events:none;backdrop-filter:blur(14px);font-variant-numeric:tabular-nums}
-.intro.prologue.prologue-theater .prologue-film{object-fit:contain!important;object-position:50% 50%!important}
 .intro.prologue.prologue-gated .prologue-gate{margin-top:0}
 .intro.prologue.prologue-gated #intro-status{font-size:12px;color:#aaa;margin-bottom:20px}
 .intro.prologue.prologue-gated:not(.prologue-failed) .prologue-enter{display:none}
-.intro.prologue .prologue-gate-actions .prologue-play-film{display:inline-flex;min-height:54px;padding:0 24px;border-radius:28px;gap:12px;background:#f2f2f2;color:#111;font-size:12px;font-weight:500}
-.intro.prologue .prologue-gate-actions .prologue-play-film svg.fas{width:17px;height:17px}
+.intro.prologue .prologue-gate-actions .prologue-play-film{display:inline-grid;place-items:center;width:78px;min-width:78px;height:54px;min-height:54px;padding:0;border-radius:12px;background:#f2f2f2;color:#111}
+.intro.prologue .prologue-gate-actions .prologue-play-film svg.fas{width:21px;height:21px;translate:1px 0}
 @media(max-width:650px){
  .intro.prologue .prologue-controls{padding:16px max(6px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(6px,env(safe-area-inset-left))}
  .intro.prologue .prologue-transport{gap:0}
  .prologue-main-controls,.prologue-extra-controls,.prologue-volume-group{gap:0}
  .intro.prologue .prologue-inline-volume{display:none}
- .intro.prologue .prologue-transport .prologue-theater-toggle{display:none}
  .intro.prologue .prologue-time{min-width:72px;margin-left:0;padding:6px 5px;font-size:11px;line-height:18px}
  .intro.prologue .prologue-player-menu{right:max(8px,env(safe-area-inset-right));width:min(370px,calc(100vw - 16px));padding:14px;max-height:calc(100dvh - 115px)}
  .intro.prologue .prologue-volume-number{font-size:16px}

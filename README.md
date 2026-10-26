@@ -119,14 +119,14 @@ Une publication statique reste possible avec `node tools/build_static.mjs`, mais
 
 ## Film player
 
-The English/French introduction opens paused and loads its video only after **Play**. The monochrome player includes a full-width timeline, captions, cinema mode, playback speed and volume adjustable in 1% steps or by entering an exact percentage in the player settings. Opening and closing Sources or the offline dialog keeps playback paused.
+The English/French introduction opens paused and loads its video only after **Play**. The monochrome player includes a full-width timeline, captions, playback speed and volume adjustable in 1% steps or by entering an exact percentage in the player settings. Click or tap the picture to play or pause. Portrait video is centered without cropping. Opening and closing Sources or the offline dialog keeps playback paused.
 
 Keyboard shortcuts work while the film is open, outside editable fields and other dialogs. Press **?** for the in-player reference.
 
 | Key | Action |
 | --- | --- |
 | Space / K | Play or pause (Space activates a focused button) |
-| F / T | Fullscreen / cinema mode |
+| F | Fullscreen |
 | M / C / H | Mute / captions / hide controls while playing |
 | J / L | Back / forward 10 seconds |
 | Left / Right | Back / forward 5 seconds |

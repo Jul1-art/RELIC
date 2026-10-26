@@ -1,6 +1,6 @@
 {
   "id": "./",
-  "name": "RELIC — Solar System",
+  "name": "RELIC \u2014 Solar System",
   "short_name": "RELIC",
   "description": "Explore the Solar System and the stories of space exploration.",
   "start_url": "./",
@@ -15,19 +15,13 @@
   ],
   "icons": [
     {
-      "src": "assets/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    },
-    {
-      "src": "assets/icon-192.png",
+      "src": "assets/relic-icon-v1-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "assets/icon-512.png",
+      "src": "assets/relic-icon-v1-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
