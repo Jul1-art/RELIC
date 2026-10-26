@@ -1,26 +1,43 @@
 import { openApiSettings } from './api-settings.js';
 import { initializeAppSettings } from './app-settings.js';
-import { initializeNavigation } from './navigation.js';
+import { initializeNavigation, navigateTo } from './navigation.js';
+import { initializePlanetDashboard } from './planet-dashboard.js';
+import { worldIcon, hydrateWorldIcons } from './world-icons.js';
+import { getLanguage, onLanguageChange } from './atlas-live.js?v=3';
 
 const APP_ROOT = new URL('./', import.meta.url);
 export const RETURN_MARKER = 'relic:return-to-atlas';
 
+initializePlanetDashboard();
 initializeAppSettings({ privateEdition:false, onProviderSettings:() => openApiSettings() });
 initializeNavigation();
 
-// Moving back from a world is still the same exploration session. A later
-// direct visit or reload opens the film again, as does the replay control.
-if (!document.body.classList.contains('atlas-page')) {
-  document.addEventListener('click', event => {
-    if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    const link = event.target.closest('a[href]');
-    if (!link || link.target && link.target !== '_self') return;
-    const destination = new URL(link.href, document.baseURI);
-    if (destination.origin !== APP_ROOT.origin) return;
-    if (![APP_ROOT.pathname, new URL('index.html', APP_ROOT).pathname].includes(destination.pathname)) return;
-    try { sessionStorage.setItem(RETURN_MARKER, JSON.stringify({ at:Date.now(), path:APP_ROOT.pathname })); } catch { /* Storage can be unavailable. */ }
-  });
+// The same utility rail belongs to the dashboard header on every world.
+const headerActions = document.querySelector('.header-actions');
+for (const [id, glyph, parameter] of [['relic-replay','film','film'],['relic-credits','circle-info','sources']]) {
+  let button = document.getElementById(id);
+  if (!button && headerActions) {
+    button = document.createElement('button');
+    button.id = id; button.type = 'button'; button.className = 'relic-icon-button';
+    headerActions.insertBefore(button, headerActions.querySelector('[data-app-settings]'));
+    button.addEventListener('click', () => {
+      const destination = new URL('index.html', APP_ROOT);
+      destination.searchParams.set(parameter, '1'); navigateTo(destination);
+    });
+  }
+  if (button) button.innerHTML = worldIcon(glyph);
 }
+const settingsButton = headerActions?.querySelector('[data-app-settings]');
+if (settingsButton) settingsButton.innerHTML = worldIcon('gear');
+hydrateWorldIcons();
+function labelUtilities() {
+  const fr = getLanguage() === 'fr';
+  for (const [id, label] of [['relic-replay',fr?'Voir le film':'Watch the film'],['relic-credits',fr?'Sources et créateurs':'Sources and creators']]) {
+    const button = document.getElementById(id);
+    if (button) { button.setAttribute('aria-label',label); button.title=label; }
+  }
+}
+labelUtilities(); onLanguageChange(labelUtilities);
 
 let workerRegistration;
 export function registerApplicationWorker() {

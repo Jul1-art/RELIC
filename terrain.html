@@ -18,11 +18,13 @@
   <link rel="stylesheet" href="./premium.css?v=8">
   <link rel="stylesheet" href="./theme.css?v=1">
   <link rel="stylesheet" href="./compact.css?v=3">
-  <link rel="stylesheet" href="./relic-worlds.css?v=2">
+  <link rel="stylesheet" href="./relic-worlds.css?v=3">
   <link rel="stylesheet" href="./navigation.css">
+  <link rel="stylesheet" href="./planet-dashboard.css?v=3">
+  <link rel="stylesheet" href="./view-loading.css?v=3">
   <script>window.CESIUM_BASE_URL = new URL('./vendor/cesium/', document.baseURI).href;</script>
 </head>
-<body class="terrain-page relic-world">
+<body class="terrain-page relic-world" data-dashboard-view="surface">
   <div id="terrain-scene" aria-label="Globe 3D à exploration libre alimenté par les données NASA"></div>
   <div class="scene-vignette" aria-hidden="true"></div>
 
@@ -34,7 +36,6 @@
       <a href="./terrain.html?body=earth" data-world="earth">Terre</a>
       <a href="./terrain.html?body=mars" data-world="mars">Mars</a>
       <a href="./terrain.html?body=moon" data-world="moon">Lune</a>
-      <a href="./base_lunaire_3d.html" id="lunar-base-link" hidden>Base lunaire 3D</a>
     </nav>
   </header>
 
@@ -69,7 +70,7 @@
     </div>
   </main>
 
-  <form id="place-form" class="place-search terrain-place-search" role="search" autocomplete="off">
+  <form id="place-form" class="place-search terrain-place-search" data-dashboard-search="persistent" role="search" autocomplete="off">
     <button class="search-toggle" id="search-toggle" type="button" aria-expanded="false" aria-controls="search-content"><i class="world-icon search-glass" data-world-icon="magnifying-glass" aria-hidden="true"></i><i class="world-icon search-close" data-world-icon="xmark" aria-hidden="true"></i><span class="search-toggle-label">Rechercher</span><i class="world-icon search-chevron" data-world-icon="chevron-down" aria-hidden="true"></i></button>
     <div class="search-content" id="search-content" inert>
       <div class="place-search-field"><input id="place-input" type="search" role="combobox" aria-label="Rechercher un lieu" aria-autocomplete="list" aria-expanded="false" aria-controls="suggestions" placeholder="Lieu ou coordonnées" spellcheck="false" autocomplete="off"><button type="submit" aria-label="Aller au lieu">Aller</button></div>
@@ -82,11 +83,11 @@
   <div class="scene-credit" id="scene-credit">DONNÉES NASA · TERRAIN 3D MESURÉ</div>
   <div class="esri-attribution" id="esri-attribution" hidden><a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer" target="_blank" rel="noopener noreferrer">Powered by Esri · Source: Esri, Maxar, Earthstar Geographics, GIS User Community</a></div>
   <div id="cesium-credits" class="cesium-credits"></div>
-  <div id="loading" class="loading"><span class="loading-orbit"></span><span>Chargement…</span></div>
+  <div id="loading" class="loading"><span class="view-loading-mark" aria-hidden="true">R</span><span>Chargement…</span></div>
   <div id="error" class="error" hidden></div>
   <script type="module" src="./theme.js?v=2"></script>
   <script type="module" src="./world-bridge.js?v=private-1"></script>
   <script type="module" src="./terrain-globe.js?v=private-1"></script>
-  <script type="module" src="./world-ui.js?v=2"></script>
+  <script type="module" src="./world-ui.js?v=3"></script>
 </body>
 </html>

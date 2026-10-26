@@ -1,7 +1,7 @@
 /* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'interface-v1-20261025-public';
+const VERSION = 'dashboard-v3-20261026-public';
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
 const APP_PREFIX = `relic-atlas-${encodeURIComponent(SCOPE.pathname)}-`;
@@ -20,7 +20,7 @@ const STATIC = /\.(?:html|css|js|mjs|json|webmanifest|jpe?g|png|svg|webp|avif|wo
 // already-open page continues loading its own resources normally, without a
 // second burst of dozens of script and library requests from the worker.
 const CORE = [
-  'index.html', 'earth.html', 'terrain.html', 'base_lunaire_3d.html',
+  'index.html', 'earth.html', 'terrain.html', 
   'manifest.webmanifest', 'assets/icon.svg', 'assets/icon-192.png', 'assets/icon-512.png',
 ].map(local);
 
@@ -28,16 +28,17 @@ const CORE = [
 // This also covers a first visit whose early imports preceded worker control.
 const OFFLINE_CORE = [
   ...CORE,
-  'styles.css', 'earth.css', 'terrain.css', 'lunar-base.css', 'live.css',
+  'styles.css', 'earth.css', 'terrain.css',  'live.css',
   'premium.css', 'theme.css', 'compact.css', 'relic-shell.css', 'relic-worlds.css',
   'film-bridge.css', 'app-settings.css', 'navigation.css',
   'app.js', 'atlas-live.js', 'atlas-services.js', 'orbital-data.js', 'theme.js',
   'surface-detail.js', 'nasa-worlds.js', 'earth-view.js', 'earth-imagery.js',
-  'earth-terrain.js', 'terrain-globe.js', 'terrain-view.js', 'lunar-base.js',
-  'lunar-architecture.js', 'lunar-environment.js', 'lunar-physics.js',
+  'earth-terrain.js', 'terrain-globe.js', 'terrain-view.js', 
+    
   'api-config.js', 'api-settings.js', 'api-settings.css', 'google-3d.js', 'google3d.css', 'place-search.js', 'place-search.css',
   'film-bridge.js', 'world-bridge.js', 'app-settings.js', 'navigation.js',
   'world-ui.js', 'world-icons.js', 'world-performance.js',
+  'planet-dashboard.js', 'planet-dashboard.css', 'view-loading.js', 'view-loading.css',
   'intro/prologue-v8.js', 'intro/prologue-data-v8.js', 'intro/prologue-v8.css',
   'intro/film-stream-v7.js', 'intro/film-offline.js', 'intro/film-cache.js',
   'intro/assets/vendor/hls.full.mjs', 'intro/assets/vendor/fontawesome-solid.js',

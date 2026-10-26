@@ -20,7 +20,7 @@ Useful checks include:
 
 ```sh
 python3 -m unittest discover -s tests -v
-node --experimental-vm-modules --test tests/test_api_config.mjs tests/test_lunar_physics.mjs
+node --experimental-vm-modules --test tests/test_api_config.mjs
 node tools/build_static.mjs
 ```
 

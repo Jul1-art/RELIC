@@ -238,9 +238,12 @@ try {
   sessionStorage.removeItem(RETURN_MARKER);
   if (marker?.path === new URL('./', import.meta.url).pathname && Date.now() - marker.at < 5 * 60 * 1000) returningToAtlas = true;
 } catch { /* Direct visits continue to show the opening. */ }
-if (returningToAtlas && !new URL(location.href).searchParams.has('film')) { introduction.classList.add('hidden'); setFilmActive(false); }
+const startupParameters = new URL(location.href).searchParams;
+if (startupParameters.has('sources') || returningToAtlas && !startupParameters.has('film')) { introduction.classList.add('hidden'); setFilmActive(false); }
 else film.start();
 
 // A small diagnostic surface is useful to host pages and automated playback
 // checks without exposing or loading any old atlas renderer.
 window.RELICFilm = Object.freeze({ replay:() => film.start(), close:() => film.finish(), get phase() { return film.phase; }, showOffline, showCredits });
+
+if (startupParameters.has('sources')) requestAnimationFrame(() => showCredits(document.querySelector('#relic-credits')));

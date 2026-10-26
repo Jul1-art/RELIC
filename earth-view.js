@@ -7,8 +7,10 @@ import { createGoogle3D, askForCesiumToken } from './google-3d.js';
 import { createPlaceSearch } from './place-search.js?v=5';
 import { startLiveData, getLanguage, onLanguageChange } from './atlas-live.js?v=3';
 import { configureWorldPerformance, cameraDuration, flyToLocation } from './world-performance.js';
+import { createViewLoading } from './view-loading.js';
 
 const $ = selector => document.querySelector(selector);
+const viewLoading = createViewLoading({ element:$('#earth-loading'), errorElement:$('#earth-error'), getLanguage });
 const input = $('#place-input');
 const dateInput = $('#image-date');
 const day = 86400000;
@@ -21,22 +23,15 @@ let viewer;
 let currentLayer;
 let remoteLayer;
 let localLayer;
+let baseImageryReady = false;
 let selectedSite;
 let layerSerial = 0;
 let siteFocusSerial = 0;
 let google3D;
 let googleState = { status:'missing', active:false };
 let placeSearch;
-const englishSites = {
-  manhattan:{ tag:'3D CITY', description:'Explore Midtown with Google photorealistic 3D tiles when Cesium ion is enabled.' },
-  paris:{ tag:'3D CITY', description:'Explore central Paris with Google photorealistic 3D tiles when Cesium ion is enabled.' },
-  'nice-airport':{ name:'Nice Airport', tag:'RUNWAYS · CORRECTED TERRAIN', description:'In NASA mode, both runways are blended into measured terrain using their published French AIP elevations.', sourceLabel:'VIEW OFFICIAL RUNWAY ELEVATIONS ↗' },
-  kennedy:{ tag:'ISS VIEW', description:'The Florida launch site as seen from the International Space Station.' },
-  'grand-canyon':{ tag:'ISS LANDSCAPE', description:'A landscape photographed from the International Space Station.' },
-  nile:{ name:'Nile Delta', tag:'ISS VIEW', description:'The green delta stands out against the desert in orbital observations.' },
-};
 const english = () => getLanguage() === 'en';
-const siteText = site => english() ? { ...site, ...englishSites[site.id] } : site;
+const siteText = site => site;
 
 function status(text) { $('#search-state').textContent = text; }
 function layerNoteText() {
@@ -71,7 +66,7 @@ function formatCoordinate(value, positive, negative) {
 async function selectSite(site) {
   if (!viewer) return;
   selectedSite = site;
-  viewer.scene.verticalExaggeration = !site.id || ['manhattan', 'paris', 'nice-airport'].includes(site.id) ? 1 : 2;
+  viewer.scene.verticalExaggeration = site.id ? 2 : 1;
   $('#earth-terrain-status').textContent = english()
     ? ` · MEASURED SRTM RELIEF · ×${viewer.scene.verticalExaggeration}`
     : ` · RELIEF SRTM MESURÉ · ×${viewer.scene.verticalExaggeration}`;
@@ -170,11 +165,18 @@ async function start() {
       homeButton:false, sceneModePicker:false, navigationHelpButton:false,
       fullscreenButton:false, vrButton:false, selectionIndicator:false,
       infoBox:false, baseLayer:false, terrainProvider, creditContainer:$('#cesium-credits'),
+      showRenderLoopErrors:false,
       msaaSamples:window.innerWidth <= 760 ? 1 : 2,
     });
-    configureWorldPerformance(viewer, { onSuspend:() => { siteFocusSerial++; viewer.camera.cancelFlight(); } });
+    configureWorldPerformance(viewer, {
+      loading:viewLoading,
+      isReady:() => baseImageryReady && viewer.scene.globe.tilesLoaded,
+      onReady:() => { setLayer('satellite'); google3D.enable(); },
+      onSuspend:() => { siteFocusSerial++; viewer.camera.cancelFlight(); },
+    });
     viewer.scene.canvas.addEventListener('pointerdown', () => { siteFocusSerial++; }, { passive:true });
     viewer.scene.canvas.addEventListener('wheel', () => { siteFocusSerial++; }, { passive:true });
+    viewer.scene.globe.baseColor = Cesium.Color.fromCssColorString('#102436');
     viewer.scene.globe.enableLighting = false;
     viewer.scene.globe.depthTestAgainstTerrain = true;
     viewer.scene.verticalExaggeration = 2;
@@ -184,12 +186,8 @@ async function start() {
     viewer.camera.setView({ destination:Cesium.Cartesian3.fromDegrees(12, 25, 16000000) });
     google3D = createGoogle3D(viewer, showGoogleState);
 
-    // The globe is interactive as soon as its first frame exists. Imagery and
-    // optional photorealistic tiles refine it without holding the interface.
-    viewer.scene.postRender.addEventListener(function ready() {
-      $('#earth-loading').classList.add('done');
-      viewer.scene.postRender.removeEventListener(ready);
-    });
+    // Render the packaged NASA base first; live layers and optional 3D tiles
+    // refine the visible globe after that first complete image.
     viewer.scene.requestRender();
     Cesium.SingleTileImageryProvider.fromUrl(new URL('./assets/earth-blue-marble-4k.webp', import.meta.url).href, {
       credit:'NASA · Blue Marble',
@@ -197,15 +195,12 @@ async function start() {
       if (viewer.isDestroyed()) return;
       localLayer = viewer.imageryLayers.addImageryProvider(provider);
       viewer.imageryLayers.lowerToBottom(localLayer);
+      baseImageryReady = true;
       viewer.scene.requestRender();
-    }).catch(() => { /* The live layer can still supply the map. */ });
-    setLayer('satellite');
-    google3D.enable();
+    }).catch(() => { viewLoading.fail(); });
   } catch (error) {
-    console.error('Globe NASA indisponible :', error);
-    $('#earth-error').textContent = 'Le rendu 3D est indisponible sur ce navigateur. Activez l’accélération graphique puis réessayez.';
-    $('#earth-error').hidden = false;
-    $('#earth-loading').classList.add('done');
+    console.warn('The Earth graphics view could not start.');
+    viewLoading.fail();
   }
 }
 
@@ -272,6 +267,7 @@ $('#google3d-toggle').addEventListener('click', async () => {
 start();
 startLiveData($('#earth-live-data'), () => 'earth');
 onLanguageChange(lang => {
+  viewLoading.refresh();
   const en = lang === 'en';
   document.title = en ? 'Earth — RELIC' : 'Terre — RELIC';
   $('.back-link span:last-child').textContent = 'RELIC';

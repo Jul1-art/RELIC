@@ -5,14 +5,45 @@ const STORAGE_KEY = 'relic.preferences.v1';
 const root = document.documentElement;
 const defaults = Object.freeze({ language:'en', theme:'night', accent:'mono', motion:'system', quality:'adaptive' });
 const choices = Object.freeze({ language:['en','fr'], theme:['night','day'], accent:['mono','nasa'], motion:['system','full','reduced'], quality:['adaptive','high'] });
+const sections = ['general','display','experience'];
 const COPY = {
-  en:{ settings:'Settings', intro:'Make the journey yours.', general:'Appearance & language', exploration:'Your experience', language:'Language', theme:'Appearance', accent:'Accent', motion:'Motion', quality:'Rendering', qualityHint:'Adaptive balances detail and battery life.', night:'Dark', day:'Light', mono:'Monochrome', nasa:'NASA blue', system:'System', full:'Full', reduced:'Reduced', adaptive:'Adaptive', high:'High detail', reset:'Reset preferences', close:'Close settings', ready:'Changes apply immediately.', saved:'Saved on this device.', temporary:'Applied for this session. Device storage is unavailable.', film:'Watch the introduction', filmHint:'Return to the story of exploration.', providers:'Provider access', providersHint:'Manage your optional map access.', resetDone:'Default preferences restored.', unavailable:'This action is unavailable right now.' },
-  fr:{ settings:'Réglages', intro:'Explorez à votre façon.', general:'Apparence et langue', exploration:'Votre expérience', language:'Langue', theme:'Apparence', accent:'Accent', motion:'Animations', quality:'Rendu', qualityHint:'Adaptatif équilibre les détails et l’autonomie.', night:'Sombre', day:'Clair', mono:'Monochrome', nasa:'Bleu NASA', system:'Système', full:'Complètes', reduced:'Réduites', adaptive:'Adaptatif', high:'Détails élevés', reset:'Réinitialiser', close:'Fermer les réglages', ready:'Les changements sont immédiats.', saved:'Enregistré sur cet appareil.', temporary:'Appliqué pour cette session. Le stockage de l’appareil est indisponible.', film:'Revoir l’introduction', filmHint:'Retrouvez l’histoire de l’exploration.', providers:'Accès aux cartes', providersHint:'Gérer votre accès facultatif aux cartes.', resetDone:'Préférences par défaut restaurées.', unavailable:'Cette action est momentanément indisponible.' },
+  en:{
+    settings:'Settings', subtitle:'Viewing preferences', general:'General', display:'Display', experience:'Experience',
+    generalTitle:'Language & appearance', generalHint:'',
+    displayTitle:'Colour & rendering', displayHint:'',
+    experienceTitle:'Motion', experienceHint:'Transitions and camera journeys.',
+    language:'Language', languageHint:'Menus and the introduction.', theme:'Appearance', themeHint:'A consistent theme across your views.',
+    accent:'Accent colour', accentHint:'Monochrome by default. Blue when you want it.', quality:'3D quality', qualityHint:'Applies to the atlas and planetary views.',
+    motion:'Animations', motionHint:'Page transitions, interface motion and camera journeys.',
+    night:'Dark', day:'Light', mono:'Monochrome', nasa:'NASA blue', system:'Use device setting', full:'Full motion', reduced:'Reduced motion',
+    systemHint:'Follows your device’s motion preference.', fullHint:'Smooth transitions and camera movement.', reducedHint:'Keeps movement brief and direct.',
+    adaptive:'Adaptive', high:'High detail', adaptiveHint:'Balances detail and battery.', highHint:'Sharper rendering.',
+    motionNote:'Reduced motion keeps exploration fully interactive.',
+    reset:'Reset preferences', done:'Done', close:'Close settings', ready:'Changes apply immediately.', saved:'Saved on this device.',
+    temporary:'Applied for this visit. Device storage is unavailable.', resetDone:'Default preferences restored.',
+    providers:'Map access', providersHint:'Manage your optional map provider.', unavailable:'This action is unavailable right now.',
+  },
+  fr:{
+    settings:'Réglages', subtitle:'Préférences d’affichage', general:'Général', display:'Affichage', experience:'Interaction',
+    generalTitle:'Langue et apparence', generalHint:'',
+    displayTitle:'Couleur et rendu', displayHint:'',
+    experienceTitle:'Animations', experienceHint:'Transitions et mouvements de caméra.',
+    language:'Langue', languageHint:'Les menus et l’introduction.', theme:'Apparence', themeHint:'Un thème commun à toutes vos vues.',
+    accent:'Couleur d’accent', accentHint:'Monochrome par défaut. Bleu, si vous le souhaitez.', quality:'Qualité 3D', qualityHint:'Pour l’atlas et les vues des planètes.',
+    motion:'Animations', motionHint:'Transitions de page, interface et mouvements de caméra.',
+    night:'Sombre', day:'Clair', mono:'Monochrome', nasa:'Bleu NASA', system:'Réglage de l’appareil', full:'Complètes', reduced:'Réduites',
+    systemHint:'Suit la préférence de mouvement de votre appareil.', fullHint:'Transitions et mouvements de caméra fluides.', reducedHint:'Des mouvements brefs et directs.',
+    adaptive:'Adaptatif', high:'Détails élevés', adaptiveHint:'Équilibre détail et autonomie.', highHint:'Un rendu plus précis.',
+    motionNote:'Les animations réduites conservent toute l’interactivité.',
+    reset:'Réinitialiser', done:'Terminé', close:'Fermer les réglages', ready:'Les changements sont immédiats.', saved:'Enregistré sur cet appareil.',
+    temporary:'Appliqué pour cette visite. Le stockage est indisponible.', resetDone:'Préférences par défaut restaurées.',
+    providers:'Accès aux cartes', providersHint:'Gérer votre fournisseur de cartes facultatif.', unavailable:'Cette action est momentanément indisponible.',
+  },
 };
 
 function initialPreferences() {
   let saved = {};
-  try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {}; } catch { /* The current session remains usable. */ }
+  try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {}; } catch { /* The session still works without device storage. */ }
   let theme = root.dataset.theme === 'day' ? 'day' : 'night';
   try { theme = localStorage.getItem('nasa-atlas-theme') === 'day' ? 'day' : theme; } catch {}
   const result = { ...defaults, theme, language:getLanguage() };
@@ -24,6 +55,7 @@ let preferences = initialPreferences();
 let installed = false;
 let dialog;
 let trigger;
+let activeSection = 'general';
 let configuration = { privateEdition:true, onProviderSettings:null };
 let statusKey = 'ready';
 const copy = () => COPY[getLanguage() === 'fr' ? 'fr' : 'en'];
@@ -49,7 +81,7 @@ function persist() {
 
 export function getPreferences() { return { ...preferences }; }
 
-/** Apply viewing preferences only. Provider credentials and media caches are untouched. */
+/** Apply viewing preferences only; never remove credentials or saved films. */
 export function setPreferences(patch = {}) {
   const next = { ...preferences };
   for (const key of Object.keys(choices)) if (choices[key].includes(patch[key])) next[key] = patch[key];
@@ -65,34 +97,55 @@ export function setPreferences(patch = {}) {
 function ensureStyles() {
   if (document.querySelector('link[data-relic-settings-style],link[href*="app-settings.css"]')) return;
   const link = document.createElement('link');
-  link.rel = 'stylesheet'; link.href = new URL('./app-settings.css', import.meta.url).href;
+  link.rel = 'stylesheet';
+  link.href = new URL('./app-settings.css?v=2', import.meta.url).href;
   link.dataset.relicSettingsStyle = '';
   document.head.appendChild(link);
 }
 
-function segment(key, icon, values, hint = '') {
-  return `<div class="relic-settings-row"><div class="relic-settings-label" id="settings-label-${key}"><span class="relic-settings-icon">${worldIcon(icon)}</span><div><strong data-settings-copy="${key}"></strong>${hint ? `<small data-settings-copy="${hint}"></small>` : ''}</div></div><div class="relic-settings-segment" role="group" aria-labelledby="settings-label-${key}">${values.map(value => `<button type="button" data-setting="${key}" data-value="${value}" aria-pressed="false"><span ${key === 'language' ? `lang="${value}"` : `data-settings-copy="${value}"`}>${key === 'language' ? (value === 'en' ? 'English' : 'Français') : ''}</span></button>`).join('')}</div></div>`;
+function option(key, value, icon, hint = '') {
+  const languageLabel = value === 'en' ? 'English' : 'Français';
+  const label = key === 'language' ? `<strong lang="${value}">${languageLabel}</strong>` : `<strong data-settings-copy="${value}"></strong>`;
+  const preview = key === 'accent' ? `<span class="relic-settings-swatch" data-swatch="${value}" aria-hidden="true"></span>`
+    : key === 'theme' ? `<span class="relic-settings-preview" data-preview="${value}" aria-hidden="true">${worldIcon(icon)}</span>`
+    : icon ? `<span class="relic-settings-option-icon" aria-hidden="true">${worldIcon(icon)}</span>` : '';
+  return `<button type="button" class="relic-settings-option" role="radio" data-setting="${key}" data-value="${value}" aria-checked="false" tabindex="-1">${preview}<span class="relic-settings-option-copy">${label}${hint ? `<small data-settings-copy="${hint}"></small>` : ''}</span><span class="relic-settings-selected" aria-hidden="true"></span></button>`;
+}
+
+function field(key, values) {
+  return `<div class="relic-settings-field" data-settings-field="${key}"><h4 id="settings-label-${key}" data-settings-copy="${key}"></h4><p id="settings-hint-${key}" class="relic-settings-hint" data-settings-copy="${key}Hint"></p><div class="relic-settings-options" role="radiogroup" aria-labelledby="settings-label-${key}" aria-describedby="settings-hint-${key}">${values.map(value => option(key, ...value)).join('')}</div></div>`;
+}
+
+function sectionHeading(section) {
+  return `<div class="relic-settings-section-heading"><h3 data-settings-copy="${section}Title"></h3><p data-settings-copy="${section}Hint"></p></div>`;
 }
 
 function buildDialog() {
   ensureStyles();
   dialog = document.createElement('dialog');
-  dialog.className = 'relic-settings-dialog'; dialog.id = 'relic-app-settings';
+  dialog.className = 'relic-settings-dialog';
+  dialog.id = 'relic-app-settings';
   dialog.setAttribute('aria-labelledby','relic-settings-title');
-  dialog.innerHTML = `<header class="relic-settings-header"><div><p class="relic-settings-eyebrow">RELIC</p><h2 id="relic-settings-title" data-settings-copy="settings"></h2><p class="relic-settings-intro" data-settings-copy="intro"></p></div><button class="relic-settings-close" type="button" data-settings-close>${worldIcon('xmark')}</button></header><div class="relic-settings-content"><section class="relic-settings-section" aria-labelledby="relic-settings-general"><h3 id="relic-settings-general" data-settings-copy="general"></h3>${segment('language','globe',['en','fr'])}${segment('theme','sun',['night','day'])}${segment('accent','sliders',['mono','nasa'])}</section><section class="relic-settings-section" aria-labelledby="relic-settings-exploration"><h3 id="relic-settings-exploration" data-settings-copy="exploration"></h3>${segment('motion','compass',['system','full','reduced'])}${segment('quality','cube',['adaptive','high'],'qualityHint')}<button class="relic-settings-action" type="button" data-settings-film><span class="relic-settings-icon">${worldIcon('play')}</span><span><strong data-settings-copy="film"></strong><small data-settings-copy="filmHint"></small></span><span class="relic-settings-action-arrow" aria-hidden="true">${worldIcon('arrow-up-right-from-square')}</span></button><button class="relic-settings-action" type="button" data-settings-provider hidden><span class="relic-settings-icon">${worldIcon('layer-group')}</span><span><strong data-settings-copy="providers"></strong><small data-settings-copy="providersHint"></small></span><span class="relic-settings-action-arrow" aria-hidden="true">${worldIcon('arrow-up-right-from-square')}</span></button></section></div><footer class="relic-settings-footer"><p class="relic-settings-status" role="status" aria-live="polite"></p><button type="button" class="relic-settings-reset" data-settings-reset>${worldIcon('rotate')}<span data-settings-copy="reset"></span></button></footer>`;
+  dialog.setAttribute('aria-describedby','relic-settings-subtitle');
+  dialog.innerHTML = `<header class="relic-settings-header"><div><p class="relic-settings-eyebrow">RELIC <span aria-hidden="true">/</span> <span data-settings-copy="settings"></span></p><h2 id="relic-settings-title" data-settings-copy="settings"></h2><p id="relic-settings-subtitle" class="relic-settings-intro" data-settings-copy="subtitle"></p></div><button class="relic-settings-close" type="button" data-settings-close>${worldIcon('xmark')}</button></header>
+    <nav class="relic-settings-tabs" role="tablist" aria-label="Settings sections">${sections.map((section, index) => `<button type="button" role="tab" id="settings-tab-${section}" data-settings-tab="${section}" aria-controls="settings-panel-${section}" aria-selected="${index === 0}" tabindex="${index === 0 ? '0' : '-1'}">${worldIcon(['globe','sliders','compass'][index])}<span data-settings-copy="${section}"></span></button>`).join('')}</nav>
+    <div class="relic-settings-content">
+      <section class="relic-settings-section" id="settings-panel-general" data-settings-panel="general" role="tabpanel" aria-labelledby="settings-tab-general">${sectionHeading('general')}${field('language', [['en'],['fr']])}${field('theme', [['night','moon'],['day','sun']])}</section>
+      <section class="relic-settings-section" id="settings-panel-display" data-settings-panel="display" role="tabpanel" aria-labelledby="settings-tab-display" hidden>${sectionHeading('display')}${field('accent', [['mono'],['nasa']])}${field('quality', [['adaptive','globe','adaptiveHint'],['high','cube','highHint']])}<button class="relic-settings-provider" type="button" data-settings-provider hidden><span>${worldIcon('layer-group')}</span><span><strong data-settings-copy="providers"></strong><small data-settings-copy="providersHint"></small></span>${worldIcon('arrow-up-right-from-square')}</button></section>
+      <section class="relic-settings-section" id="settings-panel-experience" data-settings-panel="experience" role="tabpanel" aria-labelledby="settings-tab-experience" hidden>${sectionHeading('experience')}${field('motion', [['system','sliders','systemHint'],['full','play','fullHint'],['reduced','pause','reducedHint']])}</section>
+    </div>
+    <footer class="relic-settings-footer"><p class="relic-settings-status" role="status" aria-live="polite"></p><div class="relic-settings-footer-actions"><button type="button" class="relic-settings-reset" data-settings-reset>${worldIcon('rotate')}<span data-settings-copy="reset"></span></button><button type="button" class="relic-settings-done" data-settings-close data-settings-copy="done"></button></div></footer>`;
   document.body.appendChild(dialog);
   dialog.addEventListener('click', event => {
     const setting = event.target.closest('[data-setting]');
     if (setting) { setPreferences({ [setting.dataset.setting]:setting.dataset.value }); return; }
+    const tab = event.target.closest('[data-settings-tab]');
+    if (tab) { selectSection(tab.dataset.settingsTab); return; }
     if (event.target.closest('[data-settings-close]')) { closeSettings(); return; }
     if (event.target.closest('[data-settings-reset]')) {
       const { persistent } = setPreferences(defaults);
-      statusKey = persistent ? 'resetDone' : 'temporary'; render(); return;
-    }
-    if (event.target.closest('[data-settings-film]')) {
-      closeSettings(false);
-      if (typeof window.RELICFilm?.replay === 'function') window.RELICFilm.replay();
-      else location.assign(new URL('./index.html?film=1', import.meta.url).href);
+      statusKey = persistent ? 'resetDone' : 'temporary';
+      render();
       return;
     }
     if (event.target.closest('[data-settings-provider]') && !configuration.privateEdition && typeof configuration.onProviderSettings === 'function') {
@@ -106,31 +159,77 @@ function buildDialog() {
     }
   });
   dialog.addEventListener('close', () => {
-    if (dialog.dataset.restoreFocus !== 'false' && trigger?.isConnected && !trigger.closest('[inert]')) trigger.focus({ preventScroll:true });
+    if (dialog.dataset.restoreFocus !== 'false') {
+      const target = trigger?.isConnected && trigger.getClientRects().length && !trigger.closest('[inert],[hidden]') ? trigger : document.querySelector('[data-app-settings]:not([hidden]),#relic-settings');
+      target?.focus({ preventScroll:true });
+    }
     delete dialog.dataset.restoreFocus;
   });
-  dialog.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && typeof dialog.showModal !== 'function') { event.preventDefault(); closeSettings(); }
-    if (event.key !== 'Tab') return;
-    const focusable = [...dialog.querySelectorAll('button,a[href],input,select,[tabindex]:not([tabindex="-1"])')].filter(node => !node.disabled && !node.hidden && node.getClientRects().length);
-    if (!focusable.length) return;
-    const first = focusable[0], last = focusable.at(-1);
-    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
-    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
-  });
+  dialog.addEventListener('keydown', keyboard);
   render();
+}
+
+function selectSection(section, focus = false) {
+  if (!sections.includes(section)) return;
+  activeSection = section;
+  render();
+  if (dialog) dialog.querySelector('.relic-settings-content').scrollTop = 0;
+  if (focus) dialog.querySelector(`[data-settings-tab="${section}"]`).focus({ preventScroll:true });
+}
+
+function keyboard(event) {
+  const arrows = ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'];
+  const tab = event.target.closest('[data-settings-tab]');
+  if (tab && arrows.includes(event.key)) {
+    event.preventDefault();
+    const index = sections.indexOf(tab.dataset.settingsTab);
+    const next = event.key === 'Home' ? 0 : event.key === 'End' ? sections.length-1 : (index + (['ArrowLeft','ArrowUp'].includes(event.key) ? -1 : 1) + sections.length) % sections.length;
+    selectSection(sections[next], true);
+    return;
+  }
+  const setting = event.target.closest('[data-setting]');
+  if (setting && arrows.includes(event.key)) {
+    event.preventDefault();
+    const key = setting.dataset.setting;
+    const values = choices[key];
+    const index = values.indexOf(setting.dataset.value);
+    const next = event.key === 'Home' ? 0 : event.key === 'End' ? values.length-1 : (index + (['ArrowLeft','ArrowUp'].includes(event.key) ? -1 : 1) + values.length) % values.length;
+    setPreferences({ [key]:values[next] });
+    dialog.querySelector(`[data-setting="${key}"][data-value="${values[next]}"]`).focus({ preventScroll:true });
+    return;
+  }
+  if (event.key === 'Escape' && typeof dialog.showModal !== 'function') { event.preventDefault(); closeSettings(); }
+  if (event.key !== 'Tab') return;
+  const focusable = [...dialog.querySelectorAll('button,a[href],input,select,[tabindex]:not([tabindex="-1"])')].filter(node => !node.disabled && node.tabIndex >= 0 && !node.hidden && node.getClientRects().length);
+  if (!focusable.length) return;
+  const first = focusable[0], last = focusable.at(-1);
+  if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+  else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
 }
 
 function render() {
   const text = copy();
   for (const button of document.querySelectorAll('[data-app-settings],#relic-settings')) {
-    button.setAttribute('aria-label', text.settings); button.title = text.settings;
-    button.setAttribute('aria-haspopup','dialog'); button.setAttribute('aria-controls','relic-app-settings');
+    button.setAttribute('aria-label', text.settings);
+    button.title = text.settings;
+    button.setAttribute('aria-haspopup','dialog');
+    button.setAttribute('aria-controls','relic-app-settings');
   }
   if (!dialog) return;
   for (const node of dialog.querySelectorAll('[data-settings-copy]')) node.textContent = text[node.dataset.settingsCopy] || '';
-  dialog.querySelector('[data-settings-close]').setAttribute('aria-label',text.close);
-  for (const button of dialog.querySelectorAll('[data-setting]')) button.setAttribute('aria-pressed',String(preferences[button.dataset.setting] === button.dataset.value));
+  for (const button of dialog.querySelectorAll('[data-settings-close]')) if (!button.hasAttribute('data-settings-copy')) button.setAttribute('aria-label',text.close);
+  dialog.querySelector('.relic-settings-tabs').setAttribute('aria-label',getLanguage() === 'fr' ? 'Sections des réglages' : 'Settings sections');
+  for (const button of dialog.querySelectorAll('[data-setting]')) {
+    const selected = preferences[button.dataset.setting] === button.dataset.value;
+    button.setAttribute('aria-checked',String(selected));
+    button.tabIndex = selected ? 0 : -1;
+  }
+  for (const tab of dialog.querySelectorAll('[data-settings-tab]')) {
+    const selected = tab.dataset.settingsTab === activeSection;
+    tab.setAttribute('aria-selected',String(selected));
+    tab.tabIndex = selected ? 0 : -1;
+  }
+  for (const panel of dialog.querySelectorAll('[data-settings-panel]')) panel.hidden = panel.dataset.settingsPanel !== activeSection;
   dialog.querySelector('[data-settings-provider]').hidden = configuration.privateEdition || typeof configuration.onProviderSettings !== 'function';
   dialog.querySelector('.relic-settings-status').textContent = text[statusKey];
 }
@@ -148,18 +247,25 @@ export function openSettings(button) {
 export function closeSettings(restoreFocus = true) {
   if (!dialog?.open) return;
   dialog.dataset.restoreFocus = String(restoreFocus);
-  if (typeof dialog.close === 'function') dialog.close(); else dialog.removeAttribute('open');
+  if (typeof dialog.close === 'function') dialog.close();
+  else {
+    dialog.removeAttribute('open');
+    dialog.dispatchEvent(new Event('close'));
+  }
 }
 
 export function initializeAppSettings(options = {}) {
   configuration = { ...configuration, ...options };
-  ensureStyles(); applyPreferences(); render();
+  ensureStyles();
+  applyPreferences();
+  render();
   if (!installed) {
     installed = true;
     document.addEventListener('click', event => {
       const button = event.target.closest?.('[data-app-settings],#relic-settings');
       if (!button || button.disabled || button.closest('[inert]')) return;
-      event.preventDefault(); openSettings(button);
+      event.preventDefault();
+      openSettings(button);
     });
   }
   return { open:openSettings, close:closeSettings, getPreferences, setPreferences };
@@ -180,7 +286,8 @@ window.addEventListener('storage', event => {
     const value = JSON.parse(event.newValue);
     for (const key of Object.keys(choices)) if (choices[key].includes(value[key])) preferences[key] = value[key];
     if (getLanguage() !== preferences.language) setLanguage(preferences.language);
-    applyPreferences(); render();
+    applyPreferences();
+    render();
     window.dispatchEvent(new CustomEvent('relic-preferences-change', { detail:getPreferences() }));
   } catch { /* Ignore malformed settings from another tab. */ }
 });

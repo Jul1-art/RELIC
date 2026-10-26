@@ -4,12 +4,18 @@ import { SurfaceDetail } from './surface-detail.js?v=5';
 import { PLANET_SITES, NASA_IMAGERY } from './nasa-worlds.js';
 import { startLiveData, getLanguage, onLanguageChange } from './atlas-live.js?v=3';
 import { navigateTo } from './navigation.js';
+import { initializePlanetDashboard, setDashboardBody } from './planet-dashboard.js';
+import { createViewLoading } from './view-loading.js';
+
+initializePlanetDashboard({ view:'atlas' });
 
 const $ = selector => document.querySelector(selector);
 const sceneHost = $('#scene');
 const labelHost = $('#planet-labels');
 const loading = $('#loading');
 const errorScreen = $('#error-screen');
+const viewLoading = createViewLoading({ element:loading, errorElement:errorScreen, getLanguage });
+const viewportSize = () => ({ width:Math.max(1, sceneHost.clientWidth), height:Math.max(1, sceneHost.clientHeight) });
 const sky = new THREE.Color('#050505');
 let filmActive = window.__relicFilmActive === true || document.documentElement.dataset.relicFilm === 'active';
 const gestureHint = $('#gesture-hint');
@@ -24,10 +30,11 @@ function hideGestureHint() {
   gestureHint.hidden = true;
 }
 function preferredPixelRatio() {
-  const mobile = window.innerWidth <= 760 || matchMedia('(pointer: coarse)').matches;
+  const mobile = sceneHost.clientWidth <= 760 || matchMedia('(pointer: coarse)').matches;
   const high = document.documentElement.dataset.quality === 'high';
   const pixelBudget = high ? mobile ? 3000000 : 6000000 : mobile ? 1500000 : 4000000;
-  const area = Math.max(1, window.innerWidth * window.innerHeight);
+  const {width,height} = viewportSize();
+  const area = width * height;
   return Math.min(window.devicePixelRatio || 1, high ? 2 : mobile ? 1.6 : 1.75, Math.max(.85, Math.sqrt(pixelBudget / area)));
 }
 let renderPixelRatio = preferredPixelRatio();
@@ -61,25 +68,21 @@ let renderer;
 try {
   renderer = new THREE.WebGLRenderer({ antialias:true, alpha:false, logarithmicDepthBuffer:true, powerPreference:'high-performance' });
   renderer.setPixelRatio(renderPixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(viewportSize().width, viewportSize().height);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = .94;
   sceneHost.appendChild(renderer.domElement);
-} catch (error) {
-  loading.classList.add('done');
-  errorScreen.hidden = false;
-  $('#error-message').textContent = getLanguage() === 'en'
-    ? 'This browser could not activate WebGL. Enable graphics acceleration, then reload the page.'
-    : 'Le navigateur ne dispose pas d’un rendu WebGL actif. Activez l’accélération graphique puis rechargez la page.';
-  throw error;
+} catch {
+  viewLoading.fail();
+  throw new Error('The 3D renderer could not start.');
 }
 
 const scene = new THREE.Scene();
 scene.background = sky;
-const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, .0000001, 1200);
-const overviewPosition = () => window.innerWidth <= 560 ? new THREE.Vector3(0, 210, 120) : window.innerWidth <= 800 ? new THREE.Vector3(0, 160, 135) : new THREE.Vector3(0, 103, 166);
-const overviewScale = () => window.innerWidth <= 560 ? .53 : window.innerWidth <= 800 ? .78 : 1;
+const camera = new THREE.PerspectiveCamera(40, viewportSize().width / viewportSize().height, .0000001, 1200);
+const overviewPosition = () => sceneHost.clientWidth <= 560 ? new THREE.Vector3(0, 210, 120) : sceneHost.clientWidth <= 800 ? new THREE.Vector3(0, 160, 135) : new THREE.Vector3(0, 103, 166);
+const overviewScale = () => sceneHost.clientWidth <= 560 ? .53 : sceneHost.clientWidth <= 800 ? .78 : 1;
 let sceneScale = overviewScale();
 camera.position.copy(overviewPosition());
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -463,13 +466,7 @@ function updateDetail(id) {
     globe.textContent = getLanguage() === 'en' ? 'Explore in 3D ↗' : 'Explorer en 3D ↗';
     actions.appendChild(globe);
   }
-  if (id === 'moon') {
-    const base = document.createElement('a');
-    base.className = 'detail-action';
-    base.href = './base_lunaire_3d.html';
-    base.textContent = getLanguage() === 'en' ? 'Lunar base ↗' : 'Base lunaire ↗';
-    actions.appendChild(base);
-  }
+  
   const close = document.createElement('button');
   close.type = 'button'; close.className = 'detail-action';
   close.textContent = getLanguage() === 'en' ? 'Move closer' : 'Se rapprocher';
@@ -491,6 +488,7 @@ function selectBody(id, recenter = false) {
   }
   surfaceDetail.clear();
   selected = id;
+  setDashboardBody(id);
   if (id === 'moon') ensureMoonTexture();
   if (id === 'overview') hideGestureHint(); else showGestureHint();
   $('.topbar-hint').innerHTML = getLanguage() === 'en'
@@ -553,6 +551,8 @@ function zoomBy(factor, animateZoom = true) {
   if (animateZoom) flyTo(controls.target, controls.target.clone().add(difference), 240);
   else { camera.position.copy(controls.target).add(difference); controls.update(); }
 }
+$('#atlas-zoom-in')?.addEventListener('click', () => zoomBy(.72));
+$('#atlas-zoom-out')?.addEventListener('click', () => zoomBy(1.38));
 let surfaceSettleUntil = 0;
 controls.addEventListener('start', () => { flight = null; hideGestureHint(); surfaceSettleUntil = performance.now() + 180; });
 controls.addEventListener('change', () => {
@@ -626,17 +626,17 @@ renderer.domElement.addEventListener('dblclick', event => {
 function positionLabels() {
   if (selected !== 'overview') return;
   const occupied = [];
-  const width = window.innerWidth, height = window.innerHeight;
+  const {width,height} = viewportSize();
   for (const planet of planets) {
     const element = labels.get(planet.id);
     tempPosition.copy(planetGroups.get(planet.id).position).project(camera);
     const x = (tempPosition.x * .5 + .5) * width;
     const y = (-tempPosition.y * .5 + .5) * height;
     let placed = false;
-    if (tempPosition.z > -1 && tempPosition.z < 1 && x > 35 && x < width - 35 && y > 80 && y < height - 98) {
+    if (tempPosition.z > -1 && tempPosition.z < 1 && x > 35 && x < width - 35 && y > 24 && y < height - 30) {
       for (const offset of [42, -21, 68, -48]) {
         const box = { x:x - 43, y:y + offset - 24, w:86, h:25 };
-        if (box.y < 83 || box.y + box.h > height - 90) continue;
+        if (box.y < 12 || box.y + box.h > height - 16) continue;
         if (occupied.some(previous => box.x < previous.x + previous.w + 4 && box.x + box.w + 4 > previous.x && box.y < previous.y + previous.h + 4 && box.y + box.h + 4 > previous.y)) continue;
         element.style.left = `${x}px`; element.style.top = `${y + offset}px`;
         occupied.push(box); placed = true; break;
@@ -647,7 +647,7 @@ function positionLabels() {
 }
 
 function resize() {
-  const width = window.innerWidth, height = window.innerHeight;
+  const {width,height} = viewportSize();
   camera.aspect = width / height; camera.updateProjectionMatrix();
   renderPixelRatio = Math.min(renderPixelRatio, preferredPixelRatio());
   renderer.setPixelRatio(renderPixelRatio);
@@ -664,7 +664,7 @@ window.addEventListener('resize', resize);
 window.addEventListener('relic-preferences-change', () => {
   renderPixelRatio = preferredPixelRatio();
   renderer.setPixelRatio(renderPixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight, false);
+  renderer.setSize(viewportSize().width, viewportSize().height, false);
   if (document.documentElement.dataset.motion === 'reduced' && flight) {
     camera.position.copy(flight.toPosition);
     controls.target.copy(flight.toTarget);
@@ -693,13 +693,15 @@ onLanguageChange(lang => {
   for (const [id, en, fr] of [
     ['relic-replay','Watch the film','Revoir le film'],
     ['relic-credits','Sources and creators','Sources et créateurs'],
+    ['atlas-zoom-in','Zoom in','Se rapprocher'],
+    ['atlas-zoom-out','Zoom out','S’éloigner'],
   ]) {
     const button = $(`#${id}`);
+    if (!button) continue;
     button.setAttribute('aria-label', english ? en : fr);
     button.title = english ? en : fr;
   }
-  $('#loading > span:last-child').textContent = english ? 'Opening the solar system' : 'Ouverture du système solaire';
-  $('#error-screen > strong').textContent = english ? 'The 3D view could not start.' : 'La vue 3D ne peut pas démarrer.';
+  viewLoading.refresh();
   $('#gesture-hint').innerHTML = lang === 'en'
     ? 'DRAG TO MOVE <span>·</span> PINCH OR SCROLL TO ZOOM'
     : 'GLISSEZ POUR VOUS DÉPLACER <span>·</span> PINCEZ OU DÉFILEZ POUR ZOOMER';
@@ -721,8 +723,34 @@ onLanguageChange(lang => {
 });
 updateDetail('overview');
 refreshOrbits();
+setDashboardBody('overview');
+const atlasBodies = new Set(['overview','sun','moon',...planets.map(planet => planet.id)]);
+const surfaceBodies = new Set(['earth','moon','mars']);
+window.addEventListener('planet-dashboard-world', event => {
+  const id = event.detail?.body;
+  if (!atlasBodies.has(id) || surfaceBodies.has(id)) return;
+  event.preventDefault();
+  selectBody(id, true);
+});
+window.addEventListener('planet-dashboard-location', event => {
+  const {body:id,lat,lon} = event.detail || {};
+  if (!atlasBodies.has(id) || id === 'overview' || surfaceBodies.has(id) || !Number.isFinite(lat) || !Number.isFinite(lon)) return;
+  event.preventDefault();
+  selectBody(id, true);
+  const mesh = id === 'sun' ? sun : planetMeshes.get(id);
+  const target = worldPosition(id).clone();
+  const latitude = THREE.MathUtils.degToRad(THREE.MathUtils.clamp(lat, -90, 90));
+  const longitude = THREE.MathUtils.degToRad(lon);
+  // Longitude follows the equirectangular texture; this is a globe orientation,
+  // not a claim of measured terrain detail on worlds without surface tiles.
+  const direction = new THREE.Vector3(Math.cos(latitude) * Math.cos(longitude), Math.sin(latitude), -Math.cos(latitude) * Math.sin(longitude));
+  mesh.updateWorldMatrix(true, false);
+  direction.transformDirection(mesh.matrixWorld);
+  const framing = id === 'saturn' ? 5.1 : id === 'sun' ? 3.9 : 2.5;
+  flyTo(target, target.clone().addScaledVector(direction, bodyData(id).size * framing), 820);
+});
 const requestedBody = new URLSearchParams(window.location.search).get('body');
-if (requestedBody === 'moon' || requestedBody === 'mars') selectBody(requestedBody);
+if (atlasBodies.has(requestedBody)) selectBody(requestedBody);
 let previousTime = performance.now();
 let qualityWindowStart = previousTime;
 let qualityFrameTime = 0;
@@ -733,14 +761,18 @@ let rendererSuspended = false;
 let renderPausedAt = 0;
 let pageInactive = false;
 let navigationActive = false;
+let graphicsInterrupted = false;
 function requestSceneFrame() {
   if (!animationFrame && !rendererSuspended) animationFrame = requestAnimationFrame(animate);
 }
 function syncSceneActivity() {
-  const shouldSuspend = filmActive || document.hidden || pageInactive || navigationActive;
+  const shouldSuspend = filmActive || document.hidden || pageInactive || navigationActive || graphicsInterrupted;
+  if (shouldSuspend) viewLoading.pause(); else viewLoading.resume();
   controls.enabled = !filmActive;
   document.body.dataset.filmActive = String(filmActive);
-  for (const element of [sceneHost, labelHost, $('.topbar'), $('main'), $('.toolbar')]) element.inert = filmActive;
+  const dashboard = document.querySelector('.planet-dashboard');
+  if (dashboard) dashboard.inert = filmActive;
+  else for (const element of [sceneHost, labelHost, $('.topbar'), $('main'), $('.toolbar')]) { if (element) element.inert = filmActive; }
   if (shouldSuspend === rendererSuspended) return;
   const now = performance.now();
   rendererSuspended = shouldSuspend;
@@ -766,12 +798,18 @@ window.addEventListener('relic-film-state', event => {
   window.__relicFilmActive = filmActive;
   syncSceneActivity();
 });
+renderer.domElement.addEventListener('webglcontextlost', event => {
+  event.preventDefault();
+  graphicsInterrupted = true;
+  viewLoading.fail('interrupted');
+  syncSceneActivity();
+});
 document.addEventListener('visibilitychange', syncSceneActivity);
 window.addEventListener('relic-navigation-state', event => { navigationActive = event.detail?.active === true; syncSceneActivity(); });
 window.addEventListener('pagehide', event => {
   pageInactive = true;
   syncSceneActivity();
-  if (!event.persisted) { controls.dispose(); renderer.dispose(); }
+  if (!event.persisted) { viewLoading.dispose(); controls.dispose(); renderer.dispose(); }
 });
 window.addEventListener('pageshow', () => { pageInactive = false; navigationActive = false; syncSceneActivity(); });
 function animate(time) {
@@ -796,7 +834,7 @@ function animate(time) {
     if (Math.abs(nextRatio - renderPixelRatio) > .001) {
       renderPixelRatio = nextRatio;
       renderer.setPixelRatio(renderPixelRatio);
-      renderer.setSize(window.innerWidth, window.innerHeight, false);
+      renderer.setSize(viewportSize().width, viewportSize().height, false);
     }
     qualityWindowStart = time; qualityFrameTime = 0; qualityFrameCount = 0;
   }
@@ -836,7 +874,7 @@ function animate(time) {
   if (!flight && time >= surfaceSettleUntil) surfaceDetail.update(time, selected, surfaceMesh, bodyData(selected)?.size);
   positionLabels();
   renderer.render(scene, camera);
-  if (!loading.classList.contains('done')) loading.classList.add('done');
+  viewLoading.ready();
 }
 syncSceneActivity();
 requestSceneFrame();

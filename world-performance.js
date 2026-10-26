@@ -1,17 +1,24 @@
 /* Shared, bounded render settings for the measured Cesium world views. */
-export function configureWorldPerformance(viewer, { onSuspend = () => {} } = {}) {
+export function configureWorldPerformance(viewer, { onSuspend = () => {}, loading = null, isReady = () => true, onReady = () => {} } = {}) {
   let leaving = false;
   let hiddenPage = false;
   let disposed = false;
+  let graphicsFailed = false;
+  let removeFirstFrame;
+  let removeRenderError;
+  let viewportObserver;
   const alive = () => !disposed && !viewer.isDestroyed();
 
   function quality() {
-    if (!alive()) return;
+    if (!alive() || graphicsFailed) return;
+    const viewport = viewer.container || viewer.scene.canvas.parentElement;
+    const width = Math.max(1, viewport?.clientWidth || innerWidth);
+    const height = Math.max(1, viewport?.clientHeight || innerHeight);
     const high = document.documentElement.dataset.quality === 'high';
-    const compact = matchMedia('(pointer: coarse)').matches || innerWidth <= 760;
+    const compact = matchMedia('(pointer: coarse)').matches || width <= 760;
     const budget = high ? (compact ? 2400000 : 5500000) : (compact ? 1200000 : 3000000);
     const ratio = Math.min(devicePixelRatio || 1, high ? 2 : compact ? 1.35 : 1.5,
-      Math.sqrt(budget / Math.max(1, innerWidth * innerHeight)));
+      Math.sqrt(budget / (width * height)));
     viewer.useBrowserRecommendedResolution = true;
     viewer.resolutionScale = Math.max(.75, ratio);
     viewer.targetFrameRate = compact && !high ? 45 : 60;
@@ -24,10 +31,10 @@ export function configureWorldPerformance(viewer, { onSuspend = () => {} } = {})
 
   function activity() {
     if (!alive()) return;
-    const running = !document.hidden && !leaving && !hiddenPage;
+    const running = !document.hidden && !leaving && !hiddenPage && !graphicsFailed;
     viewer.useDefaultRenderLoop = running;
-    if (!running) onSuspend();
-    else { viewer.resize(); viewer.scene.requestRender(); }
+    if (!running) { onSuspend(); loading?.pause(); }
+    else { loading?.resume(); viewer.resize(); viewer.scene.requestRender(); }
   }
   const navigation = event => { leaving = event.detail?.active === true; activity(); };
   const pagehide = event => {
@@ -37,6 +44,13 @@ export function configureWorldPerformance(viewer, { onSuspend = () => {} } = {})
     if (!event.persisted) { dispose(); if (!viewer.isDestroyed()) viewer.destroy(); }
   };
   const pageshow = () => { hiddenPage = false; leaving = false; activity(); };
+  const graphicsError = () => {
+    if (disposed || graphicsFailed) return;
+    graphicsFailed = true;
+    loading?.fail('interrupted');
+    activity();
+  };
+  const contextLost = event => { event.preventDefault(); graphicsError(); };
   function dispose() {
     if (disposed) return;
     disposed = true;
@@ -46,6 +60,10 @@ export function configureWorldPerformance(viewer, { onSuspend = () => {} } = {})
     window.removeEventListener('pagehide', pagehide);
     window.removeEventListener('pageshow', pageshow);
     document.removeEventListener('visibilitychange', activity);
+    viewer.scene.canvas.removeEventListener('webglcontextlost', contextLost);
+    removeFirstFrame?.(); removeRenderError?.();
+    loading?.dispose();
+    viewportObserver?.disconnect();
   }
   window.addEventListener('resize', quality, { passive:true });
   window.addEventListener('relic-preferences-change', quality);
@@ -53,13 +71,29 @@ export function configureWorldPerformance(viewer, { onSuspend = () => {} } = {})
   window.addEventListener('pagehide', pagehide);
   window.addEventListener('pageshow', pageshow);
   document.addEventListener('visibilitychange', activity);
+  viewer.scene.canvas.addEventListener('webglcontextlost', contextLost);
+  removeRenderError = viewer.scene.renderError?.addEventListener(graphicsError);
+  removeFirstFrame = viewer.scene.postRender.addEventListener(function firstFrame() {
+    if (graphicsFailed) { removeFirstFrame?.(); removeFirstFrame = null; return; }
+    // Wait for the local base image to reach the globe before dismissing its
+    // status. Later remote imagery streams without becoming foreground loading.
+    if (!isReady()) return;
+    performance.mark?.('relic-world-first-frame');
+    loading?.ready();
+    removeFirstFrame?.(); removeFirstFrame = null;
+    onReady();
+  });
+  if (typeof ResizeObserver === 'function') {
+    viewportObserver = new ResizeObserver(() => {
+      if (!alive() || graphicsFailed) return;
+      viewer.resize(); quality();
+    });
+    const viewport = viewer.container || viewer.scene.canvas.parentElement;
+    if (viewport) viewportObserver.observe(viewport);
+  }
   quality();
   activity();
   performance.mark?.('relic-world-engine-ready');
-  viewer.scene.postRender.addEventListener(function firstFrame() {
-    performance.mark?.('relic-world-first-frame');
-    viewer.scene.postRender.removeEventListener(firstFrame);
-  });
   return dispose;
 }
 

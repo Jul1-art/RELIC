@@ -19,8 +19,8 @@ async function worker() {
   return{stores,events,requests,request,dispatch,peak:()=>peak,advance:ms=>{time+=ms;},setServe:fn=>{serve=fn;},async message(type){let reply;await dispatch('message',{data:{type},ports:[{postMessage(value){reply=value;}}]});return reply;}};
 }
 
-test('installation fetches only eight small shell resources with at most three concurrent requests',async()=>{
- const w=await worker();await w.dispatch('install');assert.equal(w.requests.length,8);assert(w.peak()<=3);assert(!w.requests.some(url=>url.includes('/vendor/')||url.includes('/prologue/')||url.includes('api-config')));
+test('installation fetches only seven small shell resources with at most three concurrent requests',async()=>{
+ const w=await worker();await w.dispatch('install');assert.equal(w.requests.length,7);assert(w.peak()<=3);assert(!w.requests.some(url=>url.includes('/vendor/')||url.includes('/prologue/')||url.includes('api-config')));
 });
 
 test('planet parameters share their static document, and mutable module versions are cached within a release',async()=>{
@@ -47,7 +47,7 @@ test('429 serves a cached module and honours Retry-After before any further netw
 test('an HTML rate-limit shield never replaces the cached application document',async()=>{
  const w=await worker();await w.dispatch('install');w.setServe(async()=>new Response('<title>Rate limit exceeded</title>',{headers:{'Content-Type':'text/html'}}));
  const result=await w.dispatch('fetch',{request:w.request('terrain.html?body=mars',{navigate:true,reload:true})});assert.equal(result.status,200);assert((await result.text()).includes('RELIC'));
- const count=w.requests.length;await w.dispatch('fetch',{request:w.request('lunar-base.js')});assert.equal(w.requests.length,count);
+ const count=w.requests.length;await w.dispatch('fetch',{request:w.request('world-performance.js')});assert.equal(w.requests.length,count);
 });
 
 test('503 HTTP-date cooldown persists in cache and does not create automatic retries',async()=>{

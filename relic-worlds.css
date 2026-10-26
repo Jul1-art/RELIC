@@ -1,7 +1,6 @@
 /* RELIC world controls share the atlas's quiet monochrome glass language.
    Scientific imagery and all provider attributions remain intact. */
-html[data-theme] body.relic-world,
-html[data-theme] body.relic-lunar {
+html[data-theme] body.relic-world{
   --ui-ink:#f5f5f3;
   --ui-muted:#b1b1b0;
   --ui-soft:#818180;
@@ -21,8 +20,7 @@ html[data-theme] body.relic-lunar {
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
   -webkit-font-smoothing:antialiased;
 }
-html[data-theme="day"] body.relic-world,
-html[data-theme="day"] body.relic-lunar {
+html[data-theme="day"] body.relic-world{
   --ui-ink:#202020;
   --ui-muted:#616160;
   --ui-soft:#747473;
@@ -35,17 +33,16 @@ html[data-theme="day"] body.relic-lunar {
   --compact-active:#ffffffd9;
   --compact-popup:#f3f3f2;
 }
-html[data-accent="nasa"] body.relic-world,
-html[data-accent="nasa"] body.relic-lunar {--ui-blue:#9dbaff;--ui-blue-hover:#b9ceff}
-:is(body.relic-world,body.relic-lunar) :is(button,a,input,select){font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-:is(body.relic-world,body.relic-lunar) :is(button,a,select){transition:background .18s ease,color .18s ease,border-color .18s ease,transform .18s var(--world-ease)}
-:is(body.relic-world,body.relic-lunar) :is(button,a,input,select):focus-visible{outline:2px solid var(--ui-blue);outline-offset:4px}
-:is(body.relic-world,body.relic-lunar) [hidden]{display:none!important}
-:is(body.relic-world,body.relic-lunar) button:disabled{cursor:default;opacity:.42}
-:is(body.relic-world,body.relic-lunar) button:active:not(:disabled){transform:scale(.96)}
-:is(body.relic-world,body.relic-lunar) .world-icon{display:inline-grid;place-items:center;flex:0 0 18px;width:18px;height:18px;font-style:normal;line-height:1;pointer-events:none}
-:is(body.relic-world,body.relic-lunar) svg.fas{display:block;width:100%;height:100%;fill:currentColor;stroke:none}
-:is(body.relic-world,body.relic-lunar) svg.fas path{fill:currentColor;stroke:none}
+html[data-accent="nasa"] body.relic-world{--ui-blue:#9dbaff;--ui-blue-hover:#b9ceff}
+:is(body.relic-world) :is(button,a,input,select){font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+:is(body.relic-world) :is(button,a,select){transition:background .18s ease,color .18s ease,border-color .18s ease,transform .18s var(--world-ease)}
+:is(body.relic-world) :is(button,a,input,select):focus-visible{outline:2px solid var(--ui-blue);outline-offset:4px}
+:is(body.relic-world) [hidden]{display:none!important}
+:is(body.relic-world) button:disabled{cursor:default;opacity:.42}
+:is(body.relic-world) button:active:not(:disabled){transform:scale(.96)}
+:is(body.relic-world) .world-icon{display:inline-grid;place-items:center;flex:0 0 18px;width:18px;height:18px;font-style:normal;line-height:1;pointer-events:none}
+:is(body.relic-world) svg.fas{display:block;width:100%;height:100%;fill:currentColor;stroke:none}
+:is(body.relic-world) svg.fas path{fill:currentColor;stroke:none}
 .world-legacy-icon{display:none!important}
 .relic-brand-mark{display:block;width:30px;height:30px;fill:none;stroke:currentColor;stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 .relic-brand-mark .relic-mark-orbit{stroke-width:2}
@@ -199,65 +196,6 @@ html[data-theme] body.relic-world :is(.earth-attribution a,.cesium-credits a,.es
 html[data-theme] body.relic-world :is(.loading,.earth-loading,.error,.earth-error){background:#080808ed;color:#f4f4f2;font-size:11px;font-weight:400;letter-spacing:.04em;line-height:1.7}
 html[data-theme] body.relic-world .loading-orbit{border-color:#ffffff1d;border-top-color:#fff;box-shadow:none}
 html[data-theme] body.relic-world :is(.vignette,.scene-vignette){background:linear-gradient(180deg,#0005,transparent 18%),linear-gradient(0deg,#0005,transparent 19%)}
-
-/* The conceptual outpost uses the same sheets, icons and command dock. */
-body.relic-lunar .topbar{top:max(20px,env(safe-area-inset-top));left:24px;right:24px;height:46px;padding:0;gap:18px;border:0;background:none;backdrop-filter:none}
-body.relic-lunar .back{gap:9px;color:#fff;font-size:12px;font-weight:450;letter-spacing:0}
-body.relic-lunar .back-icon{width:44px;height:44px;border:1px solid var(--ui-stroke);border-radius:15px;background:var(--ui-glass);box-shadow:var(--ui-shadow)}
-body.relic-lunar .relic-lunar-brand{gap:9px;color:#fff;text-decoration:none}
-body.relic-lunar .relic-lunar-brand strong{font-size:14px;line-height:1.2;font-weight:550;letter-spacing:.2em}
-body.relic-lunar .relic-lunar-brand small{margin-top:5px;color:#ffffff85;font-size:7px;font-weight:400;letter-spacing:.12em}
-body.relic-lunar .relic-lunar-actions{display:flex;align-items:center;gap:11px;min-height:46px;padding:3px 12px 3px 3px;border:1px solid var(--ui-stroke);border-radius:17px;background:var(--ui-glass);box-shadow:var(--ui-shadow);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
-body.relic-lunar .status{min-width:0;color:var(--ui-muted);font-size:10px;line-height:1.4}
-body.relic-lunar .heading{top:119px;left:30px}
-body.relic-lunar .heading h1{max-width:320px;font-size:42px;line-height:1.05;font-weight:450;letter-spacing:-.055em}
-body.relic-lunar .heading p{color:#ffffff8a;font-size:8px;letter-spacing:.16em;font-weight:400}
-body.relic-lunar .heading>span{max-width:260px;display:block;color:#ffffff8a;font-size:10px;line-height:1.6}
-body.relic-lunar .console{top:91px;right:24px;bottom:107px;width:326px;max-height:none;border:1px solid var(--ui-stroke);border-radius:23px;background:var(--ui-glass);box-shadow:var(--ui-shadow);color:var(--ui-ink);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
-body.relic-lunar .console-head{min-height:76px;padding:16px 17px;border-color:var(--ui-stroke)}
-body.relic-lunar .console h2{margin-top:5px;color:var(--ui-ink);font-size:20px;font-weight:500;letter-spacing:-.035em}
-body.relic-lunar :is(.eyebrow,.section-label,.module-detail>span){color:var(--ui-soft);font-size:9px;font-weight:450;letter-spacing:.08em}
-body.relic-lunar .icon-button{display:grid;place-items:center;width:36px;height:36px;padding:11px;border:0;border-radius:11px;background:var(--compact-control);color:var(--ui-ink)}
-body.relic-lunar .icon-button .world-icon{width:13px;height:13px}
-body.relic-lunar .console-body{padding:13px 15px 17px;overscroll-behavior:contain}
-body.relic-lunar .metrics{gap:7px}
-body.relic-lunar .metrics>div{min-height:74px;padding:11px;border:1px solid var(--ui-stroke);border-radius:12px;background:var(--compact-control)}
-body.relic-lunar .metrics span{color:var(--ui-muted);font-size:8px;font-weight:450;letter-spacing:.06em}
-body.relic-lunar .metrics strong{margin:8px 0 5px;color:var(--ui-ink);font-size:18px;font-weight:500}
-body.relic-lunar .metrics small{color:var(--ui-soft)}
-body.relic-lunar .tabs{gap:4px;margin-top:14px;padding:4px;border-color:var(--ui-stroke);border-radius:13px;background:var(--compact-control)}
-body.relic-lunar .tabs button{min-height:40px;border-radius:9px;color:var(--ui-muted);font-size:11px;font-weight:500}
-body.relic-lunar .tabs button[aria-selected=true]{background:var(--compact-active);color:var(--ui-ink);box-shadow:none}
-body.relic-lunar .locations button{min-height:43px;padding:9px 10px;border-radius:11px;color:var(--ui-ink);font-size:12px}
-body.relic-lunar .locations button:hover,body.relic-lunar .locations button.active{background:var(--compact-active);transform:none}
-body.relic-lunar .locations .location-index{font-size:9px;color:var(--ui-soft)}
-body.relic-lunar .locations button span:last-child{color:var(--ui-soft)}
-body.relic-lunar .action-wide{min-height:46px;margin-top:11px;padding:10px 12px;border:1px solid var(--ui-stroke);border-radius:12px;background:var(--compact-control);color:var(--ui-ink);font-size:11px}
-body.relic-lunar .action-wide[aria-pressed=true]{background:var(--compact-active)}
-body.relic-lunar .action-wide span:last-child{font-size:8px;font-weight:500;color:var(--ui-muted)}
-body.relic-lunar .module-detail{padding:13px;border-color:var(--ui-stroke);border-radius:12px;background:var(--compact-control)}
-body.relic-lunar .module-detail p{color:var(--ui-muted);font-size:11px;line-height:1.6}
-body.relic-lunar .switch-list{gap:6px}
-body.relic-lunar .switch-list button{min-height:45px;padding:10px 11px;border:1px solid var(--ui-stroke);border-radius:11px;background:var(--compact-control);color:var(--ui-ink);font-size:11px}
-body.relic-lunar .switch-list button strong{color:var(--ui-soft);font-size:8px;font-weight:500}
-body.relic-lunar .systems-grid{gap:0}
-body.relic-lunar .systems-grid>div{padding:8px 0;border-color:var(--ui-stroke)}
-body.relic-lunar .systems-grid dt{color:var(--ui-soft);font-size:10px}
-body.relic-lunar .systems-grid dd{color:var(--ui-ink);font-size:11px}
-body.relic-lunar .scenario-control{padding:11px;border:1px solid var(--ui-stroke);border-radius:12px;background:var(--compact-control);font-size:11px;color:var(--ui-muted)}
-body.relic-lunar .scenario-control select{min-height:38px;margin-top:8px;padding:8px;border:1px solid var(--ui-stroke);border-radius:9px;background:var(--compact-popup);color:var(--ui-ink);font-size:11px}
-body.relic-lunar .event-list{padding-left:15px;color:var(--ui-soft);font-size:10px;line-height:1.7}
-body.relic-lunar .bottom-bar{left:50%;right:auto;bottom:calc(20px + env(safe-area-inset-bottom));width:max-content;max-width:calc(100vw - 40px);height:60px;gap:3px;margin:0;padding:6px;border:1px solid var(--ui-stroke);border-radius:21px;background:var(--ui-glass);box-shadow:var(--ui-shadow);color:var(--ui-ink);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);transform:translateX(-50%)}
-body.relic-lunar .bottom-bar button{display:flex;align-items:center;gap:8px;min-height:46px;height:46px;padding:0 13px;border:0;border-radius:14px;background:none;color:var(--ui-ink);font-size:11px;font-weight:500}
-body.relic-lunar .bottom-bar button:hover{background:var(--compact-active)}
-body.relic-lunar .bottom-bar button[aria-pressed=true]{background:var(--compact-active)}
-body.relic-lunar .speed-control{display:flex;align-items:center;gap:8px;padding:0 9px;color:var(--ui-muted)}
-body.relic-lunar .speed-control select{min-width:52px;min-height:38px;padding:5px;border:0;border-radius:10px;background:var(--compact-control);color:var(--ui-ink);font-size:11px}
-body.relic-lunar .bottom-bar .bar-divider{height:24px;background:var(--ui-stroke)}
-body.relic-lunar .simulation-note{max-width:140px;margin:0 10px;color:var(--ui-soft);font-size:8px;font-weight:400;line-height:1.5;letter-spacing:.04em}
-body.relic-lunar .toast{border:1px solid var(--ui-stroke);border-radius:14px;background:var(--compact-popup);color:var(--ui-ink);font-size:11px;box-shadow:var(--ui-shadow)}
-body.relic-lunar :is(.loading,.error){background:#080808f2;color:#f5f5f3;font-size:11px;font-weight:400;letter-spacing:.04em}
-body.relic-lunar .loading-orbit{border-color:#ffffff20;border-top-color:#fff;box-shadow:none}
 body.relic-redirect{display:grid;min-height:100dvh;margin:0;place-items:center;background:#080808;color:#f5f5f2;font:14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 body.relic-redirect a{color:inherit;text-underline-offset:5px}
 @keyframes world-drawer-in{from{opacity:0;transform:translateY(-7px)}to{opacity:1;transform:translateY(0)}}
@@ -288,7 +226,6 @@ body.relic-redirect a{color:inherit;text-underline-offset:5px}
   html[data-theme] body.relic-world .world-nav{justify-self:center;min-height:44px;max-width:100%;gap:3px;padding:3px;border-radius:16px;overflow-x:auto;scrollbar-width:none}
   html[data-theme] body.relic-world .world-nav a{gap:6px;min-height:36px;padding:0 13px;border-radius:11px;font-size:11px}
   html[data-theme] body.relic-world .world-nav a[data-world]::before{width:8px;height:8px;flex-basis:8px}
-  html[data-theme] body.relic-world #lunar-base-link{padding-inline:11px;font-size:10px}
   html[data-theme] body.relic-world .place-search#place-form,
   html[data-theme] body.relic-world .place-search#place-form.expanded{top:max(125px,calc(env(safe-area-inset-top) + 112px));left:14px;right:14px;width:auto;padding:4px;transform:none;border-radius:17px}
   html[data-theme] body.relic-world .search-toggle{height:44px;font-size:12px}
@@ -313,35 +250,11 @@ body.relic-redirect a{color:inherit;text-underline-offset:5px}
   html[data-theme] body.relic-world :is(.cesium-credits,.esri-attribution){left:auto;right:14px;bottom:6px;max-width:45vw;max-height:none;overflow:visible;font-size:7px;line-height:1.45}
   body.earth-page[data-google3d=true] .cesium-credits,
   body.terrain-page[data-google3d=true] .cesium-credits{max-width:calc(100vw - 28px);width:auto;right:14px;bottom:6px;overflow:visible}
-  body.relic-lunar .topbar{top:max(13px,env(safe-area-inset-top));left:14px;right:14px;gap:10px;height:44px}
-  body.relic-lunar .back{gap:6px;font-size:11px}
-  body.relic-lunar .back-icon{width:40px;height:40px;border-radius:13px}
-  body.relic-lunar .relic-lunar-brand{gap:6px;margin:auto}
-  body.relic-lunar .relic-lunar-brand .relic-brand-mark{width:27px;height:27px}
-  body.relic-lunar .relic-lunar-brand strong{font-size:12px}
-  body.relic-lunar .relic-lunar-brand small{font-size:6px;letter-spacing:.04em}
-  body.relic-lunar .relic-lunar-actions{min-height:44px;gap:5px;padding:2px 8px 2px 2px;border-radius:15px}
-  body.relic-lunar .status{font-size:0;gap:0}
-  body.relic-lunar .status-dot{width:5px;height:5px}
-  body.relic-lunar .heading{display:none}
-  body.relic-lunar .console{top:auto;bottom:calc(108px + env(safe-area-inset-bottom));left:14px;right:14px;width:auto;max-height:58dvh;border-radius:21px}
-  body.relic-lunar .console.collapsed{top:auto;bottom:calc(108px + env(safe-area-inset-bottom));height:74px;max-height:74px}
-  body.relic-lunar .console-head{min-height:74px;padding:14px 16px}
-  body.relic-lunar .console h2{font-size:19px}
-  body.relic-lunar .console-body{padding:12px 14px}
-  body.relic-lunar .bottom-bar{bottom:calc(22px + env(safe-area-inset-bottom));max-width:calc(100vw - 28px);min-height:60px;gap:2px;padding:5px;border-radius:20px}
-  body.relic-lunar .bottom-bar button{height:46px;min-height:46px;padding:0 12px}
-  body.relic-lunar .bottom-bar button>span:not(.world-icon){display:none}
-  body.relic-lunar .bottom-bar .bar-divider{margin:0 3px}
-  body.relic-lunar .simulation-note{display:none}
-  body.relic-lunar .speed-control{gap:7px;padding-inline:8px}
 }
 @media(max-width:360px){
   html[data-theme] body.relic-world .theme-toggle{display:none}
   html[data-theme] body.relic-world .world-nav a{padding-inline:11px}
-  html[data-theme] body.relic-world #lunar-base-link{font-size:9px;padding-inline:9px}
   html[data-theme] body.relic-world .view-controls button{padding-inline:10px;min-width:42px}
-  body.relic-lunar .relic-lunar-brand small{display:none}
 }
 @media(max-height:600px) and (orientation:landscape){
   html[data-theme] body.relic-world{--world-dock-bottom:41px}
@@ -361,18 +274,12 @@ body.relic-redirect a{color:inherit;text-underline-offset:5px}
   html[data-theme] body.relic-world .move-pad{display:none}
   html[data-theme] body.relic-world .map-options{max-height:calc(100dvh - 156px);bottom:102px}
   html[data-theme] body.relic-world :is(.earth-attribution,.cesium-credits,.esri-attribution,.scene-credit){bottom:5px;font-size:7px}
-  body.relic-lunar .topbar{top:10px;left:16px;right:16px}
-  body.relic-lunar .heading{display:none}
-  body.relic-lunar .console{top:72px;bottom:105px;left:auto;right:16px;width:286px;max-height:none}
-  body.relic-lunar .console.collapsed{top:72px;bottom:auto;height:74px;max-height:74px}
-  body.relic-lunar .bottom-bar{bottom:19px}
-  body.relic-lunar .simulation-note{display:none}
 }
 @media(prefers-reduced-transparency:reduce){
-  :is(body.relic-world,body.relic-lunar) :is(.world-nav,.header-actions,.place-search,.explorer-panel,.site-panel,.view-card,.map-options,.view-controls,.earth-controls,.console,.bottom-bar){background:var(--compact-popup)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  :is(body.relic-world) :is(.world-nav,.header-actions,.place-search,.explorer-panel,.site-panel,.view-card,.map-options,.view-controls,.earth-controls,.console,.bottom-bar){background:var(--compact-popup)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 }
 @media(prefers-reduced-motion:reduce){
-  :is(body.relic-world,body.relic-lunar) *,:is(body.relic-world,body.relic-lunar) *::before,:is(body.relic-world,body.relic-lunar) *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+  :is(body.relic-world) *,:is(body.relic-world) *::before,:is(body.relic-world) *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
 }
 
 /* Match the home atlas until the optional NASA accent is selected. */

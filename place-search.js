@@ -85,6 +85,8 @@ export function createPlaceSearch({ world, places, onSelect, getBias, language }
     selected = -1;
   }
   function setExpanded(expanded, focus = false) {
+    if (!expanded) close();
+    expanded = expanded || form.dataset.dashboardSearch === 'persistent';
     form.classList.toggle('expanded', expanded);
     toggle.setAttribute('aria-expanded', String(expanded));
     toggle.setAttribute('aria-label', expanded
@@ -247,7 +249,10 @@ export function createPlaceSearch({ world, places, onSelect, getBias, language }
       event.preventDefault();
       if (list.hidden) show([...coordinates(input.value.trim()), ...localMatches(input.value.trim())]);
       highlight(selected + (event.key === 'ArrowDown' ? 1 : -1));
-    } else if (event.key === 'Escape') { setExpanded(false); toggle.focus(); }
+    } else if (event.key === 'Escape') {
+      event.preventDefault(); event.stopPropagation(); setExpanded(false);
+      if (form.dataset.dashboardSearch !== 'persistent') toggle.focus();
+    }
   });
   document.addEventListener('pointerdown', event => {
     if (!form.contains(event.target) && form.classList.contains('expanded')) setExpanded(false);

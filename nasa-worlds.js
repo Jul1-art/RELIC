@@ -1,43 +1,6 @@
 // Locations and imagery are drawn from the linked NASA mission catalogues.
-export const EARTH_SITES = [
-  {
-    id:'manhattan', name:'Manhattan · Google 3D', tag:'VILLE EN 3D',
-    lat:40.7484, lon:-73.9857, range:3200, terrainRange:2200, color:'#b8daf2',
-    description:'Explorez Midtown avec les tuiles photoréalistes Google 3D via Cesium ion, si elles sont activées.',
-    source:'https://eol.jsc.nasa.gov/SearchPhotos/photo.pl?frame=14524&mission=ISS007&roll=E',
-  },
-  {
-    id:'paris', name:'Paris · Google 3D', tag:'VILLE EN 3D',
-    lat:48.8606, lon:2.3376, range:3300, terrainRange:2200, color:'#e6d7b9',
-    description:'Explorez le centre de Paris avec les tuiles photoréalistes Google 3D via Cesium ion, si elles sont activées.',
-    source:'https://eol.jsc.nasa.gov/Collections/EarthObservatory/articles/ParisatNight.htm',
-  },
-  {
-    id:'nice-airport', name:'Aéroport de Nice', tag:'PISTES · RELIEF CORRIGÉ',
-    lat:43.6575, lon:7.2155, range:2600, terrainRange:1900, color:'#a4d7e8',
-    description:'En mode NASA, les deux pistes sont raccordées au relief mesuré avec leurs altitudes publiées dans l’AIP français.',
-    source:'https://www.sia.aviation-civile.gouv.fr/documents/download/f/d/15031542/',
-    sourceLabel:'VOIR LES ALTITUDES OFFICIELLES ↗',
-  },
-  {
-    id:'kennedy', name:'Kennedy Space Center', tag:'VUE DE L’ISS',
-    lat:28.5, lon:-80.5, range:180000, color:'#80d8ff',
-    description:'Le site de lancement de Floride vu depuis la Station spatiale internationale.',
-    source:'https://eol.jsc.nasa.gov/SearchPhotos/photo.pl?frame=5399&mission=ISS002&roll=E',
-  },
-  {
-    id:'grand-canyon', name:'Grand Canyon', tag:'PAYSAGE OBSERVÉ DE L’ISS',
-    lat:36.4, lon:-112.2, range:120000, color:'#f1ac76',
-    description:'Un paysage photographié depuis la Station spatiale internationale.',
-    source:'https://eol.jsc.nasa.gov/SearchPhotos/photo.pl?frame=141613&mission=ISS062&roll=E',
-  },
-  {
-    id:'nile', name:'Delta du Nil', tag:'VUE DE L’ISS',
-    lat:30, lon:31, range:240000, color:'#d8d68d',
-    description:'Le delta vert se détache du désert sur les observations orbitales.',
-    source:'https://eol.jsc.nasa.gov/SearchPhotos/photo.pl?frame=10034&mission=ISS032&roll=E',
-  },
-];
+// Earth starts without curated demo destinations; use place or coordinate search.
+export const EARTH_SITES = [];
 
 export const PLANET_SITES = {
   mars:[

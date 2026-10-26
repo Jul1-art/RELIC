@@ -27,13 +27,27 @@ function signal(next) {
   window.dispatchEvent(new CustomEvent('relic-navigation-state', { detail:{ active:next } }));
 }
 
+// Native cross-document transitions may be skipped when a page changes its
+// rendering state. A skipped animation must never become an unhandled error.
+function settleTransition(event) {
+  const transition = event.viewTransition;
+  if (!transition) return;
+  for (const promise of [transition.ready, transition.finished, transition.updateCallbackDone]) promise?.catch(() => {});
+}
+
 function restore() {
   clearTimeout(navigationTimer);
   signal(false);
   document.documentElement.classList.remove('relic-page-entering');
 }
 
-function begin() {
+function begin(url) {
+  if (url) {
+    const root = new URL('./', import.meta.url);
+    if ([root.pathname, new URL('index.html', root).pathname].includes(url.pathname)) {
+      try { sessionStorage.setItem('relic:return-to-atlas', JSON.stringify({at:Date.now(),path:root.pathname})); } catch { /* Navigation also works without storage. */ }
+    }
+  }
   ensureStyles();
   clearTimeout(navigationTimer);
   signal(true);
@@ -47,7 +61,7 @@ function destination(value) {
     const url = new URL(value, location.href);
     if (url.origin !== location.origin || !/^https?:$/.test(url.protocol)) return null;
     if (url.pathname === location.pathname && url.search === location.search) return null;
-    if (!/\/(?:index|earth|terrain|base_lun(?:aire|iare)_3d)\.html$/.test(url.pathname)
+    if (!/\/(?:index|earth|terrain)\.html$/.test(url.pathname)
       && !url.pathname.endsWith('/')) return null;
     return url;
   } catch { return null; }
@@ -58,7 +72,7 @@ export function navigateTo(value) {
   const url = destination(value);
   if (!url) return;
   initializeNavigation();
-  begin();
+  begin(url);
   // Native navigation begins immediately; there is no animation timeout before
   // fetching the next page, and browsers can use their back/forward cache.
   location.assign(url.href);
@@ -69,7 +83,7 @@ export function initializeNavigation() {
   installed = true;
   ensureStyles();
   document.documentElement.dataset.relicNavigating = 'false';
-  if (!reducedMotion() && !('onpagereveal' in window)) {
+  if (!reducedMotion()) {
     document.documentElement.classList.add('relic-page-entering');
     setTimeout(() => document.documentElement.classList.remove('relic-page-entering'), 260);
   }
@@ -78,13 +92,14 @@ export function initializeNavigation() {
     const link = event.target.closest?.('a[href]');
     if (!link || link.hasAttribute('download') || link.target && link.target !== '_self'
       || link.closest('[data-no-navigation]') || !destination(link.href)) return;
-    begin();
+    begin(destination(link.href));
     // Keep the browser's default anchor behavior and accessibility semantics.
   });
   window.addEventListener('pageshow', restore);
+  window.addEventListener('pageswap', settleTransition);
   window.addEventListener('pagehide', () => clearTimeout(navigationTimer));
-  window.addEventListener('pagereveal', () => {
-    restore();
+  window.addEventListener('pagereveal', event => {
+    settleTransition(event); restore();
     if (!reducedMotion()) document.documentElement.classList.add('relic-page-entering');
     setTimeout(() => document.documentElement.classList.remove('relic-page-entering'), 260);
   });
