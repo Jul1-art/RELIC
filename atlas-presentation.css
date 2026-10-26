@@ -1,0 +1,9 @@
+/* Planet names belong to the scene: plain type, with no pills or markers. */
+html body.atlas-page .planet-dashboard #planet-labels .planet-label{position:absolute;left:0;top:0;display:block;min-height:28px;margin:0;padding:5px 2px;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;color:#e9edf4;font:500 12px/18px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:.025em;text-shadow:0 1px 6px #000,0 0 12px #000b;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .22s ease,visibility .22s ease;will-change:transform}
+html body.atlas-page .planet-dashboard #planet-labels .planet-label[data-label-visible=true]{opacity:.9;visibility:visible;pointer-events:auto}
+html body.atlas-page .planet-dashboard #planet-labels .planet-label:hover,html body.atlas-page .planet-dashboard #planet-labels .planet-label:focus-visible{color:#fff;opacity:1;background:transparent!important;box-shadow:none!important}
+html body.atlas-page .planet-dashboard #planet-labels .planet-label::before,html body.atlas-page .planet-dashboard #planet-labels .planet-label::after{display:none!important;content:none!important}
+html body.atlas-page .planet-dashboard #planet-labels .planet-label:focus-visible{outline:1px solid #b9d5ff;outline-offset:4px}
+@media(max-width:650px){html body.atlas-page .planet-dashboard #planet-labels .planet-label{font-size:11px}}
+html[data-motion=reduced] body.atlas-page .planet-dashboard #planet-labels .planet-label{transition:none}
+@media(prefers-reduced-motion:reduce){html:not([data-motion=full]) body.atlas-page .planet-dashboard #planet-labels .planet-label{transition:none}}

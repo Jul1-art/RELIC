@@ -1,4 +1,5 @@
 import { getLanguage, onLanguageChange } from './atlas-live.js?v=3';
+import { openSources as showCredits } from './app-sources.js';
 import { createPrologue } from './intro/prologue-v8.js';
 import { PROLOGUE, PROLOGUE_MEDIA } from './intro/prologue-data-v8.js';
 import * as offlineFilm from './intro/film-offline.js';
@@ -9,11 +10,6 @@ const introduction = document.querySelector('#intro');
 const reducedMotion = () => document.documentElement.dataset.motion === 'reduced'
   || (!document.documentElement.dataset.motion && matchMedia('(prefers-reduced-motion: reduce)').matches);
 const french = () => getLanguage() === 'fr';
-const localize = value => typeof value === 'string' ? value : value?.[getLanguage()] || value?.en || '';
-const safeURL = value => {
-  try { const url = new URL(value, INTRO_ROOT); return /^https?:$/.test(url.protocol) ? url.href : null; } catch { return null; }
-};
-
 // The player resolves URLs in document scope; offline storage resolves raw
 // metadata beside its own module. Keep those two representations separate.
 const playbackMedia = structuredClone(PROLOGUE_MEDIA);
@@ -71,63 +67,6 @@ function createDialog(title, trigger) {
 const paragraph = (parent, text, className = '') => {
   const element = document.createElement('p'); element.textContent = text; element.className = className; parent.append(element); return element;
 };
-function sourceLink(parent, label, href) {
-  const url = safeURL(href);
-  if (!url) return;
-  const link = document.createElement('a'); link.href = url; link.textContent = label;
-  link.target = '_blank'; link.rel = 'noopener noreferrer'; parent.append(link);
-}
-
-async function showCredits(trigger) {
-  const { dialog, content } = createDialog(french() ? 'Sources et créateurs' : 'Sources and creators', trigger);
-  paragraph(content, french() ? 'Explorer ce que nous avons laissé derrière nous.' : 'Explore what we left behind.', 'relic-dialog-lead');
-  const people = document.createElement('div'); people.className = 'relic-people'; content.append(people);
-  for (const [name, role] of [['Jules',french() ? 'Développement et interface' : 'Development and interface'],['Hugo',french() ? 'Recherche spatiale et récits' : 'Space research and storytelling']]) {
-    const card = document.createElement('div'); const heading = document.createElement('h3'); heading.textContent = name; card.append(heading); paragraph(card, role); people.append(card);
-  }
-  const sources = document.createElement('div'); sources.className = 'relic-source-links'; content.append(sources);
-  for (const [label, url] of [
-    ['NASA Open Data','https://data.nasa.gov/'],['NASA / JPL Horizons','https://ssd.jpl.nasa.gov/horizons/'],
-    ['JPL approximate planetary positions · orbital model','https://ssd.jpl.nasa.gov/planets/approx_pos.html'],
-    ['NOAA SWPC · solar-wind measurements','https://www.swpc.noaa.gov/products/real-time-solar-wind'],
-    ['Photon / OpenStreetMap · place search','https://photon.komoot.io/'],
-    ['Open-Meteo / GeoNames · geocoding · CC BY 4.0','https://open-meteo.com/en/docs/geocoding-api'],
-    ['NASA Solar System Exploration','https://science.nasa.gov/solar-system/'],['NASA / LRO lunar imagery','https://wms.lroc.asu.edu/lroc'],
-    ['NASA Mars Trek','https://trek.nasa.gov/mars/'],['Solar System Scope textures · CC BY 4.0','https://www.solarsystemscope.com/textures/'],
-    ['Three.js · MIT','https://threejs.org/'],['CesiumJS · Apache 2.0','https://cesium.com/platform/cesiumjs/'],
-  ]) sourceLink(sources, label, url);
-  const heading = document.createElement('h3'); heading.textContent = french() ? 'Le film' : 'The film'; content.append(heading);
-  paragraph(content, french()
-    ? 'Un documentaire de 8 min 49 monté à partir de films existants. Les origines et certaines missions utilisent des animations ; les dinosaures sont des reconstitutions. La narration nouvelle utilise des voix de synthèse en anglais et en français. Les voix historiques sont des enregistrements originaux.'
-    : 'An 8-minute 49-second documentary edited from existing footage. The origins and some missions use animations; dinosaurs are reconstructed. New narration uses synthetic voices in English and French. Historical voices are original recordings.');
-  paragraph(content, '“Helios” — Scott Buckley · CC BY 4.0 · www.scottbuckley.com.au', 'relic-music-credit');
-  const filmSources = document.createElement('div'); filmSources.className = 'relic-source-links'; content.append(filmSources);
-  sourceLink(filmSources, 'Scott Buckley · Helios', 'https://www.scottbuckley.com.au/library/helios/');
-  sourceLink(filmSources, 'Font Awesome Free · icons', 'https://fontawesome.com/license/free');
-  sourceLink(filmSources, 'Kokoro · synthetic narration', 'https://huggingface.co/hexgrad/Kokoro-82M');
-  sourceLink(filmSources, french() ? 'Provenance complète, dates et licences' : 'Complete provenance, dates and licenses', new URL('assets/prologue/sources-v8.json', INTRO_ROOT).href);
-  paragraph(content, french()
-    ? 'RELIC est un projet indépendant. Le code de l’application et les médias possèdent leurs propres licences ; les images et archives ne sont pas toutes sous licence Apache 2.0.'
-    : 'RELIC is an independent project. Application code and media have separate licenses; imagery and archive footage are not all licensed under Apache 2.0.', 'relic-dialog-note');
-  try {
-    const response = await fetch(new URL('assets/prologue/sources-v8.json', INTRO_ROOT));
-    if (!response.ok) return;
-    const provenance = await response.json();
-    if (!dialog.open) return;
-    const seen = new Set([...filmSources.querySelectorAll('a')].map(link => link.href));
-    function collect(value, depth = 0) {
-      if (!value || typeof value !== 'object' || depth > 12) return;
-      if (typeof value.sourcePage === 'string') {
-        const url = safeURL(value.sourcePage);
-        if (url && !seen.has(url)) { seen.add(url); sourceLink(filmSources, localize(value.credit || value.title || value.id) || new URL(url).hostname, url); }
-      }
-      for (const item of Object.values(value)) if (item && typeof item === 'object') collect(item, depth + 1);
-    }
-    collect(provenance.currentAdditionalSources);
-    collect(provenance.inheritedLicensedSourceCatalog);
-  } catch { /* The direct provenance link remains available. */ }
-}
-
 async function ensureFilmWorker() {
   const registration = await registerApplicationWorker();
   if (!registration) throw new offlineFilm.OfflineFilmError('unsupported', 'Service worker unavailable');
@@ -229,7 +168,6 @@ const film = createPrologue({
 });
 
 document.querySelector('#relic-replay')?.addEventListener('click', () => film.start());
-document.querySelector('#relic-credits')?.addEventListener('click', event => showCredits(event.currentTarget));
 onLanguageChange(() => { if (currentDialog?.open) currentDialog.close(); });
 
 let returningToAtlas = performance.getEntriesByType('navigation')[0]?.type === 'back_forward';

@@ -6,20 +6,16 @@ import { createDetailedEarthImagery, ESRI_IMAGERY_URL } from './earth-imagery.js
 import { createGoogle3D, askForCesiumToken } from './google-3d.js';
 import { createPlaceSearch } from './place-search.js?v=5';
 import { startLiveData, getLanguage, onLanguageChange } from './atlas-live.js?v=3';
-import { configureWorldPerformance, cameraDuration, flyToLocation } from './world-performance.js';
+import { configureWorldPerformance, cameraDuration, flyToLocation, createOverviewFraming } from './world-performance.js';
 import { createViewLoading } from './view-loading.js';
+import { initializeProviderCredits } from './provider-credits.js';
 
 const $ = selector => document.querySelector(selector);
 const viewLoading = createViewLoading({ element:$('#earth-loading'), errorElement:$('#earth-error'), getLanguage });
 const input = $('#place-input');
-const dateInput = $('#image-date');
-const day = 86400000;
-const utcDate = offset => new Date(Date.now() - offset * day).toISOString().slice(0, 10);
-dateInput.max = utcDate(1);
-dateInput.min = '2000-02-24';
-dateInput.value = utcDate(3);
 
 let viewer;
+let overviewFraming;
 let currentLayer;
 let remoteLayer;
 let localLayer;
@@ -34,17 +30,6 @@ const english = () => getLanguage() === 'en';
 const siteText = site => site;
 
 function status(text) { $('#search-state').textContent = text; }
-function layerNoteText() {
-  const en = english();
-  if (googleState.active) return en
-    ? 'Photorealistic Google 3D tiles via Cesium ion.'
-    : 'Tuiles 3D photoréalistes Google via Cesium ion.';
-  return currentLayer === 'satellite'
-    ? (en ? 'Esri imagery · NASA SRTM terrain.' : 'Imagerie Esri · relief NASA SRTM.')
-    : currentLayer === 'modis'
-      ? (en ? `MODIS · ${dateInput.value} · 250 m/px.` : `MODIS · ${dateInput.value} · 250 m/px.`)
-      : (en ? 'NASA Blue Marble · historical mosaic.' : 'NASA Blue Marble · mosaïque historique.');
-}
 function showGoogleState(state) {
   googleState = state;
   const en = english();
@@ -57,7 +42,6 @@ function showGoogleState(state) {
           : (en ? 'Google 3D unavailable' : 'Google 3D indisponible');
   $('.earth-attribution').hidden = state.active;
   document.body.dataset.google3d = String(state.active);
-  $('#layer-note').textContent = layerNoteText();
 }
 function hideSuggestions() { placeSearch?.close(); }
 function formatCoordinate(value, positive, negative) {
@@ -65,6 +49,7 @@ function formatCoordinate(value, positive, negative) {
 }
 async function selectSite(site) {
   if (!viewer) return;
+  overviewFraming?.stop();
   selectedSite = site;
   viewer.scene.verticalExaggeration = site.id ? 2 : 1;
   $('#earth-terrain-status').textContent = english()
@@ -78,12 +63,6 @@ async function selectSite(site) {
   $('#location-description').textContent = shown.description || (english() ? 'Location defined by geographic coordinates.' : 'Position définie par ses coordonnées géographiques.');
   $('#latitude').textContent = formatCoordinate(site.lat, 'N', 'S');
   $('#longitude').textContent = formatCoordinate(site.lon, 'E', 'O');
-  $('#location-source').href = site.source || NASA_IMAGERY.gibsInfo;
-  $('#location-source').textContent = shown.sourceLabel || (english() ? 'Source ↗' : 'Source ↗');
-  $('#location-3d').hidden = false;
-  $('#location-3d').href = site.id
-    ? `./terrain.html?body=earth&site=${encodeURIComponent(site.id)}`
-    : `./terrain.html?body=earth&lat=${site.lat}&lon=${site.lon}`;
   $('#site-summary').hidden = false;
   status('');
   const serial = ++siteFocusSerial;
@@ -96,8 +75,7 @@ async function selectSite(site) {
 function collapsePanel(collapsed) {
   const panel = $('.explorer-panel');
   panel.classList.toggle('collapsed', collapsed);
-  $('#panel-toggle').setAttribute('aria-expanded', String(!collapsed));
-  $('#panel-toggle').setAttribute('aria-label', collapsed ? 'Afficher les données' : 'Réduire le panneau');
+  window.dispatchEvent(new CustomEvent('planet-dashboard-panel',{detail:{open:!collapsed}}));
 }
 
 function imageryProvider(url, level, credit) {
@@ -112,20 +90,13 @@ function imageryProvider(url, level, credit) {
 
 async function setLayer(id) {
   if (!viewer) return;
-  if (id === currentLayer && id !== 'modis') return;
+  if (id === currentLayer) return;
   const serial = ++layerSerial;
-  const date = dateInput.value;
-  if (id === 'modis' && (!date || date < dateInput.min || date > dateInput.max)) {
-    status(english() ? 'Choose a valid date between 24 February 2000 and yesterday.' : 'Choisissez une date valide entre le 24 février 2000 et hier.');
-    return;
-  }
   let provider;
   try {
     provider = id === 'satellite'
       ? await createDetailedEarthImagery(Cesium)
-      : id === 'modis'
-        ? imageryProvider(NASA_IMAGERY.earthModis(date), 9, 'NASA GIBS · MODIS Terra')
-        : imageryProvider(NASA_IMAGERY.earthBlueMarble, 8, 'NASA GIBS · Blue Marble Next Generation');
+      : imageryProvider(NASA_IMAGERY.earthBlueMarble, 8, 'NASA GIBS · Blue Marble Next Generation');
   } catch (error) {
     console.warn('Imagerie satellite détaillée indisponible', error);
     if (id === 'satellite') return setLayer('blue');
@@ -136,17 +107,10 @@ async function setLayer(id) {
   if (remoteLayer) viewer.imageryLayers.remove(remoteLayer, true);
   remoteLayer = nextLayer;
   currentLayer = id;
-  $('#date-field').hidden = id !== 'modis';
-  $('#layer-note').textContent = layerNoteText();
   $('#earth-imagery-credit').href = id === 'satellite' ? ESRI_IMAGERY_URL : NASA_IMAGERY.gibsInfo;
   $('#earth-imagery-credit').textContent = id === 'satellite'
     ? 'POWERED BY ESRI · ESRI, MAXAR, EARTHSTAR GEOGRAPHICS, GIS USER COMMUNITY'
     : 'NASA GIBS';
-  document.querySelectorAll('[data-layer]').forEach(button => {
-    const active = button.dataset.layer === id;
-    button.classList.toggle('active', active);
-    button.setAttribute('aria-pressed', String(active));
-  });
   status('');
   // Keep the local NASA image below the live layer if a network tile is absent.
   if (localLayer) viewer.imageryLayers.lowerToBottom(localLayer);
@@ -168,6 +132,7 @@ async function start() {
       showRenderLoopErrors:false,
       msaaSamples:window.innerWidth <= 760 ? 1 : 2,
     });
+    initializeProviderCredits({elements:[$('.earth-attribution'), $('#cesium-credits')]});
     configureWorldPerformance(viewer, {
       loading:viewLoading,
       isReady:() => baseImageryReady && viewer.scene.globe.tilesLoaded,
@@ -183,7 +148,8 @@ async function start() {
     viewer.scene.skyAtmosphere.show = true;
     viewer.scene.screenSpaceCameraController.minimumZoomDistance = 100;
     viewer.scene.screenSpaceCameraController.maximumZoomDistance = 55000000;
-    viewer.camera.setView({ destination:Cesium.Cartesian3.fromDegrees(12, 25, 16000000) });
+    overviewFraming = createOverviewFraming(viewer, Cesium, { ellipsoid:Cesium.Ellipsoid.WGS84, longitude:12, latitude:25 });
+    overviewFraming.show();
     google3D = createGoogle3D(viewer, showGoogleState);
 
     // Render the packaged NASA base first; live layers and optional 3D tiles
@@ -219,44 +185,27 @@ placeSearch = createPlaceSearch({
   onSelect:place => {
     if (place.source === 'nasa') return selectSite(EARTH_SITES.find(site => site.id === place.site.id));
     const searched = ['photon', 'geocoder'].includes(place.source);
-    const fromPhoton = place.source === 'photon';
     return selectSite({
       name:place.name,
       inputLabel:place.detail ? `${place.name}, ${place.detail}` : place.name,
       lat:place.lat, lon:place.lon, range:place.range,
       tag:searched ? (english() ? 'SEARCHED PLACE' : 'LIEU RECHERCHÉ') : (english() ? 'COORDINATES' : 'COORDONNÉES'),
       description:place.detail || (english() ? 'Geographic coordinates.' : 'Coordonnées géographiques.'),
-      source:place.sourceUrl || (fromPhoton ? `https://www.openstreetmap.org/?mlat=${place.lat}&mlon=${place.lon}#map=16/${place.lat}/${place.lon}` : undefined),
-      sourceLabel:fromPhoton ? (english() ? 'VIEW ON OPENSTREETMAP ↗' : 'VOIR SUR OPENSTREETMAP ↗')
-        : searched ? (english() ? 'VIEW PLACE SOURCE ↗' : 'VOIR LA SOURCE DU LIEU ↗') : undefined,
+
     });
   },
 });
-$('#panel-toggle').addEventListener('click', () => collapsePanel(!$('.explorer-panel').classList.contains('collapsed')));
 $('#site-close').addEventListener('click', () => { $('#site-summary').hidden = true; });
-function showMapOptions(open) {
-  $('#map-options').hidden = !open;
-  $('#map-options-toggle').setAttribute('aria-expanded', String(open));
-}
-$('#map-options-toggle').addEventListener('click', () => showMapOptions($('#map-options').hidden));
-document.addEventListener('pointerdown', event => {
-  if (!$('#map-options').hidden && !event.target.closest('#map-options, #map-options-toggle')) showMapOptions(false);
-});
-document.addEventListener('keydown', event => {
-  if (event.key === 'Escape' && !$('#map-options').hidden) showMapOptions(false);
-});
-document.querySelectorAll('[data-layer]').forEach(button => button.addEventListener('click', () => setLayer(button.dataset.layer)));
-dateInput.addEventListener('change', () => setLayer('modis'));
 $('#reset-view').addEventListener('click', () => {
   siteFocusSerial++;
   if (viewer) viewer.scene.verticalExaggeration = 2;
-  viewer?.camera.cancelFlight();
-  viewer?.camera.flyTo({ destination:Cesium.Cartesian3.fromDegrees(12, 25, 16000000), duration:cameraDuration(.85) });
+  overviewFraming?.show(.85);
   $('#site-summary').hidden = true;
   input.value = '';
   hideSuggestions();
 });
 $('#google3d-toggle').addEventListener('click', async () => {
+  overviewFraming?.stop();
   if (!google3D) return;
   if (google3D.active) { google3D.disable(); return; }
   let token;
@@ -276,29 +225,18 @@ onLanguageChange(lang => {
   $('.world-nav [data-world="mars"]')?.replaceChildren(document.createTextNode('Mars'));
   $('.world-nav [data-world="moon"]')?.replaceChildren(document.createTextNode(en ? 'Moon' : 'Lune'));
   $('#explorer-title').textContent = en ? 'Earth' : 'Terre';
-  $('.map-options-title').textContent = en ? 'Imagery' : 'Imagerie';
-  $('#map-options-toggle').setAttribute('aria-label', en ? 'Imagery' : 'Imagerie');
-  $('#map-options-toggle').title = en ? 'Imagery' : 'Imagerie';
-  $('[data-layer="satellite"] small').textContent = 'Esri';
-  $('[data-layer="blue"] small').textContent = 'NASA';
-  $('[data-layer="modis"] small').textContent = 'Terra';
-  $('.date-field label').textContent = en ? 'Date' : 'Date';
-  $('.date-field span').textContent = en ? 'Coverage varies by date.' : 'Couverture variable selon la date.';
   placeSearch.setLanguage();
-  $('#location-3d').firstChild.textContent = en ? 'Explore in 3D ' : 'Explorer en 3D ';
   $('#reset-view span').textContent = en ? 'Overview' : 'Vue globale';
   ($('#google3d-toggle .world-button-label') || $('#google3d-toggle')).textContent = 'Google 3D';
   showGoogleState(googleState);
   $('#earth-terrain-status').textContent = $('#earth-terrain-status').dataset.available === 'false'
     ? (en ? ' · WGS84 ELLIPSOID · IMAGERY' : ' · ELLIPSOÏDE WGS84 · IMAGERIE')
     : (en ? ` · MEASURED SRTM RELIEF · ×${viewer?.scene.verticalExaggeration || 2}` : ` · RELIEF SRTM MESURÉ · ×${viewer?.scene.verticalExaggeration || 2}`);
-  $('#layer-note').textContent = layerNoteText();
   if (selectedSite) {
     const shown = siteText(selectedSite);
     $('#location-tag').textContent = shown.tag || (en ? 'COORDINATES' : 'COORDONNÉES');
     $('#location-name').textContent = shown.name;
     $('#location-description').textContent = shown.description || (en ? 'Location defined by geographic coordinates.' : 'Position définie par ses coordonnées géographiques.');
-    $('#location-source').textContent = shown.sourceLabel || 'Source ↗';
     input.value = shown.name;
   }
 });

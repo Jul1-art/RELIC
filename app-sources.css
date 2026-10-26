@@ -1,0 +1,41 @@
+/* Sources remain in the current view, above the blurred application. */
+.relic-sources-dialog{--sources-bg:#111112;--sources-ink:#f4f4f2;--sources-muted:#96969a;--sources-line:#ffffff14;box-sizing:border-box;width:min(760px,calc(100vw - 48px));max-height:calc(100dvh - 48px);margin:auto;padding:0;overflow:hidden;border:1px solid var(--sources-line);border-radius:28px;background:linear-gradient(145deg,#ffffff03,transparent 45%),var(--sources-bg);color:var(--sources-ink);box-shadow:0 30px 110px #0008,inset 0 1px #ffffff08;font:13px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+.relic-sources-dialog[open]{display:flex;flex-direction:column;animation:relic-sources-enter .2s cubic-bezier(.2,.7,.3,1) both}
+.relic-sources-dialog::backdrop{background:#0008;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.relic-sources-dialog *{box-sizing:border-box}
+.relic-sources-dialog [hidden]{display:none!important}
+.relic-sources-header{display:flex;align-items:center;justify-content:space-between;flex:none;gap:20px;padding:24px 28px 22px;border-bottom:1px solid var(--sources-line)}
+.relic-sources-eyebrow{margin:0 0 7px;color:var(--sources-muted);font-size:9px;line-height:1;letter-spacing:.19em}
+.relic-sources-dialog h2{margin:0;color:var(--sources-ink);font-size:27px;font-weight:500;line-height:1.2;letter-spacing:-.04em}
+.relic-sources-dialog .relic-sources-close{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;margin:0;padding:11px;border:0;border-radius:13px;background:#ffffff09;color:var(--sources-ink);cursor:pointer;touch-action:manipulation}
+.relic-sources-close svg.fas{display:block;width:16px!important;height:16px!important;min-width:16px;max-width:16px;max-height:16px;fill:currentColor;stroke:none}
+.relic-sources-close svg.fas path{fill:currentColor;stroke:none}
+.relic-sources-dialog .relic-sources-close:hover{background:#ffffff16}
+.relic-sources-content{min-height:0;padding:25px 28px 30px;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#8884 transparent}
+.relic-sources-content p{margin:10px 0;color:var(--sources-muted);font-size:12px;line-height:1.7}
+.relic-sources-content .relic-sources-lead{max-width:470px;margin:0 0 22px;color:var(--sources-ink);font-size:22px;line-height:1.35;letter-spacing:-.025em}
+.relic-sources-content h3{margin:27px 0 13px;color:var(--sources-ink);font-size:15px;font-weight:500;line-height:1.4;letter-spacing:-.02em}
+.relic-sources-people{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0 0 29px}
+.relic-sources-people>div{padding:17px 18px;border:1px solid var(--sources-line);border-radius:15px;background:#ffffff03}
+.relic-sources-people h3{margin:0 0 4px;font-size:17px}
+.relic-sources-people p{margin:0;font-size:11px}
+.relic-sources-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:0 0 24px}
+.relic-sources-links a{display:flex;align-items:center;min-width:0;min-height:45px;padding:11px 13px;border:1px solid var(--sources-line);border-radius:11px;background:#ffffff03;color:var(--sources-ink);font-size:11px;line-height:1.45;text-decoration:none;overflow-wrap:anywhere;transition:background .15s ease,border-color .15s ease}
+.relic-sources-links a:hover{background:#ffffff09;border-color:#ffffff30}
+.relic-sources-content .relic-sources-music{margin:17px 0;color:var(--sources-ink);font-size:12px}
+.relic-sources-content .relic-sources-note{margin:25px 0 0;padding-top:21px;border-top:1px solid var(--sources-line);font-size:10px;color:var(--sources-muted)}
+.relic-sources-catalogue{padding:0;border:1px solid var(--sources-line);border-radius:13px;background:#ffffff02}
+.relic-sources-catalogue summary{display:flex;align-items:center;min-height:48px;padding:12px 15px;list-style:none;color:var(--sources-ink);font-size:12px;cursor:pointer}
+.relic-sources-catalogue summary::-webkit-details-marker{display:none}
+.relic-sources-catalogue[open] summary{border-bottom:1px solid var(--sources-line)}
+.relic-sources-catalogue .relic-sources-links{margin:0;padding:10px;grid-template-columns:1fr}
+.relic-sources-dialog :is(a,button,summary):focus-visible{outline:2px solid var(--sources-ink);outline-offset:3px}
+html[data-theme=day] .relic-sources-dialog{--sources-bg:#f7f7f5;--sources-ink:#202022;--sources-muted:#707075;--sources-line:#00000015;border-color:#00000016;box-shadow:0 30px 100px #0003,inset 0 1px #fff}
+html[data-theme=day] .relic-sources-links a:hover{background:#00000006;border-color:#00000030}
+@keyframes relic-sources-enter{from{opacity:0;transform:translateY(7px) scale(.995)}to{opacity:1;transform:none}}
+html[data-motion=reduced] .relic-sources-dialog,html[data-motion=reduced] .relic-sources-dialog *{animation:none!important;transition:none!important}
+@media(prefers-reduced-motion:reduce){html:not([data-motion=full]) .relic-sources-dialog,html:not([data-motion=full]) .relic-sources-dialog *{animation:none!important;transition:none!important}}
+@media(max-width:600px){.relic-sources-dialog{width:calc(100vw - 24px);max-height:calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom));border-radius:24px}.relic-sources-header{gap:12px;padding:20px}.relic-sources-dialog h2{font-size:24px}.relic-sources-content{padding:21px 20px 25px}.relic-sources-content .relic-sources-lead{font-size:21px}.relic-sources-links{grid-template-columns:1fr}.relic-sources-people{gap:8px}.relic-sources-people>div{padding:14px 12px}.relic-sources-people h3{font-size:16px}.relic-sources-people p{font-size:10px}.relic-sources-close{flex-basis:38px;width:38px;height:38px}.relic-sources-content h3{margin-top:24px}}
+@media(max-height:520px) and (orientation:landscape){.relic-sources-dialog{max-height:calc(100dvh - 20px);border-radius:22px}.relic-sources-header{padding:15px 22px}.relic-sources-dialog h2{font-size:23px}.relic-sources-content{padding:18px 22px}.relic-sources-eyebrow{display:none}}
+/* Creator cards use their own compact heading spacing at every breakpoint. */
+.relic-sources-content .relic-sources-people h3{margin:0 0 4px}

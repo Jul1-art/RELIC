@@ -6,17 +6,17 @@ const source = await readFile(new URL('../sw.js', import.meta.url), 'utf8');
 const origin='https://example.test/RELIC/';
 
 async function worker() {
-  const stores=new Map(), events=new Map(), requests=[];
+  const stores=new Map(), events=new Map(), requests=[], networkPolicies=[];
   let active=0,peak=0,time=Date.parse('2026-10-25T12:00:00Z');
   let serve=async request=>new Response(/\.html(?:\?|$)/.test(request.url)?'<title>Earth — RELIC</title><main>viewer</main>':'resource', {headers:{'Content-Type':/\.html(?:\?|$)/.test(request.url)?'text/html':'application/javascript'}});
   const caches={async open(name){if(!stores.has(name))stores.set(name,new Map());const entries=stores.get(name);return{async match(key){return entries.get(typeof key==='string'?key:key.url)?.clone();},async put(key,response){entries.set(typeof key==='string'?key:key.url,response.clone());}};},async keys(){return [...stores.keys()];},async delete(name){return stores.delete(name);}};
   class Clock extends Date {static now(){return time;}}
   const self={registration:{scope:origin},clients:{async claim(){}},async skipWaiting(){},addEventListener(name,callback){events.set(name,callback);},RELICFilmCache:{serve(request,scope){return Promise.resolve(new Response(JSON.stringify({range:request.headers.get('Range'),scope}),{status:206}));}}};
-  const context=vm.createContext({self,caches,URL,Request,Response,Headers,Date:Clock,console,importScripts(){},async fetch(request){requests.push(request.url);active++;peak=Math.max(peak,active);try{await new Promise(resolve=>setTimeout(resolve,4));return await serve(request);}finally{active--;}}});
+  const context=vm.createContext({self,caches,URL,Request,Response,Headers,Date:Clock,console,importScripts(){},async fetch(request,options={}){requests.push(request.url);networkPolicies.push(options.cache);active++;peak=Math.max(peak,active);try{await new Promise(resolve=>setTimeout(resolve,4));return await serve(request);}finally{active--;}}});
   vm.runInContext(source,context,{filename:'sw.js'});
   function request(path,{navigate=false,reload=false,headers={}}={}){const r=new Request(new URL(path,origin),{cache:reload?'reload':'default',headers});if(navigate)Object.defineProperty(r,'mode',{value:'navigate'});return r;}
   async function dispatch(type,event={}){let work;events.get(type)({...event,waitUntil(p){work=p;},respondWith(p){work=p;}});return work===undefined?undefined:await work;}
-  return{stores,events,requests,request,dispatch,peak:()=>peak,advance:ms=>{time+=ms;},setServe:fn=>{serve=fn;},async message(type){let reply;await dispatch('message',{data:{type},ports:[{postMessage(value){reply=value;}}]});return reply;}};
+  return{stores,events,requests,networkPolicies,request,dispatch,peak:()=>peak,advance:ms=>{time+=ms;},setServe:fn=>{serve=fn;},async message(type){let reply;await dispatch('message',{data:{type},ports:[{postMessage(value){reply=value;}}]});return reply;}};
 }
 
 test('installation fetches only seven small shell resources with at most three concurrent requests',async()=>{
@@ -68,4 +68,17 @@ test('API, external, authenticated, credential-query and ordinary Range requests
 
 test('saved-film byte ranges still use the dedicated film cache and intro scope',async()=>{
  const w=await worker();const result=await w.dispatch('fetch',{request:w.request('intro/assets/prologue/example.mp4',{headers:{Range:'bytes=0-99'}})});assert.equal(result.status,206);assert.deepEqual(await result.json(),{range:'bytes=0-99',scope:origin+'intro/'});assert.equal(w.requests.length,0);
+});
+
+
+test('a new interface revalidates browser HTTP cache once and keeps unchanged vendor assets reusable',async()=>{
+ const w=await worker();
+ await w.dispatch('fetch',{request:w.request('planet-dashboard.js?v=first')});
+ await w.dispatch('fetch',{request:w.request('planet-dashboard.js?v=again')});
+ assert.equal(w.requests.length,1);
+ assert.equal(w.networkPolicies[0],'no-cache');
+ await w.dispatch('fetch',{request:w.request('vendor/three.module.js')});
+ await w.dispatch('fetch',{request:w.request('vendor/three.module.js')});
+ assert.equal(w.requests.length,2);
+ assert.equal(w.networkPolicies[1],'default');
 });

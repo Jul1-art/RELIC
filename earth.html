@@ -20,8 +20,9 @@
   <link rel="stylesheet" href="./compact.css?v=3">
   <link rel="stylesheet" href="./relic-worlds.css?v=3">
   <link rel="stylesheet" href="./navigation.css">
-  <link rel="stylesheet" href="./planet-dashboard.css?v=3">
+  <link rel="stylesheet" href="./planet-dashboard.css?v=polish-4">
   <link rel="stylesheet" href="./view-loading.css?v=3">
+  <link rel="stylesheet" href="./provider-credits.css?v=4">
   <script>window.CESIUM_BASE_URL = new URL('./vendor/cesium/', document.baseURI).href;</script>
 </head>
 <body class="earth-page relic-world" data-dashboard-view="surface">
@@ -41,36 +42,21 @@
 
   <main>
     <section class="explorer-panel" aria-labelledby="explorer-title">
-      <div class="panel-eyebrow"><h1 id="explorer-title">Earth</h1><button id="panel-toggle" type="button" aria-label="Réduire le panneau" aria-expanded="true"><i class="world-icon" data-world-icon="chevron-down" aria-hidden="true"></i></button></div>
+      <div class="panel-eyebrow"><h1 id="explorer-title">Earth</h1></div>
       <section id="earth-live-data" class="live-data" aria-live="polite"></section>
-    </section>
-
-    <aside class="map-options" id="map-options" aria-label="Imagerie" hidden>
-      <div class="world-drawer-heading"><strong class="map-options-title">Imagery</strong><button type="button" data-world-close="map-options" aria-label="Close imagery"><i class="world-icon" data-world-icon="xmark" aria-hidden="true"></i></button></div>
-      <div class="layer-switch" role="group" aria-label="Choisir l’imagerie terrestre">
-        <button type="button" data-layer="satellite" class="active" aria-pressed="true"><strong>Satellite</strong><small>Esri</small></button>
-        <button type="button" data-layer="blue" aria-pressed="false"><strong>Blue Marble</strong><small>NASA</small></button>
-        <button type="button" data-layer="modis" aria-pressed="false"><strong>MODIS</strong><small>Terra</small></button>
-      </div>
-      <div class="date-field" id="date-field" hidden><label for="image-date">Date</label><input type="date" id="image-date"><span>Couverture variable selon la date.</span></div>
-      <p class="layer-note" id="layer-note">Image satellite détaillée Esri sur relief NASA SRTM. La résolution dépend de la zone.</p>
-
       <div class="google3d-control"><button id="google3d-toggle" type="button" aria-pressed="false"><i class="world-icon" data-world-icon="cube" aria-hidden="true"></i><span class="world-button-label">Google 3D</span></button><span id="google3d-status" role="status">Google 3D</span></div>
-
-    </aside>
+    </section>
 
     <aside class="view-card" id="site-summary" aria-live="polite" hidden>
       <div class="summary-head"><span class="card-kicker" id="location-tag">NASA</span><button id="site-close" type="button" aria-label="Close place details"><i class="world-icon" data-world-icon="xmark" aria-hidden="true"></i></button></div>
       <h2 id="location-name"></h2>
       <p id="location-description"></p>
       <div class="view-facts"><div><span>Latitude</span><strong id="latitude">—</strong></div><div><span>Longitude</span><strong id="longitude">—</strong></div></div>
-      <a class="terrain-link" id="location-3d" href="./terrain.html?body=earth">Explorer en 3D <span>↗</span></a>
-      <a class="source-link" id="location-source" href="https://data.nasa.gov/dataset/gibs-web-map-tile-service-wmts" target="_blank" rel="noopener noreferrer">Source NASA <span>↗</span></a>
     </aside>
   </main>
 
   <form id="place-form" class="place-search" data-dashboard-search="persistent" role="search" autocomplete="off">
-    <button class="search-toggle" id="search-toggle" type="button" aria-expanded="false" aria-controls="search-content"><i class="world-icon search-glass" data-world-icon="magnifying-glass" aria-hidden="true"></i><i class="world-icon search-close" data-world-icon="xmark" aria-hidden="true"></i><span class="search-toggle-label">Rechercher</span><i class="world-icon search-chevron" data-world-icon="chevron-down" aria-hidden="true"></i></button>
+    <button class="search-toggle" id="search-toggle" type="button" aria-expanded="false" aria-controls="search-content"><i class="world-icon search-glass" data-world-icon="magnifying-glass" aria-hidden="true"></i><i class="world-icon search-close" data-world-icon="xmark" aria-hidden="true"></i><span class="search-toggle-label">Rechercher</span></button>
     <div class="search-content" id="search-content" inert>
       <div class="place-search-field"><input id="place-input" type="search" role="combobox" aria-label="Rechercher un lieu" aria-autocomplete="list" aria-expanded="false" aria-controls="suggestions" placeholder="Ville, adresse ou coordonnées" spellcheck="false" autocomplete="off"><button type="submit" aria-label="Aller au lieu">Aller</button></div>
       <div id="suggestions" class="place-search-results" role="listbox" hidden></div>
@@ -80,7 +66,6 @@
   </form>
 
   <div class="earth-controls" aria-label="Globe controls">
-    <button id="map-options-toggle" type="button" title="Imagery" aria-label="Imagery" aria-controls="map-options" aria-expanded="false"><i class="world-icon" data-world-icon="layer-group" aria-hidden="true"></i><span data-world-copy="imagery">Imagery</span></button>
     <button id="reset-view" type="button" class="reset-button" aria-label="Overview"><i class="world-icon" data-world-icon="globe" aria-hidden="true"></i><span>Overview</span></button>
   </div>
   <div class="earth-attribution">IMAGERIE · <a id="earth-imagery-credit" href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer" target="_blank" rel="noopener noreferrer">POWERED BY ESRI · ESRI, MAXAR, EARTHSTAR GEOGRAPHICS, GIS USER COMMUNITY</a><strong id="earth-terrain-status" data-available="true"> · RELIEF NASA SRTM MESURÉ · ×2</strong> · <a href="https://ourairports.com/data/" target="_blank" rel="noopener noreferrer">PISTES OURAIRPORTS</a></div>
@@ -88,8 +73,8 @@
   <div id="earth-loading" class="earth-loading"><span class="view-loading-mark" aria-hidden="true">R</span><span>Chargement…</span></div>
   <div id="earth-error" class="earth-error" hidden>Impossible de charger le globe. Rechargez la page pour réessayer.</div>
   <script type="module" src="./theme.js?v=2"></script>
-  <script type="module" src="./world-bridge.js?v=private-1"></script>
-  <script type="module" src="./earth-view.js?v=private-1"></script>
-  <script type="module" src="./world-ui.js?v=3"></script>
+  <script type="module" src="./world-bridge.js?v=polish-4"></script>
+  <script type="module" src="./earth-view.js?v=polish-4"></script>
+  <script type="module" src="./world-ui.js?v=polish-4"></script>
 </body>
 </html>

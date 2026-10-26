@@ -20,8 +20,9 @@
   <link rel="stylesheet" href="./compact.css?v=3">
   <link rel="stylesheet" href="./relic-worlds.css?v=3">
   <link rel="stylesheet" href="./navigation.css">
-  <link rel="stylesheet" href="./planet-dashboard.css?v=3">
+  <link rel="stylesheet" href="./planet-dashboard.css?v=polish-4">
   <link rel="stylesheet" href="./view-loading.css?v=3">
+  <link rel="stylesheet" href="./provider-credits.css?v=4">
   <script>window.CESIUM_BASE_URL = new URL('./vendor/cesium/', document.baseURI).href;</script>
 </head>
 <body class="terrain-page relic-world" data-dashboard-view="surface">
@@ -43,7 +44,7 @@
     <section class="site-panel" id="world-info-panel" aria-labelledby="site-title">
       <div class="world-panel-heading"><div>
       <div class="eyebrow">Explorer <span>NASA</span></div>
-      <h1 id="site-title">Données</h1></div><button class="world-panel-toggle" data-world-panel-toggle="world-info-panel" type="button" aria-expanded="true" aria-controls="world-info-panel" aria-label="Hide view details"><i class="world-icon" data-world-icon="chevron-down" aria-hidden="true"></i></button></div>
+      <h1 id="site-title">Données</h1></div></div>
       <div class="panel-divider"></div>
       <dl class="site-facts">
         <div><dt>Position</dt><dd id="coordinates-value">—</dd></div>
@@ -52,7 +53,7 @@
       </dl>
       <section id="terrain-live-data" class="live-data" aria-live="polite"></section>
       <p class="data-note" id="data-note"></p>
-      <div class="source-row"><a id="elevation-source" target="_blank" rel="noopener noreferrer">ALTIMÉTRIE NASA ↗</a><a id="imagery-source" target="_blank" rel="noopener noreferrer">IMAGERIE NASA ↗</a><a id="runways-source" href="https://ourairports.com/data/" target="_blank" rel="noopener noreferrer" hidden>PISTES · OURAIRPORTS ↗</a><a id="runway-source" href="https://www.sia.aviation-civile.gouv.fr/documents/download/f/d/15031542/" target="_blank" rel="noopener noreferrer" hidden>PISTES · AIP ↗</a></div>
+      <div class="source-row"><a id="elevation-source" target="_blank" rel="noopener noreferrer">ALTIMÉTRIE NASA </a><a id="imagery-source" target="_blank" rel="noopener noreferrer">IMAGERIE NASA </a><a id="runways-source" href="https://ourairports.com/data/" target="_blank" rel="noopener noreferrer" hidden>PISTES · OURAIRPORTS </a><a id="runway-source" href="https://www.sia.aviation-civile.gouv.fr/documents/download/f/d/15031542/" target="_blank" rel="noopener noreferrer" hidden>PISTES · AIP </a></div>
     </section>
 
     <div class="nav-hint" id="nav-hint">GLISSER : SE DÉPLACER <span>·</span> PINCER / MOLETTE : ZOOMER <span>·</span> TOUCHER : VISER <span>·</span> FLÈCHES : AVANCER</div>
@@ -60,18 +61,13 @@
       <div class="terrain-google3d" id="terrain-google3d" hidden><button id="terrain-google3d-toggle" type="button" aria-label="Google 3D" aria-pressed="false"><i class="world-icon" data-world-icon="cube" aria-hidden="true"></i><span class="world-button-label">Google 3D</span></button><span id="terrain-google3d-status" class="visually-hidden" role="status">Google 3D</span></div>
       <button type="button" id="tilt-button" title="Basculer entre vue oblique et vue du dessus" aria-label="Basculer l'angle de vue"><i class="world-icon" data-world-icon="expand" aria-hidden="true"></i><span>Tilt</span></button>
       <button type="button" id="height-button" title="Changer l'amplification du relief" aria-label="Changer l'amplification du relief"><i class="world-icon" data-world-icon="mountain-sun" aria-hidden="true"></i><span>Relief × 1</span></button>
-      <button type="button" id="imagery-button" title="Alterner satellite détaillé et NASA Blue Marble" aria-label="Changer l'imagerie terrestre" aria-pressed="true" hidden><i class="world-icon" data-world-icon="layer-group" aria-hidden="true"></i><span>Imagery</span></button>
       <button type="button" id="north-button" title="Orienter le nord en haut" aria-label="Orienter le nord en haut"><i class="world-icon" data-world-icon="compass" aria-hidden="true"></i><span>North</span></button>
       <button type="button" id="reset-button" title="Voir tout le globe" aria-label="Voir tout le globe"><i class="world-icon" data-world-icon="globe" aria-hidden="true"></i><span>Overview</span></button>
-    </div>
-    <div class="move-pad" aria-label="Déplacer le point de vue">
-      <button type="button" data-move="up" aria-label="Avancer"><i class="world-icon" data-world-icon="arrow-up" aria-hidden="true"></i></button>
-      <div><button type="button" data-move="left" aria-label="Aller à gauche"><i class="world-icon" data-world-icon="arrow-left" aria-hidden="true"></i></button><button type="button" data-move="down" aria-label="Reculer"><i class="world-icon" data-world-icon="arrow-down" aria-hidden="true"></i></button><button type="button" data-move="right" aria-label="Aller à droite"><i class="world-icon" data-world-icon="arrow-right" aria-hidden="true"></i></button></div>
     </div>
   </main>
 
   <form id="place-form" class="place-search terrain-place-search" data-dashboard-search="persistent" role="search" autocomplete="off">
-    <button class="search-toggle" id="search-toggle" type="button" aria-expanded="false" aria-controls="search-content"><i class="world-icon search-glass" data-world-icon="magnifying-glass" aria-hidden="true"></i><i class="world-icon search-close" data-world-icon="xmark" aria-hidden="true"></i><span class="search-toggle-label">Rechercher</span><i class="world-icon search-chevron" data-world-icon="chevron-down" aria-hidden="true"></i></button>
+    <button class="search-toggle" id="search-toggle" type="button" aria-expanded="false" aria-controls="search-content"><i class="world-icon search-glass" data-world-icon="magnifying-glass" aria-hidden="true"></i><i class="world-icon search-close" data-world-icon="xmark" aria-hidden="true"></i><span class="search-toggle-label">Rechercher</span></button>
     <div class="search-content" id="search-content" inert>
       <div class="place-search-field"><input id="place-input" type="search" role="combobox" aria-label="Rechercher un lieu" aria-autocomplete="list" aria-expanded="false" aria-controls="suggestions" placeholder="Lieu ou coordonnées" spellcheck="false" autocomplete="off"><button type="submit" aria-label="Aller au lieu">Aller</button></div>
       <div id="suggestions" class="place-search-results" role="listbox" hidden></div>
@@ -86,8 +82,8 @@
   <div id="loading" class="loading"><span class="view-loading-mark" aria-hidden="true">R</span><span>Chargement…</span></div>
   <div id="error" class="error" hidden></div>
   <script type="module" src="./theme.js?v=2"></script>
-  <script type="module" src="./world-bridge.js?v=private-1"></script>
-  <script type="module" src="./terrain-globe.js?v=private-1"></script>
-  <script type="module" src="./world-ui.js?v=3"></script>
+  <script type="module" src="./world-bridge.js?v=polish-4"></script>
+  <script type="module" src="./terrain-globe.js?v=polish-4"></script>
+  <script type="module" src="./world-ui.js?v=polish-4"></script>
 </body>
 </html>

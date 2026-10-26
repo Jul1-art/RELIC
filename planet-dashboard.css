@@ -17,12 +17,27 @@ html[data-theme=day] .planet-dashboard{--pd-border:#00000012;--pd-panel:#fafafa;
 .planet-dashboard svg.fas{display:block;width:18px!important;height:18px!important;min-width:18px;max-width:18px;max-height:18px;fill:currentColor;stroke:none;flex:0 0 18px;overflow:visible}
 .planet-dashboard svg.fas path{fill:currentColor;stroke:none}
 .planet-dashboard .world-icon{display:inline-grid;place-items:center;width:18px!important;height:18px!important;flex:0 0 18px!important;line-height:1;font-style:normal}
-.pd-world-picker{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:13px;min-width:0;width:230px;min-height:44px;margin:0;padding:0 14px;border:1px solid var(--pd-border);border-radius:14px;background:var(--pd-panel)}
-.pd-picker-label{color:var(--pd-muted);font-size:9px;letter-spacing:.12em;font-weight:500}
-.pd-world-picker select{appearance:none;-webkit-appearance:none;display:block;min-width:0;width:100%;min-height:44px;border:0!important;border-radius:0!important;margin:0;padding:0 25px 0 0;background:transparent!important;color:var(--pd-ink)!important;font:inherit;font-size:12px;outline-offset:4px;cursor:pointer}
-.pd-world-picker option{background:var(--pd-panel);color:var(--pd-ink)}
-.pd-picker-icon{position:absolute;right:13px;top:50%;display:grid;place-items:center;transform:translateY(-50%);pointer-events:none;color:var(--pd-muted)}
-.pd-picker-icon svg.fas{width:11px!important;height:11px!important;min-width:11px;max-width:11px;max-height:11px}
+/* The world picker is a styled, keyboard-accessible listbox on every device. */
+.pd-header{position:relative;z-index:45}
+.pd-world-picker{position:relative;display:block;flex:0 1 230px;min-width:0;width:230px;min-height:44px;margin:0;padding:0;border:0;background:none;color:var(--pd-ink)}
+.pd-world-trigger{display:flex;align-items:center;gap:12px;width:100%;min-width:0;min-height:44px;height:44px;padding:0 14px;border:1px solid var(--pd-border);border-radius:14px;background:var(--pd-panel);color:var(--pd-ink);font:inherit;text-align:left;cursor:pointer;transition:border-color .16s ease,background .16s ease}
+.pd-world-trigger:hover,.pd-world-trigger[aria-expanded=true]{border-color:color-mix(in srgb,var(--pd-ink) 35%,transparent);background:color-mix(in srgb,var(--pd-panel) 94%,var(--pd-ink))}
+.pd-picker-label{flex:0 0 auto;color:var(--pd-muted);font-size:9px;letter-spacing:.12em;font-weight:500}
+.pd-picker-value{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;font-weight:500;line-height:1.3}
+.pd-picker-icon{display:grid;place-items:center;flex:0 0 15px;width:15px;height:15px;color:var(--pd-muted);pointer-events:none}
+.pd-picker-icon svg.fas{width:14px!important;height:14px!important;min-width:14px;max-width:14px;max-height:14px}
+.pd-world-list{position:absolute;z-index:50;top:calc(100% + 10px);left:0;width:276px;max-width:calc(100vw - 60px);max-height:min(480px,calc(100dvh - 110px));overflow:auto;padding:7px;border:1px solid var(--pd-border);border-radius:18px;background:var(--pd-panel);box-shadow:0 20px 60px #0007;scrollbar-width:thin;scrollbar-color:#7775 transparent;outline:none;animation:pd-picker-enter .15s cubic-bezier(.2,.7,.3,1) both}
+.pd-world-option{display:flex;align-items:center;justify-content:flex-start;gap:12px;width:100%;min-height:42px;padding:10px 12px;margin:0;border:0;border-radius:11px;background:none;color:var(--pd-ink);font:inherit;cursor:pointer;text-align:left;transition:background .12s ease}
+.pd-world-option:hover,.pd-world-option.is-active{background:color-mix(in srgb,var(--pd-ink) 7%,transparent)}
+.pd-world-option[aria-selected=true]{background:color-mix(in srgb,var(--pd-ink) 5%,transparent)}
+.pd-world-name{flex:1;min-width:0;font-size:12px;line-height:1.3;font-weight:450}
+.pd-world-disc{display:block;flex:0 0 13px;width:13px;height:13px;border:1px solid #ffffff24;border-radius:50%;background:#b7b8b4;box-shadow:inset -3px -2px 5px #0005}
+.pd-world-disc[data-world=overview]{background:transparent;border:1px solid var(--pd-muted);box-shadow:none}
+.pd-world-disc[data-world=sun]{background:#eab966;border-color:#eab966;box-shadow:0 0 9px #eab96628}
+.pd-world-disc[data-world=venus]{background:#d9c299}.pd-world-disc[data-world=earth]{background:#6f9daf}.pd-world-disc[data-world=moon]{background:#aaa9a3}.pd-world-disc[data-world=mars]{background:#b77e64}.pd-world-disc[data-world=jupiter]{background:#bca18c}.pd-world-disc[data-world=saturn]{background:#c9b58c}.pd-world-disc[data-world=uranus]{background:#9ebfc1}.pd-world-disc[data-world=neptune]{background:#748ba9}
+.pd-world-selected{display:block;width:5px;height:5px;flex:0 0 5px;border-radius:50%;background:var(--pd-ink);opacity:0}
+.pd-world-option[aria-selected=true] .pd-world-selected{opacity:1}
+@keyframes pd-picker-enter{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 .pd-command{display:flex;align-items:stretch;gap:18px;padding:0 0 10px;border-bottom:1px solid var(--pd-border)}
 .pd-command-context{align-self:center;flex:1;min-width:0;margin:0;color:var(--pd-muted);font-size:11px;line-height:1.5;text-align:right}
 .planet-dashboard .pd-command #place-form,.pd-atlas-search{position:relative!important;inset:auto!important;display:block!important;flex:0 1 680px;width:100%!important;min-width:0;max-width:680px!important;height:48px!important;min-height:48px!important;padding:0!important;margin:0!important;border:0!important;border-radius:14px!important;background:none!important;box-shadow:none!important;transform:none!important;backdrop-filter:none!important;z-index:20}
@@ -68,7 +83,7 @@ html[data-theme=day] .planet-dashboard{--pd-border:#00000012;--pd-panel:#fafafa;
 .planet-dashboard .pd-inspector .detail-expanded{display:block!important}
 .planet-dashboard .pd-inspector .map-options .world-drawer-heading{display:flex;align-items:center;justify-content:space-between;margin:0 0 16px}
 .planet-dashboard .pd-inspector .map-options .world-drawer-heading strong{font-size:15px;font-weight:500;color:var(--pd-ink)}
-.planet-dashboard .pd-inspector .move-pad{position:static!important;inset:auto!important;display:grid;justify-items:start;gap:5px;transform:none!important}
+.planet-dashboard .move-pad,.planet-dashboard .pd-movement{display:none!important}
 .planet-dashboard .pd-inspector .move-pad>div{display:flex;gap:5px}
 .planet-dashboard .pd-inspector .move-pad button{display:grid;place-items:center;min-width:44px;min-height:44px;width:44px;height:44px;padding:12px;border:1px solid var(--pd-border);border-radius:12px;background:color-mix(in srgb,var(--pd-ink) 5%,transparent);color:var(--pd-ink);box-shadow:none}
 .pd-movement{padding:20px}
@@ -102,8 +117,9 @@ html[data-theme=day] .planet-dashboard{--pd-border:#00000012;--pd-panel:#fafafa;
 @media(max-width:650px){
  .planet-dashboard{grid-template-rows:50px 54px minmax(0,1fr) 58px;gap:9px;padding:8px 10px max(10px,env(safe-area-inset-bottom))}
  .planet-dashboard .pd-header>:is(.topbar,.earth-topbar){gap:12px!important}
- .pd-picker-label{display:none}.pd-world-picker{display:block;width:142px;min-height:42px;padding:0 11px;border-radius:12px;flex:1;max-width:160px}
- .pd-world-picker select{height:42px;min-height:42px;font-size:12px}
+ .pd-picker-label{display:none}.pd-world-picker{width:142px;min-height:42px;padding:0;flex:1;max-width:190px}
+ .pd-world-trigger{height:42px;min-height:42px;padding:0 11px;border-radius:12px;gap:8px}
+ .pd-picker-value{font-size:12px}
  .planet-dashboard .pd-header :is(.identity,.back-link){gap:7px;font-size:11px;letter-spacing:.12em}
  .planet-dashboard .pd-header :is(.identity .relic-mark,.relic-brand-mark){width:25px;height:25px;flex-basis:25px}
  .planet-dashboard .pd-header .back-arrow{width:25px!important;height:25px!important;flex-basis:25px!important}
@@ -126,7 +142,7 @@ html[data-theme=day] .planet-dashboard{--pd-border:#00000012;--pd-panel:#fafafa;
 }
 @media(max-height:550px) and (orientation:landscape){
  .planet-dashboard{grid-template-rows:44px 44px minmax(0,1fr) 48px;gap:6px;padding:5px 12px 7px}
- .pd-world-picker,.pd-world-picker select{min-height:38px;height:38px}
+ .pd-world-picker,.pd-world-trigger{min-height:38px;height:38px}
  .planet-dashboard .pd-header .header-actions button{min-height:38px!important;height:38px!important}
  .planet-dashboard .pd-command #place-form,.pd-atlas-search,.planet-dashboard .pd-command .place-search-field{height:40px!important;min-height:40px!important}
  .planet-dashboard .pd-command input{height:32px;min-height:32px}
@@ -144,3 +160,17 @@ html[data-motion=reduced] .planet-dashboard *,html[data-motion=reduced] .planet-
 .planet-dashboard .pd-tools :is(#atlas-zoom-in,#atlas-zoom-out)>span{display:block!important;font-size:22px;font-weight:300;line-height:1}
 
 @media(max-width:650px){.planet-dashboard .pd-header .header-actions button{padding:8px!important}}
+
+.planet-dashboard :is(.pd-tools button,.header-actions button,.pd-inspector-toggle,.pd-world-trigger,.pd-world-option,.pd-locate){transform:none!important;line-height:1;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.planet-dashboard .pd-tools button>svg:not(.fas){display:block;flex:0 0 20px;width:20px!important;height:20px!important;max-width:20px;max-height:20px}
+.planet-dashboard .pd-tools :is(#map-options-toggle,#imagery-button,#atlas-zoom-in,#atlas-zoom-out){display:none!important}
+.planet-dashboard .pd-header .header-actions button{display:flex!important;align-items:center!important;justify-content:center!important;flex:0 0 auto;gap:0!important}
+.planet-dashboard .pd-command input{font-size:14px}
+@media(max-width:650px){.planet-dashboard .pd-command input{font-size:16px!important;letter-spacing:-.02em}.pd-world-list{max-height:min(480px,calc(100dvh - 105px))}.pd-world-option{min-height:44px}}
+@media(max-height:550px) and (orientation:landscape){.pd-world-list{max-height:calc(100dvh - 75px)}}
+
+/* Let the control rail fit its commands instead of leaving a full empty bar. */
+.planet-dashboard .pd-footer{width:fit-content;max-width:100%;justify-self:center}
+.planet-dashboard .pd-tools{flex:0 1 auto}
+
+.planet-dashboard .pd-header .header-actions button[hidden]{display:none!important}

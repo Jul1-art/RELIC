@@ -1,6 +1,7 @@
 import { openApiSettings } from './api-settings.js';
 import { initializeAppSettings } from './app-settings.js';
-import { initializeNavigation, navigateTo } from './navigation.js';
+import { initializeNavigation } from './navigation.js';
+import { openSources } from './app-sources.js';
 import { initializePlanetDashboard } from './planet-dashboard.js';
 import { worldIcon, hydrateWorldIcons } from './world-icons.js';
 import { getLanguage, onLanguageChange } from './atlas-live.js?v=3';
@@ -12,21 +13,22 @@ initializePlanetDashboard();
 initializeAppSettings({ privateEdition:false, onProviderSettings:() => openApiSettings() });
 initializeNavigation();
 
-// The same utility rail belongs to the dashboard header on every world.
+// Film playback belongs to the Solar System page. Sources stay in this view.
 const headerActions = document.querySelector('.header-actions');
-for (const [id, glyph, parameter] of [['relic-replay','film','film'],['relic-credits','circle-info','sources']]) {
-  let button = document.getElementById(id);
-  if (!button && headerActions) {
-    button = document.createElement('button');
-    button.id = id; button.type = 'button'; button.className = 'relic-icon-button';
-    headerActions.insertBefore(button, headerActions.querySelector('[data-app-settings]'));
-    button.addEventListener('click', () => {
-      const destination = new URL('index.html', APP_ROOT);
-      destination.searchParams.set(parameter, '1'); navigateTo(destination);
-    });
-  }
-  if (button) button.innerHTML = worldIcon(glyph);
+const isAtlas = document.body.classList.contains('atlas-page');
+let sourceButton = document.getElementById('relic-credits');
+if (!sourceButton && headerActions) {
+  sourceButton = document.createElement('button');
+  sourceButton.id = 'relic-credits'; sourceButton.type = 'button'; sourceButton.className = 'relic-icon-button';
+  headerActions.insertBefore(sourceButton, headerActions.querySelector('[data-app-settings]'));
 }
+if (sourceButton) {
+  sourceButton.innerHTML = worldIcon('circle-info');
+  sourceButton.addEventListener('click', () => { void openSources(sourceButton); });
+}
+const filmButton = document.getElementById('relic-replay');
+if (filmButton && !isAtlas) filmButton.remove();
+else if (filmButton) filmButton.innerHTML = worldIcon('film');
 const settingsButton = headerActions?.querySelector('[data-app-settings]');
 if (settingsButton) settingsButton.innerHTML = worldIcon('gear');
 hydrateWorldIcons();

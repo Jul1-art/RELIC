@@ -76,9 +76,9 @@
 .prologue-gated[data-cue-kind=typing] #intro-line{display:none}
 .prologue[data-cue-kind=typing] #intro-line{position:relative;max-width:none;font-size:clamp(30px,3.2vw,48px);font-weight:300;line-height:1.45;letter-spacing:-.6px;clip-path:none;text-shadow:none}
 .prologue[data-cue-kind=bridge] #intro-line{max-width:none;font-size:36px;font-weight:300;line-height:1.35;letter-spacing:-.5px;clip-path:none;text-shadow:none}
-.prologue-type-text{position:relative;display:block;white-space:pre-line}
-.prologue-type-glyph{visibility:hidden}
-.prologue-type-caret{position:absolute;width:1px;height:.92em;background:currentColor;opacity:var(--cursor-opacity,0);pointer-events:none}
+.prologue-type-text{position:relative;display:block;white-space:pre-line;text-wrap:stable;overflow:visible}
+.prologue-type-glyph{visibility:hidden;opacity:0}
+.prologue-type-caret{position:absolute;width:1.5px;height:.92em;border-radius:1px;background:currentColor;opacity:var(--cursor-opacity,0);pointer-events:none}
 .prologue-label-only .prologue-context{margin-bottom:0}
 .prologue[data-cue-kind=typing] .prologue-shade,.prologue[data-cue-kind=bridge] .prologue-shade{background:#000}
 .prologue[data-cue-kind=bridge] .prologue-backdrop{display:none!important}
@@ -178,4 +178,17 @@
   .prologue.prologue-chrome-hidden:not(.prologue-gated):is([data-cue-kind=narration],[data-cue-kind=quote]) .prologue-caption{bottom:max(32px,calc(3.5vh + env(safe-area-inset-bottom)))}
   .prologue:not(.prologue-gated):is([data-cue-kind=narration],[data-cue-kind=quote]) #intro-line{max-width:none;font-size:clamp(34px,3vw,54px);font-weight:500;line-height:1.28;letter-spacing:-.01em;text-shadow:0 2px 4px #000d,0 0 18px #000b}
   .prologue:not(.prologue-gated):is([data-cue-kind=narration],[data-cue-kind=quote]) #intro-speaker{font-size:13px;line-height:1.4}
+}
+
+/* Opening typography reserves its complete two-line composition from the first
+   frame. Letter opacity follows media time; no independent CSS clock drifts. */
+.prologue[data-cue-kind=typing] #intro-line{font-kerning:normal;font-variant-ligatures:none;text-wrap:stable;line-height:1.44;letter-spacing:-.025em}
+.prologue[data-cue-kind=typing] .prologue-caption{width:min(920px,calc(100% - 64px))}
+@media(max-width:650px){
+ .prologue[data-cue-kind=typing] .prologue-caption{width:calc(100% - 44px)}
+ .prologue[data-cue-kind=typing] #intro-line{font-size:clamp(22px,6.2vw,32px);line-height:1.52;letter-spacing:-.025em}
+}
+@media(max-height:500px) and (orientation:landscape){
+ .prologue[data-cue-kind=typing] .prologue-caption{width:calc(100% - 90px)}
+ .prologue[data-cue-kind=typing] #intro-line{font-size:clamp(25px,4vw,32px);line-height:1.4}
 }

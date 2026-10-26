@@ -103,6 +103,77 @@ export function cameraDuration(seconds) {
   return reduced ? 0 : Math.min(.95, Math.max(0, seconds));
 }
 
+export const TOP_DOWN_PITCH = -Math.PI / 2 + .0002;
+
+/** Fit the globe's complete limb inside the smaller camera field of view.
+ * Credit rows, the inspector and device rotation all change the actual canvas.
+ * Automatic framing ends as soon as the visitor starts exploring a location.
+ */
+export function createOverviewFraming(viewer, Cesium, {
+  ellipsoid = Cesium.Ellipsoid.WGS84, latitude = 18, longitude = 0, padding = 1.12,
+} = {}) {
+  const canvas = viewer.scene.canvas;
+  const container = viewer.container || canvas.parentElement;
+  const radius = ellipsoid.maximumRadius;
+  let active = false, disposed = false, frame = 0, lastWidth = 0, lastHeight = 0;
+  const alive = () => !disposed && !viewer.isDestroyed();
+  function fit(duration = 0) {
+    if (!alive() || !active) return;
+    viewer.resize();
+    const width = Math.max(1, canvas.clientWidth), height = Math.max(1, canvas.clientHeight);
+    const aspect = width / height;
+    const field = viewer.camera.frustum.fov || Math.PI / 3;
+    const horizontal = aspect >= 1 ? field : 2 * Math.atan(Math.tan(field / 2) * aspect);
+    const vertical = aspect >= 1 ? 2 * Math.atan(Math.tan(field / 2) / aspect) : field;
+    const halfAngle = Math.max(.005, Math.min(horizontal, vertical) / 2);
+    const altitude = radius * padding / Math.sin(halfAngle) - radius;
+    lastWidth = width; lastHeight = height;
+    const controller = viewer.scene.screenSpaceCameraController;
+    controller.maximumZoomDistance = Math.max(controller.maximumZoomDistance, altitude * 1.25);
+    const options = {
+      destination:Cesium.Cartesian3.fromDegrees(longitude, latitude, altitude, ellipsoid),
+      // A minute tilt avoids Cesium's center-pick zoom singularity on a
+      // perfectly spherical Moon/Mars (normalizing parallel radial vectors).
+      orientation:{ heading:0, pitch:TOP_DOWN_PITCH, roll:0 },
+    };
+    viewer.camera.cancelFlight();
+    const seconds = cameraDuration(duration);
+    if (seconds) viewer.camera.flyTo({ ...options, duration:seconds });
+    else viewer.camera.setView(options);
+    viewer.scene.requestRender();
+  }
+  function refresh() {
+    frame = 0;
+    if (!alive() || !active || document.hidden) return;
+    viewer.resize();
+    if (canvas.clientWidth !== lastWidth || canvas.clientHeight !== lastHeight) fit();
+  }
+  function schedule() { if (!frame && active && !disposed) frame = requestAnimationFrame(refresh); }
+  function stop() { active = false; cancelAnimationFrame(frame); frame = 0; }
+  function show(duration = 0) { active = true; fit(duration); }
+  const visibility = () => { if (!document.hidden) schedule(); };
+  const pagehide = event => { if (!event.persisted) dispose(); };
+  function dispose() {
+    if (disposed) return;
+    stop(); disposed = true; observer?.disconnect();
+    canvas.removeEventListener('pointerdown', stop);
+    canvas.removeEventListener('wheel', stop);
+    window.removeEventListener('resize', schedule);
+    window.removeEventListener('pageshow', schedule);
+    window.removeEventListener('pagehide', pagehide);
+    document.removeEventListener('visibilitychange', visibility);
+  }
+  const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(schedule) : null;
+  if (container) observer?.observe(container);
+  canvas.addEventListener('pointerdown', stop, { passive:true });
+  canvas.addEventListener('wheel', stop, { passive:true });
+  window.addEventListener('resize', schedule, { passive:true });
+  window.addEventListener('pageshow', schedule);
+  window.addEventListener('pagehide', pagehide);
+  document.addEventListener('visibilitychange', visibility);
+  return { show, stop, refresh:schedule, dispose, get active() { return active; } };
+}
+
 /** Move now using already-loaded relief, then refine from the renderer's own
  *  tile cache. Selecting a place never waits on a separate elevation request. */
 export function flyToLocation(viewer, Cesium, { lat, lon, ellipsoid, range, duration = .8, sphereRadius = 100, current = () => true }) {

@@ -26,7 +26,7 @@ const COPY = {
   },
 };
 const ICONS = Object.freeze({
-  play: 'play', pause: 'pause', arrow: 'arrow-right', muted: 'volume-xmark',
+  play: 'play', pause: 'pause', muted: 'volume-xmark',
   clean: 'eye-slash', captions: 'closed-captioning', fullscreen: 'expand',
   exitFullscreen: 'compress', sound: 'volume-high', download: 'download',
   complete: 'check', close: 'xmark',
@@ -37,18 +37,25 @@ const clock = seconds => {
   return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`;
 };
 
-// A deterministic keystroke rhythm keeps pauses, seeking and replay identical.
-// Every code point still gets its own reveal; only the intervals vary.
+// Segment visible letters rather than UTF-16 units: accents and joined glyphs
+// appear together. The media clock owns every keystroke, pause and soft reveal.
+const graphemes = (value, language) => typeof Intl.Segmenter === 'function'
+  ? Array.from(new Intl.Segmenter(language, { granularity:'grapheme' }).segment(value), part => part.segment)
+  : Array.from(value.normalize('NFC'));
+
+// A short pause between lines and at punctuation gives the opening a deliberate
+// rhythm. The deterministic schedule also restores exactly after a scrub.
 const typingStops = characters => {
   let total = 0;
   const stops = characters.map((character, index) => {
     const previous = characters[index - 1] || '';
-    const variation = ((character.codePointAt(0) * 17 + index * 13) % 11) / 20;
-    let weight = character === ' ' ? .55 : .72 + variation;
-    if (!index) weight = .35;
-    if (previous === '\n') weight += 2.1;
-    else if (/[,.!?;:]/.test(previous)) weight += 1.7;
-    else if (previous === ' ') weight += .22;
+    const variation = ((character.codePointAt(0) * 11 + index * 7) % 9) / 28;
+    let weight = character === '\n' ? .04 : character === ' ' ? .38 : .8 + variation;
+    if (!index) weight = .28;
+    if (previous === '\n') weight += 3.4;
+    else if (/[.!?]/.test(previous)) weight += 2.8;
+    else if (/[,;:]/.test(previous)) weight += 1.9;
+    else if (previous === ' ') weight += .28;
     total += weight;
     return total;
   });
@@ -154,10 +161,10 @@ export function createPrologue({
     // Only static interface markup uses HTML. Every supplied cue uses textContent.
     element.innerHTML = `<canvas class="prologue-backdrop" width="0" height="0" aria-hidden="true"></canvas><video id="intro-video" class="prologue-film" playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
       <div class="prologue-shade" aria-hidden="true"></div>
-      <header class="prologue-header"><span class="prologue-brand" aria-hidden="true">RELIC</span><span class="prologue-preview" hidden></span><button id="skip-intro" class="prologue-skip"><span></span>${icon('arrow')}</button></header>
+      <header class="prologue-header"><span class="prologue-brand" aria-hidden="true">RELIC</span><span class="prologue-preview" hidden></span><button id="skip-intro" class="prologue-skip"><span></span></button></header>
       <button class="prologue-reveal prologue-visually-hidden" type="button" hidden></button>
       <div class="prologue-caption"><svg class="prologue-endmark" viewBox="0 0 100 100" aria-hidden="true"><path d="M35 75V29h20c11 0 17 6 17 15 0 9-7 15-18 15H35m19 0 20 18"/><path class="prologue-orbit" d="M20 63C10 37 32 12 59 16c14 2 24 8 30 19"/><circle cx="89" cy="35" r="2"/></svg><div class="prologue-context"><p id="intro-kicker"></p><p id="intro-speaker"></p></div><h1 id="intro-line"></h1><span class="prologue-visually-hidden" id="intro-transcript" aria-live="polite" aria-atomic="true"></span><p id="intro-source" hidden></p>
-        <div class="prologue-gate" hidden><p id="intro-status" role="status"></p><div class="prologue-gate-actions"><button class="prologue-play-film">${icon('play')}<span></span></button><button class="prologue-enter"><span></span>${icon('arrow')}</button></div></div>
+        <div class="prologue-gate" hidden><p id="intro-status" role="status"></p><div class="prologue-gate-actions"><button class="prologue-play-film">${icon('play')}<span></span></button><button class="prologue-enter"><span></span></button></div></div>
       </div>
       <p class="prologue-loading" role="status" hidden></p>
       <footer class="prologue-controls"><time class="prologue-time" aria-hidden="true">0:00</time><label class="prologue-scrubber"><span class="prologue-visually-hidden"></span><input type="range" min="0" max="1" step="0.01" value="0"></label><div class="prologue-transport"><button class="prologue-pause" type="button"></button><button class="prologue-sound-cta" type="button">${icon('sound')}<span></span></button><button class="prologue-audio" type="button" aria-pressed="false"></button><button class="prologue-captions" type="button" aria-pressed="true">${icon('captions')}</button><button class="prologue-clean" type="button">${icon('clean')}</button><button class="prologue-fullscreen" type="button">${icon('fullscreen')}</button><button class="prologue-download" type="button" hidden>${icon('download')}</button></div></footer>`;
@@ -372,7 +379,7 @@ export function createPrologue({
         element.dataset.framing = cue?.framing === 'wide' ? 'wide' : 'immersive';
         kicker.textContent = localize(cue?.kicker);
         typedValue = localize(cue?.title);
-        typedCharacters = Array.from(typedValue);
+        typedCharacters = graphemes(typedValue, lang);
         title.setAttribute('aria-label', typedValue);
         title.dataset.fullTitle = typedValue;
         transcript.textContent = cue?.kind === 'visual' ? '' : typedValue;
@@ -395,6 +402,7 @@ export function createPrologue({
             const glyph = document.createElement('span');
             glyph.className = 'prologue-type-glyph';
             glyph.textContent = character;
+            glyph.style.opacity = '0';
             typedNode.append(glyph);
             return glyph;
           });
@@ -458,11 +466,23 @@ export function createPrologue({
         const changed = count !== typedCount;
         if (changed) {
           for (let i = Math.min(Math.max(typedCount, 0), count); i < Math.max(typedCount, count); i += 1) {
-            if (typedGlyphs[i]) typedGlyphs[i].style.visibility = i < count ? 'visible' : 'hidden';
+            if (typedGlyphs[i]) {
+              typedGlyphs[i].style.visibility = i < count ? 'visible' : 'hidden';
+              if (i >= count) typedGlyphs[i].style.opacity = '0';
+            }
           }
           typedNode.dataset.visibleText = typedCharacters.slice(0, count).join('');
           typedNode.dataset.typedCount = String(count);
           typedCount = count;
+        }
+        // The very short letter entrance is sampled from video time, rather
+        // than a CSS transition. Pausing freezes it; rewinding reverses it.
+        // Reduced motion retains readable keystrokes without the extra fade.
+        const inkDuration = reducedMotion() ? 0 : Math.min(.085, span / Math.max(1, typedCharacters.length) * .72);
+        for (let i = 0; i < count; i += 1) {
+          const ink = inkDuration ? smooth((position - cue.start - delay - typedCadence[i] * span) / inkDuration) : 1;
+          const opacity = String(Math.round(ink * 1000) / 1000);
+          if (typedGlyphs[i].style.opacity !== opacity) typedGlyphs[i].style.opacity = opacity;
         }
         // The play gate hides the heading with display:none. Re-measure when
         // it closes, even if no character has appeared yet.

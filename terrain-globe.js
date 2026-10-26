@@ -6,8 +6,9 @@ import { createDetailedEarthImagery, ESRI_IMAGERY_URL } from './earth-imagery.js
 import { createGoogle3D, askForCesiumToken } from './google-3d.js';
 import { createPlaceSearch } from './place-search.js?v=5';
 import { startLiveData, getLanguage, onLanguageChange } from './atlas-live.js?v=3';
-import { configureWorldPerformance, cameraDuration, flyToLocation } from './world-performance.js';
+import { configureWorldPerformance, cameraDuration, flyToLocation, createOverviewFraming, TOP_DOWN_PITCH } from './world-performance.js';
 import { createViewLoading } from './view-loading.js';
+import { initializeProviderCredits } from './provider-credits.js';
 import { backendFeatureAvailable, markBackendFeatureUnavailable } from './atlas-services.js';
 
 const $ = selector => document.querySelector(selector);
@@ -27,6 +28,7 @@ const tychoLocal = Cesium.Rectangle.fromDegrees(-11.93657107, -44.40436103, -10.
 const pressed = new Set();
 
 let viewer;
+let overviewFraming;
 let lastHud = 0;
 let orientationAnimation = null;
 let movementFrame = 0;
@@ -41,7 +43,6 @@ let googleState = { status:'missing', active:false };
 let placeSearch;
 
 document.body.dataset.world = body;
-$('#imagery-button').hidden = body !== 'earth';
 document.title = `${names[body]} · Exploration libre 3D — RELIC`;
 $('#world-title').textContent = names[body];
 $('#back-link').href = body === 'earth' ? './earth.html' : `./index.html?body=${body}`;
@@ -77,9 +78,6 @@ async function addDetailImagery() {
     try {
       detailedEarthLayer = layers.addImageryProvider(await createDetailedEarthImagery(Cesium));
       earthImageryMode = 'detail';
-      $('#imagery-button').disabled = false;
-      $('#imagery-button span').textContent = 'SATELLITE';
-      $('#imagery-button').setAttribute('aria-pressed', 'true');
       viewer.scene.requestRender();
     } catch (error) {
       console.warn('Imagerie satellite détaillée indisponible', error);
@@ -132,11 +130,13 @@ function pickTarget(windowPosition) {
   const canvas = scene.canvas;
   const center = windowPosition || new Cesium.Cartesian2(canvas.clientWidth / 2, canvas.clientHeight / 2);
   let target;
-  if (scene.pickPositionSupported) {
-    try { target = scene.pickPosition(center); } catch { /* use globe below */ }
+  // Use the current ray against loaded ground. A depth-buffer position can
+  // still describe the preceding camera frame while a flight is settling.
+  if (scene.globe.show) {
+    try { target = scene.globe.pick(viewer.camera.getPickRay(center), scene); } catch { /* try depth/ellipsoid below */ }
   }
-  if (!Cesium.defined(target)) {
-    try { target = scene.globe.pick(viewer.camera.getPickRay(center), scene); } catch { /* use ellipsoid below */ }
+  if (!Cesium.defined(target) && scene.pickPositionSupported && !scene.globe.show) {
+    try { target = scene.pickPosition(center); } catch { /* use ellipsoid below */ }
   }
   if (!Cesium.defined(target)) target = viewer.camera.pickEllipsoid(center, ellipsoid);
   return target && Number.isFinite(target.x) && Number.isFinite(target.y) && Number.isFinite(target.z) ? target : null;
@@ -160,7 +160,7 @@ function cameraFrame() {
 function setCameraFrame(frame) {
   if (!viewer || !frame?.target || !Number.isFinite(frame.range)) return;
   const camera = viewer.camera;
-  camera.lookAt(frame.target, new Cesium.HeadingPitchRange(frame.heading, frame.pitch, frame.range));
+  camera.lookAt(frame.target, new Cesium.HeadingPitchRange(frame.heading, Math.max(TOP_DOWN_PITCH, frame.pitch), frame.range));
   const destination = Cesium.Cartesian3.clone(camera.positionWC);
   const direction = Cesium.Cartesian3.clone(camera.directionWC);
   const up = Cesium.Cartesian3.clone(camera.upWC);
@@ -170,6 +170,8 @@ function setCameraFrame(frame) {
 }
 
 function animateOrientation(changes) {
+  overviewFraming?.stop();
+  viewer?.camera.cancelFlight();
   const from = cameraFrame();
   if (!from) return;
   orientationAnimation?.cancel?.();
@@ -195,6 +197,8 @@ function animateOrientation(changes) {
 }
 
 function move(direction, amount = 1) {
+  overviewFraming?.stop();
+  viewer?.camera.cancelFlight();
   const frame = cameraFrame();
   if (!frame) return;
   const geographicPoint = ellipsoid.cartesianToCartographic(frame.target);
@@ -235,17 +239,13 @@ function resetView(clearSearch = true, duration = .8) {
   if (!viewer) return;
   focusSerial++;
   orientationAnimation?.cancel?.();
-  viewer.camera.cancelFlight();
-  viewer.camera.flyTo({
-    destination:cartesian(18, 0, radius * 2.1),
-    orientation:{ heading:0, pitch:-Math.PI / 2, roll:0 },
-    duration:cameraDuration(duration),
-  });
+  overviewFraming?.show(duration);
   if (clearSearch) { $('#place-input').value = ''; placeSearch?.close(); }
 }
 
 async function focus(lat, lon, range = radius * .15, duration = 1.1, label = '') {
   if (!viewer) return;
+  overviewFraming?.stop();
   const serial = ++focusSerial;
   orientationAnimation?.cancel?.();
   flyToLocation(viewer, Cesium, { lat, lon, ellipsoid, range, duration,
@@ -347,7 +347,6 @@ function showGoogleState(state) {
           : (en ? 'Google 3D unavailable' : 'Google 3D indisponible');
   document.body.dataset.google3d = String(state.active);
   $('#height-button').disabled = state.active;
-  $('#imagery-button').disabled = state.active || !detailedEarthLayer;
   updateHud(true);
 }
 
@@ -382,14 +381,14 @@ function updateHud(force = false) {
   $('#elevation-source').href = data.elevation;
   $('#imagery-source').href = data.imagery;
   $('#imagery-source').textContent = googleState.active
-    ? (english() ? 'Google 3D ↗' : 'Google 3D ↗')
+    ? (english() ? 'Google 3D' : 'Google 3D')
     : body === 'earth' && earthImageryMode === 'detail'
-    ? (english() ? 'Esri imagery ↗' : 'Imagerie Esri ↗')
-    : (english() ? 'NASA imagery ↗' : 'Imagerie NASA ↗');
+    ? (english() ? 'Esri imagery' : 'Imagerie Esri')
+    : (english() ? 'NASA imagery' : 'Imagerie NASA');
   $('#runway-source').hidden = body !== 'earth' || !nearNiceAirport(lat, lon);
-  $('#runway-source').textContent = english() ? 'RUNWAYS · FRENCH AIP ↗' : 'PISTES · AIP ↗';
+  $('#runway-source').textContent = english() ? 'RUNWAYS · FRENCH AIP' : 'PISTES · AIP';
   $('#runways-source').hidden = body !== 'earth';
-  $('#runways-source').textContent = english() ? 'RUNWAYS · OURAIRPORTS ↗' : 'PISTES · OURAIRPORTS ↗';
+  $('#runways-source').textContent = english() ? 'RUNWAYS · OURAIRPORTS' : 'PISTES · OURAIRPORTS';
   if (googleState.active) $('#imagery-source').href = 'https://cesium.com/platform/cesium-ion/content/google-photorealistic-3d-tiles/';
   $('#scene-credit').textContent = googleState.active ? 'GOOGLE PHOTOREALISTIC 3D TILES · CESIUM ION' : body === 'earth'
     ? earthImageryMode === 'detail' ? 'IMAGERIE ESRI · RELIEF NASA SRTM' : 'NASA GIBS · NASA SRTM'
@@ -408,11 +407,13 @@ function setUpControls() {
   });
   $('#north-button').addEventListener('click', () => animateOrientation({ heading:0 }));
   $('#height-button').addEventListener('click', () => {
+    overviewFraming?.stop();
     viewer.scene.verticalExaggeration = viewer.scene.verticalExaggeration === 1 ? 2 : 1;
     $('#height-button span').textContent = `Relief × ${viewer.scene.verticalExaggeration}`;
     viewer.scene.requestRender();
   });
   if (body === 'earth') $('#terrain-google3d-toggle').addEventListener('click', async () => {
+    overviewFraming?.stop();
     if (!google3D) return;
     if (google3D.active) { google3D.disable(); return; }
     let token;
@@ -420,24 +421,10 @@ function setUpControls() {
     if (token === '') return;
     await google3D.enable(token);
   });
-  if (body === 'earth') $('#imagery-button').addEventListener('click', () => {
-    if (!detailedEarthLayer) return;
-    earthImageryMode = earthImageryMode === 'detail' ? 'nasa' : 'detail';
-    detailedEarthLayer.show = earthImageryMode === 'detail';
-    $('#imagery-button span').textContent = earthImageryMode === 'detail' ? 'SATELLITE' : 'NASA';
-    $('#imagery-button').setAttribute('aria-pressed', String(earthImageryMode === 'detail'));
-    updateHud(true);
-    viewer.scene.requestRender();
-  });
   $('#reset-button').addEventListener('click', () => resetView());
-  for (const button of document.querySelectorAll('[data-move]')) {
-    const direction = button.dataset.move;
-    button.addEventListener('pointerdown', event => { event.preventDefault(); button.setPointerCapture(event.pointerId); startMovement(direction); });
-    for (const name of ['pointerup', 'pointercancel', 'lostpointercapture']) button.addEventListener(name, () => stopMovement(direction));
-  }
   const keys = { ArrowUp:'up', ArrowDown:'down', ArrowLeft:'left', ArrowRight:'right', w:'up', s:'down', a:'left', d:'right' };
   window.addEventListener('keydown', event => {
-    if (event.target instanceof HTMLElement && /INPUT|TEXTAREA|SELECT/.test(event.target.tagName)) return;
+    if (event.defaultPrevented || event.target instanceof HTMLElement && event.target.closest('input,textarea,select,button,dialog,[role=dialog],[role=listbox],[role=option]')) return;
     const direction = keys[event.key];
     if (!direction) return;
     event.preventDefault();
@@ -507,6 +494,7 @@ async function start() {
     viewer.scene.screenSpaceCameraController.inertiaSpin = .75;
     viewer.scene.screenSpaceCameraController.inertiaTranslate = .72;
     viewer.scene.screenSpaceCameraController.inertiaZoom = .72;
+    initializeProviderCredits({elements:[$('#scene-credit'), $('#esri-attribution'), $('#cesium-credits')]});
     configureWorldPerformance(viewer, {
       loading:viewLoading,
       isReady:() => baseImageryReady && viewer.scene.globe.tilesLoaded,
@@ -534,14 +522,10 @@ async function start() {
       $('#terrain-google3d').hidden = false;
       google3D = createGoogle3D(viewer, showGoogleState);
     }
+    overviewFraming = createOverviewFraming(viewer, Cesium, { ellipsoid, latitude:18, longitude:0 });
     const startPoint = initialLocation();
     if (['jezero', 'apollo11', 'tycho'].includes(startPoint?.id)) viewer.scene.verticalExaggeration = 1;
     $('#height-button span').textContent = `Relief × ${viewer.scene.verticalExaggeration}`;
-    if (body === 'earth') {
-      $('#imagery-button span').textContent = earthImageryMode === 'detail' ? 'SATELLITE' : 'NASA';
-      $('#imagery-button').setAttribute('aria-pressed', String(earthImageryMode === 'detail'));
-      $('#imagery-button').disabled = !detailedEarthLayer;
-    }
     setUpControls();
     if (startPoint) {
       if (startPoint.id) {
@@ -598,19 +582,16 @@ onLanguageChange(lang => {
   placeSearch.setLanguage();
   const labels = $('.site-facts').querySelectorAll('dt');
   [en ? 'Position' : 'Position', en ? 'Altitude' : 'Altitude', en ? 'Terrain' : 'Relief'].forEach((value, i) => { labels[i].textContent = value; });
-  $('#elevation-source').textContent = en ? 'NASA elevation ↗' : 'Relief NASA ↗';
+  $('#elevation-source').textContent = en ? 'NASA elevation' : 'Relief NASA';
   $('#imagery-source').textContent = body === 'earth' && earthImageryMode === 'detail'
-    ? en ? 'Esri imagery ↗' : 'Imagerie Esri ↗'
-    : en ? 'NASA imagery ↗' : 'Imagerie NASA ↗';
+    ? en ? 'Esri imagery' : 'Imagerie Esri'
+    : en ? 'NASA imagery' : 'Imagerie NASA';
   $('#nav-hint').innerHTML = en
     ? 'DRAG: MOVE <span>·</span> PINCH / SCROLL: ZOOM <span>·</span> TAP: AIM <span>·</span> ARROWS: MOVE'
     : 'GLISSER : SE DÉPLACER <span>·</span> PINCER / MOLETTE : ZOOMER <span>·</span> TOUCHER : VISER <span>·</span> FLÈCHES : AVANCER';
   $('#tilt-button span').textContent = en ? 'Tilt' : 'Incliner';
   $('#north-button span').textContent = en ? 'North' : 'Nord';
   $('#reset-button span').textContent = en ? 'Overview' : 'Vue globale';
-  if (body === 'earth') $('#imagery-button span').textContent = earthImageryMode === 'detail'
-    ? en ? 'SATELLITE' : 'SATELLITE'
-    : 'NASA';
   if (body === 'earth') {
     ($('#terrain-google3d-toggle .world-button-label') || $('#terrain-google3d-toggle')).textContent = 'Google 3D';
     showGoogleState(googleState);

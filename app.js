@@ -6,8 +6,9 @@ import { startLiveData, getLanguage, onLanguageChange } from './atlas-live.js?v=
 import { navigateTo } from './navigation.js';
 import { initializePlanetDashboard, setDashboardBody } from './planet-dashboard.js';
 import { createViewLoading } from './view-loading.js';
+import { initializeProviderCredits } from './provider-credits.js';
 
-initializePlanetDashboard({ view:'atlas' });
+const dashboard = initializePlanetDashboard({ view:'atlas' });
 
 const $ = selector => document.querySelector(selector);
 const sceneHost = $('#scene');
@@ -219,15 +220,25 @@ function addAtmosphere(group, radius, color, strength) {
   group.userData.atmosphere = atmosphere;
 }
 
-function orbitLine(radius) {
-  const points = [];
-  for (let i = 0; i < 320; i++) {
-    const angle = (i / 320) * Math.PI * 2;
-    points.push(new THREE.Vector3(Math.cos(angle) * radius, 0, Math.sin(angle) * radius));
+// The highlight illustrates orbital direction. Its visual cycle is deliberately
+// independent of ephemeris time; planetary positions continue to use source data.
+function orbitLine(radius, index = 0) {
+  const points = [], progress = [];
+  for (let i = 0; i <= 360; i++) {
+    const phase = i / 360;
+    points.push(new THREE.Vector3(Math.cos(phase * Math.PI * 2) * radius, 0, Math.sin(phase * Math.PI * 2) * radius));
+    progress.push(phase);
   }
-  const line = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(points), new THREE.LineBasicMaterial({ color:0x7388a7, transparent:true, opacity:.15, depthWrite:false }));
-  scene.add(line);
-  return line;
+  const geometry = new THREE.BufferGeometry().setFromPoints(points);
+  geometry.setAttribute('orbitProgress', new THREE.Float32BufferAttribute(progress, 1));
+  const material = new THREE.ShaderMaterial({
+    uniforms:{ elapsed:{value:0}, phase:{value:index * .137}, rate:{value:1 / (22 + index * 2)}, strength:{value:.75} },
+    vertexShader:'attribute float orbitProgress; varying float vProgress; void main(){vProgress=orbitProgress;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
+    fragmentShader:'uniform float elapsed;uniform float phase;uniform float rate;uniform float strength;varying float vProgress;void main(){float behind=fract(phase+elapsed*rate-vProgress);float trail=pow(1.0-behind,30.0);vec3 color=mix(vec3(.16,.32,.53),vec3(.30,.64,1.0),trail);gl_FragColor=vec4(color,strength*(.20+.80*trail));}',
+    transparent:true, depthWrite:false, blending:THREE.AdditiveBlending,
+  });
+  const line = new THREE.Line(geometry, material);
+  scene.add(line); return line;
 }
 
 function saturnRingGeometry(inner, outer) {
@@ -256,7 +267,7 @@ const planetaryMaps = {
 
 for (let index = 0; index < planets.length; index++) {
   const planet = planets[index];
-  const line = orbitLine(planet.orbit);
+  const line = orbitLine(planet.orbit, index);
   line.scale.setScalar(sceneScale);
   orbitLines.set(planet.id, line);
   const group = new THREE.Group();
@@ -359,7 +370,8 @@ for (const planet of planets) {
   const button = document.createElement('button');
   button.type = 'button'; button.className = 'planet-label';
   button.style.setProperty('--planet-color', planet.color);
-  button.innerHTML = `<span class="planet-label-dot"></span>${planet.name}`;
+  button.textContent = planet.name;
+  button.dataset.labelVisible = 'false';
   button.setAttribute('aria-label', `Explorer ${planet.name}`);
   button.addEventListener('click', () => selectBody(planet.id));
   labelHost.appendChild(button); labels.set(planet.id, button);
@@ -374,13 +386,14 @@ const tempPosition = new THREE.Vector3();
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 const imageryCredit = $('#imagery-credit');
+initializeProviderCredits({ viewport:dashboard.viewport, elements:[imageryCredit] });
 function showBaseImageryCredit(id) {
   imageryCredit.hidden = false;
   imageryCredit.innerHTML = id === 'mars'
     ? `MOSAÏQUE GLOBALE VIKING · <a href="${NASA_IMAGERY.marsTrek}" target="_blank" rel="noopener noreferrer">NASA MARS TREK</a>`
     : id === 'moon'
       ? `MOSAÏQUE GLOBALE LROC WAC · <a href="${NASA_IMAGERY.moonTrek}" target="_blank" rel="noopener noreferrer">NASA MOON TREK</a>`
-      : 'CARTES PLANÉTAIRES · <a href="https://www.solarsystemscope.com/textures/" target="_blank" rel="noopener noreferrer">Solar System Scope / INOVE · CC BY 4.0</a>';
+      : `${getLanguage() === 'fr' ? 'Textures planétaires' : 'Planetary textures'} · <a href="https://www.solarsystemscope.com/textures/" target="_blank" rel="noopener noreferrer">Solar System Scope / INOVE · CC BY 4.0</a> · NASA`;
 }
 const surfaceDetail = new SurfaceDetail(camera, renderer, state => {
   if (!state) {
@@ -389,7 +402,7 @@ const surfaceDetail = new SurfaceDetail(camera, renderer, state => {
   }
   imageryCredit.hidden = false;
   imageryCredit.innerHTML = state.unavailable
-    ? `DÉTAIL DE SURFACE INDISPONIBLE · <a href="${state.id === 'mars' ? NASA_IMAGERY.marsTrek : state.id === 'moon' ? NASA_IMAGERY.moonTrek : NASA_IMAGERY.gibsInfo}" target="_blank" rel="noopener noreferrer">SOURCE NASA ↗</a>`
+    ? `DÉTAIL DE SURFACE INDISPONIBLE · <a href="${state.id === 'mars' ? NASA_IMAGERY.marsTrek : state.id === 'moon' ? NASA_IMAGERY.moonTrek : NASA_IMAGERY.gibsInfo}" target="_blank" rel="noopener noreferrer">SOURCE NASA</a>`
     : state.loading
     ? 'CHARGEMENT DES DÉTAILS DE SURFACE…'
     : state.id === 'earth'
@@ -429,7 +442,7 @@ function refreshOrbits() {
   for (const planet of planets) {
     const line = orbitLines.get(planet.id);
     line.visible = selected === 'overview';
-    line.material.opacity = .13;
+    line.material.uniforms.strength.value = .75;
   }
   moonOrbit.visible = false;
 }
@@ -459,13 +472,6 @@ function updateDetail(id) {
   $('#detail-subtitle').textContent = detail.subtitle;
   $('#detail-orb').style.background = `radial-gradient(circle at 32% 30%,#ffffffab,${detail.color} 45%,#132033)`;
   const actions = $('#detail-actions'); actions.replaceChildren();
-  if (id in PLANET_SITES) {
-    const globe = document.createElement('a');
-    globe.className = 'detail-action primary';
-    globe.href = `./terrain.html?body=${id}`;
-    globe.textContent = getLanguage() === 'en' ? 'Explore in 3D ↗' : 'Explorer en 3D ↗';
-    actions.appendChild(globe);
-  }
   
   const close = document.createElement('button');
   close.type = 'button'; close.className = 'detail-action';
@@ -489,6 +495,7 @@ function selectBody(id, recenter = false) {
   surfaceDetail.clear();
   selected = id;
   setDashboardBody(id);
+  $('#relic-replay').hidden = id !== 'overview';
   if (id === 'moon') ensureMoonTexture();
   if (id === 'overview') hideGestureHint(); else showGestureHint();
   $('.topbar-hint').innerHTML = getLanguage() === 'en'
@@ -551,8 +558,6 @@ function zoomBy(factor, animateZoom = true) {
   if (animateZoom) flyTo(controls.target, controls.target.clone().add(difference), 240);
   else { camera.position.copy(controls.target).add(difference); controls.update(); }
 }
-$('#atlas-zoom-in')?.addEventListener('click', () => zoomBy(.72));
-$('#atlas-zoom-out')?.addEventListener('click', () => zoomBy(1.38));
 let surfaceSettleUntil = 0;
 controls.addEventListener('start', () => { flight = null; hideGestureHint(); surfaceSettleUntil = performance.now() + 180; });
 controls.addEventListener('change', () => {
@@ -623,26 +628,51 @@ renderer.domElement.addEventListener('dblclick', event => {
   zoomBy(.22);
 });
 
+const labelWidths = new Map();
+const labelMeasure = document.createElement('canvas').getContext('2d');
+const labelCameraPosition = new THREE.Vector3();
+const labelCameraDirection = new THREE.Vector3();
+const labelPoint = new THREE.Vector3();
 function positionLabels() {
   if (selected !== 'overview') return;
   const occupied = [];
   const {width,height} = viewportSize();
-  for (const planet of planets) {
-    const element = labels.get(planet.id);
-    tempPosition.copy(planetGroups.get(planet.id).position).project(camera);
-    const x = (tempPosition.x * .5 + .5) * width;
-    const y = (-tempPosition.y * .5 + .5) * height;
-    let placed = false;
-    if (tempPosition.z > -1 && tempPosition.z < 1 && x > 35 && x < width - 35 && y > 24 && y < height - 30) {
-      for (const offset of [42, -21, 68, -48]) {
-        const box = { x:x - 43, y:y + offset - 24, w:86, h:25 };
-        if (box.y < 12 || box.y + box.h > height - 16) continue;
-        if (occupied.some(previous => box.x < previous.x + previous.w + 4 && box.x + box.w + 4 > previous.x && box.y < previous.y + previous.h + 4 && box.y + box.h + 4 > previous.y)) continue;
-        element.style.left = `${x}px`; element.style.top = `${y + offset}px`;
-        occupied.push(box); placed = true; break;
+  const fontSize = width < 650 ? 11 : 12;
+  labelMeasure.font = `500 ${fontSize}px -apple-system, BlinkMacSystemFont, sans-serif`;
+  camera.getWorldPosition(labelCameraPosition); camera.getWorldDirection(labelCameraDirection);
+  const focalLength = height / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)));
+  const project = (point,radius) => {
+    const depth = labelPoint.copy(point).sub(labelCameraPosition).dot(labelCameraDirection);
+    tempPosition.copy(point).project(camera);
+    return {x:(tempPosition.x*.5+.5)*width,y:(-.5*tempPosition.y+.5)*height,z:tempPosition.z,depth,radius:radius*focalLength/Math.max(depth,.01)};
+  };
+  const sunScreen = project(sun.position,4.55);
+  const candidates = planets.map(planet=>({planet,...project(planetGroups.get(planet.id).position,planet.size)}));
+  // Prioritize readable bodies, then leave room around both text and planets.
+  candidates.sort((a,b)=>b.radius-a.radius);
+  for (const item of candidates) {
+    const element=labels.get(item.planet.id), name=element.textContent;
+    const key=`${fontSize}:${name}`;
+    if(!labelWidths.has(key))labelWidths.set(key,Math.ceil(labelMeasure.measureText(name).width)+4);
+    const w=labelWidths.get(key), h=28;
+    const coveredBySun=item.depth>sunScreen.depth && Math.hypot(item.x-sunScreen.x,item.y-sunScreen.y)<Math.max(0,sunScreen.radius-item.radius*.3);
+    let box=null;
+    if(item.depth>0 && item.z>-1 && item.z<1 && item.radius>=1.8 && item.radius<Math.min(width,height)*.16 && !coveredBySun){
+      for(const offset of [item.radius+9,-item.radius-h-7,item.radius+27]){
+        const candidate={x:item.x-w/2,y:item.y+offset,w,h};
+        if(candidate.x<12||candidate.x+w>width-12||candidate.y<12||candidate.y+h>height-12)continue;
+        if(occupied.some(previous=>candidate.x<previous.x+previous.w+10&&candidate.x+w+10>previous.x&&candidate.y<previous.y+previous.h+5&&candidate.y+h+5>previous.y))continue;
+        if(candidates.some(body=>body!==item&&body.depth>0&&Math.abs(candidate.x+w/2-body.x)<w/2+body.radius+3&&Math.abs(candidate.y+h/2-body.y)<h/2+body.radius+3))continue;
+        box=candidate;break;
       }
     }
-    element.style.display = placed ? 'flex' : 'none';
+    const visible=Boolean(box);
+    if(element.dataset.labelVisible!==String(visible)){element.dataset.labelVisible=String(visible);element.inert=!visible;}
+    if(box){
+      occupied.push(box);
+      const x=Math.round(box.x*2)/2,y=Math.round(box.y*2)/2;
+      if(element.dataset.screenPosition!==`${x},${y}`){element.style.transform=`translate3d(${x}px,${y}px,0)`;element.dataset.screenPosition=`${x},${y}`;}
+    }
   }
 }
 
@@ -693,8 +723,6 @@ onLanguageChange(lang => {
   for (const [id, en, fr] of [
     ['relic-replay','Watch the film','Revoir le film'],
     ['relic-credits','Sources and creators','Sources et créateurs'],
-    ['atlas-zoom-in','Zoom in','Se rapprocher'],
-    ['atlas-zoom-out','Zoom out','S’éloigner'],
   ]) {
     const button = $(`#${id}`);
     if (!button) continue;
@@ -722,6 +750,7 @@ onLanguageChange(lang => {
   setDetailsCollapsed($('#details').classList.contains('collapsed'));
 });
 updateDetail('overview');
+showBaseImageryCredit('overview');
 refreshOrbits();
 setDashboardBody('overview');
 const atlasBodies = new Set(['overview','sun','moon',...planets.map(planet => planet.id)]);
@@ -752,6 +781,7 @@ window.addEventListener('planet-dashboard-location', event => {
 const requestedBody = new URLSearchParams(window.location.search).get('body');
 if (atlasBodies.has(requestedBody)) selectBody(requestedBody);
 let previousTime = performance.now();
+let orbitVisualTime = 0;
 let qualityWindowStart = previousTime;
 let qualityFrameTime = 0;
 let qualityFrameCount = 0;
@@ -839,6 +869,9 @@ function animate(time) {
     qualityWindowStart = time; qualityFrameTime = 0; qualityFrameCount = 0;
   }
   if (selected === 'overview') {
+    const reducedMotion = document.documentElement.dataset.motion === 'reduced' || (!document.documentElement.dataset.motion && matchMedia('(prefers-reduced-motion: reduce)').matches);
+    if (!reducedMotion) orbitVisualTime += dt;
+    for (const line of orbitLines.values()) line.material.uniforms.elapsed.value = orbitVisualTime;
     simulationDays += dt / 86400;
     updatePositions(simulationDays);
     sun.rotation.y += dt * .052;

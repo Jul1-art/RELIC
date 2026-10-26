@@ -1,0 +1,27 @@
+/* Attribution has its own space below the rendered view, including when a
+   provider inserts extra mandatory credits or a commercial-plan notice. */
+html body .pd-viewport.has-provider-credit-dock>:is(#globe,#terrain-scene,#scene,#planet-labels){bottom:auto!important;height:calc(100% - var(--provider-credits-height,0px))!important}
+html body .pd-viewport>.provider-credit-dock{position:absolute;inset:auto 0 0;z-index:10;display:flex;align-items:center;flex-wrap:wrap;gap:4px 12px;width:100%;max-height:min(120px,28%);padding:7px 12px;border-top:1px solid #ffffff14;background:#0c0c0ee8;color:#b9b9bd;font:400 11px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;letter-spacing:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#7776 transparent}
+html body .pd-viewport>.provider-credit-dock[hidden],html body .provider-credit-dock>[hidden]{display:none!important}
+html body .pd-viewport>.provider-credit-dock>:is(#cesium-credits,.earth-attribution,.scene-credit,.esri-attribution,#imagery-credit){position:static!important;inset:auto!important;display:block;float:none;flex:1 1 auto;width:auto!important;min-width:0;max-width:none!important;max-height:none!important;padding:0!important;margin:0!important;border:0;border-radius:0;background:none!important;box-shadow:none;color:inherit!important;font:inherit!important;letter-spacing:0!important;text-align:left;white-space:normal!important;overflow:visible!important}
+html body .pd-viewport>.provider-credit-dock>#cesium-credits{flex-basis:100%}
+html body .provider-credit-dock #cesium-credits :is(.cesium-widget-credits,.cesium-credit-logoContainer,.cesium-credit-textContainer,.cesium-credit-expand-link){position:static!important;inset:auto!important;width:auto!important;max-width:100%!important;padding:0!important;margin:0!important;font:inherit!important;color:inherit!important;white-space:normal!important;text-shadow:none;background:none!important}
+html body .provider-credit-dock #cesium-credits .cesium-widget-credits{display:block!important}
+html body .provider-credit-dock #cesium-credits :is(.cesium-credit-logoContainer,.cesium-credit-textContainer,.cesium-credit-expand-link){display:inline!important;vertical-align:middle}
+html body .provider-credit-dock #cesium-credits .cesium-credit-delimiter{padding:0 5px!important}
+html body .provider-credit-dock #cesium-credits img{display:inline-block!important;width:auto!important;height:18px!important;max-height:18px!important;max-width:100%!important;vertical-align:middle;object-fit:contain;opacity:1}
+html body .provider-credit-dock a{color:inherit!important;text-decoration:none;letter-spacing:0!important;line-height:inherit!important;font:inherit!important;overflow-wrap:anywhere}
+html body .provider-credit-dock a:hover{text-decoration:underline}
+html body .provider-credit-dock a:focus-visible{outline:2px solid currentColor;outline-offset:2px;border-radius:2px}
+html[data-theme=day] body .pd-viewport>.provider-credit-dock{border-top-color:#00000014;background:#f5f5f5f2;color:#56565a}
+@media(max-width:650px){html body .pd-viewport>.provider-credit-dock{gap:4px 8px;padding:7px 9px;font-size:10px;line-height:1.45;max-height:min(126px,30%)}}
+/* Cesium's own full credit list remains available without leaving the app. */
+html body .cesium-credit-lightbox-overlay{position:fixed;inset:0;z-index:1200;width:100%;height:100%;padding:20px;background:#0009;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);overflow:auto}
+html body .cesium-credit-lightbox{width:min(560px,100%)!important;height:auto!important;min-height:0;max-height:calc(100dvh - 40px);margin:6vh auto 0!important;padding:8px 4px 12px;border:1px solid #ffffff20!important;border-radius:22px!important;background:#151517;color:#eee;font:400 13px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;box-shadow:0 30px 90px #0007;overflow:auto}
+html body .cesium-credit-lightbox-title{padding:18px 54px 10px 20px;font-size:16px;font-weight:500}
+html body .cesium-credit-lightbox-close{top:7px;right:7px;display:grid;place-items:center;width:40px;height:40px;padding:0;border-radius:12px;background:#ffffff08;font:300 25px/1 Arial,sans-serif;color:#eee}
+html body .cesium-credit-lightbox-close:hover{background:#ffffff14;color:#fff}
+html body .cesium-credit-lightbox>ul{padding:8px 24px 12px 38px;font:inherit}
+html body .cesium-credit-lightbox a{color:inherit}
+html[data-theme=day] body .cesium-credit-lightbox{background:#fafafa;border-color:#00000018!important;color:#333}
+html[data-theme=day] body .cesium-credit-lightbox-close{background:#00000008;color:#333}

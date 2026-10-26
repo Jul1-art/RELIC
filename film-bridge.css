@@ -29,7 +29,7 @@
 .relic-source-links { display:flex; flex-direction:column; margin:20px 0; border-top:1px solid #ffffff12; }
 .relic-source-links a { padding:11px 0; border-bottom:1px solid #ffffff12; color:#d6d6d6; font-size:11px; text-decoration:none; overflow-wrap:anywhere; }
 .relic-source-links a:hover { color:#fff; }
-.relic-source-links a::after { content:' ↗'; color:#777; }
+
 .relic-dialog .relic-dialog-note { color:#757575; font-size:11px; line-height:1.6; }
 .relic-dialog .relic-music-credit { color:#dedede; font-size:12px; }
 .relic-offline-card { margin:24px 0; padding:20px; border:1px solid #ffffff1c; border-radius:20px; background:#ffffff03; }

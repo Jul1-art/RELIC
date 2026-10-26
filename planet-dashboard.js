@@ -46,11 +46,61 @@ export function initializePlanetDashboard(options = {}) {
   const originalNavigation=originalHeader?.querySelector('.world-nav');
   if (originalNavigation) { originalNavigation.hidden=true;originalNavigation.dataset.dashboardLegacy=''; }
   if (originalHeader) header.append(originalHeader);
-  const picker=node('label','pd-world-picker');
+  const picker=node('div','pd-world-picker');
   const pickerLabel=node('span','pd-picker-label');
-  const select=document.createElement('select');select.id='dashboard-world-select';select.name='world';
-  const pickerIcon=node('span','pd-picker-icon');pickerIcon.innerHTML=worldIcon('chevron-down');
-  picker.append(pickerLabel,select,pickerIcon);
+  const pickerValue=node('span','pd-picker-value');
+  const pickerToggle=node('button','pd-world-trigger');pickerToggle.id='dashboard-world-trigger';pickerToggle.type='button';
+  pickerToggle.setAttribute('aria-haspopup','listbox');pickerToggle.setAttribute('aria-controls','dashboard-world-list');pickerToggle.setAttribute('aria-expanded','false');
+  const pickerIcon=node('span','pd-picker-icon');pickerIcon.innerHTML=worldIcon('globe');
+  pickerToggle.append(pickerLabel,pickerValue,pickerIcon);
+  const pickerList=node('div','pd-world-list');pickerList.id='dashboard-world-list';pickerList.setAttribute('role','listbox');pickerList.tabIndex=-1;pickerList.hidden=true;
+  // Kept for host integrations; the user always sees the styled listbox above.
+  const select=document.createElement('select');select.id='dashboard-world-select';select.name='world';select.hidden=true;select.tabIndex=-1;select.setAttribute('aria-hidden','true');
+  picker.append(pickerToggle,pickerList,select);
+  let pickerOpen=false,activeWorld=0,findWorld='',findTimer=0;
+  const worldOptions=new Map();
+  for(const id of BODIES){
+    const option=node('button','pd-world-option');option.type='button';option.id='dashboard-world-option-'+id;option.dataset.world=id;option.tabIndex=-1;option.setAttribute('role','option');
+    const disc=node('span','pd-world-disc');disc.dataset.world=id;disc.setAttribute('aria-hidden','true');
+    const name=node('span','pd-world-name');const selected=node('span','pd-world-selected');selected.setAttribute('aria-hidden','true');
+    option.append(disc,name,selected);pickerList.append(option);worldOptions.set(id,option);
+    option.addEventListener('click',()=>chooseWorld(id));
+  }
+  function highlightWorld(index){
+    activeWorld=(index+BODIES.length)%BODIES.length;
+    for(const [id,option] of worldOptions)option.classList.toggle('is-active',id===BODIES[activeWorld]);
+    const option=worldOptions.get(BODIES[activeWorld]);pickerList.setAttribute('aria-activedescendant',option.id);option.scrollIntoView({block:'nearest'});
+  }
+  function showPicker(value,returnFocus=false){
+    pickerOpen=Boolean(value);pickerList.hidden=!pickerOpen;pickerToggle.setAttribute('aria-expanded',String(pickerOpen));picker.dataset.open=String(pickerOpen);
+    if(pickerOpen){highlightWorld(BODIES.indexOf(body));pickerList.focus({preventScroll:true});}
+    else {pickerList.removeAttribute('aria-activedescendant');if(returnFocus)pickerToggle.focus({preventScroll:true});}
+  }
+  function chooseWorld(id){
+    showPicker(false,true);if(id===body)return;
+    select.value=id;select.dispatchEvent(new Event('change',{bubbles:true}));
+  }
+  pickerToggle.addEventListener('click',()=>showPicker(!pickerOpen));
+  pickerToggle.addEventListener('keydown',event=>{if(['ArrowDown','ArrowUp','Home','End'].includes(event.key)){event.preventDefault();showPicker(true);if(event.key==='Home')highlightWorld(0);if(event.key==='End')highlightWorld(BODIES.length-1);}});
+  pickerList.addEventListener('keydown',event=>{
+    if(['ArrowDown','ArrowUp','Home','End','Enter',' ','Escape'].includes(event.key)){
+      event.preventDefault();event.stopPropagation();
+      if(event.key==='Escape'){showPicker(false,true);return;}
+      if(event.key==='Enter'||event.key===' '){chooseWorld(BODIES[activeWorld]);return;}
+      highlightWorld(event.key==='Home'?0:event.key==='End'?BODIES.length-1:activeWorld+(event.key==='ArrowDown'?1:-1));
+    }else if(event.key==='Tab')showPicker(false);
+    else if(event.key.length===1&&!event.ctrlKey&&!event.metaKey&&!event.altKey){
+      clearTimeout(findTimer);findWorld+=event.key.toLocaleLowerCase();findTimer=setTimeout(()=>{findWorld='';},550);
+      const start=activeWorld+1;for(let offset=0;offset<BODIES.length;offset++){const index=(start+offset)%BODIES.length;if(NAMES[language()][BODIES[index]].toLocaleLowerCase().startsWith(findWorld)){highlightWorld(index);break;}}
+    }
+  });
+  document.addEventListener('pointerdown',event=>{if(pickerOpen&&!picker.contains(event.target))showPicker(false);});
+  picker.addEventListener('focusout',event=>{
+    // A click focuses its option between pointerdown and click. Do not dismiss
+    // that option while the browser is still transferring focus within the list.
+    if(event.relatedTarget&&picker.contains(event.relatedTarget))return;
+    requestAnimationFrame(()=>{if(pickerOpen&&!picker.contains(document.activeElement))showPicker(false);});
+  });
   const actions=originalHeader?.querySelector('.header-actions');
   if (actions) actions.before(picker);else header.append(picker);
   const scene=document.querySelector(atlas?'#scene':'#globe,#terrain-scene');
@@ -67,7 +117,7 @@ export function initializePlanetDashboard(options = {}) {
     const drawer=document.querySelector('#map-options');if(drawer)inspector.append(drawer);
     const rail=document.querySelector('.earth-controls,.view-controls');if(rail)tools.append(rail);
     const move=document.querySelector('.move-pad');
-    if(move){const section=node('section','pd-movement');const title=node('h2','pd-section-title');title.dataset.dashboardCopy='move';section.append(title,move);inspector.append(section);}
+    if(move){move.hidden=true;move.inert=true;move.setAttribute('aria-hidden','true');}
   }
   // Loading and provider credits stay attached to the viewport they describe.
   for(const element of [...document.querySelectorAll('#earth-loading,#loading,#earth-error,#error,#error-screen,.earth-attribution,.scene-credit,.esri-attribution,#cesium-credits')]) {
@@ -98,7 +148,10 @@ export function initializePlanetDashboard(options = {}) {
   function render(){
     const selected=body;
     select.replaceChildren(...BODIES.map(id=>{const option=document.createElement('option');option.value=id;option.textContent=NAMES[language()][id];return option;}));select.value=selected;
-    pickerLabel.textContent=text('WORLD','MONDE');
+    pickerLabel.textContent=text('WORLD','MONDE');pickerValue.textContent=NAMES[language()][selected];
+    pickerToggle.setAttribute('aria-label',text('Choose a world: ','Choisir un monde : ')+NAMES[language()][selected]);
+    pickerList.setAttribute('aria-label',text('Planets and moons','Planètes et lunes'));
+    for(const [id,option] of worldOptions){option.querySelector('.pd-world-name').textContent=NAMES[language()][id];option.setAttribute('aria-selected',String(id===selected));}
     select.setAttribute('aria-label',text('Choose a planet or moon','Choisir une planète ou une lune'));
     panelButton.querySelector('span').textContent=text('View data','Données de la vue');
     panelButton.setAttribute('aria-label',open?text('Hide view data','Masquer les données'):text('Show view data','Afficher les données'));
@@ -107,17 +160,17 @@ export function initializePlanetDashboard(options = {}) {
     if(atlasSearch){atlasSearch.querySelector('[type=submit]').setAttribute('aria-label',text('Locate','Localiser'));atlasSearch.querySelector('input').setAttribute('aria-label',text('Search a place or coordinates','Rechercher un lieu ou des coordonnées'));}
   }
   select.addEventListener('change',()=>{
-    const next=select.value;
+    const next=select.value;if(!BODIES.includes(next))return;showPicker(false);
     const event=new CustomEvent('planet-dashboard-world',{detail:{body:next},cancelable:true});
     window.dispatchEvent(event);
-    if(!event.defaultPrevented)navigateTo(dashboardDestination(next));
+    if(!event.defaultPrevented){select.value=body;navigateTo(dashboardDestination(next));}
   });
   panelButton.addEventListener('click',()=>{setPanel(!open);render();});
   document.addEventListener('keydown',event=>{if(event.key==='Escape'&&open&&matchMedia('(max-width: 960px)').matches&&!document.querySelector('dialog[open]')){setPanel(false);panelButton.focus();}});
   window.addEventListener('relic-world-selected',event=>setBody(event.detail?.body||event.detail?.id));
   window.addEventListener('planet-dashboard-panel',event=>{setPanel(event.detail?.open!==false);render();});
   onLanguageChange(()=>{setBody(body);render();});
-  instance={element:root,viewport,inspector,search,select,setBody,setPanel};
+  instance={element:root,viewport,inspector,search,select,setBody,setPanel,closePicker:()=>showPicker(false)};
   setBody(body);setPanel(open);render();
   window.dispatchEvent(new CustomEvent('planet-dashboard-mounted',{detail:{view:atlas?'atlas':'surface',body}}));
   let resizeFrame=0;
@@ -135,12 +188,11 @@ export function initializePlanetDashboard(options = {}) {
 
   function createAtlasSearch(){
     const form=node('form','pd-atlas-search');form.setAttribute('role','search');form.autocomplete='off';
-    const glyph=node('span','pd-search-icon');glyph.innerHTML=worldIcon('magnifying-glass');
     const input=document.createElement('input');input.type='search';input.maxLength=120;input.setAttribute('role','combobox');input.setAttribute('aria-autocomplete','list');input.setAttribute('aria-expanded','false');input.setAttribute('aria-controls','dashboard-search-results');input.setAttribute('aria-label',text('Search a place or coordinates','Rechercher un lieu ou des coordonnées'));
-    const submit=node('button','pd-locate');submit.type='submit';submit.innerHTML=worldIcon('arrow-right');
+    const submit=node('button','pd-locate');submit.type='submit';submit.innerHTML=worldIcon('magnifying-glass');
     const state=node('p','pd-search-state');state.setAttribute('role','status');
     const results=node('div','pd-search-results');results.id='dashboard-search-results';results.setAttribute('role','listbox');results.hidden=true;
-    form.append(glyph,input,submit,state,results);
+    form.append(input,submit,state,results);
     let request,active=-1;
     function dismiss(){results.hidden=true;input.setAttribute('aria-expanded','false');input.removeAttribute('aria-activedescendant');active=-1;}
     function choose(place){

@@ -23,7 +23,7 @@
   overflow:hidden;
 }
 .relic-settings-dialog[open]{display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;animation:relic-settings-enter .2s cubic-bezier(.2,.7,.3,1) both}
-.relic-settings-dialog::backdrop{background:#0008;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.relic-settings-dialog::backdrop{background:#0008;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
 .relic-settings-dialog *{box-sizing:border-box}
 .relic-settings-dialog [hidden]{display:none!important}
 .relic-settings-dialog button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
@@ -167,3 +167,7 @@ button[data-app-settings] svg.fas{width:16px;height:16px;min-width:16px;min-heig
   .relic-settings-dialog .relic-settings-reset{min-height:36px}
 }
 @media(prefers-reduced-motion:reduce){html:not([data-motion=full]) .relic-settings-dialog,html:not([data-motion=full]) .relic-settings-dialog *{animation:none!important;transition:none!important}}
+
+/* Dialog utilities stay centred and avoid decorative navigation arrows. */
+.relic-settings-provider>svg.fas,.relic-settings-reset svg.fas{display:none!important}
+.relic-settings-done{display:inline-flex;align-items:center;justify-content:center;line-height:1.3}
