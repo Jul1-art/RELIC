@@ -1,7 +1,7 @@
 /* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'story-v9-20261027-von-braun-public';
+const VERSION = 'story-v9-20261027-no-lunar-base-public';
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
 const APP_PREFIX = `relic-atlas-${encodeURIComponent(SCOPE.pathname)}-`;
@@ -20,7 +20,7 @@ const STATIC = /\.(?:html|css|js|mjs|json|webmanifest|jpe?g|png|svg|webp|avif|wo
 // already-open page continues loading its own resources normally, without a
 // second burst of dozens of script and library requests from the worker.
 const CORE = [
-  'index.html', 'earth.html', 'terrain.html', 
+  'index.html', 'earth.html', 'terrain.html',
   'manifest.webmanifest', 'assets/relic-logo-v1.png', 'assets/relic-icon-v1-192.png', 'assets/relic-icon-v1-512.png',
 ].map(local);
 
@@ -28,13 +28,12 @@ const CORE = [
 // This also covers a first visit whose early imports preceded worker control.
 const OFFLINE_CORE = [
   ...CORE,
-  'styles.css', 'earth.css', 'terrain.css',  'live.css',
+  'styles.css', 'earth.css', 'terrain.css', 'live.css',
   'premium.css', 'theme.css', 'compact.css', 'relic-shell.css', 'relic-worlds.css',
   'film-bridge.css', 'app-settings.css', 'navigation.css', 'branding.css', 'interaction-motion.css', 'assets/jules-avatar.jpg',
   'app.js', 'atlas-live.js', 'atlas-services.js', 'orbital-data.js', 'theme.js',
   'surface-detail.js', 'nasa-worlds.js', 'earth-view.js', 'earth-imagery.js',
-  'earth-terrain.js', 'terrain-globe.js', 'terrain-view.js', 
-    
+  'earth-terrain.js', 'terrain-globe.js', 'terrain-view.js',
   'api-config.js', 'api-settings.js', 'api-settings.css', 'google-3d.js', 'google3d.css', 'place-search.js', 'place-search.css',
   'film-bridge.js', 'world-bridge.js', 'app-settings.js', 'navigation.js',
   'world-ui.js', 'world-icons.js', 'world-performance.js',

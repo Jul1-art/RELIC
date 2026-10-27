@@ -6,26 +6,10 @@ const dashboard = initializePlanetDashboard();
 hydrateWorldIcons();
 
 const copy = {
-  en:{imagery:'Imagery',settings:'Settings',showDetails:'Show view details',hideDetails:'Hide view details',currentView:'Current view',closeImagery:'Close imagery'},
-  fr:{imagery:'Imagerie',settings:'Réglages',showDetails:'Afficher les détails de la vue',hideDetails:'Réduire les détails de la vue',currentView:'Vue actuelle',closeImagery:'Fermer l’imagerie'},
+  en:{imagery:'Imagery',settings:'Settings',currentView:'Current view',closeImagery:'Close imagery'},
+  fr:{imagery:'Imagerie',settings:'Réglages',currentView:'Vue actuelle',closeImagery:'Fermer l’imagerie'},
 };
 const strings=()=>copy[getLanguage()==='fr'?'fr':'en'];
-function fold(panel,collapsed){
-  if(!panel)return;
-  panel.classList.toggle('collapsed',collapsed);
-  const button=panel.querySelector('[data-world-panel-toggle],#panel-toggle');
-  if(!button)return;
-  button.setAttribute('aria-expanded',String(!collapsed));
-  button.setAttribute('aria-label',collapsed?strings().showDetails:strings().hideDetails);
-}
-// Only the simulation keeps its legacy independent console. Planet views use
-// the dashboard's single inspector instead of several floating panel systems.
-if(!dashboard){
-  for(const button of document.querySelectorAll('[data-world-panel-toggle]')){
-    const panel=document.getElementById(button.dataset.worldPanelToggle);
-    button.addEventListener('click',()=>fold(panel,!panel.classList.contains('collapsed')));
-  }
-}
 for(const button of document.querySelectorAll('[data-world-close]')){
   button.addEventListener('click',()=>{
     const drawer=document.getElementById(button.dataset.worldClose);
