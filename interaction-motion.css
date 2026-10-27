@@ -1,0 +1,11 @@
+/* Quiet interaction motion shared by the atlas, planetary tools and dialogs. */
+html body :is(.planet-dashboard,.relic-world,.relic-settings-dialog,.relic-sources-dialog,.relic-dialog,.relic-api-dialog,.intro.prologue) button:enabled:not([hidden]):not(.prologue-reveal){transition:translate .18s cubic-bezier(.2,.7,.3,1),filter .18s ease,background-color .18s ease,border-color .18s ease,box-shadow .18s ease,color .18s ease,opacity .18s ease,scale .18s ease}
+html body :is(.planet-dashboard,.relic-world,.relic-settings-dialog,.relic-sources-dialog,.relic-dialog,.relic-api-dialog,.intro.prologue) button:focus-visible{outline:2px solid color-mix(in srgb,currentColor 72%,transparent);outline-offset:3px}
+@media(hover:hover) and (pointer:fine){
+ html body :is(.planet-dashboard,.relic-world,.relic-settings-dialog,.relic-sources-dialog,.relic-dialog,.relic-api-dialog,.intro.prologue) button:enabled:not([hidden]):not(.prologue-reveal):hover{translate:0 -1px;filter:brightness(1.1)}
+ html body :is(.planet-dashboard,.relic-world,.relic-settings-dialog,.relic-sources-dialog,.relic-dialog,.relic-api-dialog,.intro.prologue) button:enabled:not([hidden]):not(.prologue-reveal):active{translate:0 0;filter:brightness(1.03)}
+}
+html[data-motion=reduced] body :is(.planet-dashboard,.relic-world,.relic-settings-dialog,.relic-sources-dialog,.relic-dialog,.relic-api-dialog,.intro.prologue) button{transition:none!important;translate:none!important}
+@media(prefers-reduced-motion:reduce){
+ html:not([data-motion=full]) body :is(.planet-dashboard,.relic-world,.relic-settings-dialog,.relic-sources-dialog,.relic-dialog,.relic-api-dialog,.intro.prologue) button{transition:none!important;translate:none!important}
+}

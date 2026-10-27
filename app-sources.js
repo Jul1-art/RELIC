@@ -70,7 +70,16 @@ export async function openSources(trigger) {
   paragraph(content, french() ? 'Explorer ce que nous avons laissé derrière nous.' : 'Explore what we left behind.', 'relic-sources-lead');
   const people = document.createElement('div'); people.className = 'relic-sources-people'; content.append(people);
   for (const [name, role] of [['Jules',french() ? 'Développement et interface' : 'Development and interface'],['Hugo',french() ? 'Recherche spatiale et récits' : 'Space research and storytelling']]) {
-    const card = document.createElement('div'); heading(card,name); paragraph(card,role); people.append(card);
+    const card = document.createElement('div'); card.className = 'relic-creator';
+    const avatar = document.createElement('span'); avatar.className = 'relic-creator-avatar'; avatar.setAttribute('aria-hidden','true');
+    const initial = document.createElement('span'); initial.textContent = name[0]; avatar.append(initial);
+    if (name === 'Jules') {
+      const image = document.createElement('img'); image.src = new URL('./assets/jules-avatar.jpg', import.meta.url).href;
+      image.alt = ''; image.width = 56; image.height = 56; image.loading = 'lazy'; image.decoding = 'async';
+      image.addEventListener('error', () => image.remove(), {once:true}); avatar.append(image);
+    }
+    const identity = document.createElement('div'); identity.className = 'relic-creator-identity'; heading(identity,name); paragraph(identity,role);
+    card.append(avatar,identity); people.append(card);
   }
   heading(content, french() ? 'Atlas et données' : 'Atlas and data');
   const sources = document.createElement('div'); sources.className = 'relic-sources-links'; content.append(sources);
@@ -89,8 +98,8 @@ export async function openSources(trigger) {
     : 'Sizes and distances are adapted for readability. Blue orbital motion shows the direction of travel at an illustrative speed, distinct from the planets’ real speeds.','relic-sources-note');
   heading(content, french() ? 'Le film' : 'The film');
   paragraph(content, french()
-    ? 'Un documentaire de 8 min 49 monté à partir de films existants. Les origines et certaines missions utilisent des animations ; les dinosaures sont des reconstitutions. La narration nouvelle utilise des voix de synthèse en anglais et en français. Les voix historiques sont des enregistrements originaux.'
-    : 'An 8-minute 49-second documentary edited from existing footage. The origins and some missions use animations; dinosaurs are reconstructed. New narration uses synthetic voices in English and French. Historical voices are original recordings.');
+    ? 'Un documentaire de 8 min 49, exporté en 1080p50 à partir des meilleures sources disponibles. Les archives de définition inférieure sont agrandies et leur cadence adaptée ; cela ne recrée pas de détails manquants. Les origines et certaines missions utilisent des animations ; les dinosaures sont des reconstitutions. La narration nouvelle utilise des voix de synthèse en anglais et en français. Les voix historiques sont des enregistrements originaux.'
+    : 'An 8-minute 49-second documentary exported at 1080p50 from the best available source footage. Lower-resolution archives are upscaled and their frame rates resampled; this does not recreate missing detail. The origins and some missions use animations; dinosaurs are reconstructed. New narration uses synthetic voices in English and French. Historical voices are original recordings.');
   paragraph(content,'“Helios” — Scott Buckley · CC BY 4.0','relic-sources-music');
   const filmSources = document.createElement('div'); filmSources.className = 'relic-sources-links'; content.append(filmSources);
   for (const [label,url] of [

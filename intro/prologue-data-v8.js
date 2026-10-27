@@ -1,24 +1,21 @@
 /** Continuous V8 narrative, language-specific clause captions and picture-clock framing. */
 export const PROLOGUE_MEDIA=Object.freeze({
-  "revision": "8.4",
+  "revision": "8.5-hd50",
   "duration": 529,
   "preview": false,
-  "encoding": "./assets/prologue/encoding-v8.json",
+  "encoding": "./assets/prologue/encoding-v8-5-hd50.json",
   "sources": "./assets/prologue/sources-v8.json",
-  "poster": "./assets/prologue/poster-v8.jpg",
+  "poster": "./assets/prologue/poster-v8-5-hd50.jpg",
   "language": "en",
-  "src": "./assets/prologue/relic-prologue-v8-4-en.mp4",
-  "hls": "./assets/prologue/v8-4/en.m3u8",
+  "hls": "./assets/prologue/v8-5-hd50/en.m3u8",
   "languages": {
     "en": {
       "language": "en",
-      "src": "./assets/prologue/relic-prologue-v8-4-en.mp4",
-      "hls": "./assets/prologue/v8-4/en.m3u8"
+      "hls": "./assets/prologue/v8-5-hd50/en.m3u8"
     },
     "fr": {
       "language": "fr",
-      "src": "./assets/prologue/relic-prologue-v8-4-fr.mp4",
-      "hls": "./assets/prologue/v8-4/fr.m3u8"
+      "hls": "./assets/prologue/v8-5-hd50/fr.m3u8"
     }
   },
   "scenes": [
@@ -4308,15 +4305,11 @@ export const PROLOGUE_MEDIA=Object.freeze({
     ]
   },
   "offline": {
-    "id": "relic-documentary-v8-4-d8614d1e4ad2de791e1d",
-    "extra": [
-      {
-        "src": "./assets/prologue/iss-backdrop-v7.jpg",
-        "bytes": 26396,
-        "sha256": "c76a447548f38991e6ceed65e0df3b16df6a572811ebccc18d17929b6460748d"
-      }
-    ]
-  }
+    "id": "relic-documentary-v8-5-hd50-9ad9ae3c890839b84f32"
+  },
+  "width": 1920,
+  "height": 1080,
+  "fps": 50
 });
 export const PROLOGUE=Object.freeze([
   {

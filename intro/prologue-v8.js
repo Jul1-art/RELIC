@@ -298,7 +298,24 @@ export function createPrologue({
       render();
     }
     function cancelFeedback(){if(feedbackTimer!==null)view.clearTimeout(feedbackTimer);feedbackTimer=null;}
-    function showFeedback(text){cancelFeedback();feedback.textContent=text;feedback.hidden=false;feedbackTimer=view.setTimeout(()=>{feedback.hidden=true;feedbackTimer=null;},1000);}
+    function showFeedback(text, glyph = null) {
+      cancelFeedback();
+      feedback.replaceChildren();
+      feedback.classList.toggle('prologue-playback-feedback', Boolean(glyph));
+      if (glyph) {
+        feedback.innerHTML = icon(glyph);
+        const label = document.createElement('span');
+        label.className = 'prologue-visually-hidden';
+        label.textContent = text;
+        feedback.append(label);
+      } else feedback.textContent = text;
+      feedback.hidden = false;
+      feedbackTimer = view.setTimeout(() => { feedback.hidden = true; feedbackTimer = null; }, glyph ? 650 : 1000);
+    }
+    function showPlaybackFeedback(playing) {
+      const text = language() === 'fr' ? playing ? 'Lecture' : 'En pause' : playing ? 'Playing' : 'Paused';
+      showFeedback(text, playing ? 'pause' : 'play');
+    }
     function syncVolume(){
       const amount=Math.round((video.muted?0:video.volume)*100);
       for(const input of volumeInputs){if(document.activeElement!==input)input.value=String(amount);input.style.setProperty('--volume-progress',`${amount}%`);input.setAttribute('aria-valuetext',`${amount}%`);}
@@ -605,6 +622,7 @@ export function createPrologue({
         await video.play();
         if (!current() || request !== attempt) return;
         render(); queueFrame(); scheduleChrome();
+        showPlaybackFeedback(true);
       } catch {
         if (!current() || request !== attempt || failed || document.hidden) return;
         showGate('blocked');
@@ -615,6 +633,7 @@ export function createPrologue({
       explicitPlaybackIntent = false;
       video.pause();
       render();
+      showPlaybackFeedback(false);
     }
     function fail() {
       if (!current() || failed) return;
@@ -668,7 +687,7 @@ export function createPrologue({
       if(key==='?'){setMenu(true,true);return;}
       if(key==='arrowup'||key==='arrowdown'){setVolume((video.muted?0:video.volume)+(key==='arrowup'?.05:-.05));return;}
       if(key==='>'||key==='<'){setRate(video.playbackRate+(key==='>'?.25:-.25));return;}
-      if(key===','||key==='.'){if(video.paused)seekTo(video.currentTime+(key==='.'?1/24:-1/24));return;}
+      if(key===','||key==='.'){const fps=Math.max(1,Number(filmMedia.fps)||24);if(video.paused)seekTo(video.currentTime+(key==='.'?1/fps:-1/fps));return;}
       if(key==='home'||key==='end'){seekTo(key==='home'?0:Math.max(0,duration()-.01));return;}
       if(/^[0-9]$/.test(key)){seekTo(duration()*Number(key)/10);return;}
       seekTo(video.currentTime+(['j','arrowleft'].includes(key)?-1:1)*(['j','l'].includes(key)?10:5));

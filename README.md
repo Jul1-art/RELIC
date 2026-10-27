@@ -29,7 +29,7 @@ python3 -m pip install -r requirements.txt
 python3 terrain_server.py
 ```
 
-The clone stores the two MP4 fallbacks as transport-sized binary parts. The Python server and static build verify the parts and automatically reconstruct the original MP4 files before serving or publishing them; no re-encoding or download is needed.
+The current film is delivered as local HLS segments at 1920 × 1080 and 50 frames per second, with English and French audio. Playback uses browser-native HLS or the bundled HLS player. The offline action saves and verifies the complete bilingual segmented edition. Older MP4 transport parts remain in source history but are not the active HD edition.
 
 Open **http://localhost:8000/**. On Windows, use the corresponding virtual-environment activation command and `python` if `python3` is unavailable.
 
@@ -119,7 +119,7 @@ Une publication statique reste possible avec `node tools/build_static.mjs`, mais
 
 ## Film player
 
-The English/French introduction opens paused and loads its video only after **Play**. The monochrome player includes a full-width timeline, captions, playback speed and volume adjustable in 1% steps or by entering an exact percentage in the player settings. Click or tap the picture to play or pause. Portrait video is centered without cropping. Opening and closing Sources or the offline dialog keeps playback paused.
+The English/French introduction opens paused and loads its video only after **Play**. The export is 1080p50; original HD material is retained where available, while older archives are upscaled and their frame rates resampled. This does not create missing archival detail. The monochrome player includes a full-width timeline, captions, playback speed and volume adjustable in 1% steps or by entering an exact percentage in the player settings. Click or tap the picture to play or pause. Portrait video is centered without cropping. Opening and closing Sources or the offline dialog keeps playback paused.
 
 Keyboard shortcuts work while the film is open, outside editable fields and other dialogs. Press **?** for the in-player reference.
 
@@ -143,4 +143,4 @@ Earth, Moon and Mars share a responsive command bar, location search and compact
 
 GitHub Pages serves static files and cannot run the Python API. The browser detects that mode, avoids missing `/api` requests and falls back to clearly labelled NASA/JPL model positions, timestamped NOAA solar-wind observations, public geocoding, local destinations and coordinates. Model values are estimates, not telemetry; expired measurements are omitted. Without a terrain backend, the globe is an unmeasured ellipsoid with imagery. Optional Google 3D remains a separate provider layer.
 
-Build with `node tools/build_static.mjs` and publish only `dist/`; this also reconstructs both verified MP4 fallbacks. A custom GitHub Pages workflow must use **Settings → Pages → Source: GitHub Actions**. Branch/Jekyll publication serves the source tree without that build. GitHub Pages can still impose host-level IP or bandwidth limits; the application reduces request bursts, reuses cached modules and honours `Retry-After`, but cannot disable the hosting service’s protection.
+Build with `node tools/build_static.mjs` and publish only `dist/`; the build includes the current HD HLS edition and omits retired film assets. A custom GitHub Pages workflow must use **Settings → Pages → Source: GitHub Actions**. Branch/Jekyll publication serves the source tree without that build. GitHub Pages can still impose host-level IP or bandwidth limits; the application reduces request bursts, reuses cached modules and honours `Retry-After`, but cannot disable the hosting service’s protection.

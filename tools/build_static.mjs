@@ -1,4 +1,4 @@
-import { cp, lstat, mkdir, readdir, rm } from 'node:fs/promises';
+import { access, cp, lstat, mkdir, readdir, rm } from 'node:fs/promises';
 import { extname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { restoreFilms } from './restore_film.mjs';
@@ -8,7 +8,11 @@ const output = join(root, 'dist');
 const rootExtensions = new Set(['.html', '.css', '.js', '.json', '.webmanifest', '.svg', '.ico', '.png']);
 const assetDirectories = ['assets', 'vendor', 'earth-search', 'intro'];
 
-await restoreFilms(root);
+const hdRelease = 'intro/assets/prologue/v8-5-hd50/';
+let hasHdRelease = false;
+try { await access(join(root,'intro/assets/prologue/encoding-v8-5-hd50.json')); hasHdRelease=true; }
+catch { /* Older source snapshots still use their verified MP4 transport parts. */ }
+if (!hasHdRelease) await restoreFilms(root);
 
 function privateName(name) {
   const lower = name.toLowerCase();
@@ -22,6 +26,16 @@ function privateName(name) {
 async function publicAsset(source) {
   // The build already restored the ordinary MP4s; omit their duplicate parts.
   if (relative(root, source).split(sep).includes('mp4-parts')) return false;
+  const name=relative(root,source).split(sep).join('/');
+  // The current HD edition streams bounded HLS segments. Do not redeploy the
+  // retired 720p films or large review-only MP4s beside the new release.
+  if (hasHdRelease && name.startsWith('intro/assets/prologue/')) {
+    const keep=['intro/assets/prologue/encoding-v8-5-hd50.json','intro/assets/prologue/poster-v8-5-hd50.jpg','intro/assets/prologue/sources-v8.json'];
+    if (!name.startsWith(hdRelease) && !keep.includes(name)) {
+      const stat=await lstat(source);
+      if (!stat.isDirectory() || !hdRelease.startsWith(name+'/')) return false;
+    }
+  }
   if (relative(root, source).split(sep).some(privateName)) return false;
   // Do not carry a link to a developer's local configuration into dist/.
   return !(await lstat(source)).isSymbolicLink();

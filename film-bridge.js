@@ -104,7 +104,7 @@ async function showOffline({ trigger } = {}) {
   const { dialog, content } = createDialog(copy.title, trigger);
   paragraph(content, copy.lead, 'relic-dialog-lead'); paragraph(content, copy.copy);
   const card = document.createElement('div'); card.className = 'relic-offline-card'; content.append(card);
-  paragraph(card, 'EN + FR · 720p', 'relic-offline-badge');
+  paragraph(card, 'EN + FR · 1080p50 HD', 'relic-offline-badge');
   const statusText = paragraph(card, copy.preparing); statusText.role = 'status'; statusText.setAttribute('aria-live', 'polite');
   const progress = document.createElement('progress'); progress.max = 1; progress.value = 0; progress.hidden = true; card.append(progress);
   const size = paragraph(card, '', 'relic-dialog-note');

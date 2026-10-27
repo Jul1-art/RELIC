@@ -62,6 +62,7 @@ export function attachFilmSource(video, media = {}, { shouldResume = () => false
     video.src = media.hls;
     video.load();
   } else {
+    if (!media.src) throw new Error('This browser does not support the film stream.');
     fallbackActive = true;
     video.src = media.src || '';
     video.load();
