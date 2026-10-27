@@ -8,7 +8,7 @@ const COPY = {
     skip: 'Explore the solar system', play: 'Play', enter: 'Explore the solar system', watchSound: 'Watch with sound',
     pause: 'Pause film', resume: 'Resume film', mute: 'Turn sound off', unmute: 'Turn sound on',
     position: 'Film position', introduction: 'RELIC introduction', preview: 'Preview', offline: 'Save film offline', offlineReady: 'Film available offline',
-    clean: 'Hide controls (H)', show: 'Show controls (H)', captions: 'Show story captions (C)', hideCaptions: 'Hide story captions (C)',
+    show: 'Show controls', captions: 'Show story captions (C)', hideCaptions: 'Hide story captions (C)', narrationLanguage:'Narration language', switchLanguage:'Switch narration to French',
     fullscreen: 'Full screen (F)', exitFullscreen: 'Exit full screen (F)',
     reduced: 'Play the film, or explore at your own pace.',
     blocked: 'Start the film with sound.',
@@ -20,7 +20,7 @@ const COPY = {
     skip: 'Explorer le système solaire', play: 'Lire', enter: 'Explorer le système solaire', watchSound: 'Activer le son',
     pause: 'Mettre le film en pause', resume: 'Reprendre le film', mute: 'Couper le son', unmute: 'Activer le son',
     position: 'Position dans le film', introduction: 'Introduction de RELIC', preview: 'Aperçu', offline: 'Garder le film hors ligne', offlineReady: 'Film disponible hors ligne',
-    clean: 'Masquer les commandes (H)', show: 'Afficher les commandes (H)', captions: 'Afficher les textes (C)', hideCaptions: 'Masquer les textes (C)',
+    show: 'Afficher les commandes', captions: 'Afficher les textes (C)', hideCaptions: 'Masquer les textes (C)', narrationLanguage:'Langue de narration', switchLanguage:'Passer la narration en anglais',
     fullscreen: 'Plein écran (F)', exitFullscreen: 'Quitter le plein écran (F)',
     reduced: 'Lancez le film, ou explorez à votre rythme.',
     blocked: 'Lancez le film avec le son.',
@@ -32,7 +32,7 @@ const COPY = {
 const BRAND_ASSET = new URL('../assets/relic-logo-v1.png', import.meta.url).href;
 const ICONS = Object.freeze({
   play: 'play', pause: 'pause', muted: 'volume-xmark',
-  clean: 'eye-slash', captions: 'closed-captioning', fullscreen: 'expand',
+  captions: 'closed-captioning', fullscreen: 'expand',
   exitFullscreen: 'compress', sound: 'volume-high', download: 'download',
   complete: 'check', close: 'xmark',
 });
@@ -52,6 +52,7 @@ export function createPrologue({
   onOpen = () => {},
   onClose = () => {},
   onOffline = null,
+  onLanguageChange = null,
   canPlayOffline = async () => false,
 }) {
   if (!element?.ownerDocument) throw new TypeError('A prologue element is required.');
@@ -64,13 +65,23 @@ export function createPrologue({
   let exitTimer = null;
   let disposed = false;
   let keyboard = false;
+  let narrationLanguage = getLanguage() === 'fr' ? 'fr' : 'en';
 
-  const language = () => getLanguage() === 'fr' ? 'fr' : 'en';
+  const language = () => narrationLanguage;
   const localize = value => typeof value === 'string' ? value : value?.[language()] ?? value?.en ?? '';
   const trackKeyboard = event => { if (!event.metaKey && !event.ctrlKey && !event.altKey) keyboard = true; };
   const trackPointer = () => { keyboard = false; };
   document.addEventListener('keydown', trackKeyboard, true);
   document.addEventListener('pointerdown', trackPointer, true);
+
+  async function switchLanguage(value) {
+    const next = value === 'fr' ? 'fr' : 'en';
+    if (next === narrationLanguage) return false;
+    narrationLanguage = next;
+    const change = session?.changeLanguage?.(next) ?? true;
+    try { onLanguageChange?.(next); } catch { /* The local player still changes when preference storage is unavailable. */ }
+    return await change;
+  }
 
   function releaseVideo(active) {
     active.stream?.destroy();
@@ -81,6 +92,7 @@ export function createPrologue({
     active.video.load();
     // Release the small mobile backdrop bitmap with the media session.
     if (active.backdrop) { active.backdrop.width = 0; active.backdrop.height = 0; }
+    if (active.languageFrame) { active.languageFrame.width = 0; active.languageFrame.height = 0; }
     element.classList.remove('prologue-backdrop-ready');
   }
 
@@ -90,7 +102,7 @@ export function createPrologue({
     exitTimer = null;
     closing = null;
     releaseVideo(active);
-    element.classList.remove('leaving', 'prologue-gated', 'prologue-failed');
+    element.classList.remove('leaving', 'prologue-gated', 'prologue-failed', 'prologue-language-switching');
     element.classList.add('hidden');
     delete element.dataset.scene;
     delete element.dataset.chapter;
@@ -101,6 +113,7 @@ export function createPrologue({
     const active = session;
     if (!active) return;
     session = null;
+    active.cancelLanguageSwitch();
     active.controller.abort();
     active.cancelFrame();
     active.cancelLoading();
@@ -124,16 +137,17 @@ export function createPrologue({
     if (disposed || session) return;
     // A replay may begin while the previous opening is still fading away.
     if (closing) completeExit(closing);
+    narrationLanguage = getLanguage() === 'fr' ? 'fr' : 'en';
     const controller = new view.AbortController();
     const signal = controller.signal;
     const copy = () => COPY[language()];
     // A replay selects the current language's complete source when supplied.
     // media.narration remains metadata for the separately owned audio adapter.
-    const filmMedia = { ...media, ...(media.languages?.[language()] ?? {}) };
-    const cues = [...(media.captions?.[language()] ?? defaultCues)].sort((a,b)=>a.start-b.start);
+    let filmMedia = { ...media, ...(media.languages?.[language()] ?? {}) };
+    let cues = [...(media.captions?.[language()] ?? defaultCues)].sort((a,b)=>a.start-b.start);
     element.classList.add('prologue');
     element.classList.remove('hidden', 'leaving', 'prologue-failed', 'prologue-backdrop-ready');
-    for (const name of ['--end-blur', '--end-brightness', '--end-scale', '--end-progress']) element.style.removeProperty(name);
+    for (const name of ['--end-blur', '--end-brightness', '--end-scale', '--end-progress', '--end-picture-opacity', '--end-mark-opacity', '--end-word-opacity', '--end-rule-progress']) element.style.removeProperty(name);
     element.classList.toggle('prologue-reduced', Boolean(reducedMotion()));
     element.setAttribute('role', 'dialog');
     element.setAttribute('aria-modal', 'true');
@@ -142,7 +156,7 @@ export function createPrologue({
     element.tabIndex = -1;
     element.classList.remove('prologue-chrome-hidden', 'prologue-caption-off');
     // Only static interface markup uses HTML. Every supplied cue uses textContent.
-    element.innerHTML = `<canvas class="prologue-backdrop" width="0" height="0" aria-hidden="true"></canvas><video id="intro-video" class="prologue-film" playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+    element.innerHTML = `<canvas class="prologue-backdrop" width="0" height="0" aria-hidden="true"></canvas><video id="intro-video" class="prologue-film" playsinline preload="none" aria-hidden="true" tabindex="-1"></video><canvas class="prologue-language-frame" width="0" height="0" aria-hidden="true" hidden></canvas>
       <div class="prologue-shade" aria-hidden="true"></div>
       <header class="prologue-header"><span class="prologue-brand" aria-hidden="true"><img src="${BRAND_ASSET}" alt="" width="32" height="28">RELIC</span><span class="prologue-preview" hidden></span><button id="skip-intro" class="prologue-skip"><span></span></button></header>
       <button class="prologue-reveal prologue-visually-hidden" type="button" hidden></button>
@@ -155,17 +169,18 @@ export function createPrologue({
         <label class="prologue-scrubber"><span class="prologue-visually-hidden"></span><input type="range" min="0" max="1" step="0.01" value="0" disabled></label>
         <div class="prologue-transport">
           <div class="prologue-main-controls"><button class="prologue-pause" type="button"></button><div class="prologue-volume-group"><button class="prologue-audio" type="button" aria-pressed="false"></button><label class="prologue-inline-volume"><span class="prologue-visually-hidden"></span><input class="prologue-volume-input" data-player-volume type="range" min="0" max="100" step="1" value="100"><output class="prologue-volume-value">100%</output></label></div><time class="prologue-time">0:00 / 8:49</time></div>
-          <div class="prologue-extra-controls"><button class="prologue-captions" type="button" aria-pressed="true">${icon('captions')}</button><button class="prologue-settings" type="button" aria-controls="prologue-player-menu" aria-expanded="false">${worldIcon('gear')}</button><button class="prologue-fullscreen" type="button">${icon('fullscreen')}</button></div>
+          <div class="prologue-extra-controls"><button class="prologue-language" type="button"><span></span></button><button class="prologue-captions" type="button" aria-pressed="true">${icon('captions')}</button><button class="prologue-settings" type="button" aria-controls="prologue-player-menu" aria-expanded="false">${worldIcon('gear')}</button><button class="prologue-fullscreen" type="button">${icon('fullscreen')}</button></div>
         </div>
         <section class="prologue-player-menu" id="prologue-player-menu" role="dialog" aria-modal="false" aria-labelledby="prologue-player-menu-title" hidden>
           <header><h2 id="prologue-player-menu-title"></h2><button class="prologue-menu-close" type="button">${icon('close')}</button></header>
           <div class="prologue-menu-volume-row"><label><span data-player-copy="volume"></span><input class="prologue-menu-volume" data-player-volume type="range" min="0" max="100" step="1" value="100"></label><label class="prologue-volume-number-wrap"><input class="prologue-volume-number" type="number" min="0" max="100" step="1" value="100" inputmode="numeric"><span aria-hidden="true">%</span></label></div>
           <fieldset class="prologue-speed"><legend data-player-copy="speed"></legend><div>${[.25,.5,.75,1,1.25,1.5,1.75,2].map(rate=>`<button type="button" data-player-rate="${rate}" aria-pressed="${rate===1}">${rate}×</button>`).join('')}</div></fieldset>
-          <div class="prologue-menu-actions"><button class="prologue-clean" type="button">${icon('clean')}<span></span></button><button class="prologue-download" type="button" hidden>${icon('download')}<span></span></button><button class="prologue-shortcut-toggle" type="button" aria-expanded="false"><span aria-hidden="true">?</span><span data-player-copy="help"></span></button></div>
+          <div class="prologue-menu-actions"><button class="prologue-download" type="button" hidden>${icon('download')}<span></span></button><button class="prologue-shortcut-toggle" type="button" aria-expanded="false"><span aria-hidden="true">?</span><span data-player-copy="help"></span></button></div>
           <div class="prologue-shortcuts" hidden></div>
         </section>
       </footer>`;
     const video = element.querySelector('#intro-video');
+    const languageFrame = element.querySelector('.prologue-language-frame');
     const backdrop = element.querySelector('.prologue-backdrop');
     const backdropContext = backdrop.getContext('2d', { alpha: false });
     const fittedScreen = view.matchMedia('(orientation: portrait), (max-height: 500px) and (pointer: coarse)');
@@ -187,7 +202,7 @@ export function createPrologue({
     const loading = element.querySelector('.prologue-loading');
     const header = element.querySelector('.prologue-header');
     const preview = element.querySelector('.prologue-preview');
-    const clean = element.querySelector('.prologue-clean');
+    const languageButton = element.querySelector('.prologue-language');
     const captions = element.querySelector('.prologue-captions');
     const fullscreen = element.querySelector('.prologue-fullscreen');
     const transcript = element.querySelector('#intro-transcript');
@@ -240,7 +255,9 @@ export function createPrologue({
     let backdropPaintAt = -Infinity;
     let backdropPosition = -Infinity;
     let backdropScene = '';
-    const active = { controller, video, backdrop, caption, cancelFrame, cancelLoading, cancelChrome, typing, cancelFeedback, stream: null };
+    let sourceSwitch = null;
+    let preferredRate = 1;
+    const active = { controller, video, backdrop, languageFrame, caption, cancelFrame, cancelLoading, cancelChrome, typing, cancelFeedback, cancelLanguageSwitch, stream: null, changeLanguage };
     session = active;
     const current = () => session === active && !signal.aborted;
     const duration = () => Number.isFinite(video.duration) && video.duration > 0
@@ -251,7 +268,7 @@ export function createPrologue({
       chromeTimer = null;
     }
     function canHideChrome() {
-      return !video.paused && !video.ended && !gateReason && !failed && loading.hidden && !menuOpen;
+      return !sourceSwitch && !video.paused && !video.ended && !gateReason && !failed && loading.hidden && !menuOpen;
     }
     function scheduleChrome() {
       cancelChrome();
@@ -259,7 +276,7 @@ export function createPrologue({
       chromeTimer = view.setTimeout(() => {
         chromeTimer = null;
         if (!current() || !canHideChrome()) return;
-        // Keyboard focus remains discoverable until the user chooses clean view.
+        // Keep keyboard-focused commands discoverable during playback.
         if (keyboard && (header.contains(document.activeElement) || controls.contains(document.activeElement))) return;
         setChrome(false);
       }, soundChoice ? 2600 : 4200);
@@ -276,7 +293,6 @@ export function createPrologue({
         if (chromeVisible) node.removeAttribute('aria-hidden');
         else node.setAttribute('aria-hidden', 'true');
       }
-      clean.setAttribute('aria-label', chromeVisible ? copy().clean : copy().show);
       reveal.hidden = chromeVisible;
       reveal.setAttribute('aria-label', copy().show);
       if (chromeVisible && schedule) scheduleChrome();
@@ -333,9 +349,9 @@ export function createPrologue({
       else{lastAudibleVolume=video.volume;video.muted=true;}
       render();setChrome(true);showFeedback(`${copy().volume} ${Math.round((video.muted?0:video.volume)*100)}%`);
     }
-    function setRate(value){video.playbackRate=Math.max(.25,Math.min(2,Math.round(Number(value)*4)/4));render();setChrome(true);showFeedback(`${video.playbackRate}×`);}
+    function setRate(value){preferredRate=Math.max(.25,Math.min(2,Math.round(Number(value)*4)/4));video.defaultPlaybackRate=preferredRate;video.playbackRate=preferredRate;render();setChrome(true);showFeedback(`${video.playbackRate}×`);}
     function seekTo(value){
-      if(!hasSource||failed||video.readyState<1)return;
+      if(!hasSource||failed||sourceSwitch||video.readyState<1)return;
       try{video.currentTime=Math.max(0,Math.min(duration(),Number(value)||0));}catch{}
       render();setChrome(true);
     }
@@ -347,7 +363,7 @@ export function createPrologue({
     }
     function renderShortcuts(){
       const fr=language()==='fr';
-      const items=[['Space / K',fr?'Lecture / pause':'Play / pause'],['F',fr?'Plein écran':'Full screen'],['M',fr?'Couper / activer le son':'Mute / unmute'],['C',fr?'Sous-titres':'Captions'],['J / L',fr?'Reculer / avancer de 10 s':'Back / forward 10 seconds'],['← / →',fr?'Reculer / avancer de 5 s':'Back / forward 5 seconds'],['↑ / ↓',fr?'Volume ±5 %':'Volume ±5%'],['0–9',fr?'Position 0–90 %':'Seek 0–90%'],['Home / End',fr?'Début / fin':'Beginning / end'],[', / .',fr?'Image précédente / suivante en pause':'Previous / next frame while paused'],['< / >',fr?'Vitesse ±0,25×':'Speed ±0.25×'],['H',fr?'Masquer les commandes':'Hide controls'],['?',fr?'Raccourcis clavier':'Keyboard shortcuts']];
+      const items=[['Space / K',fr?'Lecture / pause':'Play / pause'],['F',fr?'Plein écran':'Full screen'],['M',fr?'Couper / activer le son':'Mute / unmute'],['C',fr?'Sous-titres':'Captions'],['J / L',fr?'Reculer / avancer de 10 s':'Back / forward 10 seconds'],['← / →',fr?'Reculer / avancer de 5 s':'Back / forward 5 seconds'],['↑ / ↓',fr?'Volume ±5 %':'Volume ±5%'],['0–9',fr?'Position 0–90 %':'Seek 0–90%'],['Home / End',fr?'Début / fin':'Beginning / end'],[', / .',fr?'Image précédente / suivante en pause':'Previous / next frame while paused'],['< / >',fr?'Vitesse ±0,25×':'Speed ±0.25×'],['?',fr?'Raccourcis clavier':'Keyboard shortcuts']];
       shortcuts.replaceChildren(...items.map(([key,label])=>{const row=document.createElement('p');const code=document.createElement('kbd');code.textContent=key;const text=document.createElement('span');text.textContent=label;row.append(code,text);return row;}));
       helpToggle.setAttribute('aria-label',copy().shortcuts);
     }
@@ -488,13 +504,15 @@ export function createPrologue({
       const titleCard = ['typing', 'bridge', 'end'].includes(cue?.kind);
       caption.classList.toggle('prologue-caption-hidden', !gateReason && ((cue?.kind === 'visual' && !pictureLabel) || (!captionsVisible && !titleCard)));
       if (cue?.kind === 'typing') typing.render({position,gated:Boolean(gateReason)});
-      const endProgress = cue?.kind === 'end' ? smooth((position - cue.start) / 1.8) : 0;
-      // Inherit the ending treatment on both picture layers. The portrait
-      // backdrop otherwise stays clear while only the small contained film blurs.
+      const ending = cue?.kind === 'end';
+      const endTime = ending ? position - cue.start : 0;
+      const endProgress = ending ? smooth(endTime / 3) : 0;
+      const staticEnding = ending && Boolean(reducedMotion());
       element.style.setProperty('--end-progress', endProgress.toFixed(4));
-      element.style.setProperty('--end-blur', `${(endProgress * 22).toFixed(2)}px`);
-      element.style.setProperty('--end-brightness', (1 - endProgress * .42).toFixed(3));
-      element.style.setProperty('--end-scale', (1 + endProgress * .055).toFixed(4));
+      element.style.setProperty('--end-picture-opacity', (ending ? staticEnding ? 0 : 1 - smooth(endTime / 1.4) : 1).toFixed(4));
+      element.style.setProperty('--end-mark-opacity', (staticEnding ? 1 : ending ? smooth((endTime - .8) / 1.4) : 0).toFixed(4));
+      element.style.setProperty('--end-word-opacity', (staticEnding ? 1 : ending ? smooth((endTime - 1.4) / 1.4) : 0).toFixed(4));
+      element.style.setProperty('--end-rule-progress', (staticEnding ? 1 : ending ? smooth((endTime - 1.8) / 1.2) : 0).toFixed(4));
       // Archive captions follow every spoken word, including short radio calls.
       // Keep the entire clause visible for its complete cue instead of spending
       // most of a brief quotation on an entrance/exit animation.
@@ -510,7 +528,7 @@ export function createPrologue({
     }
     function render() {
       if (!current()) return;
-      const position = Number.isFinite(video.currentTime) ? video.currentTime : 0;
+      const position = sourceSwitch?.position ?? (Number.isFinite(video.currentTime) ? video.currentTime : 0);
       let index = cues.findIndex(cue => position >= Number(cue.start) && position < Number(cue.end));
       // The final decoded frame can report duration exactly before `ended`.
       // Retain the end card through that frame and the exit fade, without a
@@ -519,7 +537,7 @@ export function createPrologue({
       if (gateReason && index < 0 && cues.length) index = 0;
       setCaption(index, position);
       const length = duration();
-      range.disabled = !hasSource || failed || video.readyState < 1;
+      range.disabled = !hasSource || failed || Boolean(sourceSwitch) || video.readyState < 1;
       range.max = String(length);
       range.value = String(Math.min(position, length));
       range.style.setProperty('--prologue-progress', `${Math.max(0, Math.min(100, position / length * 100))}%`);
@@ -529,7 +547,8 @@ export function createPrologue({
         range.setAttribute('aria-valuetext', clockText);
       }
       syncVolume();
-      const nextTransport = `${language()}|${video.paused}|${video.ended}|${video.muted}|${gateReason}|${soundChoice}|${captionsVisible}|${video.playbackRate}|${document.fullscreenElement === element}`;
+      const paused = sourceSwitch ? !sourceSwitch.resume : video.paused;
+      const nextTransport = `${language()}|${paused}|${video.ended}|${video.muted}|${gateReason}|${soundChoice}|${captionsVisible}|${video.playbackRate}|${document.fullscreenElement === element}|${Boolean(sourceSwitch)}`;
       if (transportState !== nextTransport) {
         transportState = nextTransport;
         range.setAttribute('aria-label', copy().position);
@@ -541,9 +560,9 @@ export function createPrologue({
         play.setAttribute('aria-label', copy().play);
         play.title = copy().play;
         enter.querySelector('span').textContent = copy().enter;
-        pause.innerHTML = icon(video.paused ? 'play' : 'pause');
-        pause.setAttribute('aria-label', video.ended ? copy().restart : video.paused ? copy().resume : copy().pause);
-        pause.title = `${video.ended ? copy().restart : video.paused ? copy().resume : copy().pause} (Space / K)`;
+        pause.innerHTML = icon(paused ? 'play' : 'pause');
+        pause.setAttribute('aria-label', video.ended ? copy().restart : paused ? copy().resume : copy().pause);
+        pause.title = `${video.ended ? copy().restart : paused ? copy().resume : copy().pause} (Space / K)`;
         pause.setAttribute('aria-keyshortcuts','Space k');
         const silent = video.muted || video.volume === 0;
         audio.innerHTML = icon(silent ? 'muted' : 'sound');
@@ -552,8 +571,10 @@ export function createPrologue({
         audio.title = `${silent ? copy().unmute : copy().mute} (M)`;
         captions.setAttribute('aria-label', captionsVisible ? copy().hideCaptions : copy().captions);
         captions.setAttribute('aria-pressed', String(captionsVisible));
-        clean.setAttribute('aria-label', copy().clean);
-        clean.querySelector('span').textContent = copy().clean;
+        languageButton.querySelector('span').textContent=language().toUpperCase();
+        languageButton.setAttribute('aria-label',copy().switchLanguage);
+        languageButton.title=copy().switchLanguage;
+        languageButton.setAttribute('aria-busy',String(Boolean(sourceSwitch)));
         settings.setAttribute('aria-label',copy().settings); settings.title=copy().settings;
         menu.querySelector('h2').textContent=copy().settings;
         menuClose.setAttribute('aria-label',language()==='fr'?'Fermer les réglages':'Close settings');
@@ -564,7 +585,6 @@ export function createPrologue({
         download.querySelector('span').textContent=copy().offline;
         for(const button of menu.querySelectorAll('[data-player-rate]'))button.setAttribute('aria-pressed',String(Number(button.dataset.playerRate)===video.playbackRate));
         renderShortcuts();
-        clean.disabled = video.paused || Boolean(gateReason) || failed;
         fullscreen.innerHTML = icon(document.fullscreenElement === element ? 'exitFullscreen' : 'fullscreen');
         fullscreen.setAttribute('aria-label', document.fullscreenElement === element ? copy().exitFullscreen : copy().fullscreen);
         fullscreen.title=fullscreen.getAttribute('aria-label');
@@ -599,9 +619,93 @@ export function createPrologue({
       if (current()) offlineReady = ready;
       return ready;
     }
-    async function playFilm() {
+    function clearLanguageFrame() {
+      languageFrame.hidden = true;
+      languageFrame.width = 0; languageFrame.height = 0;
+      element.classList.remove('prologue-language-switching');
+    }
+    function cancelLanguageSwitch(keepFrame = false) {
+      const operation = sourceSwitch;
+      sourceSwitch = null;
+      operation?.controller.abort();
+      if (!keepFrame) clearLanguageFrame();
+    }
+    function waitForMedia(operation, events, predicate) {
+      return new Promise((resolve, reject) => {
+        let timer;
+        const cleanup = () => {
+          view.clearTimeout(timer);
+          for (const event of events) video.removeEventListener(event, check);
+          video.removeEventListener('error', error);
+          operation.controller.signal.removeEventListener('abort', aborted);
+        };
+        const check = () => { if (predicate()) { cleanup(); resolve(); } };
+        const error = () => { cleanup(); reject(new Error('The narration track could not load.')); };
+        const aborted = () => { cleanup(); reject(new view.DOMException('The narration change was superseded.', 'AbortError')); };
+        for (const event of events) video.addEventListener(event, check);
+        video.addEventListener('error', error);
+        operation.controller.signal.addEventListener('abort', aborted, {once:true});
+        timer = view.setTimeout(() => { cleanup(); reject(new Error('The narration change timed out.')); }, 30000);
+        check();
+      });
+    }
+    async function changeLanguage(next) {
+      const previous = sourceSwitch;
+      const position = previous?.position ?? (Number.isFinite(video.currentTime) ? video.currentTime : 0);
+      const resume = previous ? previous.resume && explicitPlaybackIntent : !video.paused && !video.ended && explicitPlaybackIntent;
+      cancelLanguageSwitch(Boolean(previous));
+      filmMedia = { ...media, ...(media.languages?.[next] ?? {}) };
+      cues = [...(media.captions?.[next] ?? defaultCues)].sort((a,b)=>a.start-b.start);
+      cueIndex = -2; cueLanguage = ''; transportState = '';
+      offlineReady = false; offlineCheck = null;
+      if (filmMedia.poster) video.poster = filmMedia.poster;
+      // Choosing a voice on the ready screen must not load the film.
+      if (!hasSource) { render(); if (gateReason) showGate(gateReason); return true; }
+      const operation = { position, resume, controller:new view.AbortController() };
+      sourceSwitch = operation;
+      if (!previous && video.readyState >= 2 && video.videoWidth) {
+        try {
+          languageFrame.width = video.videoWidth; languageFrame.height = video.videoHeight;
+          languageFrame.getContext('2d', {alpha:false}).drawImage(video,0,0);
+          languageFrame.style.objectPosition = fittedScreen.matches ? '50% 50%' : video.style.objectPosition || '50% 50%';
+          languageFrame.hidden = false;
+        } catch { clearLanguageFrame(); }
+      }
+      element.classList.add('prologue-language-switching');
+      attempt += 1; cancelFrame(); cancelLoading();
+      video.pause(); explicitPlaybackIntent = Boolean(resume);
+      active.stream?.destroy(); active.stream = null;
+      video.removeAttribute('src'); video.load();
+      video.defaultPlaybackRate = preferredRate; video.playbackRate = preferredRate;
+      failed = false; hideGate(); render(); setChrome(true,false);
+      try {
+        const metadata = waitForMedia(operation,['loadedmetadata','durationchange'],()=>video.readyState>=1);
+        try { active.stream = attachFilmSource(video,filmMedia,{shouldResume:()=>current()&&!sourceSwitch&&explicitPlaybackIntent&&!document.hidden&&!element.inert}); }
+        catch (error) { operation.controller.abort(); await metadata.catch(()=>{}); throw error; }
+        await metadata;
+        if (!current() || sourceSwitch !== operation) return false;
+        const target = Math.max(0,Math.min(position,duration()-.01));
+        if (Math.abs(video.currentTime-target)>.005) video.currentTime=target;
+        await waitForMedia(operation,['seeked','loadeddata','canplay'],()=>!video.seeking&&video.readyState>=2&&Math.abs(video.currentTime-target)<.06);
+        if (!current() || sourceSwitch !== operation) return false;
+        const continuePlaying = operation.resume && explicitPlaybackIntent && !document.hidden && !element.inert;
+        sourceSwitch = null;
+        operation.controller.abort();
+        clearLanguageFrame();
+        video.playbackRate = preferredRate;
+        explicitPlaybackIntent = Boolean(continuePlaying);
+        render(); setChrome(true);
+        if (continuePlaying) await playFilm(false);
+        return true;
+      } catch (error) {
+        if (error?.name === 'AbortError' || !current() || sourceSwitch !== operation) return false;
+        cancelLanguageSwitch(); fail(); return false;
+      }
+    }
+    async function playFilm(withFeedback = true) {
       if (!current() || failed || document.hidden || element.inert) return;
       explicitPlaybackIntent = true;
+      if (sourceSwitch) { sourceSwitch.resume=true; render(); return; }
       if (video.ended) { try { video.currentTime=0; } catch {} }
       const request = ++attempt;
       if (view.navigator.onLine === false && !await offlinePlayable()) {
@@ -622,7 +726,7 @@ export function createPrologue({
         await video.play();
         if (!current() || request !== attempt) return;
         render(); queueFrame(); scheduleChrome();
-        showPlaybackFeedback(true);
+        if (withFeedback) showPlaybackFeedback(true);
       } catch {
         if (!current() || request !== attempt || failed || document.hidden) return;
         showGate('blocked');
@@ -631,13 +735,18 @@ export function createPrologue({
     function pauseFilm() {
       attempt += 1;
       explicitPlaybackIntent = false;
+      if (sourceSwitch) sourceSwitch.resume=false;
       video.pause();
       render();
       showPlaybackFeedback(false);
     }
+    function togglePlayback() {
+      (sourceSwitch ? sourceSwitch.resume : !video.paused) ? pauseFilm() : playFilm();
+    }
     function fail() {
       if (!current() || failed) return;
       failed = true;
+      cancelLanguageSwitch();
       attempt += 1;
       explicitPlaybackIntent = false;
       cancelFrame();
@@ -651,7 +760,7 @@ export function createPrologue({
     }
     function visibilityChanged() {
       if (!current() || !document.hidden) return;
-      explicitPlaybackIntent=false;attempt+=1;video.pause();setChrome(true,false);
+      explicitPlaybackIntent=false;if(sourceSwitch)sourceSwitch.resume=false;attempt+=1;video.pause();setChrome(true,false);
     }
     function trapFocus(event) {
       if (!current() || element.inert) return;
@@ -672,15 +781,14 @@ export function createPrologue({
       const target=event.target;
       if(target?.closest?.('input,textarea,select,[contenteditable=true],.prologue-player-menu'))return;
       const key=event.key.toLowerCase();
-      const handled=[' ','k','f','m','c','h','j','l','arrowleft','arrowright','arrowup','arrowdown','home','end',',','.','<','>','?'].includes(key)||/^[0-9]$/.test(key);
+      const handled=[' ','k','f','m','c','j','l','arrowleft','arrowright','arrowup','arrowdown','home','end',',','.','<','>','?'].includes(key)||/^[0-9]$/.test(key);
       if(!handled)return;
       // Space on a focused button keeps the browser's one native activation.
       if(key===' '&&target?.closest?.('button'))return;
       event.preventDefault();event.stopPropagation();
-      if(key==='h'){if(!event.repeat)setChrome(!chromeVisible);return;}
       setChrome(true);
-      if(event.repeat&&[' ','k','f','m','c','h','?'].includes(key))return;
-      if(key===' '||key==='k'){video.paused?playFilm():pauseFilm();return;}
+      if(event.repeat&&[' ','k','f','m','c','?'].includes(key))return;
+      if(key===' '||key==='k'){togglePlayback();return;}
       if(key==='f'){toggleFullscreen();return;}
       if(key==='m'){toggleMute();return;}
       if(key==='c'){toggleCaptions();return;}
@@ -706,7 +814,7 @@ export function createPrologue({
     element.addEventListener('click', event => {
       if (!current() || element.inert || isPlayerControl(event.target) || screenDragged || dismissingPlayerMenu) return;
       setChrome(true);
-      video.paused ? playFilm() : pauseFilm();
+      togglePlayback();
     }, { signal });
     element.addEventListener('pointermove', event => {
       if (screenPress && Math.hypot(event.clientX - screenPress.x, event.clientY - screenPress.y) > 10) screenDragged = true;
@@ -717,8 +825,8 @@ export function createPrologue({
     }, { signal });
     element.addEventListener('focusin', event => { if (event.target !== element) setChrome(true); }, { signal });
     reveal.addEventListener('click', () => setChrome(true), { signal });
-    clean.addEventListener('click', () => setChrome(false), { signal });
     captions.addEventListener('click', toggleCaptions, { signal });
+    languageButton.addEventListener('click', () => { switchLanguage(language() === 'en' ? 'fr' : 'en'); }, {signal});
     fullscreen.addEventListener('click', toggleFullscreen, { signal });
     download.addEventListener('click', () => {
       setChrome(true, false);
@@ -737,7 +845,7 @@ export function createPrologue({
     skip.addEventListener('click', finish, { signal });
     enter.addEventListener('click', finish, { signal });
     play.addEventListener('click', () => { soundChoice = true; playFilm(); }, { signal });
-    pause.addEventListener('click', () => video.paused ? playFilm() : pauseFilm(), { signal });
+    pause.addEventListener('click', () => togglePlayback(), { signal });
     audio.addEventListener('click', toggleMute, { signal });
     range.addEventListener('input', () => {
       if (!hasSource || failed) return;
@@ -748,7 +856,7 @@ export function createPrologue({
       if (document.hidden || element.inert || !explicitPlaybackIntent) { explicitPlaybackIntent=false; video.pause(); return; }
       hideGate(); render(); queueFrame(); scheduleChrome();
     }, { signal });
-    video.addEventListener('pause', () => { explicitPlaybackIntent=false; cancelFrame(); cancelLoading(); render(); setChrome(true, false); }, { signal });
+    video.addEventListener('pause', () => { if(!sourceSwitch)explicitPlaybackIntent=false; cancelFrame(); cancelLoading(); render(); setChrome(true, false); }, { signal });
     video.addEventListener('playing', cancelLoading, { signal });
     video.addEventListener('waiting', waiting, { signal });
     video.addEventListener('stalled', waiting, { signal });
@@ -761,6 +869,17 @@ export function createPrologue({
       fail();
     }, { signal });
     document.addEventListener('visibilitychange', visibilityChanged, { signal });
+    // A Sources/offline dialog can open and close while a voice is loading.
+    // Remember its pause immediately, even if the new track finishes later.
+    const inertObserver = new view.MutationObserver(() => {
+      if (!current() || !element.inert) return;
+      explicitPlaybackIntent = false;
+      if (sourceSwitch) sourceSwitch.resume = false;
+      video.pause();
+      render();
+    });
+    inertObserver.observe(element,{attributes:true,attributeFilter:['inert']});
+    signal.addEventListener('abort',()=>inertObserver.disconnect(),{once:true});
     document.addEventListener('keydown', trapFocus, { signal });
     view.addEventListener('offline', async () => {
       if (!await offlinePlayable() && current()) fail();
@@ -778,6 +897,7 @@ export function createPrologue({
   return {
     start,
     finish,
+    switchLanguage,
     get phase() {
       if (!session) return closing ? 'leaving' : 'closed';
       if (element.classList.contains('prologue-failed')) return 'unavailable';

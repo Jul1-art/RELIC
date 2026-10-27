@@ -1,0 +1,512 @@
+{
+  "version": 9,
+  "synthetic": true,
+  "authorization": "Natural stock English and French narration explicitly approved by the project owner. Historical recordings remain authentic.",
+  "duration": 569,
+  "lines": [
+    {
+      "id": "a-world-and-a-question",
+      "start": 88.9,
+      "end": 98.5,
+      "text": {
+        "en": "Millions of years later, humanity transformed this same world, and learned to reach beyond it.",
+        "fr": "Des millions d’années plus tard, l’humanité transformait cette même planète, puis apprenait à explorer au-delà."
+      },
+      "subtitles": {
+        "en": [
+          "Millions of years later,",
+          "humanity transformed this same world,",
+          "and learned to reach beyond it."
+        ],
+        "fr": [
+          "Des millions d’années plus tard,",
+          "l’humanité transformait cette même planète,",
+          "puis apprenait à explorer au-delà."
+        ]
+      },
+      "captionKinds": [
+        "bridge",
+        "narration",
+        "narration"
+      ]
+    },
+    {
+      "id": "from-war-to-a-race",
+      "start": 99.5,
+      "end": 122.5,
+      "text": {
+        "en": "In 1944, Nazi Germany deployed the V1 cruise missile and the V2 ballistic rocket. After the war, Wernher von Braun worked on the American space programme. Soviet engineers developed their own rockets. The Space Race had begun.",
+        "fr": "En 1944, l’Allemagne nazie a déployé le missile de croisière V1 et la fusée balistique V2. Après la guerre, Wernher von Braun a rejoint le programme spatial américain. Les ingénieurs soviétiques développaient leurs propres fusées. La course à l’espace commençait."
+      },
+      "subtitles": {
+        "en": [
+          "In 1944, Nazi Germany deployed the V1 cruise missile and the V2 ballistic rocket.",
+          "After the war, Wernher von Braun worked on the American space programme.",
+          "Soviet engineers developed their own rockets.",
+          "The Space Race had begun."
+        ],
+        "fr": [
+          "En 1944, l’Allemagne nazie a déployé le missile de croisière V1 et la fusée balistique V2.",
+          "Après la guerre, Wernher von Braun a rejoint le programme spatial américain.",
+          "Les ingénieurs soviétiques développaient leurs propres fusées.",
+          "La course à l’espace commençait."
+        ]
+      }
+    },
+    {
+      "id": "a-signal-around-earth",
+      "start": 125,
+      "end": 134.3,
+      "text": {
+        "en": "In 1957, Sputnik became the first artificial satellite. Its signal carried the rivalry around the world.",
+        "fr": "En 1957, Spoutnik est devenu le premier satellite artificiel. Son signal a fait le tour du monde."
+      },
+      "subtitles": {
+        "en": [
+          "In 1957, Sputnik became the first artificial satellite. Its signal carried the rivalry around the world."
+        ],
+        "fr": [
+          "En 1957, Spoutnik est devenu le premier satellite artificiel. Son signal a fait le tour du monde."
+        ]
+      }
+    },
+    {
+      "id": "from-machines-to-people",
+      "start": 135.5,
+      "end": 150.6,
+      "text": {
+        "en": "If a machine could circle Earth, could a living passenger survive? Laika became the first dog in orbit, but did not survive. In 1961, Yuri Gagarin became the first human in space.",
+        "fr": "Si une machine pouvait tourner autour de la Terre, un être vivant pouvait-il y survivre ? Laïka fut la première chienne en orbite, sans survivre au voyage. En 1961, Youri Gagarine devint le premier humain dans l’espace."
+      },
+      "subtitles": {
+        "en": [
+          "If a machine could circle Earth, could a living passenger survive?",
+          "Laika became the first dog in orbit, but did not survive.",
+          "In 1961, Yuri Gagarin became the first human in space."
+        ],
+        "fr": [
+          "Si une machine pouvait tourner autour de la Terre, un être vivant pouvait-il y survivre ?",
+          "Laïka fut la première chienne en orbite, sans survivre au voyage.",
+          "En 1961, Youri Gagarine devint le premier humain dans l’espace."
+        ]
+      }
+    },
+    {
+      "id": "a-destination",
+      "start": 161.5,
+      "end": 168.5,
+      "text": {
+        "en": "In 1961, the United States set a new destination beyond Earth orbit: the Moon.",
+        "fr": "En 1961, les États-Unis ont fixé un objectif au-delà de l’orbite terrestre : la Lune."
+      },
+      "subtitles": {
+        "en": [
+          "In 1961, the United States set a new destination beyond Earth orbit: the Moon."
+        ],
+        "fr": [
+          "En 1961, les États-Unis ont fixé un objectif au-delà de l’orbite terrestre : la Lune."
+        ]
+      }
+    },
+    {
+      "id": "a-promise-becomes-a-journey",
+      "start": 189.5,
+      "end": 200.5,
+      "text": {
+        "en": "By 1969, NASA’s Apollo programme had turned that promise into a journey. Saturn V would carry three astronauts to the Moon.",
+        "fr": "En 1969, le programme Apollo avait transformé cette promesse en voyage. Saturne V allait emporter trois astronautes vers la Lune."
+      },
+      "subtitles": {
+        "en": [
+          "By 1969, NASA’s Apollo programme had turned that promise into a journey.",
+          "Saturn V would carry three astronauts to the Moon."
+        ],
+        "fr": [
+          "En 1969, le programme Apollo avait transformé cette promesse en voyage.",
+          "Saturne V allait emporter trois astronautes vers la Lune."
+        ]
+      },
+      "spokenText": {
+        "en": "By 1969, NASA’s Apollo programme had turned that promise into a journey. Saturn Five would carry three astronauts to the Moon.",
+        "fr": "En 1969, le programme Apollo avait transformé cette promesse en voyage. Saturne cinq allait emporter trois astronautes vers la Lune."
+      }
+    },
+    {
+      "id": "two-go-down-one-stays",
+      "start": 217.5,
+      "end": 230.5,
+      "text": {
+        "en": "On 20 July 1969, Eagle, the lunar lander, separated from Columbia, the command module. Collins stayed in orbit while Armstrong and Aldrin descended to the Moon.",
+        "fr": "Le 20 juillet 1969, Eagle, le module lunaire, s’est séparé de Columbia, le module de commande. Collins restait en orbite ; Armstrong et Aldrin descendaient vers la Lune."
+      },
+      "subtitles": {
+        "en": [
+          "On 20 July 1969, Eagle, the lunar lander, separated from Columbia, the command module.",
+          "Collins stayed in orbit while Armstrong and Aldrin descended to the Moon."
+        ],
+        "fr": [
+          "Le 20 juillet 1969, Eagle, le module lunaire, s’est séparé de Columbia, le module de commande.",
+          "Collins restait en orbite ; Armstrong et Aldrin descendaient vers la Lune."
+        ]
+      }
+    },
+    {
+      "id": "the-first-machines-left-behind",
+      "start": 245.5,
+      "end": 258.5,
+      "text": {
+        "en": "The astronauts returned to Earth. But much of their equipment stayed on the Moon, where instruments kept doing science after the crews had gone.",
+        "fr": "Les astronautes sont revenus. Mais une grande partie du matériel est restée sur la Lune, où les instruments ont poursuivi leurs mesures après leur départ."
+      },
+      "subtitles": {
+        "en": [
+          "The astronauts returned to Earth.",
+          "But much of their equipment stayed on the Moon,",
+          "where instruments kept doing science after the crews had gone."
+        ],
+        "fr": [
+          "Les astronautes sont revenus.",
+          "Mais une grande partie du matériel est restée sur la Lune,",
+          "où les instruments ont poursuivi leurs mesures après leur départ."
+        ]
+      }
+    },
+    {
+      "id": "two-paths-after-apollo",
+      "start": 259.5,
+      "end": 274.5,
+      "text": {
+        "en": "After Apollo, exploration followed two paths. In 1977, the Voyager probes launched towards the outer planets, carrying instruments far beyond the reach of human crews.",
+        "fr": "Après Apollo, l’exploration a suivi deux chemins. En 1977, les sondes Voyager sont parties vers les planètes lointaines, emportant des instruments hors de portée des équipages humains."
+      },
+      "subtitles": {
+        "en": [
+          "After Apollo, exploration followed two paths.",
+          "In 1977, the Voyager probes launched towards the outer planets,",
+          "carrying instruments far beyond the reach of human crews."
+        ],
+        "fr": [
+          "Après Apollo, l’exploration a suivi deux chemins.",
+          "En 1977, les sondes Voyager sont parties vers les planètes lointaines,",
+          "emportant des instruments hors de portée des équipages humains."
+        ]
+      }
+    },
+    {
+      "id": "carrier-tests",
+      "start": 275.1,
+      "end": 282.9,
+      "text": {
+        "en": "In 1977, NASA carried the Shuttle prototype Enterprise aboard a modified Boeing 747.",
+        "fr": "En 1977, Enterprise, prototype des navettes, vole sur un Boeing 747 modifié."
+      },
+      "subtitles": {
+        "en": [
+          "In 1977, NASA carried the Shuttle prototype Enterprise aboard a modified Boeing 747."
+        ],
+        "fr": [
+          "En 1977, Enterprise, prototype des navettes, vole sur un Boeing 747 modifié."
+        ]
+      }
+    },
+    {
+      "id": "working-closer-to-home",
+      "start": 283.5,
+      "end": 298.5,
+      "text": {
+        "en": "Closer to home, the Space Shuttle began flying in 1981. It carried crews and scientific equipment into orbit, making space a place to work as well as explore.",
+        "fr": "Plus près de nous, la navette spatiale a commencé à voler en 1981. Elle transportait des équipages et du matériel scientifique en orbite, pour faire de l’espace un lieu de travail et de recherche."
+      },
+      "subtitles": {
+        "en": [
+          "Closer to home, the Space Shuttle began flying in 1981.",
+          "It carried crews and scientific equipment into orbit,",
+          "making space a place to work as well as explore."
+        ],
+        "fr": [
+          "Plus près de nous, la navette spatiale a commencé à voler en 1981.",
+          "Elle transportait des équipages et du matériel scientifique en orbite,",
+          "pour faire de l’espace un lieu de travail et de recherche."
+        ]
+      }
+    },
+    {
+      "id": "the-cost-of-flight",
+      "start": 305.5,
+      "end": 312.5,
+      "text": {
+        "en": "Seven crew members died. NASA grounded the Shuttle to investigate.",
+        "fr": "Challenger a emporté sept vies. La NASA a suspendu les vols pour enquêter."
+      },
+      "subtitles": {
+        "en": [
+          "Seven crew members died.",
+          "NASA grounded the Shuttle to investigate."
+        ],
+        "fr": [
+          "Challenger a emporté sept vies.",
+          "La NASA a suspendu les vols pour enquêter."
+        ]
+      }
+    },
+    {
+      "id": "a-new-view",
+      "start": 313.5,
+      "end": 326.5,
+      "text": {
+        "en": "After flights resumed, a Shuttle crew deployed Hubble in 1990. Above the atmosphere, it could observe the universe more clearly.",
+        "fr": "Après la reprise des vols, une navette a déployé Hubble en 1990. Au-dessus de l’atmosphère, il pouvait mieux observer l’univers."
+      },
+      "subtitles": {
+        "en": [
+          "After flights resumed, a Shuttle crew deployed Hubble in 1990.",
+          "Above the atmosphere, it could observe the universe more clearly."
+        ],
+        "fr": [
+          "Après la reprise des vols, une navette a déployé Hubble en 1990.",
+          "Au-dessus de l’atmosphère, il pouvait mieux observer l’univers."
+        ]
+      }
+    },
+    {
+      "id": "rivals-build-together",
+      "start": 327.5,
+      "end": 346.5,
+      "text": {
+        "en": "In 1998, former rivals began building the International Space Station. Russian Zarya and American Unity became its first modules, beginning a shared home in Earth orbit.",
+        "fr": "En 1998, d’anciens rivaux ont commencé à bâtir la Station spatiale internationale. Le module russe Zarya et le module américain Unity sont devenus ses premiers modules, les premières pièces d’un habitat commun en orbite."
+      },
+      "subtitles": {
+        "en": [
+          "In 1998, former rivals began building the International Space Station.",
+          "Russian Zarya and American Unity became its first modules,",
+          "beginning a shared home in Earth orbit."
+        ],
+        "fr": [
+          "En 1998, d’anciens rivaux ont commencé à bâtir la Station spatiale internationale.",
+          "Le module russe Zarya et le module américain Unity sont devenus ses premiers modules,",
+          "les premières pièces d’un habitat commun en orbite."
+        ]
+      }
+    },
+    {
+      "id": "a-shared-laboratory",
+      "start": 347.5,
+      "end": 356.5,
+      "text": {
+        "en": "Europe added its Columbus laboratory in 2008. With Japan and Canada, a shared laboratory grew above Earth.",
+        "fr": "L’Europe a ajouté son laboratoire Columbus en 2008. Avec le Japon et le Canada, un laboratoire commun a grandi au-dessus de la Terre."
+      },
+      "subtitles": {
+        "en": [
+          "Europe added its Columbus laboratory in 2008.",
+          "With Japan and Canada, a shared laboratory grew above Earth."
+        ],
+        "fr": [
+          "L’Europe a ajouté son laboratoire Columbus en 2008.",
+          "Avec le Japon et le Canada, un laboratoire commun a grandi au-dessus de la Terre."
+        ]
+      }
+    },
+    {
+      "id": "retiring-the-shuttle",
+      "start": 375.25,
+      "end": 390.6,
+      "text": {
+        "en": "In 2004, NASA decided to retire the ageing Shuttle fleet after building the Space Station. High costs and safety concerns shaped that decision. The final flight landed in 2011.",
+        "fr": "En 2004, la NASA prévoit de retirer les navettes après l’assemblage de la Station. Leur vieillissement, les coûts et la sécurité pèsent dans ce choix. Le dernier vol s’achève en 2011."
+      },
+      "subtitles": {
+        "en": [
+          "In 2004, NASA decided to retire the ageing Shuttle fleet after building the Space Station.",
+          "High costs and safety concerns shaped that decision.",
+          "The final flight landed in 2011."
+        ],
+        "fr": [
+          "En 2004, la NASA prévoit de retirer les navettes après l’assemblage de la Station.",
+          "Leur vieillissement, les coûts et la sécurité pèsent dans ce choix.",
+          "Le dernier vol s’achève en 2011."
+        ]
+      }
+    },
+    {
+      "id": "keeping-the-outpost-alive",
+      "start": 391.5,
+      "end": 398.5,
+      "text": {
+        "en": "After the Shuttle retired, Russia’s Soyuz carried all arriving Station crews until 2020.",
+        "fr": "Après les navettes, le Soyouz russe transporte seul les équipages de la Station jusqu’en 2020."
+      },
+      "subtitles": {
+        "en": [
+          "After the Shuttle retired, Russia’s Soyuz carried all arriving Station crews until 2020."
+        ],
+        "fr": [
+          "Après les navettes, le Soyouz russe transporte seul les équipages de la Station jusqu’en 2020."
+        ]
+      }
+    },
+    {
+      "id": "the-long-journey-continues",
+      "start": 399.5,
+      "end": 412.5,
+      "text": {
+        "en": "Meanwhile, Voyager 1 was still travelling. In 2012, it crossed the heliopause, beyond the solar wind.",
+        "fr": "Pendant ce temps, Voyager 1 poursuivait sa route. En 2012, il a franchi l’héliopause, au-delà du vent solaire."
+      },
+      "subtitles": {
+        "en": [
+          "Meanwhile, Voyager 1 was still travelling.",
+          "In 2012, it crossed the heliopause, beyond the solar wind."
+        ],
+        "fr": [
+          "Pendant ce temps, Voyager 1 poursuivait sa route.",
+          "En 2012, il a franchi l’héliopause, au-delà du vent solaire."
+        ]
+      },
+      "spokenText": {
+        "en": "Meanwhile, Voyager one was still travelling. In 2012, it crossed the heliopause, beyond the solar wind.",
+        "fr": "Pendant ce temps, Voyager un poursuivait sa route. En 2012, il a franchi l’héliopause, au-delà du vent solaire."
+      }
+    },
+    {
+      "id": "touching-a-comet",
+      "start": 413.5,
+      "end": 420.5,
+      "text": {
+        "en": "In 2014, ESA’s Rosetta delivered Philae to comet 67P.",
+        "fr": "En 2014, la sonde européenne Rosetta a déposé Philae sur la comète 67P."
+      },
+      "subtitles": {
+        "en": [
+          "In 2014, ESA’s Rosetta delivered Philae to comet 67P."
+        ],
+        "fr": [
+          "En 2014, la sonde européenne Rosetta a déposé Philae sur la comète 67P."
+        ]
+      },
+      "spokenText": {
+        "en": "In 2014, the European Space Agency’s Rosetta delivered Philae to comet sixty seven P.",
+        "fr": "En 2014, la sonde européenne Rosetta a déposé Philae sur la comète soixante-sept P."
+      }
+    },
+    {
+      "id": "rosetta-remains",
+      "start": 429.1,
+      "end": 436.9,
+      "text": {
+        "en": "Rosetta joined Philae on the comet in 2016, ending its mission with a controlled descent.",
+        "fr": "En 2016, Rosetta rejoint Philae sur la comète après une descente contrôlée. Les deux engins y sont restés."
+      },
+      "subtitles": {
+        "en": [
+          "Rosetta joined Philae on the comet in 2016,",
+          "ending its mission with a controlled descent."
+        ],
+        "fr": [
+          "En 2016, Rosetta rejoint Philae sur la comète après une descente contrôlée.",
+          "Les deux engins y sont restés."
+        ]
+      }
+    },
+    {
+      "id": "a-question-on-mars",
+      "start": 437.5,
+      "end": 444.5,
+      "text": {
+        "en": "In 2021, Perseverance approached Mars to search for signs of ancient life.",
+        "fr": "En 2021, Perseverance allait chercher sur Mars les traces d’une vie ancienne."
+      },
+      "subtitles": {
+        "en": [
+          "In 2021, Perseverance approached Mars to search for signs of ancient life."
+        ],
+        "fr": [
+          "En 2021, Perseverance allait chercher sur Mars les traces d’une vie ancienne."
+        ]
+      }
+    },
+    {
+      "id": "looking-back-through-time",
+      "start": 457.5,
+      "end": 468.5,
+      "text": {
+        "en": "That December, Webb set out to observe the earliest galaxies. Exploration now reached across time as well as space.",
+        "fr": "En décembre, Webb est parti observer les premières galaxies. Explorer l’espace permettait aussi de remonter le temps."
+      },
+      "subtitles": {
+        "en": [
+          "That December, Webb set out to observe the earliest galaxies.",
+          "Exploration now reached across time as well as space."
+        ],
+        "fr": [
+          "En décembre, Webb est parti observer les premières galaxies.",
+          "Explorer l’espace permettait aussi de remonter le temps."
+        ]
+      }
+    },
+    {
+      "id": "returning-launchers",
+      "start": 470,
+      "end": 480.5,
+      "text": {
+        "en": "Closer to Earth, SpaceX, founded by Elon Musk in 2002, developed boosters that could land and fly again.",
+        "fr": "Plus près de nous, SpaceX, fondée par Elon Musk en 2002, développait des boosters capables de se poser et de revoler."
+      },
+      "subtitles": {
+        "en": [
+          "Closer to Earth,",
+          "SpaceX, founded by Elon Musk in 2002,",
+          "developed boosters that could land and fly again."
+        ],
+        "fr": [
+          "Plus près de nous,",
+          "SpaceX, fondée par Elon Musk en 2002,",
+          "développait des boosters capables de se poser et de revoler."
+        ]
+      }
+    },
+    {
+      "id": "the-machines-that-stay",
+      "start": 507.5,
+      "end": 531.5,
+      "text": {
+        "en": "But many spacecraft were never designed to return. On the Moon, Apollo’s landing sites still preserve traces of those journeys. On Mars, Curiosity is one of the robots that continues to work.",
+        "fr": "Mais de nombreuses machines n’ont jamais été conçues pour revenir. Sur la Lune, les sites d’alunissage d’Apollo conservent les traces de ces voyages. Sur Mars, Curiosity fait partie des robots qui travaillent encore."
+      },
+      "subtitles": {
+        "en": [
+          "But many spacecraft were never designed to return.",
+          "On the Moon, Apollo’s landing sites still preserve traces of those journeys.",
+          "On Mars, Curiosity is one of the robots that continues to work."
+        ],
+        "fr": [
+          "Mais de nombreuses machines n’ont jamais été conçues pour revenir.",
+          "Sur la Lune, les sites d’alunissage d’Apollo conservent les traces de ces voyages.",
+          "Sur Mars, Curiosity fait partie des robots qui travaillent encore."
+        ]
+      }
+    },
+    {
+      "id": "why-relic",
+      "start": 532.5,
+      "end": 560.5,
+      "text": {
+        "en": "Other missions have ended, but their machines remain. Each one records a step in what we learned to build, to reach and to understand. RELIC follows the stories of what we left behind.",
+        "fr": "D’autres missions sont terminées, mais leurs machines demeurent. Chacune raconte une étape dans ce que nous avons appris à construire, à atteindre et à comprendre. RELIC retrace l’histoire de ce que nous avons laissé derrière nous."
+      },
+      "subtitles": {
+        "en": [
+          "Other missions have ended, but their machines remain.",
+          "Each one records a step in what we learned to build, to reach and to understand.",
+          "RELIC follows the stories of what we left behind."
+        ],
+        "fr": [
+          "D’autres missions sont terminées, mais leurs machines demeurent.",
+          "Chacune raconte une étape dans ce que nous avons appris à construire, à atteindre et à comprendre.",
+          "RELIC retrace l’histoire de ce que nous avons laissé derrière nous."
+        ]
+      }
+    }
+  ]
+}

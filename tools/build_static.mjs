@@ -8,9 +8,9 @@ const output = join(root, 'dist');
 const rootExtensions = new Set(['.html', '.css', '.js', '.json', '.webmanifest', '.svg', '.ico', '.png']);
 const assetDirectories = ['assets', 'vendor', 'earth-search', 'intro'];
 
-const hdRelease = 'intro/assets/prologue/v8-5-hd50/';
+const hdRelease = 'intro/assets/prologue/v9-0-hd50/';
 let hasHdRelease = false;
-try { await access(join(root,'intro/assets/prologue/encoding-v8-5-hd50.json')); hasHdRelease=true; }
+try { await access(join(root,'intro/assets/prologue/encoding-v9-hd50.json')); hasHdRelease=true; }
 catch { /* Older source snapshots still use their verified MP4 transport parts. */ }
 if (!hasHdRelease) await restoreFilms(root);
 
@@ -30,7 +30,7 @@ async function publicAsset(source) {
   // The current HD edition streams bounded HLS segments. Do not redeploy the
   // retired 720p films or large review-only MP4s beside the new release.
   if (hasHdRelease && name.startsWith('intro/assets/prologue/')) {
-    const keep=['intro/assets/prologue/encoding-v8-5-hd50.json','intro/assets/prologue/poster-v8-5-hd50.jpg','intro/assets/prologue/sources-v8.json'];
+    const keep=['intro/assets/prologue/encoding-v9-hd50.json','intro/assets/prologue/poster-v9-hd50.jpg','intro/assets/prologue/sources-v9.json'];
     if (!name.startsWith(hdRelease) && !keep.includes(name)) {
       const stat=await lstat(source);
       if (!stat.isDirectory() || !hdRelease.startsWith(name+'/')) return false;

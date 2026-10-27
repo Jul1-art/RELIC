@@ -4,8 +4,8 @@
 .intro.prologue:focus{outline:0}
 .prologue [hidden]{display:none!important}
 .prologue-film,.prologue-shade,.prologue-backdrop{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.prologue-backdrop{display:none;z-index:-4;opacity:0;background:#000;filter:blur(calc(28px + var(--end-blur,0px))) brightness(calc(.45 * var(--end-brightness,1)));transform:scale(1.14);transition:opacity .4s ease}
-.prologue-film{z-index:-3;object-fit:cover!important;object-position:50% 50%;background:#000;filter:blur(var(--end-blur,0px)) brightness(var(--end-brightness,1));transform:scale(var(--end-scale,1));transition:object-position 1.1s ease;will-change:filter}
+.prologue-backdrop{display:none;z-index:-4;opacity:0;background:#000;filter:blur(28px) brightness(.45);transform:scale(1.14);transition:opacity .4s ease}
+.prologue-film{z-index:-3;object-fit:cover!important;object-position:50% 50%;background:#000;filter:none;transform:none;transition:object-position 1.1s ease}
 .prologue-shade{z-index:-2;background:linear-gradient(180deg,#0004,transparent 24%,transparent 42%,#0005 70%,#000a)}
 .prologue button{display:inline-flex;align-items:center;justify-content:center;font:inherit;color:inherit;cursor:pointer;border:0;background:none;-webkit-tap-highlight-color:transparent}
 .prologue button:focus-visible,.prologue input:focus-visible{outline:2px solid #fff9;outline-offset:3px}

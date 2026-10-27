@@ -29,7 +29,7 @@ python3 -m pip install -r requirements.txt
 python3 terrain_server.py
 ```
 
-The current film is delivered as local HLS segments at 1920 × 1080 and 50 frames per second, with English and French audio. Playback uses browser-native HLS or the bundled HLS player. The offline action saves and verifies the complete bilingual segmented edition. Older MP4 transport parts remain in source history but are not the active HD edition.
+The current 9-minute 29-second film is delivered as local HLS segments at 1920 × 1080 and 50 frames per second, with English and French audio. Playback uses browser-native HLS or the bundled HLS player. The offline action saves and verifies the complete bilingual segmented edition. Older MP4 transport parts remain in source history but are not the active HD edition.
 
 Open **http://localhost:8000/**. On Windows, use the corresponding virtual-environment activation command and `python` if `python3` is unavailable.
 
@@ -121,13 +121,17 @@ Une publication statique reste possible avec `node tools/build_static.mjs`, mais
 
 The English/French introduction opens paused and loads its video only after **Play**. The export is 1080p50; original HD material is retained where available, while older archives are upscaled and their frame rates resampled. This does not create missing archival detail. The monochrome player includes a full-width timeline, captions, playback speed and volume adjustable in 1% steps or by entering an exact percentage in the player settings. Click or tap the picture to play or pause. Portrait video is centered without cropping. Opening and closing Sources or the offline dialog keeps playback paused.
 
+Use the **EN / FR** control to change the narration and captions during the film. The switch keeps the current position, playback state, speed and volume. Controls fade automatically during playback and reappear on interaction.
+
+The historical sequence includes a longer music-only passage with Yuri Gagarin, Enterprise aboard its Boeing 747 carrier in 1977, the final Shuttle landing in 2011, Soyuz transport to the International Space Station, and Rosetta’s final descent in 2016. Dates distinguish the events described from later archive or visualization footage.
+
 Keyboard shortcuts work while the film is open, outside editable fields and other dialogs. Press **?** for the in-player reference.
 
 | Key | Action |
 | --- | --- |
 | Space / K | Play or pause (Space activates a focused button) |
 | F | Fullscreen |
-| M / C / H | Mute / captions / hide controls while playing |
+| M / C | Mute / captions |
 | J / L | Back / forward 10 seconds |
 | Left / Right | Back / forward 5 seconds |
 | Up / Down | Volume up / down 5% |
@@ -139,7 +143,9 @@ Keyboard shortcuts work while the film is open, outside editable fields and othe
 
 ## Interface and static hosting
 
-Earth, Moon and Mars share a responsive command bar, location search and compact Font Awesome controls. Settings include English/French, light/dark appearance, an optional NASA-blue accent, motion preferences and adaptive/high rendering quality. Preferences apply across pages.
+Hold **Ctrl and drag with the left mouse button** to pan the Solar System, including its overview. Ordinary left-drag orbits, the mouse wheel zooms, and touch gestures remain available.
+
+Earth, Moon and Mars share a responsive command bar, location search and compact Font Awesome controls. Button hover states use stationary color, border and brightness transitions. Settings include English/French, light/dark appearance, an optional NASA-blue accent, motion preferences and adaptive/high rendering quality. Preferences apply across pages.
 
 GitHub Pages serves static files and cannot run the Python API. The browser detects that mode, avoids missing `/api` requests and falls back to clearly labelled NASA/JPL model positions, timestamped NOAA solar-wind observations, public geocoding, local destinations and coordinates. Model values are estimates, not telemetry; expired measurements are omitted. Without a terrain backend, the globe is an unmeasured ellipsoid with imagery. Optional Google 3D remains a separate provider layer.
 

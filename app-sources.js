@@ -98,15 +98,15 @@ export async function openSources(trigger) {
     : 'Sizes and distances are adapted for readability. Blue orbital motion shows the direction of travel at an illustrative speed, distinct from the planets’ real speeds.','relic-sources-note');
   heading(content, french() ? 'Le film' : 'The film');
   paragraph(content, french()
-    ? 'Un documentaire de 8 min 49, exporté en 1080p50 à partir des meilleures sources disponibles. Les archives de définition inférieure sont agrandies et leur cadence adaptée ; cela ne recrée pas de détails manquants. Les origines et certaines missions utilisent des animations ; les dinosaures sont des reconstitutions. La narration nouvelle utilise des voix de synthèse en anglais et en français. Les voix historiques sont des enregistrements originaux.'
-    : 'An 8-minute 49-second documentary exported at 1080p50 from the best available source footage. Lower-resolution archives are upscaled and their frame rates resampled; this does not recreate missing detail. The origins and some missions use animations; dinosaurs are reconstructed. New narration uses synthetic voices in English and French. Historical voices are original recordings.');
+    ? 'Un documentaire de 9 min 29, exporté en 1080p50 à partir des meilleures sources disponibles. Les archives de définition inférieure sont agrandies et leur cadence adaptée ; cela ne recrée pas de détails manquants. Les origines et certaines missions utilisent des animations ; les dinosaures sont des reconstitutions. La narration nouvelle utilise des voix de synthèse en anglais et en français. Les voix historiques sont des enregistrements originaux.'
+    : 'A 9-minute 29-second documentary exported at 1080p50 from the best available source footage. Lower-resolution archives are upscaled and their frame rates resampled; this does not recreate missing detail. The origins and some missions use animations; dinosaurs are reconstructed. New narration uses synthetic voices in English and French. Historical voices are original recordings.');
   paragraph(content,'“Helios” — Scott Buckley · CC BY 4.0','relic-sources-music');
   const filmSources = document.createElement('div'); filmSources.className = 'relic-sources-links'; content.append(filmSources);
   for (const [label,url] of [
     ['Scott Buckley · Helios','https://www.scottbuckley.com.au/library/helios/'],
     ['Font Awesome Free · icons','https://fontawesome.com/license/free'],
     ['Kokoro · synthetic narration','https://huggingface.co/hexgrad/Kokoro-82M'],
-    [french() ? 'Provenance, dates et licences' : 'Provenance, dates and licenses',new URL('assets/prologue/sources-v8.json',INTRO_ROOT).href],
+    [french() ? 'Provenance, dates et licences' : 'Provenance, dates and licenses',new URL('assets/prologue/sources-v9.json',INTRO_ROOT).href],
   ]) sourceLink(filmSources,label,url);
   const catalogue = document.createElement('details'); catalogue.className = 'relic-sources-catalogue';
   const summary = document.createElement('summary'); summary.textContent = french() ? 'Catalogue des archives' : 'Archive catalogue'; catalogue.append(summary);
@@ -116,7 +116,7 @@ export async function openSources(trigger) {
     : 'RELIC is an independent project. Application code and media have separate licenses; imagery and archive footage are not all licensed under Apache 2.0.','relic-sources-note');
   try {
     if (!provenanceCache) {
-      const response = await fetch(new URL('assets/prologue/sources-v8.json',INTRO_ROOT), {signal});
+      const response = await fetch(new URL('assets/prologue/sources-v9.json',INTRO_ROOT), {signal});
       if (!response.ok) return;
       provenanceCache = await response.json();
     }

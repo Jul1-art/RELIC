@@ -90,6 +90,12 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = .065;
 controls.enablePan = false;
+// OrbitControls already maps Ctrl + left-drag to pan. Enable that mouse
+// gesture before its pointer handler runs, while keeping touch pinches and
+// ordinary drags on their existing zoom/orbit paths.
+renderer.domElement.addEventListener('pointerdown', event => {
+  controls.enablePan = event.pointerType === 'mouse' && event.button === 0 && event.ctrlKey;
+}, { capture:true });
 controls.minDistance = 18;
 controls.maxDistance = 280;
 controls.rotateSpeed = .5;
@@ -575,7 +581,7 @@ const touchPointers = new Map();
 let pinchDistance = 0;
 renderer.domElement.addEventListener('pointerdown', event => {
   if (filmActive) return;
-  pointerStart = { x:event.clientX, y:event.clientY };
+  pointerStart = { x:event.clientX, y:event.clientY, panning:event.pointerType === 'mouse' && event.button === 0 && event.ctrlKey };
   if (event.pointerType !== 'touch') return;
   touchPointers.set(event.pointerId, { x:event.clientX, y:event.clientY });
   if (touchPointers.size === 2) {
@@ -604,7 +610,7 @@ renderer.domElement.addEventListener('pointercancel', releaseTouch);
 renderer.domElement.addEventListener('pointerup', event => {
   if (filmActive) { pointerStart = null; releaseTouch(event); return; }
   releaseTouch(event);
-  if (!pointerStart || Math.hypot(event.clientX - pointerStart.x, event.clientY - pointerStart.y) > 6) { pointerStart = null; return; }
+  if (!pointerStart || pointerStart.panning || Math.hypot(event.clientX - pointerStart.x, event.clientY - pointerStart.y) > 6) { pointerStart = null; return; }
   pointerStart = null;
   const bounds = renderer.domElement.getBoundingClientRect();
   pointer.set(((event.clientX - bounds.left) / bounds.width) * 2 - 1, -((event.clientY - bounds.top) / bounds.height) * 2 + 1);

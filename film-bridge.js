@@ -1,4 +1,4 @@
-import { getLanguage, onLanguageChange } from './atlas-live.js?v=3';
+import { getLanguage, setLanguage, onLanguageChange } from './atlas-live.js?v=3';
 import { openSources as showCredits } from './app-sources.js';
 import { createPrologue } from './intro/prologue-v8.js';
 import { PROLOGUE, PROLOGUE_MEDIA } from './intro/prologue-data-v8.js';
@@ -156,6 +156,7 @@ async function showOffline({ trigger } = {}) {
 
 const film = createPrologue({
   element:introduction, timeline:PROLOGUE, media:playbackMedia, getLanguage, reducedMotion,
+  onLanguageChange:language => setLanguage(language),
   onOpen:() => setFilmActive(true),
   onClose:() => {
     setFilmActive(false);
@@ -166,7 +167,7 @@ const film = createPrologue({
 });
 
 document.querySelector('#relic-replay')?.addEventListener('click', () => film.start());
-onLanguageChange(() => { if (currentDialog?.open) currentDialog.close(); });
+onLanguageChange(language => { if (currentDialog?.open) currentDialog.close(); film.switchLanguage?.(language); });
 
 let returningToAtlas = performance.getEntriesByType('navigation')[0]?.type === 'back_forward';
 try {
