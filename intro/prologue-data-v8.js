@@ -615,7 +615,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
       {
         "id": "from-war-to-a-race-1",
         "start": 99.5,
-        "end": 106.37,
+        "end": 111.5,
         "kind": "narration",
         "paragraph": "from-war-to-a-race",
         "title": {
@@ -631,9 +631,27 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
+        "id": "v2-to-von-braun-pause",
+        "start": 111.5,
+        "end": 113,
+        "kind": "visual",
+        "title": {
+          "en": "",
+          "fr": ""
+        },
+        "kicker": {
+          "en": "",
+          "fr": ""
+        },
+        "sourceLabel": {
+          "en": "",
+          "fr": ""
+        }
+      },
+      {
         "id": "from-war-to-a-race-2",
-        "start": 106.37,
-        "end": 111.055,
+        "start": 113,
+        "end": 117.685,
         "kind": "narration",
         "paragraph": "from-war-to-a-race",
         "title": {
@@ -650,8 +668,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
       },
       {
         "id": "from-war-to-a-race-3",
-        "start": 111.055,
-        "end": 114.12,
+        "start": 117.685,
+        "end": 120.75,
         "kind": "narration",
         "paragraph": "from-war-to-a-race",
         "title": {
@@ -668,8 +686,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
       },
       {
         "id": "from-war-to-a-race-4",
-        "start": 114.12,
-        "end": 115.897333,
+        "start": 120.75,
+        "end": 122.527333,
         "kind": "narration",
         "paragraph": "from-war-to-a-race",
         "title": {
@@ -686,7 +704,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
       },
       {
         "id": "quiet-v9-11",
-        "start": 115.897333,
+        "start": 122.527333,
         "end": 125.0,
         "kind": "visual",
         "title": {
@@ -2727,7 +2745,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
       {
         "id": "from-war-to-a-race-1",
         "start": 99.5,
-        "end": 106.05,
+        "end": 111.5,
         "kind": "narration",
         "paragraph": "from-war-to-a-race",
         "title": {
@@ -2743,9 +2761,27 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
+        "id": "v2-to-von-braun-pause",
+        "start": 111.5,
+        "end": 113,
+        "kind": "visual",
+        "title": {
+          "en": "",
+          "fr": ""
+        },
+        "kicker": {
+          "en": "",
+          "fr": ""
+        },
+        "sourceLabel": {
+          "en": "",
+          "fr": ""
+        }
+      },
+      {
         "id": "from-war-to-a-race-2",
-        "start": 106.05,
-        "end": 110.61,
+        "start": 113,
+        "end": 117.56,
         "kind": "narration",
         "paragraph": "from-war-to-a-race",
         "title": {
@@ -2762,8 +2798,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
       },
       {
         "id": "from-war-to-a-race-3",
-        "start": 110.61,
-        "end": 113.655,
+        "start": 117.56,
+        "end": 120.605,
         "kind": "narration",
         "paragraph": "from-war-to-a-race",
         "title": {
@@ -2780,8 +2816,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
       },
       {
         "id": "from-war-to-a-race-4",
-        "start": 113.655,
-        "end": 115.556,
+        "start": 120.605,
+        "end": 122.506,
         "kind": "narration",
         "paragraph": "from-war-to-a-race",
         "title": {
@@ -2798,7 +2834,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
       },
       {
         "id": "quiet-v9-11",
-        "start": 115.556,
+        "start": 122.506,
         "end": 125.0,
         "kind": "visual",
         "title": {

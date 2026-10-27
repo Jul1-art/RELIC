@@ -43,6 +43,17 @@
     "context": "The postwar biographical narration bridges a one-second dissolve from V2 footage to the moving NASA1962 portrait beside a rocket model. V1 and V2 labels distinguish cruise missile and ballistic rocket."
   },
   "openingTreatment": "Centered black-screen typewriter reveal, 4.5 and 5 seconds, recorded keystrokes. Explicit playback retains per-character reveal with reduced motion and with subtitles disabled; the reduced-motion caret is steady. There is no spoken narration during the first16 seconds. The cosmic sequence remains without narration or narrative text.",
+  "captionPictureAlignment": {
+    "paragraph": "from-war-to-a-race",
+    "languages": [
+      "en",
+      "fr"
+    ],
+    "v2CaptionEnd": 111.5,
+    "textFreePauseSeconds": 1.5,
+    "vonBraunCaptionStart": 113,
+    "policy": "Picture-aligned text override: hold the V1/V2 clause, leave a short reading pause, then show the von Braun clause at the start of his picture scene. Following clauses retain their reading durations and finish before the next paragraph at 125 seconds. The recorded narration and its waveform timing metadata are unchanged."
+  },
   "captionTiming": "Approximate clause timing: proportion of eSpeak phoneme counts within a continuous paragraph, snapped to nearby measured quiet regions in the recorded waveform. Not word-exact forced alignment; no subtitle is synthesized separately.",
   "pictureClock": "Picture scenes drive framing independently from language-specific spoken clause captions. Text does not restart because the shot changes.",
   "earthIdentification": {

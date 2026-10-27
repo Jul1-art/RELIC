@@ -1,7 +1,7 @@
 /* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'story-v9-20261027-public';
+const VERSION = 'story-v9-20261027-von-braun-public';
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
 const APP_PREFIX = `relic-atlas-${encodeURIComponent(SCOPE.pathname)}-`;
