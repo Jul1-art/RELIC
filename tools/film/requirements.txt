@@ -2,3 +2,5 @@
 av>=19,<20
 imageio-ffmpeg>=0.6,<0.7
 numpy>=1.26,<3
+kokoro-onnx>=0.6.1,<0.7
+soundfile>=0.14,<0.15

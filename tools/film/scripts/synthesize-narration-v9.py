@@ -59,7 +59,7 @@ def sha256(path):
 
 def write_json(path, value):
     temporary = Path(str(path) + '.tmp')
-    temporary.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
+    temporary.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     temporary.replace(path)
 
 
@@ -206,7 +206,7 @@ def main():
         parser.error('--speed must stay between .95 and 1.08 for natural narration')
     if not 1 <= args.threads <= 4:
         parser.error('--threads must be between 1 and 4')
-    source = json.loads(args.script.read_text())
+    source = json.loads(args.script.read_text(encoding='utf-8'))
     lines = source if isinstance(source, list) else source.get('lines', [])
     if not lines:
         parser.error('The script has no lines')
@@ -259,7 +259,7 @@ def main():
     records, overflows = [], []
     previous = {}
     if args.previous_manifest:
-        prior = json.loads(args.previous_manifest.read_text())
+        prior = json.loads(args.previous_manifest.read_text(encoding='utf-8'))
         previous = {(r['id'],r['language']):r for r in prior.get('lines',[])}
     for line, language, display, spoken, start, end, subtitles, spoken_subtitles in prepared:
         identifier = line['id']
@@ -272,7 +272,7 @@ def main():
         fingerprint = hashlib.sha256(json.dumps(fingerprint_data, sort_keys=True).encode()).hexdigest()
         target = output / f'{identifier}-{language}.wav'
         cache = output / f'{identifier}-{language}.json'
-        saved = json.loads(cache.read_text()) if cache.exists() else {}
+        saved = json.loads(cache.read_text(encoding='utf-8')) if cache.exists() else {}
         prior = previous.get((identifier,language))
         if not args.force and prior and not saved:
             prior_file = (args.media_root/prior['file']).resolve()

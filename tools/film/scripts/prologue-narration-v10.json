@@ -1,0 +1,419 @@
+{
+  "version": 10,
+  "synthetic": true,
+  "duration": 703,
+  "authorization": "The project owner requested bilingual narration corrections and five additional milestones. Stock Kokoro voices only; historical voices remain archival.",
+  "synchronization": "Each scene-bound paragraph is rendered independently. In particular the postwar von Braun paragraph begins at his first picture, after the V2 music-only reading pause.",
+  "lines": [
+    {
+      "id": "a-world-and-a-question",
+      "shot": "deep-time",
+      "start": 88.9,
+      "end": 98.5,
+      "text": {
+        "en": "Millions of years later, humanity transformed this same world, and learned to reach beyond it.",
+        "fr": "Des millions d’années plus tard, l’humanité transformait cette même planète, puis apprenait à explorer au-delà."
+      }
+    },
+    {
+      "id": "war-rockets",
+      "shot": "v1",
+      "start": 99.5,
+      "end": 111.5,
+      "text": {
+        "en": "In 1944, Nazi Germany deployed the V1 cruise missile and the V2 ballistic rocket.",
+        "fr": "En 1944, l’Allemagne nazie déploie le missile de croisière V1 et la fusée balistique V2."
+      }
+    },
+    {
+      "id": "von-braun-postwar",
+      "shot": "von-braun",
+      "start": 113,
+      "end": 122.8,
+      "text": {
+        "en": "After the war, Wernher von Braun joined the American programme. Soviet engineers developed their own rockets. The Space Race began.",
+        "fr": "Après la guerre, Wernher von Braun rejoint le programme américain. L’URSS développe ses fusées. La course à l’espace commence."
+      },
+      "subtitles": {
+        "en": [
+          "After the war, Wernher von Braun joined the American programme.",
+          "Soviet engineers developed their own rockets. The Space Race began."
+        ],
+        "fr": [
+          "Après la guerre, Wernher von Braun rejoint le programme américain.",
+          "L’URSS développe ses fusées. La course à l’espace commence."
+        ]
+      }
+    },
+    {
+      "id": "a-signal-around-earth",
+      "shot": "sputnik-wide",
+      "start": 125,
+      "end": 134.3,
+      "text": {
+        "en": "In 1957, Sputnik became the first artificial satellite. Its signal carried the rivalry around the world.",
+        "fr": "En 1957, Spoutnik devient le premier satellite artificiel. Son signal fait le tour du monde."
+      }
+    },
+    {
+      "id": "laika",
+      "shot": "laika",
+      "start": 135.5,
+      "end": 146.4,
+      "text": {
+        "en": "Could a living passenger survive in orbit? Laika became the first dog to circle Earth, but did not survive the journey.",
+        "fr": "Un être vivant pouvait-il survivre en orbite ? Laïka devient la première chienne à tourner autour de la Terre, sans survivre au voyage."
+      }
+    },
+    {
+      "id": "gagarin",
+      "shot": "gagarin",
+      "start": 147.1,
+      "end": 150.7,
+      "text": {
+        "en": "Yuri Gagarin, the first human in space.",
+        "fr": "Youri Gagarine, premier humain dans l’espace."
+      }
+    },
+    {
+      "id": "a-destination",
+      "shot": "moon-goal",
+      "start": 161.5,
+      "end": 168.5,
+      "text": {
+        "en": "In 1961, the United States set a new destination beyond Earth orbit: the Moon.",
+        "fr": "En 1961, les États-Unis fixent un objectif au-delà de l’orbite terrestre : la Lune."
+      }
+    },
+    {
+      "id": "tereshkova-first-woman",
+      "shot": "tereshkova",
+      "start": 189.5,
+      "end": 202.4,
+      "text": {
+        "en": "On 16 June 1963, Valentina Tereshkova became the first woman in space. Aboard Vostok 6, she orbited Earth forty-eight times.",
+        "fr": "Le 16 juin 1963, Valentina Terechkova devient la première femme dans l’espace. À bord de Vostok 6, elle accomplit quarante-huit orbites autour de la Terre."
+      }
+    },
+    {
+      "id": "leonov-first-spacewalk",
+      "shot": "leonov",
+      "start": 203.5,
+      "end": 216.4,
+      "text": {
+        "en": "On 18 March 1965, Alexei Leonov left his Voskhod 2 spacecraft. For the first time, a human floated outside a spacecraft in orbit.",
+        "fr": "Le 18 mars 1965, Alexeï Leonov sort du vaisseau Voskhod 2. Pour la première fois, un être humain évolue à l’extérieur d’un vaisseau en orbite."
+      }
+    },
+    {
+      "id": "apollo8-first-orbit",
+      "shot": "apollo8-orbit",
+      "start": 217.4,
+      "end": 226.5,
+      "text": {
+        "en": "On 24 December 1968, Apollo 8 became the first crewed mission to orbit the Moon.",
+        "fr": "Le 24 décembre 1968, Apollo 8 devient la première mission habitée en orbite autour de la Lune."
+      }
+    },
+    {
+      "id": "apollo8-earthrise",
+      "shot": "apollo8-earthrise",
+      "start": 227.4,
+      "end": 236.5,
+      "text": {
+        "en": "Bill Anders photographed Earth rising above the lunar horizon. Earthrise offered a new view of our home.",
+        "fr": "Bill Anders photographie la Terre au-dessus de l’horizon lunaire. Earthrise offre un nouveau regard sur notre planète."
+      }
+    },
+    {
+      "id": "a-promise-becomes-a-journey",
+      "shot": "saturn-v",
+      "start": 237.5,
+      "end": 248.5,
+      "text": {
+        "en": "By 1969, NASA’s Apollo programme had turned that promise into a journey. Saturn V would carry three astronauts to the Moon.",
+        "fr": "En 1969, le programme Apollo transforme cette promesse en voyage. Saturne V va emporter trois astronautes vers la Lune."
+      }
+    },
+    {
+      "id": "two-go-down-one-stays",
+      "shot": "eagle-orbit",
+      "start": 265.5,
+      "end": 278.5,
+      "text": {
+        "en": "On 20 July 1969, Eagle separated from Columbia. Michael Collins stayed in lunar orbit while Neil Armstrong and Buzz Aldrin descended to the surface.",
+        "fr": "Le 20 juillet 1969, Eagle se sépare de Columbia. Michael Collins reste en orbite lunaire pendant que Neil Armstrong et Buzz Aldrin descendent vers la surface."
+      }
+    },
+    {
+      "id": "the-first-machines-left-behind",
+      "shot": "eagle-landed",
+      "start": 301.5,
+      "end": 314.5,
+      "text": {
+        "en": "The astronauts returned to Earth. But much of their equipment stayed on the Moon, where instruments continued their measurements after the crews had gone.",
+        "fr": "Les astronautes sont revenus sur Terre. Mais une grande partie du matériel est restée sur la Lune, où les instruments ont poursuivi leurs mesures après leur départ."
+      }
+    },
+    {
+      "id": "voyager2-departure",
+      "shot": "voyager2-launch",
+      "start": 315.3,
+      "end": 322.7,
+      "text": {
+        "en": "In August 1977, Voyager 2 launched towards the giant planets.",
+        "fr": "En août 1977, Voyager 2 décolle vers les planètes géantes."
+      }
+    },
+    {
+      "id": "voyager1-departure",
+      "shot": "voyager1-launch",
+      "start": 323.3,
+      "end": 330.7,
+      "text": {
+        "en": "Voyager 1 followed in September, on a faster route through the Solar System.",
+        "fr": "Voyager 1 la suit en septembre, sur une trajectoire plus rapide à travers le Système solaire."
+      }
+    },
+    {
+      "id": "voyager-instruments",
+      "shot": "voyager-instruments",
+      "start": 331.3,
+      "end": 338.7,
+      "text": {
+        "en": "Cameras and scientific instruments send their measurements to Earth through a large radio antenna.",
+        "fr": "Caméras et instruments scientifiques transmettent leurs mesures à la Terre grâce à une grande antenne radio."
+      }
+    },
+    {
+      "id": "voyager-power",
+      "shot": "voyager",
+      "start": 339.3,
+      "end": 346.7,
+      "text": {
+        "en": "Nuclear generators provide electricity, far from the Sun.",
+        "fr": "Des générateurs nucléaires leur fournissent de l’électricité, loin du Soleil."
+      }
+    },
+    {
+      "id": "carrier-tests",
+      "shot": "shuttle-carrier",
+      "start": 347.1,
+      "end": 354.8,
+      "text": {
+        "en": "On Earth, NASA tested another path: Enterprise, carried aboard a modified Boeing 747.",
+        "fr": "Sur Terre, la NASA teste une autre voie : Enterprise, transportée sur un Boeing 747 modifié."
+      }
+    },
+    {
+      "id": "shuttle-first-orbit",
+      "shot": "sts1",
+      "start": 355.4,
+      "end": 370.5,
+      "text": {
+        "en": "These tests prepared the Space Shuttle. In 1981, Columbia made the programme’s first orbital flight, carrying crews and scientific equipment into space.",
+        "fr": "Ces essais préparent la navette spatiale. En 1981, Columbia accomplit le premier vol orbital du programme, pour transporter des équipages et du matériel scientifique dans l’espace."
+      }
+    },
+    {
+      "id": "the-cost-of-flight",
+      "shot": "remembrance",
+      "start": 377.5,
+      "end": 384.5,
+      "text": {
+        "en": "Seven crew members died. NASA grounded the Shuttle to investigate.",
+        "fr": "Challenger a emporté sept vies. La NASA a suspendu les vols pour enquêter."
+      }
+    },
+    {
+      "id": "a-new-view",
+      "shot": "hubble",
+      "start": 385.5,
+      "end": 398.5,
+      "text": {
+        "en": "After flights resumed, a Shuttle crew deployed Hubble in 1990. Above the atmosphere, it could observe the universe more clearly.",
+        "fr": "Après la reprise des vols, une navette déploie Hubble en 1990. Au-dessus de l’atmosphère, il peut mieux observer l’univers."
+      }
+    },
+    {
+      "id": "rivals-build-together",
+      "shot": "iss-capture",
+      "start": 399.5,
+      "end": 418.5,
+      "text": {
+        "en": "In 1998, former rivals began building the International Space Station. Russian Zarya and American Unity became its first modules, beginning a shared home in Earth orbit.",
+        "fr": "En 1998, d’anciens rivaux commencent à bâtir la Station spatiale internationale. Le module russe Zarya et le module américain Unity en deviennent les premières pièces : un habitat commun en orbite."
+      }
+    },
+    {
+      "id": "huygens-titan",
+      "shot": "huygens-descent",
+      "start": 419.4,
+      "end": 434.5,
+      "text": {
+        "en": "On 14 January 2005, Europe’s Huygens probe landed on Titan, Saturn’s largest moon. Its images revealed a distant world of channels and rounded pebbles.",
+        "fr": "Le 14 janvier 2005, la sonde européenne Huygens se pose sur Titan, la plus grande lune de Saturne. Ses images révèlent un monde lointain de chenaux et de galets arrondis."
+      }
+    },
+    {
+      "id": "a-shared-laboratory",
+      "shot": "europe",
+      "start": 435.5,
+      "end": 444.5,
+      "text": {
+        "en": "Europe added its Columbus laboratory in 2008. With Japan and Canada, a shared laboratory grew above Earth.",
+        "fr": "L’Europe ajoute son laboratoire Columbus en 2008. Avec le Japon et le Canada, un laboratoire commun grandit au-dessus de la Terre."
+      }
+    },
+    {
+      "id": "retiring-the-shuttle",
+      "shot": "shuttle-retirement",
+      "start": 463.3,
+      "end": 478.6,
+      "text": {
+        "en": "Ageing spacecraft, high costs and safety concerns led NASA to retire the Shuttle fleet after assembling the Station. The final flight landed in 2011.",
+        "fr": "Le vieillissement des navettes, les coûts et la sécurité conduisent la NASA à retirer sa flotte après l’assemblage de la Station. Le dernier vol s’achève en 2011."
+      }
+    },
+    {
+      "id": "keeping-the-outpost-alive",
+      "shot": "soyuz",
+      "start": 479.3,
+      "end": 486.7,
+      "text": {
+        "en": "After the Shuttle retired, Russia’s Soyuz carried all arriving Station crews until 2020.",
+        "fr": "Après les navettes, le Soyouz russe transporte seul les équipages de la Station jusqu’en 2020."
+      }
+    },
+    {
+      "id": "the-long-journey-continues",
+      "shot": "heliopause",
+      "start": 487.5,
+      "end": 500.5,
+      "text": {
+        "en": "Meanwhile, Voyager 1 was still travelling. In 2012, it crossed the heliopause, beyond the solar wind.",
+        "fr": "Pendant ce temps, Voyager 1 poursuit sa route. En 2012, il franchit l’héliopause, au-delà du vent solaire."
+      }
+    },
+    {
+      "id": "rosetta-and-philae",
+      "shot": "rosetta-comet",
+      "start": 501.2,
+      "end": 516.5,
+      "text": {
+        "en": "In 2014, ESA’s Rosetta reached comet 67P. It released Philae, which descended and touched down on the surface.",
+        "fr": "En 2014, la sonde européenne Rosetta rejoint la comète 67P. Elle largue Philae, qui descend et se pose à sa surface."
+      }
+    },
+    {
+      "id": "rosetta-final-descent",
+      "shot": "rosetta-descent",
+      "start": 517.3,
+      "end": 532.4,
+      "text": {
+        "en": "Two years later, on 30 September 2016, Rosetta descended in turn. Its final images drew closer to the ground, until contact with the surface ended the mission.",
+        "fr": "Deux ans plus tard, le 30 septembre 2016, Rosetta descend à son tour. Ses dernières images se rapprochent du sol, jusqu’au contact qui met fin à la mission."
+      }
+    },
+    {
+      "id": "rosetta-remains-on-surface",
+      "shot": "rosetta-descent",
+      "start": 533.1,
+      "end": 536.8,
+      "text": {
+        "en": "Rosetta and Philae remain on the comet.",
+        "fr": "Rosetta et Philae restent sur la comète."
+      }
+    },
+    {
+      "id": "change4-farside",
+      "shot": "change4-wide",
+      "start": 537.4,
+      "end": 550.5,
+      "text": {
+        "en": "On 3 January 2019, China’s Chang’e 4 achieved the first soft landing on the far side of the Moon. The Yutu 2 rover then explored the surface.",
+        "fr": "Le 3 janvier 2019, la sonde chinoise Chang’e 4 réalise le premier atterrissage en douceur sur la face cachée de la Lune. Le rover Yutu 2 explore ensuite la surface."
+      }
+    },
+    {
+      "id": "returning-launchers",
+      "shot": "falcon-launch",
+      "start": 551.5,
+      "end": 562.5,
+      "text": {
+        "en": "SpaceX, founded by Elon Musk, developed boosters that could land and fly again. These Falcon missions flew in 2019 and 2020.",
+        "fr": "SpaceX, fondée par Elon Musk, développe des boosters capables de se poser et de revoler. Ces missions Falcon ont lieu en 2019 et en 2020."
+      }
+    },
+    {
+      "id": "a-question-on-mars",
+      "shot": "mars-approach",
+      "start": 589.4,
+      "end": 596.5,
+      "text": {
+        "en": "In 2021, Perseverance approached Mars to search for signs of ancient life.",
+        "fr": "En 2021, Perseverance approche de Mars pour chercher les traces d’une vie ancienne."
+      }
+    },
+    {
+      "id": "looking-back-through-time",
+      "shot": "webb",
+      "start": 609.4,
+      "end": 620.4,
+      "text": {
+        "en": "That December, Webb set out to observe the earliest galaxies. Exploration now reached across time as well as space.",
+        "fr": "En décembre, Webb part observer les premières galaxies. Explorer l’espace permet aussi de remonter le temps."
+      }
+    },
+    {
+      "id": "journeys-leave-traces",
+      "shot": "webb-legacy-transition",
+      "start": 622.2,
+      "end": 626.6,
+      "text": {
+        "en": "These journeys have also left traces behind.",
+        "fr": "Ces voyages ont aussi laissé des traces."
+      }
+    },
+    {
+      "id": "traces-on-the-moon",
+      "shot": "lunar-orbiter",
+      "start": 627.4,
+      "end": 634.6,
+      "text": {
+        "en": "On the Moon, Apollo’s landing stages and scientific instruments remain in place.",
+        "fr": "Sur la Lune, les étages de descente d’Apollo et leurs instruments restent sur place."
+      }
+    },
+    {
+      "id": "traces-on-mars",
+      "shot": "mars",
+      "start": 635.4,
+      "end": 651.5,
+      "text": {
+        "en": "On Mars, some robots still work. Other missions have ended, but their machines remain on the surface.",
+        "fr": "Sur Mars, certains robots travaillent encore. D’autres missions sont terminées, mais leurs machines demeurent à la surface."
+      }
+    },
+    {
+      "id": "traces-beyond-moon-and-mars",
+      "shot": "legacy-titan",
+      "start": 652.2,
+      "end": 665.6,
+      "text": {
+        "en": "On Titan, on a comet, in orbit or in interstellar space, other spacecraft continue their journey or preserve the traces of a completed mission.",
+        "fr": "Sur Titan, sur une comète, en orbite ou dans l’espace interstellaire, d’autres engins poursuivent leur route ou gardent les traces d’une mission achevée."
+      }
+    },
+    {
+      "id": "why-relic",
+      "shot": "mars-pullout",
+      "start": 666.5,
+      "end": 694.5,
+      "text": {
+        "en": "Each spacecraft records a step in what we learned to build, to reach and to understand. Some are still active. Others have become the remnants of our exploration. RELIC follows their stories across the Solar System.",
+        "fr": "Chaque engin raconte une étape dans ce que nous avons appris à construire, à atteindre et à comprendre. Certains sont encore actifs. D’autres sont devenus les vestiges de notre exploration. RELIC retrace leur histoire à travers le Système solaire."
+      }
+    }
+  ]
+}

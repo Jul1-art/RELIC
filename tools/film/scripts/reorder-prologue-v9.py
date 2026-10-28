@@ -13,6 +13,7 @@ import argparse
 from fractions import Fraction
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -273,7 +274,10 @@ def main():
     source_plan=ROOT/"tools/film/reference/prologue-edit-v9-source.json"
     parser.add_argument("--plan",type=Path,default=source_plan if source_plan.is_file() else ROOT/"tools/film/scripts/prologue-edit-v9.json")
     parser.add_argument("--chronology",type=Path,default=ROOT/"tools/film/scripts/prologue-chronology-v9.json")
-    parser.add_argument("--work",type=Path,default=ROOT/"media-work/v9-chronology")
+    cache=(Path(os.environ['LOCALAPPDATA'])/'Codex/task-work/relic-film-production'
+           if os.name=='nt' and os.environ.get('LOCALAPPDATA')
+           else Path(os.environ.get('XDG_CACHE_HOME',Path.home()/'.cache'))/'relic-film-production')
+    parser.add_argument("--work",type=Path,default=cache/'v9-chronology')
     parser.add_argument("--ffmpeg",type=Path)
     args=parser.parse_args();started=time.monotonic()
     global BLOCKS,REVISION

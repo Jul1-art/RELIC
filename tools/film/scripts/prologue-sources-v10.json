@@ -1,0 +1,151 @@
+{
+  "version": 10,
+  "checkedOn": "2026-10-28",
+  "cachePolicy": "Source downloads and intermediate renders use the operating system local application cache, outside Documents and cloud-synchronized folders. Only the verified application delivery is published to the repository.",
+  "assets": [
+    {
+      "id": "tereshkova-1963",
+      "file": "assets/tereshkova-1963.jpg",
+      "sourcePage": "https://starchild.gsfc.nasa.gov/docs/StarChild/whos_who_level2/tereshkova.html",
+      "sourceDownloadUrl": "https://starchild.gsfc.nasa.gov/Images/StarChild/scientists/tereshkova_l2.jpg",
+      "credit": "NASA StarChild historical archive",
+      "context": "Historical June 1963 photograph outside Vostok 6, presented as a still with a gentle editorial zoom. Not moving orbital footage.",
+      "rights": "NASA archive guidance",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "bytes": 25045,
+      "sha256": "c2d9c7bc93004ba0e0c4cc06f656966395d942b097ae2396e0d6832485b4d756"
+    },
+    {
+      "id": "leonov",
+      "file": "assets/leonov.mp4",
+      "sourcePage": "https://images.nasa.gov/details/VF_Russian Space Pioneer Alexey Leonov",
+      "sourceDownloadUrl": "https://images-assets.nasa.gov/video/VF_Russian%20Space%20Pioneer%20Alexey%20Leonov/VF_Russian%20Space%20Pioneer%20Alexey%20Leonov~orig.mp4",
+      "credit": "NASA Johnson archival compilation",
+      "context": "Genuine 1965 first-EVA footage, selected at 3–17 seconds. Compilation audio muted.",
+      "rights": "NASA archive guidance",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "bytes": 296401958,
+      "sha256": "9087e80990a4d297a5a6b75beec64398c7707d4f7cf7a8e80d2c8f2a1ad1ca04"
+    },
+    {
+      "id": "earthrise",
+      "file": "assets/earthrise.mp4",
+      "sourcePage": "https://svs.gsfc.nasa.gov/3936/",
+      "sourceDownloadUrl": "https://svs.gsfc.nasa.gov/vis/a000000/a003900/a003936/earthrise_comp_1080p30.mp4",
+      "credit": "NASA SVS / Ernie Wright",
+      "context": "Scientific visualization of Apollo 8 Earthrise based on topography and the historical spacecraft view, not an external camera recording.",
+      "rights": "NASA archive guidance",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "bytes": 58828575,
+      "sha256": "a2b1b352b18a0db974dc0333ef447458179ed4c3c26fd9a08db91e66498d1970"
+    },
+    {
+      "id": "earthrise-colour",
+      "file": "assets/earthrise-colour.jpg",
+      "sourcePage": "https://eol.jsc.nasa.gov/SearchPhotos/photo.pl?frame=2383&mission=AS08&roll=14",
+      "sourceDownloadUrl": "https://images-assets.nasa.gov/image/as08-14-2383/as08-14-2383~orig.jpg",
+      "credit": "NASA / Bill Anders, AS08-14-2383",
+      "context": "Genuine colour Earthrise photograph, 24 December 1968. Gentle editorial zoom; no generated detail.",
+      "rights": "NASA archive guidance",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "bytes": 494374,
+      "sha256": "4b1484e9bb55652e30a56c03c27141938885a09e4b3c0bcabb8841e1e94ed9d9"
+    },
+    {
+      "id": "apollo11-broll",
+      "file": "assets/apollo11-broll.mp4",
+      "sourcePage": "https://images.nasa.gov/details/KSC-19690716-MH-NAS01-0001-Apollo_11_Historical_Footage_and_Broll-DVC_1560",
+      "sourceDownloadUrl": "https://images-assets.nasa.gov/video/KSC-19690716-MH-NAS01-0001-Apollo_11_Historical_Footage_and_Broll-DVC_1560/KSC-19690716-MH-NAS01-0001-Apollo_11_Historical_Footage_and_Broll-DVC_1560~orig.mp4",
+      "credit": "NASA",
+      "context": "Current original: 1280x720, 2403.768 seconds. Flag planting at 1490–1498 seconds, then surface/hardware at 1538–1552. Original audio muted.",
+      "rights": "NASA archive guidance",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "bytes": 3935359288,
+      "sha256": "7c7b71124c2aede58fbcee19f414c0ad7ae4ad0bda14ef727cd1d33e3ef28f8b"
+    },
+    {
+      "id": "voyager2-launch",
+      "file": "assets/voyager2-launch.mp4",
+      "sourcePage": "https://www.jpl.nasa.gov/videos/voyager-2-launches/",
+      "sourceDownloadUrl": "https://images-assets.nasa.gov/video/JPL-19770820-VOYAGEf-0001-AVC2002151%20Voyager%202%20Launches/JPL-19770820-VOYAGEf-0001-AVC2002151%20Voyager%202%20Launches~orig.mp4",
+      "credit": "NASA / JPL-Caltech",
+      "context": "Actual Voyager 2 launch, 20 August 1977. Selection 5–13 seconds. Original narration muted.",
+      "rights": "NASA archive guidance",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "bytes": 68528838,
+      "sha256": "5935d20e945c4aabfff3d2c9877315cf8ec8afe8dfa727345ee24303afd9c666"
+    },
+    {
+      "id": "voyager1-launch",
+      "file": "assets/voyager1-launch.mp4",
+      "sourcePage": "https://images.nasa.gov/details/JPL-19770905-VOYAGEf-0001-AVC2002151 Voyager 1 Launches",
+      "sourceDownloadUrl": "https://images-assets.nasa.gov/video/JPL-19770905-VOYAGEf-0001-AVC2002151%20Voyager%201%20Launches/JPL-19770905-VOYAGEf-0001-AVC2002151%20Voyager%201%20Launches~orig.mp4",
+      "credit": "NASA / JPL-Caltech",
+      "context": "Actual Voyager 1 launch, 5 September 1977; additional clean-room instrument footage. Original narration muted.",
+      "rights": "NASA archive guidance",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "bytes": 69526259,
+      "sha256": "fe0b8e8a2e4dfc44229a134bd548a364dcd388e27475a9d7ca88fa36f0e82199"
+    },
+    {
+      "id": "huygens-descent",
+      "file": "assets/huygens-descent.mp4",
+      "sourcePage": "https://www.esa.int/esatv/Videos/2024/01/Huygens_s_descent_to_Titan_s_surface",
+      "sourceDownloadUrl": "https://dlmultimedia.esa.int/download/public/videos/2024/01/023/orig-2401_023_AR_EN.mp4",
+      "credit": "ESA / NASA / JPL / University of Arizona; Erich Karkoschka, DISR team",
+      "context": "Official 2015 reconstruction from Huygens DISR data of its 14 January 2005 descent and surface view. The selected descent is compressed; the surface selection retains its speed. Original narration and Beethoven performance muted.",
+      "rights": "ESA Standard Licence",
+      "rightsUrl": "https://www.esa.int/ESA_Multimedia/Terms_and_conditions",
+      "bytes": 46617174,
+      "sha256": "dea314919df7cf1fd67a9266798168feb41fc25c42c1a4ec11d86636f12909ab"
+    },
+    {
+      "id": "rosetta-descent",
+      "file": "assets/rosetta-descent.mov",
+      "sourcePage": "https://www.esa.int/esatv/Videos/2016/09/Visualising_Rosetta_s_descent",
+      "sourceDownloadUrl": "https://dlmultimedia.esa.int/download/public/videos/2016/09/049/orig-1609_049_AR_EN.mov",
+      "credit": "ESA / ATG medialab",
+      "context": "Official scientific animation of Rosetta’s controlled descent and low-speed surface contact on 30 September 2016. The selection moves forward from orbit to contact. This is distinct from Philae’s 2014 landing. Original soundtrack muted.",
+      "rights": "ESA Standard Licence",
+      "rightsUrl": "https://www.esa.int/ESA_Multimedia/Terms_and_conditions",
+      "bytes": 180248531,
+      "sha256": "9f38cef6a64b4533c4d78aa9731e1a9f7a102bc1aba937294590188c3cf8c768"
+    },
+    {
+      "id": "change4-lro",
+      "file": "assets/change4-lro.jpg",
+      "sourcePage": "https://science.nasa.gov/resource/first-look-change-4/",
+      "sourceDownloadUrl": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/c/change4.jpg",
+      "credit": "NASA / GSFC / Arizona State University",
+      "context": "LRO image of the Chang’e 4 site acquired on 30 January 2019, illustrating the first lunar farside landing on 3 January. Not a descent-camera recording.",
+      "rights": "NASA archive guidance",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "bytes": 432587,
+      "sha256": "528e4f8f942121f5c9cef34b06931e34ed4d2b6a7b27a459e2815d34a5a1f22d"
+    },
+    {
+      "id": "change4-lro-detail",
+      "file": "assets/change4-lro-detail.png",
+      "sourcePage": "https://science.nasa.gov/resource/first-look-change-4/",
+      "sourceDownloadUrl": "https://assets.science.nasa.gov/content/dam/science/psd/solar/internal_resources/3435/zoomed_in_view_with_arrows_marking_the_rover__seen_as_a_dot.png",
+      "credit": "NASA / GSFC / Arizona State University",
+      "context": "Published LRO close-up with source arrows. The lander is visible between the arrows; Yutu 2 is not resolved in this orbital image.",
+      "rights": "NASA archive guidance",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "bytes": 207191,
+      "sha256": "0a54be512d68afcae793c657e8def92d2924be2fb43c92b5689fa403b050d6b3"
+    },
+    {
+      "id": "helios",
+      "file": "assets/helios.oga",
+      "sourcePage": "https://www.scottbuckley.com.au/library/helios/",
+      "sourceDownloadUrl": "https://upload.wikimedia.org/wikipedia/commons/3/30/Scott_Buckley_-_Helios.oga",
+      "credit": "Scott Buckley",
+      "context": "Existing score re-edited with long crossfades and a continuous closing passage under Webb and the legacy reflection. Required credit retained in the application.",
+      "rights": "CC BY 4.0",
+      "rightsUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "bytes": 8400725,
+      "sha256": "5d3c83464de8bde3913cc030778ce0cc732b8bdacd6f1b86c630f133e796fb0d"
+    }
+  ]
+}

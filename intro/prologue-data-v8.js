@@ -1,21 +1,21 @@
-/** V9.1 documentary: chronological events, bilingual captions and media-clock composition. */
+/** V10 documentary: scene-bound bilingual narration and verified media clock. */
 export const PROLOGUE_MEDIA=Object.freeze({
-  "revision": "9.1-hd50",
-  "duration": 569,
+  "revision": "10.0-hd50",
+  "duration": 703,
   "preview": false,
   "encoding": "./assets/prologue/encoding-v9-hd50.json",
   "sources": "./assets/prologue/sources-v9.json",
   "poster": "./assets/prologue/poster-v9-hd50.jpg",
   "language": "en",
-  "hls": "./assets/prologue/v9-1-hd50/en.m3u8",
+  "hls": "./assets/prologue/v10-0-hd50/en.m3u8",
   "languages": {
     "en": {
       "language": "en",
-      "hls": "./assets/prologue/v9-1-hd50/en.m3u8"
+      "hls": "./assets/prologue/v10-0-hd50/en.m3u8"
     },
     "fr": {
       "language": "fr",
-      "hls": "./assets/prologue/v9-1-hd50/fr.m3u8"
+      "hls": "./assets/prologue/v10-0-hd50/fr.m3u8"
     }
   },
   "scenes": [
@@ -163,9 +163,49 @@ export const PROLOGUE_MEDIA=Object.freeze({
       }
     },
     {
-      "id": "saturn-v",
+      "id": "tereshkova",
       "start": 189,
-      "end": 201,
+      "end": 203,
+      "label": {
+        "en": "Valentina Tereshkova · 16 June 1963",
+        "fr": "Valentina Terechkova · 16 juin 1963"
+      }
+    },
+    {
+      "id": "leonov",
+      "start": 203,
+      "end": 217,
+      "label": {
+        "en": "Alexei Leonov · 18 March 1965",
+        "fr": "Alexeï Leonov · 18 mars 1965"
+      }
+    },
+    {
+      "id": "apollo8-orbit",
+      "start": 217,
+      "end": 227,
+      "label": {
+        "en": "Apollo 8 · 24 December 1968",
+        "fr": "Apollo 8 · 24 décembre 1968"
+      },
+      "speaker": {
+        "en": "Official scientific visualization",
+        "fr": "Visualisation scientifique officielle"
+      }
+    },
+    {
+      "id": "apollo8-earthrise",
+      "start": 227,
+      "end": 237,
+      "label": {
+        "en": "Earthrise · Bill Anders, 1968",
+        "fr": "Earthrise · Bill Anders, 1968"
+      }
+    },
+    {
+      "id": "saturn-v",
+      "start": 237,
+      "end": 249,
       "label": {
         "en": "Apollo 11 · 16 July 1969",
         "fr": "Apollo 11 · 16 juillet 1969"
@@ -173,8 +213,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
     },
     {
       "id": "apollo-engines",
-      "start": 201,
-      "end": 207,
+      "start": 249,
+      "end": 255,
       "label": {
         "en": "Apollo 11 · 16 July 1969",
         "fr": "Apollo 11 · 16 juillet 1969"
@@ -182,8 +222,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
     },
     {
       "id": "apollo-liftoff",
-      "start": 207,
-      "end": 217,
+      "start": 255,
+      "end": 265,
       "label": {
         "en": "Apollo 11 · 16 July 1969",
         "fr": "Apollo 11 · 16 juillet 1969"
@@ -191,8 +231,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
     },
     {
       "id": "eagle-orbit",
-      "start": 217,
-      "end": 223,
+      "start": 265,
+      "end": 271,
       "label": {
         "en": "Eagle / Columbia · 20 July 1969",
         "fr": "Eagle / Columbia · 20 juillet 1969"
@@ -200,8 +240,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
     },
     {
       "id": "eagle-descent",
-      "start": 223,
-      "end": 231,
+      "start": 271,
+      "end": 279,
       "label": {
         "en": "Eagle landing · 20 July 1969 (UTC)",
         "fr": "Atterrissage d’Eagle · 20 juillet 1969 (UTC)"
@@ -209,44 +249,72 @@ export const PROLOGUE_MEDIA=Object.freeze({
     },
     {
       "id": "moon",
-      "start": 231,
-      "end": 245,
+      "start": 279,
+      "end": 293,
       "label": {
         "en": "First step · 21 July 1969 (UTC)",
         "fr": "Premier pas · 21 juillet 1969 (UTC)"
       }
     },
     {
+      "id": "moon-flag",
+      "start": 293,
+      "end": 301
+    },
+    {
       "id": "eagle-landed",
-      "start": 245,
-      "end": 259,
+      "start": 301,
+      "end": 315,
       "label": {
         "en": "Apollo 11 surface mission · 1969",
         "fr": "Apollo 11 sur la Lune · 1969"
       }
     },
     {
-      "id": "shuttle-carrier",
-      "start": 259,
-      "end": 267,
+      "id": "voyager2-launch",
+      "start": 315,
+      "end": 323,
       "label": {
-        "en": "Enterprise · 1977",
-        "fr": "Enterprise · 1977"
+        "en": "Voyager 2 · 20 August 1977",
+        "fr": "Voyager 2 · 20 août 1977"
       }
     },
     {
+      "id": "voyager1-launch",
+      "start": 323,
+      "end": 331,
+      "label": {
+        "en": "Voyager 1 · 5 September 1977",
+        "fr": "Voyager 1 · 5 septembre 1977"
+      }
+    },
+    {
+      "id": "voyager-instruments",
+      "start": 331,
+      "end": 339
+    },
+    {
       "id": "voyager",
-      "start": 267,
-      "end": 283,
+      "start": 339,
+      "end": 347,
       "label": {
         "en": "Voyager · 1977",
         "fr": "Voyager · 1977"
       }
     },
     {
+      "id": "shuttle-carrier",
+      "start": 347,
+      "end": 355,
+      "label": {
+        "en": "Enterprise · 1977",
+        "fr": "Enterprise · 1977"
+      }
+    },
+    {
       "id": "sts1",
-      "start": 283,
-      "end": 299,
+      "start": 355,
+      "end": 371,
       "label": {
         "en": "Columbia / STS-1 · 12 April 1981",
         "fr": "Columbia / STS-1 · 12 avril 1981"
@@ -254,8 +322,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
     },
     {
       "id": "challenger",
-      "start": 299,
-      "end": 305,
+      "start": 371,
+      "end": 377,
       "label": {
         "en": "Challenger · 28 January 1986",
         "fr": "Challenger · 28 janvier 1986"
@@ -263,13 +331,13 @@ export const PROLOGUE_MEDIA=Object.freeze({
     },
     {
       "id": "remembrance",
-      "start": 305,
-      "end": 313
+      "start": 377,
+      "end": 385
     },
     {
       "id": "hubble",
-      "start": 313,
-      "end": 327,
+      "start": 385,
+      "end": 399,
       "label": {
         "en": "Hubble deployment · 25 April 1990",
         "fr": "Déploiement de Hubble · 25 avril 1990"
@@ -277,8 +345,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
     },
     {
       "id": "iss-capture",
-      "start": 327,
-      "end": 337,
+      "start": 399,
+      "end": 409,
       "label": {
         "en": "International Space Station · December 1998",
         "fr": "Station spatiale internationale · décembre 1998"
@@ -286,17 +354,35 @@ export const PROLOGUE_MEDIA=Object.freeze({
     },
     {
       "id": "iss-unity",
-      "start": 337,
-      "end": 347,
+      "start": 409,
+      "end": 419,
       "label": {
         "en": "Unity + Zarya · December 1998",
         "fr": "Unity + Zarya · décembre 1998"
       }
     },
     {
+      "id": "huygens-descent",
+      "start": 419,
+      "end": 427,
+      "label": {
+        "en": "Huygens · 14 January 2005",
+        "fr": "Huygens · 14 janvier 2005"
+      }
+    },
+    {
+      "id": "huygens-surface",
+      "start": 427,
+      "end": 435,
+      "label": {
+        "en": "Titan · Huygens surface view",
+        "fr": "Titan · Vue de la surface par Huygens"
+      }
+    },
+    {
       "id": "europe",
-      "start": 347,
-      "end": 357,
+      "start": 435,
+      "end": 445,
       "label": {
         "en": "Columbus / ESA · February 2008",
         "fr": "Columbus / ESA · février 2008"
@@ -304,8 +390,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
     },
     {
       "id": "iss-whole",
-      "start": 357,
-      "end": 369,
+      "start": 445,
+      "end": 457,
       "label": {
         "en": "International Space Station · 2009",
         "fr": "Station spatiale internationale · 2009"
@@ -313,13 +399,13 @@ export const PROLOGUE_MEDIA=Object.freeze({
     },
     {
       "id": "iss-life",
-      "start": 369,
-      "end": 375
+      "start": 457,
+      "end": 463
     },
     {
       "id": "shuttle-retirement",
-      "start": 375,
-      "end": 391,
+      "start": 463,
+      "end": 479,
       "label": {
         "en": "Last Shuttle landing · 21 July 2011",
         "fr": "Dernier atterrissage d’une navette · 21 juillet 2011"
@@ -327,8 +413,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
     },
     {
       "id": "soyuz",
-      "start": 391,
-      "end": 399,
+      "start": 479,
+      "end": 487,
       "label": {
         "en": "Soyuz / ISS crews · 2011",
         "fr": "Soyouz / Équipages de l’ISS · 2011"
@@ -336,17 +422,30 @@ export const PROLOGUE_MEDIA=Object.freeze({
     },
     {
       "id": "heliopause",
-      "start": 399,
-      "end": 413,
+      "start": 487,
+      "end": 501,
       "label": {
         "en": "Voyager 1 · 25 August 2012",
         "fr": "Voyager 1 · 25 août 2012"
       }
     },
     {
+      "id": "rosetta-comet",
+      "start": 501,
+      "end": 505,
+      "label": {
+        "en": "Comet 67P · Rosetta and Philae",
+        "fr": "Comète 67P · Rosetta et Philae"
+      },
+      "speaker": {
+        "en": "Official scientific visualization",
+        "fr": "Visualisation scientifique officielle"
+      }
+    },
+    {
       "id": "philae-approach",
-      "start": 413,
-      "end": 421,
+      "start": 505,
+      "end": 511,
       "label": {
         "en": "Philae / Rosetta · 12 November 2014",
         "fr": "Philae / Rosetta · 12 novembre 2014"
@@ -354,26 +453,48 @@ export const PROLOGUE_MEDIA=Object.freeze({
     },
     {
       "id": "philae-landing",
-      "start": 421,
-      "end": 429,
+      "start": 511,
+      "end": 517,
       "label": {
         "en": "Philae on comet 67P · 2014",
         "fr": "Philae sur la comète 67P · 2014"
       }
     },
     {
-      "id": "rosetta-impact",
-      "start": 429,
-      "end": 437,
+      "id": "rosetta-descent",
+      "start": 517,
+      "end": 537,
       "label": {
         "en": "Rosetta · 30 September 2016",
         "fr": "Rosetta · 30 septembre 2016"
+      },
+      "speaker": {
+        "en": "Official scientific visualization",
+        "fr": "Visualisation scientifique officielle"
+      }
+    },
+    {
+      "id": "change4-wide",
+      "start": 537,
+      "end": 545,
+      "label": {
+        "en": "Chang’e 4 · 3 January 2019",
+        "fr": "Chang’e 4 · 3 janvier 2019"
+      }
+    },
+    {
+      "id": "change4-site",
+      "start": 545,
+      "end": 551,
+      "label": {
+        "en": "Chang’e 4 landing site · LRO view",
+        "fr": "Site de Chang’e 4 · Vue par LRO"
       }
     },
     {
       "id": "falcon-launch",
-      "start": 437,
-      "end": 449,
+      "start": 551,
+      "end": 563,
       "label": {
         "en": "Falcon Heavy / STP-2 · June 2019",
         "fr": "Falcon Heavy / STP-2 · juin 2019"
@@ -381,8 +502,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
     },
     {
       "id": "falcon-dual-return",
-      "start": 449,
-      "end": 463,
+      "start": 563,
+      "end": 577,
       "label": {
         "en": "Falcon Heavy · June 2019",
         "fr": "Falcon Heavy · juin 2019"
@@ -390,8 +511,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
     },
     {
       "id": "falcon-return",
-      "start": 463,
-      "end": 475,
+      "start": 577,
+      "end": 589,
       "focus": {
         "mobile": "48% 50%",
         "desktop": "50% 50%"
@@ -403,8 +524,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
     },
     {
       "id": "mars-approach",
-      "start": 475,
-      "end": 483,
+      "start": 589,
+      "end": 597,
       "label": {
         "en": "Perseverance · 18 February 2021",
         "fr": "Perseverance · 18 février 2021"
@@ -412,8 +533,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
     },
     {
       "id": "perseverance-up",
-      "start": 483,
-      "end": 489,
+      "start": 597,
+      "end": 603,
       "label": {
         "en": "Perseverance · 18 February 2021",
         "fr": "Perseverance · 18 février 2021"
@@ -421,8 +542,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
     },
     {
       "id": "perseverance-down",
-      "start": 489,
-      "end": 495,
+      "start": 603,
+      "end": 609,
       "label": {
         "en": "Perseverance · 18 February 2021",
         "fr": "Perseverance · 18 février 2021"
@@ -430,57 +551,62 @@ export const PROLOGUE_MEDIA=Object.freeze({
     },
     {
       "id": "webb",
-      "start": 495,
-      "end": 507,
+      "start": 609,
+      "end": 621,
       "label": {
         "en": "James Webb Space Telescope · 25 December 2021",
         "fr": "Télescope spatial James-Webb · 25 décembre 2021"
       }
     },
     {
+      "id": "webb-legacy-transition",
+      "start": 621,
+      "end": 627
+    },
+    {
       "id": "lunar-orbiter",
-      "start": 507,
-      "end": 515,
-      "label": {
-        "en": "Epilogue · The legacy of exploration",
-        "fr": "Épilogue · L’héritage de l’exploration"
-      },
-      "historicalRole": "epilogue"
+      "start": 627,
+      "end": 635
     },
     {
       "id": "mars",
-      "start": 515,
-      "end": 523,
-      "label": {
-        "en": "Curiosity · Exploration continues",
-        "fr": "Curiosity · L’exploration se poursuit"
-      },
-      "historicalRole": "epilogue"
+      "start": 635,
+      "end": 643
     },
     {
       "id": "hardware",
-      "start": 523,
-      "end": 532,
-      "label": {
-        "en": "Curiosity · Exploration continues",
-        "fr": "Curiosity · L’exploration se poursuit"
-      },
-      "historicalRole": "epilogue"
+      "start": 643,
+      "end": 652
+    },
+    {
+      "id": "legacy-titan",
+      "start": 652,
+      "end": 656
+    },
+    {
+      "id": "legacy-comet",
+      "start": 656,
+      "end": 660
+    },
+    {
+      "id": "legacy-interstellar",
+      "start": 660,
+      "end": 666
     },
     {
       "id": "mars-pullout",
-      "start": 532,
-      "end": 544
+      "start": 666,
+      "end": 678
     },
     {
       "id": "solar-system",
-      "start": 544,
-      "end": 561
+      "start": 678,
+      "end": 695
     },
     {
       "id": "relic",
-      "start": 561,
-      "end": 569
+      "start": 695,
+      "end": 703
     }
   ],
   "captions": {
@@ -546,89 +672,37 @@ export const PROLOGUE_MEDIA=Object.freeze({
       {
         "id": "a-world-and-a-question-1",
         "start": 88.9,
-        "end": 90.29,
-        "kind": "bridge",
-        "paragraph": "a-world-and-a-question",
-        "title": {
-          "en": "Millions of years later,"
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "a-world-and-a-question-2",
-        "start": 90.29,
-        "end": 92.695,
-        "kind": "narration",
-        "paragraph": "a-world-and-a-question",
-        "title": {
-          "en": "humanity transformed this same world,"
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "a-world-and-a-question-3",
-        "start": 92.695,
         "end": 94.396,
         "kind": "narration",
-        "paragraph": "a-world-and-a-question",
         "title": {
-          "en": "and learned to reach beyond it."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "en": "Millions of years later, humanity transformed this same world, and learned to reach beyond it."
         }
       },
       {
-        "id": "quiet-v9-6",
+        "id": "quiet-v10-1",
         "start": 94.396,
         "end": 99.5,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "from-war-to-a-race-1",
+        "id": "war-rockets-1",
         "start": 99.5,
-        "end": 111.5,
+        "end": 106.276,
         "kind": "narration",
-        "paragraph": "from-war-to-a-race",
         "title": {
           "en": "In 1944, Nazi Germany deployed the V1 cruise missile and the V2 ballistic rocket."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
+        }
+      },
+      {
+        "id": "quiet-v10-2",
+        "start": 106.276,
+        "end": 111.5,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
         }
@@ -641,84 +715,41 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "from-war-to-a-race-2",
-        "start": 113,
-        "end": 117.685,
+        "id": "von-braun-postwar-1",
+        "start": 113.0,
+        "end": 116.83,
         "kind": "narration",
-        "paragraph": "from-war-to-a-race",
         "title": {
-          "en": "After the war, Wernher von Braun worked on the American space programme."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "en": "After the war, Wernher von Braun joined the American programme."
         }
       },
       {
-        "id": "from-war-to-a-race-3",
-        "start": 117.685,
-        "end": 120.75,
+        "id": "von-braun-postwar-2",
+        "start": 116.83,
+        "end": 119.875,
         "kind": "narration",
-        "paragraph": "from-war-to-a-race",
         "title": {
           "en": "Soviet engineers developed their own rockets."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "from-war-to-a-race-4",
-        "start": 120.75,
-        "end": 122.527333,
+        "id": "von-braun-postwar-3",
+        "start": 119.875,
+        "end": 121.461333,
         "kind": "narration",
-        "paragraph": "from-war-to-a-race",
         "title": {
-          "en": "The Space Race had begun."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "en": "The Space Race began."
         }
       },
       {
-        "id": "quiet-v9-11",
-        "start": 122.527333,
+        "id": "quiet-v10-3",
+        "start": 121.461333,
         "end": 125.0,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
@@ -726,107 +757,74 @@ export const PROLOGUE_MEDIA=Object.freeze({
       {
         "id": "a-signal-around-earth-1",
         "start": 125.0,
-        "end": 132.885333,
+        "end": 129.52,
         "kind": "narration",
-        "paragraph": "a-signal-around-earth",
         "title": {
-          "en": "In 1957, Sputnik became the first artificial satellite. Its signal carried the rivalry around the world."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "en": "In 1957, Sputnik became the first artificial satellite."
         }
       },
       {
-        "id": "quiet-v9-13",
-        "start": 132.885333,
+        "id": "a-signal-around-earth-2",
+        "start": 129.52,
+        "end": 132.821333,
+        "kind": "narration",
+        "title": {
+          "en": "Its signal carried the rivalry around the world."
+        }
+      },
+      {
+        "id": "quiet-v10-4",
+        "start": 132.821333,
         "end": 135.5,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "from-machines-to-people-1",
+        "id": "laika-1",
         "start": 135.5,
-        "end": 139.32,
+        "end": 138.13,
         "kind": "narration",
-        "paragraph": "from-machines-to-people",
         "title": {
-          "en": "If a machine could circle Earth, could a living passenger survive?"
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "en": "Could a living passenger survive in orbit?"
         }
       },
       {
-        "id": "from-machines-to-people-2",
-        "start": 139.32,
-        "end": 143.535,
+        "id": "laika-2",
+        "start": 138.13,
+        "end": 142.830667,
         "kind": "narration",
-        "paragraph": "from-machines-to-people",
         "title": {
-          "en": "Laika became the first dog in orbit, but did not survive."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "en": "Laika became the first dog to circle Earth, but did not survive the journey."
         }
       },
       {
-        "id": "from-machines-to-people-3",
-        "start": 143.535,
-        "end": 148.441333,
-        "kind": "narration",
-        "paragraph": "from-machines-to-people",
-        "title": {
-          "en": "In 1961, Yuri Gagarin became the first human in space."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "quiet-v9-17",
-        "start": 148.441333,
-        "end": 150.8,
+        "id": "quiet-v10-5",
+        "start": 142.830667,
+        "end": 147.1,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
+        }
+      },
+      {
+        "id": "gagarin-1",
+        "start": 147.1,
+        "end": 149.673333,
+        "kind": "narration",
+        "title": {
+          "en": "Yuri Gagarin, the first human in space."
+        }
+      },
+      {
+        "id": "quiet-v10-6",
+        "start": 149.673333,
+        "end": 150.8,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
         }
@@ -856,19 +854,11 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v9-19",
+        "id": "quiet-v10-7",
         "start": 152.286,
         "end": 161.5,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
@@ -876,35 +866,18 @@ export const PROLOGUE_MEDIA=Object.freeze({
       {
         "id": "a-destination-1",
         "start": 161.5,
-        "end": 167.764,
+        "end": 167.593333,
         "kind": "narration",
-        "paragraph": "a-destination",
         "title": {
           "en": "In 1961, the United States set a new destination beyond Earth orbit: the Moon."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "quiet-v9-21",
-        "start": 167.764,
+        "id": "quiet-v10-8",
+        "start": 167.593333,
         "end": 169,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
@@ -1054,73 +1027,142 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v9-28",
+        "id": "quiet-v10-9",
         "start": 187.95,
         "end": 189.5,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
+        }
+      },
+      {
+        "id": "tereshkova-first-woman-1",
+        "start": 189.5,
+        "end": 195.86,
+        "kind": "narration",
+        "title": {
+          "en": "On 16 June 1963, Valentina Tereshkova became the first woman in space."
+        }
+      },
+      {
+        "id": "tereshkova-first-woman-2",
+        "start": 195.86,
+        "end": 200.052,
+        "kind": "narration",
+        "title": {
+          "en": "Aboard Vostok 6, she orbited Earth forty-eight times."
+        }
+      },
+      {
+        "id": "quiet-v10-10",
+        "start": 200.052,
+        "end": 203.5,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
-        },
-        "sourceLabel": {
+        }
+      },
+      {
+        "id": "leonov-first-spacewalk-1",
+        "start": 203.5,
+        "end": 208.84,
+        "kind": "narration",
+        "title": {
+          "en": "On 18 March 1965, Alexei Leonov left his Voskhod 2 spacecraft."
+        }
+      },
+      {
+        "id": "leonov-first-spacewalk-2",
+        "start": 208.84,
+        "end": 214.158667,
+        "kind": "narration",
+        "title": {
+          "en": "For the first time, a human floated outside a spacecraft in orbit."
+        }
+      },
+      {
+        "id": "quiet-v10-11",
+        "start": 214.158667,
+        "end": 217.4,
+        "kind": "visual",
+        "title": {
+          "en": "",
+          "fr": ""
+        }
+      },
+      {
+        "id": "apollo8-first-orbit-1",
+        "start": 217.4,
+        "end": 223.685333,
+        "kind": "narration",
+        "title": {
+          "en": "On 24 December 1968, Apollo 8 became the first crewed mission to orbit the Moon."
+        }
+      },
+      {
+        "id": "quiet-v10-12",
+        "start": 223.685333,
+        "end": 227.4,
+        "kind": "visual",
+        "title": {
+          "en": "",
+          "fr": ""
+        }
+      },
+      {
+        "id": "apollo8-earthrise-1",
+        "start": 227.4,
+        "end": 231.195,
+        "kind": "narration",
+        "title": {
+          "en": "Bill Anders photographed Earth rising above the lunar horizon."
+        }
+      },
+      {
+        "id": "apollo8-earthrise-2",
+        "start": 231.195,
+        "end": 233.642667,
+        "kind": "narration",
+        "title": {
+          "en": "Earthrise offered a new view of our home."
+        }
+      },
+      {
+        "id": "quiet-v10-13",
+        "start": 233.642667,
+        "end": 237.5,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "a-promise-becomes-a-journey-1",
-        "start": 189.5,
-        "end": 195.06,
+        "start": 237.5,
+        "end": 243.025,
         "kind": "narration",
-        "paragraph": "a-promise-becomes-a-journey",
         "title": {
           "en": "By 1969, NASA’s Apollo programme had turned that promise into a journey."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
         "id": "a-promise-becomes-a-journey-2",
-        "start": 195.06,
-        "end": 198.494667,
+        "start": 243.025,
+        "end": 246.324,
         "kind": "narration",
-        "paragraph": "a-promise-becomes-a-journey",
         "title": {
           "en": "Saturn V would carry three astronauts to the Moon."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "quiet-v9-31",
-        "start": 198.494667,
-        "end": 201,
+        "id": "quiet-v10-14",
+        "start": 246.324,
+        "end": 249,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
@@ -1129,8 +1171,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "id": "archive-apollo11-countdown-liftoff-1",
         "archiveId": "apollo11-countdown-liftoff",
         "archiveClause": 0,
-        "start": 201,
-        "end": 208.2,
+        "start": 249,
+        "end": 256.2,
         "kind": "quote",
         "title": {
           "en": "6, 5, 4, 3, 2, 1, 0.",
@@ -1153,8 +1195,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "id": "archive-apollo11-countdown-liftoff-2",
         "archiveId": "apollo11-countdown-liftoff",
         "archiveClause": 1,
-        "start": 208.2,
-        "end": 210.2,
+        "start": 256.2,
+        "end": 258.2,
         "kind": "quote",
         "title": {
           "en": "All engines running.",
@@ -1177,8 +1219,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "id": "archive-apollo11-countdown-liftoff-3",
         "archiveId": "apollo11-countdown-liftoff",
         "archiveClause": 2,
-        "start": 210.2,
-        "end": 212.4,
+        "start": 258.2,
+        "end": 260.4,
         "kind": "quote",
         "title": {
           "en": "Liftoff. We have a liftoff.",
@@ -1201,8 +1243,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "id": "archive-apollo11-countdown-liftoff-4",
         "archiveId": "apollo11-countdown-liftoff",
         "archiveClause": 3,
-        "start": 212.4,
-        "end": 214.6,
+        "start": 260.4,
+        "end": 262.6,
         "kind": "quote",
         "title": {
           "en": "32 minutes past the hour.",
@@ -1225,8 +1267,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "id": "archive-apollo11-countdown-liftoff-5",
         "archiveId": "apollo11-countdown-liftoff",
         "archiveClause": 4,
-        "start": 214.6,
-        "end": 217,
+        "start": 262.6,
+        "end": 265,
         "kind": "quote",
         "title": {
           "en": "Liftoff on Apollo 11.",
@@ -1246,73 +1288,39 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v9-37",
-        "start": 217,
-        "end": 217.5,
+        "id": "quiet-v10-15",
+        "start": 265,
+        "end": 265.5,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "two-go-down-one-stays-1",
-        "start": 217.5,
-        "end": 225.035,
+        "start": 265.5,
+        "end": 268.805,
         "kind": "narration",
-        "paragraph": "two-go-down-one-stays",
         "title": {
-          "en": "On 20 July 1969, Eagle, the lunar lander, separated from Columbia, the command module."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "en": "On 20 July 1969, Eagle separated from Columbia."
         }
       },
       {
         "id": "two-go-down-one-stays-2",
-        "start": 225.035,
-        "end": 229.374667,
+        "start": 268.805,
+        "end": 276.649333,
         "kind": "narration",
-        "paragraph": "two-go-down-one-stays",
         "title": {
-          "en": "Collins stayed in orbit while Armstrong and Aldrin descended to the Moon."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "en": "Michael Collins stayed in lunar orbit while Neil Armstrong and Buzz Aldrin descended to the surface."
         }
       },
       {
-        "id": "quiet-v9-40",
-        "start": 229.374667,
-        "end": 232,
+        "id": "quiet-v10-16",
+        "start": 276.649333,
+        "end": 280,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
@@ -1321,8 +1329,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "id": "archive-armstrong-first-step-1969-1",
         "archiveId": "armstrong-first-step-1969",
         "archiveClause": 0,
-        "start": 232,
-        "end": 238.05,
+        "start": 280,
+        "end": 286.05,
         "kind": "quote",
         "title": {
           "en": "That’s one small step for man,",
@@ -1345,8 +1353,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "id": "archive-armstrong-first-step-1969-2",
         "archiveId": "armstrong-first-step-1969",
         "archiveClause": 1,
-        "start": 238.05,
-        "end": 241.412646,
+        "start": 286.05,
+        "end": 289.412646,
         "kind": "quote",
         "title": {
           "en": "one giant leap for mankind.",
@@ -1366,325 +1374,200 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v9-43",
-        "start": 241.412646,
-        "end": 245.5,
+        "id": "quiet-v10-17",
+        "start": 289.412646,
+        "end": 293,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
+        }
+      },
+      {
+        "id": "flag-music-only",
+        "start": 293,
+        "end": 301,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
-        },
-        "sourceLabel": {
+        }
+      },
+      {
+        "id": "quiet-v10-18",
+        "start": 301,
+        "end": 301.5,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "the-first-machines-left-behind-1",
-        "start": 245.5,
-        "end": 247.495,
+        "start": 301.5,
+        "end": 303.495,
         "kind": "narration",
-        "paragraph": "the-first-machines-left-behind",
         "title": {
           "en": "The astronauts returned to Earth."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
         "id": "the-first-machines-left-behind-2",
-        "start": 247.495,
-        "end": 249.97,
+        "start": 303.495,
+        "end": 308.14,
         "kind": "narration",
-        "paragraph": "the-first-machines-left-behind",
         "title": {
-          "en": "But much of their equipment stayed on the Moon,"
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "en": "But much of their equipment stayed on the Moon, where instruments continued their measurements after"
         }
       },
       {
         "id": "the-first-machines-left-behind-3",
-        "start": 249.97,
-        "end": 253.257333,
+        "start": 308.14,
+        "end": 309.470667,
         "kind": "narration",
-        "paragraph": "the-first-machines-left-behind",
         "title": {
-          "en": "where instruments kept doing science after the crews had gone."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
+          "en": "the crews had gone."
+        }
+      },
+      {
+        "id": "quiet-v10-19",
+        "start": 309.470667,
+        "end": 315.3,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
         }
       },
       {
-        "id": "quiet-v9-47-part-1",
-        "start": 253.257333,
-        "end": 259,
+        "id": "voyager2-departure-1",
+        "start": 315.3,
+        "end": 320.625333,
+        "kind": "narration",
+        "title": {
+          "en": "In August 1977, Voyager 2 launched towards the giant planets."
+        }
+      },
+      {
+        "id": "quiet-v10-20",
+        "start": 320.625333,
+        "end": 323.3,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
-        "id": "quiet-v9-51-part-1",
-        "start": 259,
-        "end": 259.1,
+        "id": "voyager1-departure-1",
+        "start": 323.3,
+        "end": 328.049333,
+        "kind": "narration",
+        "title": {
+          "en": "Voyager 1 followed in September, on a faster route through the Solar System."
+        }
+      },
+      {
+        "id": "quiet-v10-21",
+        "start": 328.049333,
+        "end": 331.3,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
+        }
+      },
+      {
+        "id": "voyager-instruments-1",
+        "start": 331.3,
+        "end": 337.137333,
+        "kind": "narration",
+        "title": {
+          "en": "Cameras and scientific instruments send their measurements to Earth through a large radio antenna."
+        }
+      },
+      {
+        "id": "quiet-v10-22",
+        "start": 337.137333,
+        "end": 339.3,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
-        },
-        "sourceLabel": {
+        }
+      },
+      {
+        "id": "voyager-power-1",
+        "start": 339.3,
+        "end": 342.897333,
+        "kind": "narration",
+        "title": {
+          "en": "Nuclear generators provide electricity, far from the Sun."
+        }
+      },
+      {
+        "id": "quiet-v10-23",
+        "start": 342.897333,
+        "end": 347.1,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "carrier-tests-1",
-        "start": 259.1,
-        "end": 266.857333,
+        "start": 347.1,
+        "end": 354.025333,
         "kind": "narration",
-        "paragraph": "carrier-tests",
         "title": {
-          "en": "In 1977, NASA carried the Shuttle prototype Enterprise aboard a modified Boeing 747."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "en": "On Earth, NASA tested another path: Enterprise, carried aboard a modified Boeing 747."
         }
       },
       {
-        "id": "quiet-v9-53-part-1",
-        "start": 266.857333,
-        "end": 267,
+        "id": "quiet-v10-24",
+        "start": 354.025333,
+        "end": 355.4,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "quiet-v9-47-part-2",
-        "start": 267,
-        "end": 267.5,
+        "id": "shuttle-first-orbit-1",
+        "start": 355.4,
+        "end": 357.74,
+        "kind": "narration",
+        "title": {
+          "en": "These tests prepared the Space Shuttle."
+        }
+      },
+      {
+        "id": "shuttle-first-orbit-2",
+        "start": 357.74,
+        "end": 364.857867,
+        "kind": "narration",
+        "title": {
+          "en": "In 1981, Columbia made the programme’s first orbital flight, carrying crews and scientific equipment"
+        }
+      },
+      {
+        "id": "shuttle-first-orbit-3",
+        "start": 364.857867,
+        "end": 365.738667,
+        "kind": "narration",
+        "title": {
+          "en": "into space."
+        }
+      },
+      {
+        "id": "quiet-v10-25",
+        "start": 365.738667,
+        "end": 374.5,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "two-paths-after-apollo-1",
-        "start": 267.5,
-        "end": 270.465,
-        "kind": "narration",
-        "paragraph": "two-paths-after-apollo",
-        "title": {
-          "en": "After Apollo, exploration followed two paths."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "two-paths-after-apollo-2",
-        "start": 270.465,
-        "end": 275.99,
-        "kind": "narration",
-        "paragraph": "two-paths-after-apollo",
-        "title": {
-          "en": "In 1977, the Voyager probes launched towards the outer planets,"
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "two-paths-after-apollo-3",
-        "start": 275.99,
-        "end": 279.396,
-        "kind": "narration",
-        "paragraph": "two-paths-after-apollo",
-        "title": {
-          "en": "carrying instruments far beyond the reach of human crews."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "quiet-v9-51-part-2",
-        "start": 279.396,
-        "end": 283,
-        "kind": "visual",
-        "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "quiet-v9-53-part-2",
-        "start": 283,
-        "end": 283.5,
-        "kind": "visual",
-        "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "working-closer-to-home-1",
-        "start": 283.5,
-        "end": 288.22,
-        "kind": "narration",
-        "paragraph": "working-closer-to-home",
-        "title": {
-          "en": "Closer to home, the Space Shuttle began flying in 1981."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "working-closer-to-home-2",
-        "start": 288.22,
-        "end": 291.495,
-        "kind": "narration",
-        "paragraph": "working-closer-to-home",
-        "title": {
-          "en": "It carried crews and scientific equipment into orbit,"
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "working-closer-to-home-3",
-        "start": 291.495,
-        "end": 294.564,
-        "kind": "narration",
-        "paragraph": "working-closer-to-home",
-        "title": {
-          "en": "making space a place to work as well as explore."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "quiet-v9-57",
-        "start": 294.564,
-        "end": 302.5,
-        "kind": "visual",
-        "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
@@ -1693,8 +1576,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "id": "archive-challenger-original-broadcast-1",
         "archiveId": "challenger-original-broadcast",
         "archiveClause": 0,
-        "start": 302.5,
-        "end": 304.36,
+        "start": 374.5,
+        "end": 376.36,
         "kind": "quote",
         "title": {
           "en": "One minute, fifteen seconds.",
@@ -1714,649 +1597,385 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v9-59",
-        "start": 304.36,
-        "end": 305.5,
+        "id": "quiet-v10-26",
+        "start": 376.36,
+        "end": 377.5,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "the-cost-of-flight-1",
-        "start": 305.5,
-        "end": 307.115,
+        "start": 377.5,
+        "end": 379.09,
         "kind": "narration",
-        "paragraph": "the-cost-of-flight",
         "title": {
           "en": "Seven crew members died."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
         "id": "the-cost-of-flight-2",
-        "start": 307.115,
-        "end": 309.609333,
+        "start": 379.09,
+        "end": 381.588,
         "kind": "narration",
-        "paragraph": "the-cost-of-flight",
         "title": {
           "en": "NASA grounded the Shuttle to investigate."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "quiet-v9-62",
-        "start": 309.609333,
-        "end": 313.5,
+        "id": "quiet-v10-27",
+        "start": 381.588,
+        "end": 385.5,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "a-new-view-1",
-        "start": 313.5,
-        "end": 318.51,
+        "start": 385.5,
+        "end": 390.5,
         "kind": "narration",
-        "paragraph": "a-new-view",
         "title": {
           "en": "After flights resumed, a Shuttle crew deployed Hubble in 1990."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
         "id": "a-new-view-2",
-        "start": 318.51,
-        "end": 322.302667,
+        "start": 390.5,
+        "end": 394.26,
         "kind": "narration",
-        "paragraph": "a-new-view",
         "title": {
           "en": "Above the atmosphere, it could observe the universe more clearly."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "quiet-v9-65",
-        "start": 322.302667,
-        "end": 327.5,
+        "id": "quiet-v10-28",
+        "start": 394.26,
+        "end": 399.5,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "rivals-build-together-1",
-        "start": 327.5,
-        "end": 332.845,
+        "start": 399.5,
+        "end": 404.715,
         "kind": "narration",
-        "paragraph": "rivals-build-together",
         "title": {
           "en": "In 1998, former rivals began building the International Space Station."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
         "id": "rivals-build-together-2",
-        "start": 332.845,
-        "end": 337.16,
+        "start": 404.715,
+        "end": 411.481333,
         "kind": "narration",
-        "paragraph": "rivals-build-together",
         "title": {
-          "en": "Russian Zarya and American Unity became its first modules,"
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "en": "Russian Zarya and American Unity became its first modules, beginning a shared home in Earth orbit."
         }
       },
       {
-        "id": "rivals-build-together-3",
-        "start": 337.16,
-        "end": 339.758667,
-        "kind": "narration",
-        "paragraph": "rivals-build-together",
-        "title": {
-          "en": "beginning a shared home in Earth orbit."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "quiet-v9-69",
-        "start": 339.758667,
-        "end": 347.5,
+        "id": "quiet-v10-29",
+        "start": 411.481333,
+        "end": 419.4,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
+        }
+      },
+      {
+        "id": "huygens-titan-1",
+        "start": 419.4,
+        "end": 426.505,
+        "kind": "narration",
+        "title": {
+          "en": "On 14 January 2005, Europe’s Huygens probe landed on Titan, Saturn’s largest moon."
+        }
+      },
+      {
+        "id": "huygens-titan-2",
+        "start": 426.505,
+        "end": 430.784,
+        "kind": "narration",
+        "title": {
+          "en": "Its images revealed a distant world of channels and rounded pebbles."
+        }
+      },
+      {
+        "id": "quiet-v10-30",
+        "start": 430.784,
+        "end": 435.5,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "a-shared-laboratory-1",
-        "start": 347.5,
-        "end": 351.03,
+        "start": 435.5,
+        "end": 438.65,
         "kind": "narration",
-        "paragraph": "a-shared-laboratory",
         "title": {
           "en": "Europe added its Columbus laboratory in 2008."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
         "id": "a-shared-laboratory-2",
-        "start": 351.03,
-        "end": 355.150667,
+        "start": 438.65,
+        "end": 443.086667,
         "kind": "narration",
-        "paragraph": "a-shared-laboratory",
         "title": {
           "en": "With Japan and Canada, a shared laboratory grew above Earth."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "quiet-v9-72",
-        "start": 355.150667,
-        "end": 375.25,
+        "id": "quiet-v10-31",
+        "start": 443.086667,
+        "end": 463.3,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "retiring-the-shuttle-1",
-        "start": 375.25,
-        "end": 381.765,
+        "start": 463.3,
+        "end": 469.39,
         "kind": "narration",
-        "paragraph": "retiring-the-shuttle",
         "title": {
-          "en": "In 2004, NASA decided to retire the ageing Shuttle fleet after building the Space Station."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "en": "Ageing spacecraft, high costs and safety concerns led NASA to retire the Shuttle fleet after"
         }
       },
       {
         "id": "retiring-the-shuttle-2",
-        "start": 381.765,
-        "end": 385.62,
+        "start": 469.39,
+        "end": 471.285,
         "kind": "narration",
-        "paragraph": "retiring-the-shuttle",
         "title": {
-          "en": "High costs and safety concerns shaped that decision."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "en": "assembling the Station."
         }
       },
       {
         "id": "retiring-the-shuttle-3",
-        "start": 385.62,
-        "end": 388.660667,
+        "start": 471.285,
+        "end": 474.513333,
         "kind": "narration",
-        "paragraph": "retiring-the-shuttle",
         "title": {
           "en": "The final flight landed in 2011."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "quiet-v9-76",
-        "start": 388.660667,
-        "end": 391.5,
+        "id": "quiet-v10-32",
+        "start": 474.513333,
+        "end": 479.3,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "keeping-the-outpost-alive-1",
-        "start": 391.5,
-        "end": 398.084,
+        "start": 479.3,
+        "end": 485.884,
         "kind": "narration",
-        "paragraph": "keeping-the-outpost-alive",
         "title": {
           "en": "After the Shuttle retired, Russia’s Soyuz carried all arriving Station crews until 2020."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "quiet-v9-78",
-        "start": 398.084,
-        "end": 399.5,
+        "id": "quiet-v10-33",
+        "start": 485.884,
+        "end": 487.5,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "the-long-journey-continues-1",
-        "start": 399.5,
-        "end": 402.29,
+        "start": 487.5,
+        "end": 490.24,
         "kind": "narration",
-        "paragraph": "the-long-journey-continues",
         "title": {
           "en": "Meanwhile, Voyager 1 was still travelling."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
         "id": "the-long-journey-continues-2",
-        "start": 402.29,
-        "end": 406.894667,
+        "start": 490.24,
+        "end": 494.788,
         "kind": "narration",
-        "paragraph": "the-long-journey-continues",
         "title": {
           "en": "In 2012, it crossed the heliopause, beyond the solar wind."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "quiet-v9-81",
-        "start": 406.894667,
-        "end": 413.5,
+        "id": "quiet-v10-34",
+        "start": 494.788,
+        "end": 501.2,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "touching-a-comet-1",
-        "start": 413.5,
-        "end": 420.425333,
+        "id": "rosetta-and-philae-1",
+        "start": 501.2,
+        "end": 504.26,
         "kind": "narration",
-        "paragraph": "touching-a-comet",
         "title": {
-          "en": "In 2014, ESA’s Rosetta delivered Philae to comet 67P."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "en": "In 2014, ESA’s Rosetta reached comet 67P."
         }
       },
       {
-        "id": "quiet-v9-83",
-        "start": 420.425333,
-        "end": 429.1,
-        "kind": "visual",
-        "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "rosetta-remains-1",
-        "start": 429.1,
-        "end": 432.75,
+        "id": "rosetta-and-philae-2",
+        "start": 504.26,
+        "end": 510.109333,
         "kind": "narration",
-        "paragraph": "rosetta-remains",
         "title": {
-          "en": "Rosetta joined Philae on the comet in 2016,"
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
+          "en": "It released Philae, which descended and touched down on the surface."
+        }
+      },
+      {
+        "id": "quiet-v10-35",
+        "start": 510.109333,
+        "end": 517.3,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
         }
       },
       {
-        "id": "rosetta-remains-2",
-        "start": 432.75,
-        "end": 435.406667,
+        "id": "rosetta-final-descent-1",
+        "start": 517.3,
+        "end": 522.905,
         "kind": "narration",
-        "paragraph": "rosetta-remains",
         "title": {
-          "en": "ending its mission with a controlled descent."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
+          "en": "Two years later, on 30 September 2016, Rosetta descended in turn."
+        }
+      },
+      {
+        "id": "rosetta-final-descent-2",
+        "start": 522.905,
+        "end": 528.449333,
+        "kind": "narration",
+        "title": {
+          "en": "Its final images drew closer to the ground, until contact with the surface ended the mission."
+        }
+      },
+      {
+        "id": "quiet-v10-36",
+        "start": 528.449333,
+        "end": 533.1,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
         }
       },
       {
-        "id": "quiet-v9-86-part-1",
-        "start": 435.406667,
-        "end": 437,
+        "id": "rosetta-remains-on-surface-1",
+        "start": 533.1,
+        "end": 535.502667,
+        "kind": "narration",
+        "title": {
+          "en": "Rosetta and Philae remain on the comet."
+        }
+      },
+      {
+        "id": "quiet-v10-37",
+        "start": 535.502667,
+        "end": 537.4,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
-        "id": "quiet-v9-97-part-1",
-        "start": 437,
-        "end": 438.0,
+        "id": "change4-farside-1",
+        "start": 537.4,
+        "end": 544.735,
+        "kind": "narration",
+        "title": {
+          "en": "On 3 January 2019, China’s Chang’e 4 achieved the first soft landing on the far side of the Moon."
+        }
+      },
+      {
+        "id": "change4-farside-2",
+        "start": 544.735,
+        "end": 547.824,
+        "kind": "narration",
+        "title": {
+          "en": "The Yutu 2 rover then explored the surface."
+        }
+      },
+      {
+        "id": "quiet-v10-38",
+        "start": 547.824,
+        "end": 551.5,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "returning-launchers-1",
-        "start": 438.0,
-        "end": 439.025,
+        "start": 551.5,
+        "end": 557.805,
         "kind": "narration",
-        "paragraph": "returning-launchers",
         "title": {
-          "en": "Closer to Earth,"
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "en": "SpaceX, founded by Elon Musk, developed boosters that could land and fly again."
         }
       },
       {
         "id": "returning-launchers-2",
-        "start": 439.025,
-        "end": 442.715,
+        "start": 557.805,
+        "end": 561.582667,
         "kind": "narration",
-        "paragraph": "returning-launchers",
         "title": {
-          "en": "SpaceX, founded by Elon Musk in 2002,"
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "en": "These Falcon missions flew in 2019 and 2020."
         }
       },
       {
-        "id": "returning-launchers-3",
-        "start": 442.715,
-        "end": 445.693333,
-        "kind": "narration",
-        "paragraph": "returning-launchers",
-        "title": {
-          "en": "developed boosters that could land and fly again."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "quiet-v9-101-part-1",
-        "start": 445.693333,
-        "end": 475,
+        "id": "quiet-v10-39",
+        "start": 561.582667,
+        "end": 589.4,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "quiet-v9-86-part-2",
-        "start": 475,
-        "end": 475.5,
-        "kind": "visual",
-        "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "a-question-on-mars-1",
-        "start": 475.5,
-        "end": 481.166667,
+        "start": 589.4,
+        "end": 594.96,
         "kind": "narration",
-        "paragraph": "a-question-on-mars",
         "title": {
           "en": "In 2021, Perseverance approached Mars to search for signs of ancient life."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "quiet-v9-88",
-        "start": 481.166667,
-        "end": 483,
+        "id": "quiet-v10-40",
+        "start": 594.96,
+        "end": 597,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
@@ -2365,8 +1984,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "id": "archive-perseverance-2021-edl-1",
         "archiveId": "perseverance-2021-edl",
         "archiveClause": 0,
-        "start": 483,
-        "end": 485.15,
+        "start": 597,
+        "end": 599.15,
         "kind": "quote",
         "title": {
           "en": "…to conduct the sky crane maneuver.",
@@ -2386,19 +2005,11 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v9-90",
-        "start": 485.15,
-        "end": 487.25,
+        "id": "quiet-v10-41",
+        "start": 599.15,
+        "end": 601.25,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
@@ -2407,8 +2018,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "id": "archive-perseverance-2021-edl-2",
         "archiveId": "perseverance-2021-edl",
         "archiveClause": 1,
-        "start": 487.25,
-        "end": 489.3,
+        "start": 601.25,
+        "end": 603.3,
         "kind": "quote",
         "title": {
           "en": "Sky crane maneuver has started.",
@@ -2428,19 +2039,11 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v9-92",
-        "start": 489.3,
-        "end": 491.15,
+        "id": "quiet-v10-42",
+        "start": 603.3,
+        "end": 605.15,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
@@ -2449,8 +2052,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "id": "archive-perseverance-2021-edl-3",
         "archiveId": "perseverance-2021-edl",
         "archiveClause": 2,
-        "start": 491.15,
-        "end": 493.2,
+        "start": 605.15,
+        "end": 607.2,
         "kind": "quote",
         "title": {
           "en": "About 20 meters off the surface.",
@@ -2470,253 +2073,179 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v9-94",
-        "start": 493.2,
-        "end": 495.5,
+        "id": "quiet-v10-43",
+        "start": 607.2,
+        "end": 609.4,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "looking-back-through-time-1",
-        "start": 495.5,
-        "end": 499.435,
+        "start": 609.4,
+        "end": 613.29,
         "kind": "narration",
-        "paragraph": "looking-back-through-time",
         "title": {
           "en": "That December, Webb set out to observe the earliest galaxies."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
         "id": "looking-back-through-time-2",
-        "start": 499.435,
-        "end": 503.108,
+        "start": 613.29,
+        "end": 616.901333,
         "kind": "narration",
-        "paragraph": "looking-back-through-time",
         "title": {
           "en": "Exploration now reached across time as well as space."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "quiet-v9-97-part-2",
-        "start": 503.108,
-        "end": 507,
+        "id": "quiet-v10-44",
+        "start": 616.901333,
+        "end": 622.2,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "quiet-v9-101-part-2",
-        "start": 507,
-        "end": 507.5,
+        "id": "journeys-leave-traces-1",
+        "start": 622.2,
+        "end": 624.816,
+        "kind": "narration",
+        "title": {
+          "en": "These journeys have also left traces behind."
+        }
+      },
+      {
+        "id": "quiet-v10-45",
+        "start": 624.816,
+        "end": 627.4,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "the-machines-that-stay-1",
-        "start": 507.5,
-        "end": 510.6,
+        "id": "traces-on-the-moon-1",
+        "start": 627.4,
+        "end": 632.554667,
         "kind": "narration",
-        "paragraph": "the-machines-that-stay",
         "title": {
-          "en": "But many spacecraft were never designed to return."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "en": "On the Moon, Apollo’s landing stages and scientific instruments remain in place."
         }
       },
       {
-        "id": "the-machines-that-stay-2",
-        "start": 510.6,
-        "end": 515.665,
-        "kind": "narration",
-        "paragraph": "the-machines-that-stay",
-        "title": {
-          "en": "On the Moon, Apollo’s landing sites still preserve traces of those journeys."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "the-machines-that-stay-3",
-        "start": 515.665,
-        "end": 520.270667,
-        "kind": "narration",
-        "paragraph": "the-machines-that-stay",
-        "title": {
-          "en": "On Mars, Curiosity is one of the robots that continues to work."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "quiet-v9-105",
-        "start": 520.270667,
-        "end": 532.5,
+        "id": "quiet-v10-46",
+        "start": 632.554667,
+        "end": 635.4,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
+        }
+      },
+      {
+        "id": "traces-on-mars-1",
+        "start": 635.4,
+        "end": 637.47,
+        "kind": "narration",
+        "title": {
+          "en": "On Mars, some robots still work."
+        }
+      },
+      {
+        "id": "traces-on-mars-2",
+        "start": 637.47,
+        "end": 641.621333,
+        "kind": "narration",
+        "title": {
+          "en": "Other missions have ended, but their machines remain on the surface."
+        }
+      },
+      {
+        "id": "quiet-v10-47",
+        "start": 641.621333,
+        "end": 652.2,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
-        },
-        "sourceLabel": {
+        }
+      },
+      {
+        "id": "traces-beyond-moon-and-mars-1",
+        "start": 652.2,
+        "end": 658.815,
+        "kind": "narration",
+        "title": {
+          "en": "On Titan, on a comet, in orbit or in interstellar space, other spacecraft continue their journey or"
+        }
+      },
+      {
+        "id": "traces-beyond-moon-and-mars-2",
+        "start": 658.815,
+        "end": 661.514667,
+        "kind": "narration",
+        "title": {
+          "en": "preserve the traces of a completed mission."
+        }
+      },
+      {
+        "id": "quiet-v10-48",
+        "start": 661.514667,
+        "end": 666.5,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "why-relic-1",
-        "start": 532.5,
-        "end": 535.715,
+        "start": 666.5,
+        "end": 671.555,
         "kind": "narration",
-        "paragraph": "why-relic",
         "title": {
-          "en": "Other missions have ended, but their machines remain."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "en": "Each spacecraft records a step in what we learned to build, to reach and to understand."
         }
       },
       {
         "id": "why-relic-2",
-        "start": 535.715,
-        "end": 540.62,
+        "start": 671.555,
+        "end": 673.235,
         "kind": "narration",
-        "paragraph": "why-relic",
         "title": {
-          "en": "Each one records a step in what we learned to build, to reach and to understand."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "en": "Some are still active."
         }
       },
       {
         "id": "why-relic-3",
-        "start": 540.62,
-        "end": 543.798667,
+        "start": 673.235,
+        "end": 676.335,
         "kind": "narration",
-        "paragraph": "why-relic",
         "title": {
-          "en": "RELIC follows the stories of what we left behind."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "en": "Others have become the remnants of our exploration."
         }
       },
       {
-        "id": "quiet-v9-109",
-        "start": 543.798667,
-        "end": 561,
+        "id": "why-relic-4",
+        "start": 676.335,
+        "end": 679.633333,
+        "kind": "narration",
+        "title": {
+          "en": "RELIC follows their stories across the Solar System."
+        }
+      },
+      {
+        "id": "quiet-v10-ending",
+        "start": 679.633333,
+        "end": 703,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "relic",
-        "start": 561,
-        "end": 569,
-        "kind": "end",
-        "title": {
-          "en": "RELIC",
-          "fr": "RELIC"
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
@@ -2784,89 +2313,46 @@ export const PROLOGUE_MEDIA=Object.freeze({
       {
         "id": "a-world-and-a-question-1",
         "start": 88.9,
-        "end": 90.615,
-        "kind": "bridge",
-        "paragraph": "a-world-and-a-question",
+        "end": 94.035,
+        "kind": "narration",
         "title": {
-          "fr": "Des millions d’années plus tard,"
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Des millions d’années plus tard, l’humanité transformait cette même planète, puis apprenait à"
         }
       },
       {
         "id": "a-world-and-a-question-2",
-        "start": 90.615,
-        "end": 92.755,
+        "start": 94.035,
+        "end": 95.014667,
         "kind": "narration",
-        "paragraph": "a-world-and-a-question",
         "title": {
-          "fr": "l’humanité transformait cette même planète,"
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "explorer au-delà."
         }
       },
       {
-        "id": "a-world-and-a-question-3",
-        "start": 92.755,
-        "end": 95.121333,
-        "kind": "narration",
-        "paragraph": "a-world-and-a-question",
-        "title": {
-          "fr": "puis apprenait à explorer au-delà."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "quiet-v9-6",
-        "start": 95.121333,
+        "id": "quiet-v10-1",
+        "start": 95.014667,
         "end": 99.5,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "from-war-to-a-race-1",
+        "id": "war-rockets-1",
         "start": 99.5,
-        "end": 111.5,
+        "end": 105.998667,
         "kind": "narration",
-        "paragraph": "from-war-to-a-race",
         "title": {
-          "fr": "En 1944, l’Allemagne nazie a déployé le missile de croisière V1 et la fusée balistique V2."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
+          "fr": "En 1944, l’Allemagne nazie déploie le missile de croisière V1 et la fusée balistique V2."
+        }
+      },
+      {
+        "id": "quiet-v10-2",
+        "start": 105.998667,
+        "end": 111.5,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
         }
@@ -2879,84 +2365,41 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "from-war-to-a-race-2",
-        "start": 113,
-        "end": 117.56,
+        "id": "von-braun-postwar-1",
+        "start": 113.0,
+        "end": 116.755,
         "kind": "narration",
-        "paragraph": "from-war-to-a-race",
         "title": {
-          "fr": "Après la guerre, Wernher von Braun a rejoint le programme spatial américain."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Après la guerre, Wernher von Braun rejoint le programme américain."
         }
       },
       {
-        "id": "from-war-to-a-race-3",
-        "start": 117.56,
-        "end": 120.605,
+        "id": "von-braun-postwar-2",
+        "start": 116.755,
+        "end": 118.23,
         "kind": "narration",
-        "paragraph": "from-war-to-a-race",
         "title": {
-          "fr": "Les ingénieurs soviétiques développaient leurs propres fusées."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "L’URSS développe ses fusées."
         }
       },
       {
-        "id": "from-war-to-a-race-4",
-        "start": 120.605,
-        "end": 122.506,
+        "id": "von-braun-postwar-3",
+        "start": 118.23,
+        "end": 120.117333,
         "kind": "narration",
-        "paragraph": "from-war-to-a-race",
         "title": {
-          "fr": "La course à l’espace commençait."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "La course à l’espace commence."
         }
       },
       {
-        "id": "quiet-v9-11",
-        "start": 122.506,
+        "id": "quiet-v10-3",
+        "start": 120.117333,
         "end": 125.0,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
@@ -2964,107 +2407,74 @@ export const PROLOGUE_MEDIA=Object.freeze({
       {
         "id": "a-signal-around-earth-1",
         "start": 125.0,
-        "end": 132.202667,
+        "end": 129.675,
         "kind": "narration",
-        "paragraph": "a-signal-around-earth",
         "title": {
-          "fr": "En 1957, Spoutnik est devenu le premier satellite artificiel. Son signal a fait le tour du monde."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "En 1957, Spoutnik devient le premier satellite artificiel."
         }
       },
       {
-        "id": "quiet-v9-13",
-        "start": 132.202667,
+        "id": "a-signal-around-earth-2",
+        "start": 129.675,
+        "end": 131.754667,
+        "kind": "narration",
+        "title": {
+          "fr": "Son signal fait le tour du monde."
+        }
+      },
+      {
+        "id": "quiet-v10-4",
+        "start": 131.754667,
         "end": 135.5,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "from-machines-to-people-1",
+        "id": "laika-1",
         "start": 135.5,
-        "end": 140.51,
+        "end": 138.28,
         "kind": "narration",
-        "paragraph": "from-machines-to-people",
         "title": {
-          "fr": "Si une machine pouvait tourner autour de la Terre, un être vivant pouvait-il y survivre ?"
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Un être vivant pouvait-il survivre en orbite ?"
         }
       },
       {
-        "id": "from-machines-to-people-2",
-        "start": 140.51,
-        "end": 144.515,
+        "id": "laika-2",
+        "start": 138.28,
+        "end": 143.449333,
         "kind": "narration",
-        "paragraph": "from-machines-to-people",
         "title": {
-          "fr": "Laïka fut la première chienne en orbite, sans survivre au voyage."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Laïka devient la première chienne à tourner autour de la Terre, sans survivre au voyage."
         }
       },
       {
-        "id": "from-machines-to-people-3",
-        "start": 144.515,
-        "end": 149.273333,
-        "kind": "narration",
-        "paragraph": "from-machines-to-people",
-        "title": {
-          "fr": "En 1961, Youri Gagarine devint le premier humain dans l’espace."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "quiet-v9-17",
-        "start": 149.273333,
-        "end": 150.8,
+        "id": "quiet-v10-5",
+        "start": 143.449333,
+        "end": 147.1,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
+        }
+      },
+      {
+        "id": "gagarin-1",
+        "start": 147.1,
+        "end": 149.716,
+        "kind": "narration",
+        "title": {
+          "fr": "Youri Gagarine, premier humain dans l’espace."
+        }
+      },
+      {
+        "id": "quiet-v10-6",
+        "start": 149.716,
+        "end": 150.8,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
         }
@@ -3094,19 +2504,11 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v9-19",
+        "id": "quiet-v10-7",
         "start": 152.286,
         "end": 161.5,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
@@ -3114,35 +2516,18 @@ export const PROLOGUE_MEDIA=Object.freeze({
       {
         "id": "a-destination-1",
         "start": 161.5,
-        "end": 167.828,
+        "end": 167.486667,
         "kind": "narration",
-        "paragraph": "a-destination",
         "title": {
-          "fr": "En 1961, les États-Unis ont fixé un objectif au-delà de l’orbite terrestre : la Lune."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "En 1961, les États-Unis fixent un objectif au-delà de l’orbite terrestre : la Lune."
         }
       },
       {
-        "id": "quiet-v9-21",
-        "start": 167.828,
+        "id": "quiet-v10-8",
+        "start": 167.486667,
         "end": 169,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
@@ -3292,73 +2677,142 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v9-28",
+        "id": "quiet-v10-9",
         "start": 187.95,
         "end": 189.5,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
+        }
+      },
+      {
+        "id": "tereshkova-first-woman-1",
+        "start": 189.5,
+        "end": 195.27,
+        "kind": "narration",
+        "title": {
+          "fr": "Le 16 juin 1963, Valentina Terechkova devient la première femme dans l’espace."
+        }
+      },
+      {
+        "id": "tereshkova-first-woman-2",
+        "start": 195.27,
+        "end": 200.201333,
+        "kind": "narration",
+        "title": {
+          "fr": "À bord de Vostok 6, elle accomplit quarante-huit orbites autour de la Terre."
+        }
+      },
+      {
+        "id": "quiet-v10-10",
+        "start": 200.201333,
+        "end": 203.5,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
-        },
-        "sourceLabel": {
+        }
+      },
+      {
+        "id": "leonov-first-spacewalk-1",
+        "start": 203.5,
+        "end": 208.48,
+        "kind": "narration",
+        "title": {
+          "fr": "Le 18 mars 1965, Alexeï Leonov sort du vaisseau Voskhod 2."
+        }
+      },
+      {
+        "id": "leonov-first-spacewalk-2",
+        "start": 208.48,
+        "end": 213.838667,
+        "kind": "narration",
+        "title": {
+          "fr": "Pour la première fois, un être humain évolue à l’extérieur d’un vaisseau en orbite."
+        }
+      },
+      {
+        "id": "quiet-v10-11",
+        "start": 213.838667,
+        "end": 217.4,
+        "kind": "visual",
+        "title": {
+          "en": "",
+          "fr": ""
+        }
+      },
+      {
+        "id": "apollo8-first-orbit-1",
+        "start": 217.4,
+        "end": 224.794667,
+        "kind": "narration",
+        "title": {
+          "fr": "Le 24 décembre 1968, Apollo 8 devient la première mission habitée en orbite autour de la Lune."
+        }
+      },
+      {
+        "id": "quiet-v10-12",
+        "start": 224.794667,
+        "end": 227.4,
+        "kind": "visual",
+        "title": {
+          "en": "",
+          "fr": ""
+        }
+      },
+      {
+        "id": "apollo8-earthrise-1",
+        "start": 227.4,
+        "end": 231.49,
+        "kind": "narration",
+        "title": {
+          "fr": "Bill Anders photographie la Terre au-dessus de l’horizon lunaire."
+        }
+      },
+      {
+        "id": "apollo8-earthrise-2",
+        "start": 231.49,
+        "end": 234.901333,
+        "kind": "narration",
+        "title": {
+          "fr": "Earthrise offre un nouveau regard sur notre planète."
+        }
+      },
+      {
+        "id": "quiet-v10-13",
+        "start": 234.901333,
+        "end": 237.5,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "a-promise-becomes-a-journey-1",
-        "start": 189.5,
-        "end": 195.175,
+        "start": 237.5,
+        "end": 242.715,
         "kind": "narration",
-        "paragraph": "a-promise-becomes-a-journey",
         "title": {
-          "fr": "En 1969, le programme Apollo avait transformé cette promesse en voyage."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "En 1969, le programme Apollo transforme cette promesse en voyage."
         }
       },
       {
         "id": "a-promise-becomes-a-journey-2",
-        "start": 195.175,
-        "end": 198.793333,
+        "start": 242.715,
+        "end": 246.025333,
         "kind": "narration",
-        "paragraph": "a-promise-becomes-a-journey",
         "title": {
-          "fr": "Saturne V allait emporter trois astronautes vers la Lune."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Saturne V va emporter trois astronautes vers la Lune."
         }
       },
       {
-        "id": "quiet-v9-31",
-        "start": 198.793333,
-        "end": 201,
+        "id": "quiet-v10-14",
+        "start": 246.025333,
+        "end": 249,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
@@ -3367,8 +2821,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "id": "archive-apollo11-countdown-liftoff-1",
         "archiveId": "apollo11-countdown-liftoff",
         "archiveClause": 0,
-        "start": 201,
-        "end": 208.2,
+        "start": 249,
+        "end": 256.2,
         "kind": "quote",
         "title": {
           "en": "6, 5, 4, 3, 2, 1, 0.",
@@ -3391,8 +2845,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "id": "archive-apollo11-countdown-liftoff-2",
         "archiveId": "apollo11-countdown-liftoff",
         "archiveClause": 1,
-        "start": 208.2,
-        "end": 210.2,
+        "start": 256.2,
+        "end": 258.2,
         "kind": "quote",
         "title": {
           "en": "All engines running.",
@@ -3415,8 +2869,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "id": "archive-apollo11-countdown-liftoff-3",
         "archiveId": "apollo11-countdown-liftoff",
         "archiveClause": 2,
-        "start": 210.2,
-        "end": 212.4,
+        "start": 258.2,
+        "end": 260.4,
         "kind": "quote",
         "title": {
           "en": "Liftoff. We have a liftoff.",
@@ -3439,8 +2893,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "id": "archive-apollo11-countdown-liftoff-4",
         "archiveId": "apollo11-countdown-liftoff",
         "archiveClause": 3,
-        "start": 212.4,
-        "end": 214.6,
+        "start": 260.4,
+        "end": 262.6,
         "kind": "quote",
         "title": {
           "en": "32 minutes past the hour.",
@@ -3463,8 +2917,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "id": "archive-apollo11-countdown-liftoff-5",
         "archiveId": "apollo11-countdown-liftoff",
         "archiveClause": 4,
-        "start": 214.6,
-        "end": 217,
+        "start": 262.6,
+        "end": 265,
         "kind": "quote",
         "title": {
           "en": "Liftoff on Apollo 11.",
@@ -3484,73 +2938,48 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v9-37",
-        "start": 217,
-        "end": 217.5,
+        "id": "quiet-v10-15",
+        "start": 265,
+        "end": 265.5,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "two-go-down-one-stays-1",
-        "start": 217.5,
-        "end": 225.16,
+        "start": 265.5,
+        "end": 269.46,
         "kind": "narration",
-        "paragraph": "two-go-down-one-stays",
         "title": {
-          "fr": "Le 20 juillet 1969, Eagle, le module lunaire, s’est séparé de Columbia, le module de commande."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Le 20 juillet 1969, Eagle se sépare de Columbia."
         }
       },
       {
         "id": "two-go-down-one-stays-2",
-        "start": 225.16,
-        "end": 229.972,
+        "start": 269.46,
+        "end": 276.494872,
         "kind": "narration",
-        "paragraph": "two-go-down-one-stays",
         "title": {
-          "fr": "Collins restait en orbite ; Armstrong et Aldrin descendaient vers la Lune."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Michael Collins reste en orbite lunaire pendant que Neil Armstrong et Buzz Aldrin descendent vers la"
         }
       },
       {
-        "id": "quiet-v9-40",
-        "start": 229.972,
-        "end": 232,
+        "id": "two-go-down-one-stays-3",
+        "start": 276.494872,
+        "end": 277.310667,
+        "kind": "narration",
+        "title": {
+          "fr": "surface."
+        }
+      },
+      {
+        "id": "quiet-v10-16",
+        "start": 277.310667,
+        "end": 280,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
@@ -3559,8 +2988,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "id": "archive-armstrong-first-step-1969-1",
         "archiveId": "armstrong-first-step-1969",
         "archiveClause": 0,
-        "start": 232,
-        "end": 238.05,
+        "start": 280,
+        "end": 286.05,
         "kind": "quote",
         "title": {
           "en": "That’s one small step for man,",
@@ -3583,8 +3012,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "id": "archive-armstrong-first-step-1969-2",
         "archiveId": "armstrong-first-step-1969",
         "archiveClause": 1,
-        "start": 238.05,
-        "end": 241.412646,
+        "start": 286.05,
+        "end": 289.412646,
         "kind": "quote",
         "title": {
           "en": "one giant leap for mankind.",
@@ -3604,325 +3033,209 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v9-43",
-        "start": 241.412646,
-        "end": 245.5,
+        "id": "quiet-v10-17",
+        "start": 289.412646,
+        "end": 293,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
+        }
+      },
+      {
+        "id": "flag-music-only",
+        "start": 293,
+        "end": 301,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
-        },
-        "sourceLabel": {
+        }
+      },
+      {
+        "id": "quiet-v10-18",
+        "start": 301,
+        "end": 301.5,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "the-first-machines-left-behind-1",
-        "start": 245.5,
-        "end": 247.31,
+        "start": 301.5,
+        "end": 304.065,
         "kind": "narration",
-        "paragraph": "the-first-machines-left-behind",
         "title": {
-          "fr": "Les astronautes sont revenus."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Les astronautes sont revenus sur Terre."
         }
       },
       {
         "id": "the-first-machines-left-behind-2",
-        "start": 247.31,
-        "end": 250.68,
+        "start": 304.065,
+        "end": 308.465,
         "kind": "narration",
-        "paragraph": "the-first-machines-left-behind",
         "title": {
-          "fr": "Mais une grande partie du matériel est restée sur la Lune,"
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Mais une grande partie du matériel est restée sur la Lune, où les instruments ont poursuivi leurs"
         }
       },
       {
         "id": "the-first-machines-left-behind-3",
-        "start": 250.68,
-        "end": 254.217333,
+        "start": 308.465,
+        "end": 310.857333,
         "kind": "narration",
-        "paragraph": "the-first-machines-left-behind",
         "title": {
-          "fr": "où les instruments ont poursuivi leurs mesures après leur départ."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
+          "fr": "mesures après leur départ."
+        }
+      },
+      {
+        "id": "quiet-v10-19",
+        "start": 310.857333,
+        "end": 315.3,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
         }
       },
       {
-        "id": "quiet-v9-47-part-1",
-        "start": 254.217333,
-        "end": 259,
+        "id": "voyager2-departure-1",
+        "start": 315.3,
+        "end": 320.22,
+        "kind": "narration",
+        "title": {
+          "fr": "En août 1977, Voyager 2 décolle vers les planètes géantes."
+        }
+      },
+      {
+        "id": "quiet-v10-20",
+        "start": 320.22,
+        "end": 323.3,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
-        "id": "quiet-v9-51-part-1",
-        "start": 259,
-        "end": 259.1,
+        "id": "voyager1-departure-1",
+        "start": 323.3,
+        "end": 329.201333,
+        "kind": "narration",
+        "title": {
+          "fr": "Voyager 1 la suit en septembre, sur une trajectoire plus rapide à travers le Système solaire."
+        }
+      },
+      {
+        "id": "quiet-v10-21",
+        "start": 329.201333,
+        "end": 331.3,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
+        }
+      },
+      {
+        "id": "voyager-instruments-1",
+        "start": 331.3,
+        "end": 336.43,
+        "kind": "narration",
+        "title": {
+          "fr": "Caméras et instruments scientifiques transmettent leurs mesures à la Terre grâce à une grande"
+        }
+      },
+      {
+        "id": "voyager-instruments-2",
+        "start": 336.43,
+        "end": 337.222667,
+        "kind": "narration",
+        "title": {
+          "fr": "antenne radio."
+        }
+      },
+      {
+        "id": "quiet-v10-22",
+        "start": 337.222667,
+        "end": 339.3,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
-        },
-        "sourceLabel": {
+        }
+      },
+      {
+        "id": "voyager-power-1",
+        "start": 339.3,
+        "end": 343.622667,
+        "kind": "narration",
+        "title": {
+          "fr": "Des générateurs nucléaires leur fournissent de l’électricité, loin du Soleil."
+        }
+      },
+      {
+        "id": "quiet-v10-23",
+        "start": 343.622667,
+        "end": 347.1,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "carrier-tests-1",
-        "start": 259.1,
-        "end": 266.494667,
+        "start": 347.1,
+        "end": 354.046667,
         "kind": "narration",
-        "paragraph": "carrier-tests",
         "title": {
-          "fr": "En 1977, Enterprise, prototype des navettes, vole sur un Boeing 747 modifié."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Sur Terre, la NASA teste une autre voie : Enterprise, transportée sur un Boeing 747 modifié."
         }
       },
       {
-        "id": "quiet-v9-53-part-1",
-        "start": 266.494667,
-        "end": 267,
+        "id": "quiet-v10-24",
+        "start": 354.046667,
+        "end": 355.4,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "quiet-v9-47-part-2",
-        "start": 267,
-        "end": 267.5,
+        "id": "shuttle-first-orbit-1",
+        "start": 355.4,
+        "end": 357.99,
+        "kind": "narration",
+        "title": {
+          "fr": "Ces essais préparent la navette spatiale."
+        }
+      },
+      {
+        "id": "shuttle-first-orbit-2",
+        "start": 357.99,
+        "end": 363.915,
+        "kind": "narration",
+        "title": {
+          "fr": "En 1981, Columbia accomplit le premier vol orbital du programme, pour transporter des équipages et"
+        }
+      },
+      {
+        "id": "shuttle-first-orbit-3",
+        "start": 363.915,
+        "end": 366.72,
+        "kind": "narration",
+        "title": {
+          "fr": "du matériel scientifique dans l’espace."
+        }
+      },
+      {
+        "id": "quiet-v10-25",
+        "start": 366.72,
+        "end": 374.5,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "two-paths-after-apollo-1",
-        "start": 267.5,
-        "end": 270.805,
-        "kind": "narration",
-        "paragraph": "two-paths-after-apollo",
-        "title": {
-          "fr": "Après Apollo, l’exploration a suivi deux chemins."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "two-paths-after-apollo-2",
-        "start": 270.805,
-        "end": 275.875,
-        "kind": "narration",
-        "paragraph": "two-paths-after-apollo",
-        "title": {
-          "fr": "En 1977, les sondes Voyager sont parties vers les planètes lointaines,"
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "two-paths-after-apollo-3",
-        "start": 275.875,
-        "end": 279.204,
-        "kind": "narration",
-        "paragraph": "two-paths-after-apollo",
-        "title": {
-          "fr": "emportant des instruments hors de portée des équipages humains."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "quiet-v9-51-part-2",
-        "start": 279.204,
-        "end": 283,
-        "kind": "visual",
-        "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "quiet-v9-53-part-2",
-        "start": 283,
-        "end": 283.5,
-        "kind": "visual",
-        "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "working-closer-to-home-1",
-        "start": 283.5,
-        "end": 288.5,
-        "kind": "narration",
-        "paragraph": "working-closer-to-home",
-        "title": {
-          "fr": "Plus près de nous, la navette spatiale a commencé à voler en 1981."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "working-closer-to-home-2",
-        "start": 288.5,
-        "end": 292.745,
-        "kind": "narration",
-        "paragraph": "working-closer-to-home",
-        "title": {
-          "fr": "Elle transportait des équipages et du matériel scientifique en orbite,"
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "working-closer-to-home-3",
-        "start": 292.745,
-        "end": 295.886667,
-        "kind": "narration",
-        "paragraph": "working-closer-to-home",
-        "title": {
-          "fr": "pour faire de l’espace un lieu de travail et de recherche."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "quiet-v9-57",
-        "start": 295.886667,
-        "end": 302.5,
-        "kind": "visual",
-        "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
@@ -3931,8 +3244,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "id": "archive-challenger-original-broadcast-1",
         "archiveId": "challenger-original-broadcast",
         "archiveClause": 0,
-        "start": 302.5,
-        "end": 304.36,
+        "start": 374.5,
+        "end": 376.36,
         "kind": "quote",
         "title": {
           "en": "One minute, fifteen seconds.",
@@ -3952,649 +3265,403 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v9-59",
-        "start": 304.36,
-        "end": 305.5,
+        "id": "quiet-v10-26",
+        "start": 376.36,
+        "end": 377.5,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "the-cost-of-flight-1",
-        "start": 305.5,
-        "end": 307.4,
+        "start": 377.5,
+        "end": 379.35,
         "kind": "narration",
-        "paragraph": "the-cost-of-flight",
         "title": {
           "fr": "Challenger a emporté sept vies."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
         "id": "the-cost-of-flight-2",
-        "start": 307.4,
-        "end": 309.844,
+        "start": 379.35,
+        "end": 381.78,
         "kind": "narration",
-        "paragraph": "the-cost-of-flight",
         "title": {
           "fr": "La NASA a suspendu les vols pour enquêter."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "quiet-v9-62",
-        "start": 309.844,
-        "end": 313.5,
+        "id": "quiet-v10-27",
+        "start": 381.78,
+        "end": 385.5,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "a-new-view-1",
-        "start": 313.5,
-        "end": 318.96,
+        "start": 385.5,
+        "end": 390.62,
         "kind": "narration",
-        "paragraph": "a-new-view",
         "title": {
-          "fr": "Après la reprise des vols, une navette a déployé Hubble en 1990."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Après la reprise des vols, une navette déploie Hubble en 1990."
         }
       },
       {
         "id": "a-new-view-2",
-        "start": 318.96,
-        "end": 322.644,
+        "start": 390.62,
+        "end": 394.217333,
         "kind": "narration",
-        "paragraph": "a-new-view",
         "title": {
-          "fr": "Au-dessus de l’atmosphère, il pouvait mieux observer l’univers."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Au-dessus de l’atmosphère, il peut mieux observer l’univers."
         }
       },
       {
-        "id": "quiet-v9-65",
-        "start": 322.644,
-        "end": 327.5,
+        "id": "quiet-v10-28",
+        "start": 394.217333,
+        "end": 399.5,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "rivals-build-together-1",
-        "start": 327.5,
-        "end": 333.78,
+        "start": 399.5,
+        "end": 405.515,
         "kind": "narration",
-        "paragraph": "rivals-build-together",
         "title": {
-          "fr": "En 1998, d’anciens rivaux ont commencé à bâtir la Station spatiale internationale."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "En 1998, d’anciens rivaux commencent à bâtir la Station spatiale internationale."
         }
       },
       {
         "id": "rivals-build-together-2",
-        "start": 333.78,
-        "end": 339.28,
+        "start": 405.515,
+        "end": 411.365,
         "kind": "narration",
-        "paragraph": "rivals-build-together",
         "title": {
-          "fr": "Le module russe Zarya et le module américain Unity sont devenus ses premiers modules,"
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Le module russe Zarya et le module américain Unity en deviennent les premières pièces : un habitat"
         }
       },
       {
         "id": "rivals-build-together-3",
-        "start": 339.28,
-        "end": 342.148,
+        "start": 411.365,
+        "end": 412.697333,
         "kind": "narration",
-        "paragraph": "rivals-build-together",
         "title": {
-          "fr": "les premières pièces d’un habitat commun en orbite."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
+          "fr": "commun en orbite."
+        }
+      },
+      {
+        "id": "quiet-v10-29",
+        "start": 412.697333,
+        "end": 419.4,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
         }
       },
       {
-        "id": "quiet-v9-69",
-        "start": 342.148,
-        "end": 347.5,
+        "id": "huygens-titan-1",
+        "start": 419.4,
+        "end": 425.76,
+        "kind": "narration",
+        "title": {
+          "fr": "Le 14 janvier 2005, la sonde européenne Huygens se pose sur Titan, la plus grande lune de Saturne."
+        }
+      },
+      {
+        "id": "huygens-titan-2",
+        "start": 425.76,
+        "end": 430.4,
+        "kind": "narration",
+        "title": {
+          "fr": "Ses images révèlent un monde lointain de chenaux et de galets arrondis."
+        }
+      },
+      {
+        "id": "quiet-v10-30",
+        "start": 430.4,
+        "end": 435.5,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "a-shared-laboratory-1",
-        "start": 347.5,
-        "end": 351.085,
+        "start": 435.5,
+        "end": 438.755,
         "kind": "narration",
-        "paragraph": "a-shared-laboratory",
         "title": {
-          "fr": "L’Europe a ajouté son laboratoire Columbus en 2008."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "L’Europe ajoute son laboratoire Columbus en 2008."
         }
       },
       {
         "id": "a-shared-laboratory-2",
-        "start": 351.085,
-        "end": 356.281333,
+        "start": 438.755,
+        "end": 443.769333,
         "kind": "narration",
-        "paragraph": "a-shared-laboratory",
         "title": {
-          "fr": "Avec le Japon et le Canada, un laboratoire commun a grandi au-dessus de la Terre."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Avec le Japon et le Canada, un laboratoire commun grandit au-dessus de la Terre."
         }
       },
       {
-        "id": "quiet-v9-72",
-        "start": 356.281333,
-        "end": 375.25,
+        "id": "quiet-v10-31",
+        "start": 443.769333,
+        "end": 463.3,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "retiring-the-shuttle-1",
-        "start": 375.25,
-        "end": 380.49,
+        "start": 463.3,
+        "end": 468.685,
         "kind": "narration",
-        "paragraph": "retiring-the-shuttle",
         "title": {
-          "fr": "En 2004, la NASA prévoit de retirer les navettes après l’assemblage de la Station."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Le vieillissement des navettes, les coûts et la sécurité conduisent la NASA à retirer sa flotte"
         }
       },
       {
         "id": "retiring-the-shuttle-2",
-        "start": 380.49,
-        "end": 383.995,
+        "start": 468.685,
+        "end": 470.39,
         "kind": "narration",
-        "paragraph": "retiring-the-shuttle",
         "title": {
-          "fr": "Leur vieillissement, les coûts et la sécurité pèsent dans ce choix."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "après l’assemblage de la Station."
         }
       },
       {
         "id": "retiring-the-shuttle-3",
-        "start": 383.995,
-        "end": 386.548667,
+        "start": 470.39,
+        "end": 472.977333,
         "kind": "narration",
-        "paragraph": "retiring-the-shuttle",
         "title": {
           "fr": "Le dernier vol s’achève en 2011."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "quiet-v9-76",
-        "start": 386.548667,
-        "end": 391.5,
+        "id": "quiet-v10-32",
+        "start": 472.977333,
+        "end": 479.3,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "keeping-the-outpost-alive-1",
-        "start": 391.5,
-        "end": 397.273333,
+        "start": 479.3,
+        "end": 485.030667,
         "kind": "narration",
-        "paragraph": "keeping-the-outpost-alive",
         "title": {
           "fr": "Après les navettes, le Soyouz russe transporte seul les équipages de la Station jusqu’en 2020."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "quiet-v9-78",
-        "start": 397.273333,
-        "end": 399.5,
+        "id": "quiet-v10-33",
+        "start": 485.030667,
+        "end": 487.5,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "the-long-journey-continues-1",
-        "start": 399.5,
-        "end": 402.385,
+        "start": 487.5,
+        "end": 490.17,
         "kind": "narration",
-        "paragraph": "the-long-journey-continues",
         "title": {
-          "fr": "Pendant ce temps, Voyager 1 poursuivait sa route."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Pendant ce temps, Voyager 1 poursuit sa route."
         }
       },
       {
         "id": "the-long-journey-continues-2",
-        "start": 402.385,
-        "end": 406.361333,
+        "start": 490.17,
+        "end": 493.934667,
         "kind": "narration",
-        "paragraph": "the-long-journey-continues",
         "title": {
-          "fr": "En 2012, il a franchi l’héliopause, au-delà du vent solaire."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "En 2012, il franchit l’héliopause, au-delà du vent solaire."
         }
       },
       {
-        "id": "quiet-v9-81",
-        "start": 406.361333,
-        "end": 413.5,
+        "id": "quiet-v10-34",
+        "start": 493.934667,
+        "end": 501.2,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "touching-a-comet-1",
-        "start": 413.5,
-        "end": 419.401333,
+        "id": "rosetta-and-philae-1",
+        "start": 501.2,
+        "end": 505.94,
         "kind": "narration",
-        "paragraph": "touching-a-comet",
         "title": {
-          "fr": "En 2014, la sonde européenne Rosetta a déposé Philae sur la comète 67P."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "En 2014, la sonde européenne Rosetta rejoint la comète 67P."
         }
       },
       {
-        "id": "quiet-v9-83",
-        "start": 419.401333,
-        "end": 429.1,
+        "id": "rosetta-and-philae-2",
+        "start": 505.94,
+        "end": 509.661333,
+        "kind": "narration",
+        "title": {
+          "fr": "Elle largue Philae, qui descend et se pose à sa surface."
+        }
+      },
+      {
+        "id": "quiet-v10-35",
+        "start": 509.661333,
+        "end": 517.3,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "rosetta-remains-1",
-        "start": 429.1,
-        "end": 433.935,
+        "id": "rosetta-final-descent-1",
+        "start": 517.3,
+        "end": 521.995,
         "kind": "narration",
-        "paragraph": "rosetta-remains",
         "title": {
-          "fr": "En 2016, Rosetta rejoint Philae sur la comète après une descente contrôlée."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Deux ans plus tard, le 30 septembre 2016, Rosetta descend à son tour."
         }
       },
       {
-        "id": "rosetta-remains-2",
-        "start": 433.935,
-        "end": 435.854667,
+        "id": "rosetta-final-descent-2",
+        "start": 521.995,
+        "end": 527.254667,
         "kind": "narration",
-        "paragraph": "rosetta-remains",
         "title": {
-          "fr": "Les deux engins y sont restés."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Ses dernières images se rapprochent du sol, jusqu’au contact qui met fin à la mission."
         }
       },
       {
-        "id": "quiet-v9-86-part-1",
-        "start": 435.854667,
-        "end": 437,
+        "id": "quiet-v10-36",
+        "start": 527.254667,
+        "end": 533.1,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
+        }
+      },
+      {
+        "id": "rosetta-remains-on-surface-1",
+        "start": 533.1,
+        "end": 535.374667,
+        "kind": "narration",
+        "title": {
+          "fr": "Rosetta et Philae restent sur la comète."
+        }
+      },
+      {
+        "id": "quiet-v10-37",
+        "start": 535.374667,
+        "end": 537.4,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
         }
       },
       {
-        "id": "quiet-v9-97-part-1",
-        "start": 437,
-        "end": 438.0,
+        "id": "change4-farside-1",
+        "start": 537.4,
+        "end": 544.345,
+        "kind": "narration",
+        "title": {
+          "fr": "Le 3 janvier 2019, la sonde chinoise Chang’e 4 réalise le premier atterrissage en douceur sur la"
+        }
+      },
+      {
+        "id": "change4-farside-2",
+        "start": 544.345,
+        "end": 545.335,
+        "kind": "narration",
+        "title": {
+          "fr": "face cachée de la Lune."
+        }
+      },
+      {
+        "id": "change4-farside-3",
+        "start": 545.335,
+        "end": 548.528,
+        "kind": "narration",
+        "title": {
+          "fr": "Le rover Yutu 2 explore ensuite la surface."
+        }
+      },
+      {
+        "id": "quiet-v10-38",
+        "start": 548.528,
+        "end": 551.5,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "returning-launchers-1",
-        "start": 438.0,
-        "end": 438.875,
+        "start": 551.5,
+        "end": 557.83,
         "kind": "narration",
-        "paragraph": "returning-launchers",
         "title": {
-          "fr": "Plus près de nous,"
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "SpaceX, fondée par Elon Musk, développe des boosters capables de se poser et de revoler."
         }
       },
       {
         "id": "returning-launchers-2",
-        "start": 438.875,
-        "end": 442.52,
+        "start": 557.83,
+        "end": 561.390667,
         "kind": "narration",
-        "paragraph": "returning-launchers",
         "title": {
-          "fr": "SpaceX, fondée par Elon Musk en 2002,"
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Ces missions Falcon ont lieu en 2019 et en 2020."
         }
       },
       {
-        "id": "returning-launchers-3",
-        "start": 442.52,
-        "end": 446.184,
-        "kind": "narration",
-        "paragraph": "returning-launchers",
-        "title": {
-          "fr": "développait des boosters capables de se poser et de revoler."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "quiet-v9-101-part-1",
-        "start": 446.184,
-        "end": 475,
+        "id": "quiet-v10-39",
+        "start": 561.390667,
+        "end": 589.4,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "quiet-v9-86-part-2",
-        "start": 475,
-        "end": 475.5,
-        "kind": "visual",
-        "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "a-question-on-mars-1",
-        "start": 475.5,
-        "end": 480.206667,
+        "start": 589.4,
+        "end": 594.426667,
         "kind": "narration",
-        "paragraph": "a-question-on-mars",
         "title": {
-          "fr": "En 2021, Perseverance allait chercher sur Mars les traces d’une vie ancienne."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "En 2021, Perseverance approche de Mars pour chercher les traces d’une vie ancienne."
         }
       },
       {
-        "id": "quiet-v9-88",
-        "start": 480.206667,
-        "end": 483,
+        "id": "quiet-v10-40",
+        "start": 594.426667,
+        "end": 597,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
@@ -4603,8 +3670,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "id": "archive-perseverance-2021-edl-1",
         "archiveId": "perseverance-2021-edl",
         "archiveClause": 0,
-        "start": 483,
-        "end": 485.15,
+        "start": 597,
+        "end": 599.15,
         "kind": "quote",
         "title": {
           "en": "…to conduct the sky crane maneuver.",
@@ -4624,19 +3691,11 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v9-90",
-        "start": 485.15,
-        "end": 487.25,
+        "id": "quiet-v10-41",
+        "start": 599.15,
+        "end": 601.25,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
@@ -4645,8 +3704,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "id": "archive-perseverance-2021-edl-2",
         "archiveId": "perseverance-2021-edl",
         "archiveClause": 1,
-        "start": 487.25,
-        "end": 489.3,
+        "start": 601.25,
+        "end": 603.3,
         "kind": "quote",
         "title": {
           "en": "Sky crane maneuver has started.",
@@ -4666,19 +3725,11 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v9-92",
-        "start": 489.3,
-        "end": 491.15,
+        "id": "quiet-v10-42",
+        "start": 603.3,
+        "end": 605.15,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
@@ -4687,8 +3738,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "id": "archive-perseverance-2021-edl-3",
         "archiveId": "perseverance-2021-edl",
         "archiveClause": 2,
-        "start": 491.15,
-        "end": 493.2,
+        "start": 605.15,
+        "end": 607.2,
         "kind": "quote",
         "title": {
           "en": "About 20 meters off the surface.",
@@ -4708,253 +3759,188 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v9-94",
-        "start": 493.2,
-        "end": 495.5,
+        "id": "quiet-v10-43",
+        "start": 607.2,
+        "end": 609.4,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "looking-back-through-time-1",
-        "start": 495.5,
-        "end": 499.74,
+        "start": 609.4,
+        "end": 613.245,
         "kind": "narration",
-        "paragraph": "looking-back-through-time",
         "title": {
-          "fr": "En décembre, Webb est parti observer les premières galaxies."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "En décembre, Webb part observer les premières galaxies."
         }
       },
       {
         "id": "looking-back-through-time-2",
-        "start": 499.74,
-        "end": 502.788,
+        "start": 613.245,
+        "end": 616.197333,
         "kind": "narration",
-        "paragraph": "looking-back-through-time",
         "title": {
-          "fr": "Explorer l’espace permettait aussi de remonter le temps."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Explorer l’espace permet aussi de remonter le temps."
         }
       },
       {
-        "id": "quiet-v9-97-part-2",
-        "start": 502.788,
-        "end": 507,
+        "id": "quiet-v10-44",
+        "start": 616.197333,
+        "end": 622.2,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "quiet-v9-101-part-2",
-        "start": 507,
-        "end": 507.5,
+        "id": "journeys-leave-traces-1",
+        "start": 622.2,
+        "end": 624.56,
+        "kind": "narration",
+        "title": {
+          "fr": "Ces voyages ont aussi laissé des traces."
+        }
+      },
+      {
+        "id": "quiet-v10-45",
+        "start": 624.56,
+        "end": 627.4,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
         }
       },
       {
-        "id": "the-machines-that-stay-1",
-        "start": 507.5,
-        "end": 511.26,
+        "id": "traces-on-the-moon-1",
+        "start": 627.4,
+        "end": 632.170667,
         "kind": "narration",
-        "paragraph": "the-machines-that-stay",
         "title": {
-          "fr": "Mais de nombreuses machines n’ont jamais été conçues pour revenir."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Sur la Lune, les étages de descente d’Apollo et leurs instruments restent sur place."
         }
       },
       {
-        "id": "the-machines-that-stay-2",
-        "start": 511.26,
-        "end": 515.89,
-        "kind": "narration",
-        "paragraph": "the-machines-that-stay",
-        "title": {
-          "fr": "Sur la Lune, les sites d’alunissage d’Apollo conservent les traces de ces voyages."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "the-machines-that-stay-3",
-        "start": 515.89,
-        "end": 520.462667,
-        "kind": "narration",
-        "paragraph": "the-machines-that-stay",
-        "title": {
-          "fr": "Sur Mars, Curiosity fait partie des robots qui travaillent encore."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "quiet-v9-105",
-        "start": 520.462667,
-        "end": 532.5,
+        "id": "quiet-v10-46",
+        "start": 632.170667,
+        "end": 635.4,
         "kind": "visual",
         "title": {
           "en": "",
           "fr": ""
-        },
-        "kicker": {
+        }
+      },
+      {
+        "id": "traces-on-mars-1",
+        "start": 635.4,
+        "end": 638.075,
+        "kind": "narration",
+        "title": {
+          "fr": "Sur Mars, certains robots travaillent encore."
+        }
+      },
+      {
+        "id": "traces-on-mars-2",
+        "start": 638.075,
+        "end": 641.962667,
+        "kind": "narration",
+        "title": {
+          "fr": "D’autres missions sont terminées, mais leurs machines demeurent à la surface."
+        }
+      },
+      {
+        "id": "quiet-v10-47",
+        "start": 641.962667,
+        "end": 652.2,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
-        },
-        "sourceLabel": {
+        }
+      },
+      {
+        "id": "traces-beyond-moon-and-mars-1",
+        "start": 652.2,
+        "end": 656.35,
+        "kind": "narration",
+        "title": {
+          "fr": "Sur Titan, sur une comète, en orbite ou dans l’espace interstellaire, d’autres engins poursuivent"
+        }
+      },
+      {
+        "id": "traces-beyond-moon-and-mars-2",
+        "start": 656.35,
+        "end": 660.149333,
+        "kind": "narration",
+        "title": {
+          "fr": "leur route ou gardent les traces d’une mission achevée."
+        }
+      },
+      {
+        "id": "quiet-v10-48",
+        "start": 660.149333,
+        "end": 666.5,
+        "kind": "visual",
+        "title": {
           "en": "",
           "fr": ""
         }
       },
       {
         "id": "why-relic-1",
-        "start": 532.5,
-        "end": 535.89,
+        "start": 666.5,
+        "end": 671.55,
         "kind": "narration",
-        "paragraph": "why-relic",
         "title": {
-          "fr": "D’autres missions sont terminées, mais leurs machines demeurent."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Chaque engin raconte une étape dans ce que nous avons appris à construire, à atteindre et à"
         }
       },
       {
         "id": "why-relic-2",
-        "start": 535.89,
-        "end": 541.315,
+        "start": 671.55,
+        "end": 672.42,
         "kind": "narration",
-        "paragraph": "why-relic",
         "title": {
-          "fr": "Chacune raconte une étape dans ce que nous avons appris à construire, à atteindre et à comprendre."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "comprendre."
         }
       },
       {
         "id": "why-relic-3",
-        "start": 541.315,
-        "end": 544.652,
+        "start": 672.42,
+        "end": 673.785,
         "kind": "narration",
-        "paragraph": "why-relic",
         "title": {
-          "fr": "RELIC retrace l’histoire de ce que nous avons laissé derrière nous."
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
+          "fr": "Certains sont encore actifs."
         }
       },
       {
-        "id": "quiet-v9-109",
-        "start": 544.652,
-        "end": 561,
+        "id": "why-relic-4",
+        "start": 673.785,
+        "end": 677.15,
+        "kind": "narration",
+        "title": {
+          "fr": "D’autres sont devenus les vestiges de notre exploration."
+        }
+      },
+      {
+        "id": "why-relic-5",
+        "start": 677.15,
+        "end": 680.572,
+        "kind": "narration",
+        "title": {
+          "fr": "RELIC retrace leur histoire à travers le Système solaire."
+        }
+      },
+      {
+        "id": "quiet-v10-ending",
+        "start": 680.572,
+        "end": 703,
         "kind": "visual",
         "title": {
-          "en": "",
-          "fr": ""
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
-          "en": "",
-          "fr": ""
-        }
-      },
-      {
-        "id": "relic",
-        "start": 561,
-        "end": 569,
-        "kind": "end",
-        "title": {
-          "en": "RELIC",
-          "fr": "RELIC"
-        },
-        "kicker": {
-          "en": "",
-          "fr": ""
-        },
-        "sourceLabel": {
           "en": "",
           "fr": ""
         }
@@ -4962,7 +3948,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
     ]
   },
   "offline": {
-    "id": "relic-documentary-v9-1-hd50-891ade47dfb62da43bc1"
+    "id": "relic-documentary-v10-hd50-9123c9c7128b044b25e4"
   },
   "width": 1920,
   "height": 1080,
