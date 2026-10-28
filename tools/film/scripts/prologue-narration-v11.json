@@ -38,11 +38,11 @@
     {
       "id": "a-signal-around-earth",
       "shot": "sputnik-wide",
-      "start": 125,
-      "end": 134.3,
+      "start": 123.1,
+      "end": 131.4,
       "text": {
-        "en": "In 1957, Sputnik became the first artificial satellite. Its signal carried the rivalry around the world.",
-        "fr": "En 1957, Spoutnik devient le premier satellite artificiel. Son signal fait le tour du monde."
+        "en": "In 1957, Sputnik became the first artificial satellite. Listen to its radio beeps, received around the world.",
+        "fr": "En 1957, Spoutnik devient le premier satellite artificiel. Écoutez ses bips radio, captés dans le monde entier."
       }
     },
     {
@@ -148,11 +148,11 @@
     {
       "id": "voyager2-departure",
       "shot": "voyager2-launch",
-      "start": 315.3,
-      "end": 322.7,
+      "start": 315.15,
+      "end": 322.9,
       "text": {
-        "en": "In August 1977, Voyager 2 launched towards the giant planets.",
-        "fr": "En août 1977, Voyager 2 décolle vers les planètes géantes."
+        "en": "Launched in August 1977, Voyager 2 would explore Jupiter, Saturn, Uranus and Neptune.",
+        "fr": "En août 1977, Voyager 2 décolle. Elle explorera Jupiter, Saturne, Uranus et Neptune."
       }
     },
     {
@@ -449,20 +449,10 @@
       "id": "journeys-leave-traces",
       "shot": "solar-system",
       "start": 713.3,
-      "end": 729.7,
+      "end": 733.5,
       "text": {
-        "en": "Across the Solar System and into interstellar space, our spacecraft keep exploring or remain where their missions ended: on the Moon, Mars, Titan, a comet, and in orbit. Each carries part of our history.",
-        "fr": "À travers le Système solaire et jusque dans l’espace interstellaire, nos engins explorent encore ou demeurent là où leur mission s’est achevée : sur la Lune, Mars, Titan, une comète ou en orbite. Chacun porte une part de notre histoire."
-      }
-    },
-    {
-      "id": "why-relic",
-      "shot": "relic",
-      "start": 731,
-      "end": 741.5,
-      "text": {
-        "en": "RELIC follows these machines and their stories. Explore the Solar System, and discover what we have left behind.",
-        "fr": "RELIC retrace l’histoire de ces machines. Explorez le Système solaire et découvrez ce que nous avons laissé derrière nous."
+        "en": "On the Moon, Mars, Titan or a comet, in orbit and into interstellar space, our machines keep exploring or preserve the traces of completed missions. RELIC follows their journeys across the Solar System. Discover what we have left behind.",
+        "fr": "Sur la Lune, Mars, Titan ou une comète, en orbite et jusque dans l’espace interstellaire, nos machines explorent encore ou gardent la trace de missions achevées. RELIC retrace leurs parcours à travers le Système solaire. Découvrez ce que nous avons laissé derrière nous."
       }
     }
   ]

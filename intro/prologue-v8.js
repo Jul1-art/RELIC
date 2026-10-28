@@ -45,11 +45,24 @@ const clock = seconds => {
 // The final brand is a player card, independent of spoken captions. Older film
 // editions mark its black picture as `visual`; scene identity remains reliable
 // across narration languages, media durations, pauses and the exact last frame.
-export function resolveFilmEnding(media, cues, position, ended = false) {
+function filmEndingAnchor(media, cues, position, ended) {
   const scene = media.scenes?.find(item => item.id === 'relic' && Number.isFinite(Number(item.start)));
   const cue = cues.find(item => item.kind === 'end' && Number.isFinite(Number(item.start)));
   const start = Number(scene?.start ?? cue?.start ?? (ended ? position : Infinity));
-  return Number.isFinite(start) && position >= start ? { start, scene } : null;
+  return Number.isFinite(start) ? { start, scene } : null;
+}
+
+export function resolveFilmEnding(media, cues, position, ended = false) {
+  const anchor = filmEndingAnchor(media, cues, position, ended);
+  return anchor && position >= anchor.start ? anchor : null;
+}
+
+// The last picture fades into a film card, not into a media-player toolbar.
+// This also covers a paused seek and the native ended event, where automatic
+// hiding would normally be disabled. Seeking earlier restores normal controls.
+export function suppressFilmOutroChrome(media, cues, position, ended = false) {
+  const anchor = filmEndingAnchor(media, cues, position, ended);
+  return Boolean(anchor && position >= Math.max(0, anchor.start - 2));
 }
 
 /** A film-led opening. Editorial cues always follow the video's media clock. */
@@ -112,7 +125,7 @@ export function createPrologue({
     exitTimer = null;
     closing = null;
     releaseVideo(active);
-    element.classList.remove('leaving', 'prologue-gated', 'prologue-failed', 'prologue-language-switching', 'prologue-ending', 'prologue-paused');
+    element.classList.remove('leaving', 'prologue-gated', 'prologue-failed', 'prologue-language-switching', 'prologue-ending', 'prologue-paused', 'prologue-outro');
     element.classList.add('hidden');
     delete element.dataset.scene;
     delete element.dataset.chapter;
@@ -156,7 +169,7 @@ export function createPrologue({
     let filmMedia = { ...media, ...(media.languages?.[language()] ?? {}) };
     let cues = [...(media.captions?.[language()] ?? defaultCues)].sort((a,b)=>a.start-b.start);
     element.classList.add('prologue');
-    element.classList.remove('hidden', 'leaving', 'prologue-failed', 'prologue-backdrop-ready', 'prologue-ending', 'prologue-paused');
+    element.classList.remove('hidden', 'leaving', 'prologue-failed', 'prologue-backdrop-ready', 'prologue-ending', 'prologue-paused', 'prologue-outro');
     for (const name of ['--end-blur', '--end-brightness', '--end-scale', '--end-progress', '--end-picture-opacity', '--end-mark-opacity', '--end-word-opacity', '--end-rule-progress']) element.style.removeProperty(name);
     element.classList.toggle('prologue-reduced', Boolean(reducedMotion()));
     element.setAttribute('role', 'dialog');
@@ -289,7 +302,10 @@ export function createPrologue({
     }
     function setChrome(visible, schedule = true) {
       if (!current()) return;
-      if (!visible && !canHideChrome()) return;
+      const position = sourceSwitch?.position ?? (Number.isFinite(video.currentTime) ? video.currentTime : 0);
+      const outro = suppressFilmOutroChrome(filmMedia, cues, position, video.ended);
+      if (outro) visible = false;
+      if (!visible && !outro && !canHideChrome()) return;
       cancelChrome();
       chromeVisible = Boolean(visible);
       element.classList.toggle('prologue-chrome-hidden', !chromeVisible);
@@ -299,7 +315,7 @@ export function createPrologue({
         if (chromeVisible) node.removeAttribute('aria-hidden');
         else node.setAttribute('aria-hidden', 'true');
       }
-      reveal.hidden = chromeVisible;
+      reveal.hidden = outro || chromeVisible;
       reveal.setAttribute('aria-label', copy().show);
       if (chromeVisible && schedule) scheduleChrome();
     }
@@ -365,6 +381,8 @@ export function createPrologue({
       render();setChrome(true);
     }
     function setMenu(open,help=false){
+      const position=sourceSwitch?.position??video.currentTime;
+      if(open&&suppressFilmOutroChrome(filmMedia,cues,position,video.ended))return;
       menuOpen=Boolean(open);menu.hidden=!menuOpen;settings.setAttribute('aria-expanded',String(menuOpen));
       if(help){shortcuts.hidden=false;helpToggle.setAttribute('aria-expanded','true');}
       if(menuOpen){setChrome(true,false);menuClose.focus({preventScroll:true});}
@@ -405,8 +423,8 @@ export function createPrologue({
       const next = () => { frame = null; frameKind = null; if (current()) { render(); queueFrame(); } };
       // Some mobile compositors do not present new callbacks while the opening
       // picture is solid black. Typography must keep following the media clock
-      // even then; only the short opening and time-bridge cards need this loop.
-      if (!['typing', 'bridge'].includes(element.dataset.cueKind) && typeof video.requestVideoFrameCallback === 'function') {
+      // even then; opening, bridge and final-brand cards use this short loop.
+      if (!['typing', 'bridge', 'end'].includes(element.dataset.cueKind) && typeof video.requestVideoFrameCallback === 'function') {
         frameKind = 'video'; frame = video.requestVideoFrameCallback(next);
       } else {
         frameKind = 'raf'; frame = view.requestAnimationFrame(next);
@@ -457,7 +475,7 @@ export function createPrologue({
         // A timeupdate can enter a black card while a compositor callback is
         // still pending. Switch that pending loop as well, so the card's fade
         // does not fall back to the slower timeupdate cadence on a phone.
-        if (frameKind === 'video' && ['typing', 'bridge'].includes(cue?.kind)) {
+        if (frameKind === 'video' && ['typing', 'bridge', 'end'].includes(cue?.kind)) {
           cancelFrame();
           queueFrame();
         }
@@ -499,6 +517,7 @@ export function createPrologue({
       element.style.setProperty('--end-mark-opacity', (staticEnding ? 1 : ending ? smooth((endTime - .8) / 1.4) : 0).toFixed(4));
       element.style.setProperty('--end-word-opacity', (staticEnding ? 1 : ending ? smooth((endTime - 1.4) / 1.4) : 0).toFixed(4));
       element.style.setProperty('--end-rule-progress', (staticEnding ? 1 : ending ? smooth((endTime - 1.8) / 1.2) : 0).toFixed(4));
+      element.style.setProperty('--end-enter-opacity', (staticEnding ? 1 : ending ? smooth((endTime - 2.8) / .8) : 1).toFixed(4));
       // Archive captions follow every spoken word, including short radio calls.
       // Keep the entire clause visible for its complete cue instead of spending
       // most of a brief quotation on an entrance/exit animation.
@@ -520,10 +539,15 @@ export function createPrologue({
       if (ending) {
         if (gate.parentElement !== caption) caption.append(gate);
         gate.hidden = false;
+        const enterReady = staticEnding || endTime >= 2.8;
+        gate.inert = !enterReady;
+        gate.setAttribute('aria-hidden', String(!enterReady));
         status.hidden = true;
-        play.hidden = !paused && !video.ended;
+        play.hidden = true;
       } else {
         if (gate.parentElement !== element) element.insertBefore(gate, loading);
+        gate.inert = false;
+        gate.removeAttribute('aria-hidden');
         gate.hidden = !gateReason && !(hasSource && paused);
         status.hidden = !gateReason || gateReason === 'ready';
         status.textContent = gateReason ? copy()[gateReason] : '';
@@ -540,7 +564,13 @@ export function createPrologue({
       if (index < 0 && cues.at(-1)?.kind === 'end' && position >= Number(cues.at(-1).start) && position <= Number(cues.at(-1).end) + .05) index = cues.length - 1;
       if (gateReason && index < 0 && cues.length) index = 0;
       setCaption(index, position);
-      if (cueEnding && !chromeVisible) setChrome(true, false);
+      const wasOutro = element.classList.contains('prologue-outro');
+      const outro = suppressFilmOutroChrome(filmMedia, cues, position, video.ended);
+      element.classList.toggle('prologue-outro', outro);
+      if (outro) {
+        if (menuOpen) setMenu(false);
+        setChrome(false, false);
+      } else if (wasOutro) setChrome(true);
       const length = duration();
       range.disabled = !hasSource || failed || Boolean(sourceSwitch) || video.readyState < 1;
       range.max = String(length);
@@ -775,7 +805,7 @@ export function createPrologue({
       const targets = [...element.querySelectorAll('button:not([disabled]), input:not([disabled]), a[href]')]
         .filter(node => node.getClientRects().length && !node.closest('[hidden], [inert]'));
       const first = targets[0], last = targets.at(-1);
-      if (!first) return;
+      if (!first) { event.preventDefault(); element.focus({preventScroll:true}); return; }
       if (document.activeElement === element || !element.contains(document.activeElement)) { event.preventDefault(); (event.shiftKey ? last : first).focus(); }
       else if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
       else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
@@ -818,7 +848,7 @@ export function createPrologue({
     // A single click or tap on the picture is a playback action. Pointerdown
     // only records the gesture so dragging a control never toggles playback.
     element.addEventListener('click', event => {
-      if (!current() || element.inert || isPlayerControl(event.target) || screenDragged || dismissingPlayerMenu) return;
+      if (!current() || element.inert || cueEnding || isPlayerControl(event.target) || screenDragged || dismissingPlayerMenu) return;
       setChrome(true);
       togglePlayback();
     }, { signal });

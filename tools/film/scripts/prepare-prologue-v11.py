@@ -59,9 +59,9 @@ def main():
                      'mars-approach','perseverance-up','perseverance-down','webb']: keep(identity)
     asset('webb-deployment',18,'webb-deployment.webm',0,78,eventDate='2022-01-08')
     asset('webb-observatory',12,'webb-deployment.webm',78,12,eventDate='2022-01-24',fadeIn=0)
-    base('solar-system')
-    shots[-1].update(sourceStart=548,sourceDuration=12.5)
-    shots.append({'id':'relic','source':'black','duration':16})
+    base('solar-system',23)
+    shots[-1].update(sourceStart=548,sourceDuration=12.5,fadeOut=1.6)
+    shots.append({'id':'relic','source':'black','duration':10})
     position = 0
     for shot in shots:
         shot['start'],shot['end'] = position,position+shot['duration']; position = shot['end']
@@ -86,6 +86,12 @@ def main():
     say('von-braun-postwar','von-braun',0,9.8,
         'A Nazi engineer, Wernher von Braun led development of the V2. After the war, he joined the American programme.',
         'Ingénieur nazi, Wernher von Braun dirige le développement de la V2. Après la guerre, il rejoint le programme américain.')
+    say('a-signal-around-earth','sputnik-wide',.1,8.4,
+        'In 1957, Sputnik became the first artificial satellite. Listen to its radio beeps, received around the world.',
+        'En 1957, Spoutnik devient le premier satellite artificiel. Écoutez ses bips radio, captés dans le monde entier.')
+    say('voyager2-departure','voyager2-launch',.15,7.9,
+        'Launched in August 1977, Voyager 2 would explore Jupiter, Saturn, Uranus and Neptune.',
+        'En août 1977, Voyager 2 décolle. Elle explorera Jupiter, Saturne, Uranus et Neptune.')
     say('shuttle-first-orbit','sts1',.4,15.5,
         'On 12 April 1981, Columbia launched the first orbital Shuttle flight. The mission succeeded, landing two days later. The programme could begin.',
         'Le 12 avril 1981, Columbia effectue le premier vol orbital d’une navette. La mission réussit et atterrit deux jours plus tard. Le programme peut commencer.')
@@ -152,23 +158,28 @@ def main():
     say('webb-location','webb-observatory',.3,11.7,
         'Webb observes from around the Sun–Earth L2 point, one and a half million kilometres from Earth. It joins generations of machines sent beyond our world.',
         'Webb observe autour du point L2 du système Soleil-Terre, à un million et demi de kilomètres de la Terre. Il rejoint des générations de machines envoyées au-delà de notre monde.')
-    say('journeys-leave-traces','solar-system',.3,16.7,
-        'Across the Solar System and into interstellar space, our spacecraft keep exploring or remain where their missions ended: on the Moon, Mars, Titan, a comet, and in orbit. Each carries part of our history.',
-        'À travers le Système solaire et jusque dans l’espace interstellaire, nos engins explorent encore ou demeurent là où leur mission s’est achevée : sur la Lune, Mars, Titan, une comète ou en orbite. Chacun porte une part de notre histoire.')
-    say('why-relic','relic',1,11.5,
-        'RELIC follows these machines and their stories. Explore the Solar System, and discover what we have left behind.',
-        'RELIC retrace l’histoire de ces machines. Explorez le Système solaire et découvrez ce que nous avons laissé derrière nous.')
+    say('journeys-leave-traces','solar-system',.3,20.5,
+        'On the Moon, Mars, Titan or a comet, in orbit and into interstellar space, our machines keep exploring or preserve the traces of completed missions. RELIC follows their journeys across the Solar System. Discover what we have left behind.',
+        'Sur la Lune, Mars, Titan ou une comète, en orbite et jusque dans l’espace interstellaire, nos machines explorent encore ou gardent la trace de missions achevées. RELIC retrace leurs parcours à travers le Système solaire. Découvrez ce que nous avons laissé derrière nous.')
     archives=copy.deepcopy(prior['archivalAudio'])
     for archive in archives:
         archive['at'] += index[archive['shot']]['start']-old[archive['shot']]['start']
+        if archive['id']=='sputnik-original-signal':
+            archive.update(at=index['sputnik-wide']['start']+8.7,source='asset',file='assets/sputnik-nssdc.wav',sourceStart=0,length=3.1,gain=.62)
         if archive['id']=='perseverance-2021-edl': archive['gain']=.58
-    plan={'version':11,'revision':'11.0-hd50','duration':position,'fps':50,'release':'v11-0-hd50',
+    plan={'version':11,'revision':'11.1-hd50','duration':position,'fps':50,'release':'v11-1-hd50',
           'sourceRevision':'9.0-hd50','sourceReceipt':prior['sourceReceipt'],'shots':shots,
           'archivalAudio':archives,'musicOnlyScenes':prior['musicOnlyScenes']+['iss-whole','iss-life'],
-          'silenceMusic':[{'start':index['challenger']['start']-.35,'end':index['remembrance']['end']+.3}],
+          'silenceMusic':[{'start':index['challenger']['start']-.35,'end':index['remembrance']['end']+.3},
+                          {'start':index['sputnik-wide']['start']+8.6,'end':index['sputnik']['end']-.1}],
+          'musicEnd':index['relic']['start']-.6,
+          'musicFinalFadeSeconds':4.5,
           'displayCaptions':[{'id':'iss-name','start':index['iss-whole']['start']+1.1,
                               'end':index['iss-whole']['start']+6.5,'kind':'subtitle',
-                              'title':{'en':'International Space Station','fr':'International Space Station'}}],
+                              'title':{'en':'International Space Station','fr':'International Space Station'}},
+                             {'id':'sputnik-original-signal-identification','start':index['sputnik-wide']['start']+8.7,
+                              'end':index['sputnik-wide']['start']+11.8,'kind':'subtitle',
+                              'title':{'en':'Sputnik 1 — original radio signal','fr':'Spoutnik 1 — signal radio original'}}],
           'editorialPolicy':[
               'All source timecodes refer explicitly to the frozen V9.0 master or to a named credited asset. No mixed revision clocks.',
               'Voyager precedes Enterprise by the owner’s explicit thematic ordering within 1977.',
@@ -178,7 +189,8 @@ def main():
               'Rosetta footage contains only the comet and spacecraft. Postmission reconstructed Philae bounces illustrate the actual failed anchoring, not the earlier predicted successful harpoon landing.',
               'No small scene labels or speaker captions. ISS is named in the main subtitle position.',
               'The final shot starts with a wide view of solar orbits after Webb, after the old Mars close-up has ended. No Mars pullout or repeated Titan, Rosetta, Voyager or Falcon pictures after Webb.',
-              'The final black picture supports the player’s accessible RELIC logo, name and exploration button. It stays until the viewer acts.',
+              'The closing score and narration finish before the silent final logo-and-name card. The last wide shot fades to black. No transport controls or play button interrupt the brand card; Explore appears after the brand and the final frame stays until the viewer acts.',
+              'Voyager 2 names Jupiter, Saturn, Uranus and Neptune rather than unexplained giant planets. Genuine Sputnik radio beeps follow their spoken introduction, without music.',
               'Stock bilingual paragraphs fit their scenes without truncation or post-synthesis time compression.'
           ]}
     script.update(version=11,duration=position,lines=sorted(lines,key=lambda r:r['start']))

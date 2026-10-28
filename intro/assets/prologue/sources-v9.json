@@ -724,17 +724,18 @@
     {
       "id": "solar-system",
       "source": "v9-0",
-      "duration": 17,
+      "duration": 23,
       "sourceStart": 548,
       "sourceDuration": 12.5,
+      "fadeOut": 1.6,
       "start": 713,
-      "end": 730
+      "end": 736
     },
     {
       "id": "relic",
       "source": "black",
-      "duration": 16,
-      "start": 730,
+      "duration": 10,
+      "start": 736,
       "end": 746
     }
   ],
@@ -814,7 +815,7 @@
   "offlineContext": "Voluntary full download, size/SHA-256 verification, shared video and localized mixed audio. A new edition is not marked available until its own complete files have been verified.",
   "schema": "relic.prologue.sources.v9",
   "version": 11,
-  "revision": "11.0-hd50",
+  "revision": "11.1-hd50",
   "checkedOn": "2026-10-28",
   "preview": false,
   "sourcesPending": false,
@@ -830,13 +831,13 @@
     "height": 1080,
     "fps": 50,
     "languages": {
-      "en": "v11-0-hd50/en.m3u8",
-      "fr": "v11-0-hd50/fr.m3u8"
+      "en": "v11-1-hd50/en.m3u8",
+      "fr": "v11-1-hd50/fr.m3u8"
     },
     "encodingManifest": "encoding-v9-hd50.json",
     "sourcePolicy": "Unchanged checked V9 encoded pictures are retained where possible. Changed joins and the credited added archive photographs/films/official visualizations are encoded at 1080p50 without generated detail. Narration is rebuilt per scene, authentic historical speech is retained from checked source audio, and the licensed score is remixed with long crossfades. Original production inputs remain outside the repository in a local application cache.",
-    "encodingManifestSha256": "e328436d572561b7f82412d65da6ca08e070057be00610d66f4a848aedb64609",
-    "totalBytes": 237476492,
+    "encodingManifestSha256": "4d394d0b721fe1c025cd0db2e3e9ada070807ab64515af3b0f6c48ac6cbad5b2",
+    "totalBytes": 238146536,
     "fileCount": 290
   },
   "archiveSubtitleManifestSha256": "b57203f0b03faaee73dca68eb235a119fd4c90ebc086fdf87a855aba6e5d9aa3",
@@ -1435,7 +1436,7 @@
       }
     },
     "script": "tools/film/scripts/prologue-narration-v11.json",
-    "scriptSha256": "a784f6cbe5406e2a53e61e7f40de3182f61cde0d3095f698c1b5dd5599a65ddd",
+    "scriptSha256": "d72adcc8d4fa4a390ad0ffa85e126421d515c09e00803d7c66ac9edd13c74a5e",
     "processing": "Scene-bound stock Kokoro paragraphs, source text decoded as UTF-8. No completed narration is truncated or time-stretched. Actual HLS onsets are measured against each rendered paragraph.",
     "subtitleTimingMethod": "Approximate clause proportions refined at quiet regions of the actual paragraph waveform. The whole scene-bound paragraph has a verified delivery onset; no word-exact forced alignment is claimed.",
     "partial": false,
@@ -1484,8 +1485,7 @@
       "looking-back-through-time",
       "webb-deployment",
       "webb-location",
-      "journeys-leave-traces",
-      "why-relic"
+      "journeys-leave-traces"
     ],
     "lines": [
       {
@@ -1634,23 +1634,23 @@
         "locale": "en-us",
         "voice": "af_heart",
         "synthetic": true,
-        "text": "In 1957, Sputnik became the first artificial satellite. Its signal carried the rivalry around the world.",
-        "spokenText": "In 1957, Sputnik became the first artificial satellite. Its signal carried the rivalry around the world.",
+        "text": "In 1957, Sputnik became the first artificial satellite. Listen to its radio beeps, received around the world.",
+        "spokenText": "In 1957, Sputnik became the first artificial satellite. Listen to its radio beeps, received around the world.",
         "file": "production-inputs/narration/a-signal-around-earth-en.wav",
-        "start": 125.0,
-        "at": 125.0,
-        "end": 132.82133333333334,
-        "slotEnd": 134.3,
-        "duration": 7.8213333333333335,
-        "slotSeconds": 9.300000000000011,
+        "start": 123.1,
+        "at": 123.1,
+        "end": 131.412,
+        "slotEnd": 131.4,
+        "duration": 8.312,
+        "slotSeconds": 8.300000000000011,
         "fits": true,
-        "extraSecondsNeeded": 0,
+        "extraSecondsNeeded": 0.012,
         "speed": 1.0,
         "nativeSampleRate": 24000,
         "sampleRate": 48000,
         "channels": 2,
-        "bytes": 1501774,
-        "sha256": "c233584c734e04e968fc0550540ea08c00332c818612b7dea9283e460e1e3e70",
+        "bytes": 1595982,
+        "sha256": "af992c4ecd5afe3c7e2514a1b51d7bc28885120f4201980c7c44871bb51d2bff",
         "role": "voice",
         "normalizeInMix": true,
         "synthesisUnit": "continuous paragraph",
@@ -1659,30 +1659,30 @@
         "captions": [
           {
             "text": "In 1957, Sputnik became the first artificial satellite.",
-            "start": 125.0,
-            "end": 129.52,
+            "start": 123.1,
+            "end": 127.575,
             "relativeStart": 0.0,
-            "relativeEnd": 4.52,
+            "relativeEnd": 4.475,
             "approximate": true,
             "textWeight": 55
           },
           {
-            "text": "Its signal carried the rivalry around the world.",
-            "start": 129.52,
-            "end": 132.821333,
-            "relativeStart": 4.52,
-            "relativeEnd": 7.821333,
+            "text": "Listen to its radio beeps, received around the world.",
+            "start": 127.575,
+            "end": 131.412,
+            "relativeStart": 4.475,
+            "relativeEnd": 8.312,
             "approximate": true,
-            "textWeight": 48
+            "textWeight": 53
           }
         ],
         "subtitleBoundaryDecisions": [
           {
             "afterClause": 1,
-            "expected": 4.1129,
-            "boundary": 4.52,
+            "expected": 4.1748,
+            "boundary": 4.475,
             "snappedToQuietRegion": true,
-            "quietSeconds": 0.04
+            "quietSeconds": 0.05
           }
         ]
       },
@@ -2237,23 +2237,23 @@
         "locale": "en-us",
         "voice": "af_heart",
         "synthetic": true,
-        "text": "In August 1977, Voyager 2 launched towards the giant planets.",
-        "spokenText": "In August 1977, Voyager 2 launched towards the giant planets.",
+        "text": "Launched in August 1977, Voyager 2 would explore Jupiter, Saturn, Uranus and Neptune.",
+        "spokenText": "Launched in August 1977, Voyager 2 would explore Jupiter, Saturn, Uranus and Neptune.",
         "file": "production-inputs/narration/voyager2-departure-en.wav",
-        "start": 315.3,
-        "at": 315.3,
-        "end": 320.62533333333334,
-        "slotEnd": 322.7,
-        "duration": 5.325333333333333,
-        "slotSeconds": 7.399999999999977,
+        "start": 315.15,
+        "at": 315.15,
+        "end": 322.246,
+        "slotEnd": 322.9,
+        "duration": 7.096,
+        "slotSeconds": 7.75,
         "fits": true,
         "extraSecondsNeeded": 0,
         "speed": 1.0,
         "nativeSampleRate": 24000,
         "sampleRate": 48000,
         "channels": 2,
-        "bytes": 1022542,
-        "sha256": "dfa63c85ed0a40774abe7d8d68d30b154facb4e598e5391ff716a508bc0a969a",
+        "bytes": 1362510,
+        "sha256": "3bb1cae177f266097079472424d3832e73b7d1c6b537eec572a048b271c47532",
         "role": "voice",
         "normalizeInMix": true,
         "synthesisUnit": "continuous paragraph",
@@ -2261,13 +2261,13 @@
         "subtitlePronunciationAliasesProvided": false,
         "captions": [
           {
-            "text": "In August 1977, Voyager 2 launched towards the giant planets.",
-            "start": 315.3,
-            "end": 320.625333,
+            "text": "Launched in August 1977, Voyager 2 would explore Jupiter, Saturn, Uranus and Neptune.",
+            "start": 315.15,
+            "end": 322.246,
             "relativeStart": 0.0,
-            "relativeEnd": 5.325333,
+            "relativeEnd": 7.096,
             "approximate": true,
-            "textWeight": 61
+            "textWeight": 85
           }
         ],
         "subtitleBoundaryDecisions": []
@@ -3983,23 +3983,23 @@
         "locale": "en-us",
         "voice": "af_heart",
         "synthetic": true,
-        "text": "Across the Solar System and into interstellar space, our spacecraft keep exploring or remain where their missions ended: on the Moon, Mars, Titan, a comet, and in orbit. Each carries part of our history.",
-        "spokenText": "Across the Solar System and into interstellar space, our spacecraft keep exploring or remain where their missions ended: on the Moon, Mars, Titan, a comet, and in orbit. Each carries part of our history.",
+        "text": "On the Moon, Mars, Titan or a comet, in orbit and into interstellar space, our machines keep exploring or preserve the traces of completed missions. RELIC follows their journeys across the Solar System. Discover what we have left behind.",
+        "spokenText": "On the Moon, Mars, Titan or a comet, in orbit and into interstellar space, our machines keep exploring or preserve the traces of completed missions. RELIC follows their journeys across the Solar System. Discover what we have left behind.",
         "file": "production-inputs/narration/journeys-leave-traces-en.wav",
         "start": 713.3,
         "at": 713.3,
-        "end": 726.5186666666666,
-        "slotEnd": 729.7,
-        "duration": 13.218666666666667,
-        "slotSeconds": 16.40000000000009,
+        "end": 728.588,
+        "slotEnd": 733.5,
+        "duration": 15.288,
+        "slotSeconds": 20.200000000000045,
         "fits": true,
         "extraSecondsNeeded": 0,
         "speed": 1.0,
         "nativeSampleRate": 24000,
         "sampleRate": 48000,
         "channels": 2,
-        "bytes": 2538062,
-        "sha256": "e6a45220b9554af4595b5d49951015bded78f73a3c9c85c0e00bd261948a97bf",
+        "bytes": 2935374,
+        "sha256": "44e98c01d8dafd5b64b0b3e3f44ef88cce129860d80d5e483732b7cad0544c7e",
         "role": "voice",
         "normalizeInMix": true,
         "synthesisUnit": "continuous paragraph",
@@ -4007,105 +4007,63 @@
         "subtitlePronunciationAliasesProvided": false,
         "captions": [
           {
-            "text": "Across the Solar System and into interstellar space, our spacecraft keep exploring or remain where",
+            "text": "On the Moon, Mars, Titan or a comet, in orbit and into interstellar space, our machines keep",
             "start": 713.3,
-            "end": 720.095,
+            "end": 718.755,
             "relativeStart": 0.0,
-            "relativeEnd": 6.795,
+            "relativeEnd": 5.455,
             "approximate": true,
-            "textWeight": 98
+            "textWeight": 92
           },
           {
-            "text": "their missions ended: on the Moon, Mars, Titan, a comet, and in orbit.",
-            "start": 720.095,
-            "end": 724.46,
-            "relativeStart": 6.795,
-            "relativeEnd": 11.16,
+            "text": "exploring or preserve the traces of completed missions.",
+            "start": 718.755,
+            "end": 723.22,
+            "relativeStart": 5.455,
+            "relativeEnd": 9.92,
             "approximate": true,
-            "textWeight": 70
+            "textWeight": 55
           },
           {
-            "text": "Each carries part of our history.",
-            "start": 724.46,
-            "end": 726.518667,
-            "relativeStart": 11.16,
-            "relativeEnd": 13.218667,
+            "text": "RELIC follows their journeys across the Solar System.",
+            "start": 723.22,
+            "end": 726.495,
+            "relativeStart": 9.92,
+            "relativeEnd": 13.195,
             "approximate": true,
-            "textWeight": 33
+            "textWeight": 53
+          },
+          {
+            "text": "Discover what we have left behind.",
+            "start": 726.495,
+            "end": 728.588,
+            "relativeStart": 13.195,
+            "relativeEnd": 15.288,
+            "approximate": true,
+            "textWeight": 34
           }
         ],
         "subtitleBoundaryDecisions": [
           {
             "afterClause": 1,
-            "expected": 6.4037,
-            "boundary": 6.795,
+            "expected": 5.981,
+            "boundary": 5.455,
             "snappedToQuietRegion": true,
-            "quietSeconds": 0.57
+            "quietSeconds": 0.37
           },
           {
             "afterClause": 2,
-            "expected": 10.9206,
-            "boundary": 11.16,
+            "expected": 9.5208,
+            "boundary": 9.92,
             "snappedToQuietRegion": true,
-            "quietSeconds": 0.6
-          }
-        ]
-      },
-      {
-        "id": "why-relic",
-        "language": "en",
-        "locale": "en-us",
-        "voice": "af_heart",
-        "synthetic": true,
-        "text": "RELIC follows these machines and their stories. Explore the Solar System, and discover what we have left behind.",
-        "spokenText": "RELIC follows these machines and their stories. Explore the Solar System, and discover what we have left behind.",
-        "file": "production-inputs/narration/why-relic-en.wav",
-        "start": 731.0,
-        "at": 731.0,
-        "end": 737.7333333333333,
-        "slotEnd": 741.5,
-        "duration": 6.733333333333333,
-        "slotSeconds": 10.5,
-        "fits": true,
-        "extraSecondsNeeded": 0,
-        "speed": 1.0,
-        "nativeSampleRate": 24000,
-        "sampleRate": 48000,
-        "channels": 2,
-        "bytes": 1292878,
-        "sha256": "ad24fdd0b8c962771a88585a1129bd9fb9a4084ba407cc195aac43098ce22af8",
-        "role": "voice",
-        "normalizeInMix": true,
-        "synthesisUnit": "continuous paragraph",
-        "subtitleTimingMethod": "Approximate clause proportions refined at quiet regions of the actual paragraph waveform. The whole scene-bound paragraph has a verified delivery onset; no word-exact forced alignment is claimed.",
-        "subtitlePronunciationAliasesProvided": false,
-        "captions": [
-          {
-            "text": "RELIC follows these machines and their stories.",
-            "start": 731.0,
-            "end": 733.875,
-            "relativeStart": 0.0,
-            "relativeEnd": 2.875,
-            "approximate": true,
-            "textWeight": 47
+            "quietSeconds": 0.66
           },
           {
-            "text": "Explore the Solar System, and discover what we have left behind.",
-            "start": 733.875,
-            "end": 737.733333,
-            "relativeStart": 2.875,
-            "relativeEnd": 6.733333,
-            "approximate": true,
-            "textWeight": 64
-          }
-        ],
-        "subtitleBoundaryDecisions": [
-          {
-            "afterClause": 1,
-            "expected": 2.818,
-            "boundary": 2.875,
+            "afterClause": 3,
+            "expected": 12.9318,
+            "boundary": 13.195,
             "snappedToQuietRegion": true,
-            "quietSeconds": 0.53
+            "quietSeconds": 0.45
           }
         ]
       },
@@ -4272,23 +4230,23 @@
         "locale": "fr-fr",
         "voice": "ff_siwis",
         "synthetic": true,
-        "text": "En 1957, Spoutnik devient le premier satellite artificiel. Son signal fait le tour du monde.",
-        "spokenText": "En 1957, Spoutnik devient le premier satellite artificiel. Son signal fait le tour du monde.",
+        "text": "En 1957, Spoutnik devient le premier satellite artificiel. Écoutez ses bips radio, captés dans le monde entier.",
+        "spokenText": "En 1957, Spoutnik devient le premier satellite artificiel. Écoutez ses bips radio, captés dans le monde entier.",
         "file": "production-inputs/narration/a-signal-around-earth-fr.wav",
-        "start": 125.0,
-        "at": 125.0,
-        "end": 131.75466666666668,
-        "slotEnd": 134.3,
-        "duration": 6.754666666666667,
-        "slotSeconds": 9.300000000000011,
+        "start": 123.1,
+        "at": 123.1,
+        "end": 130.9,
+        "slotEnd": 131.4,
+        "duration": 7.8,
+        "slotSeconds": 8.300000000000011,
         "fits": true,
         "extraSecondsNeeded": 0,
         "speed": 1.0,
         "nativeSampleRate": 24000,
         "sampleRate": 48000,
         "channels": 2,
-        "bytes": 1296974,
-        "sha256": "db06b90556aa2cf491bbca2d091422de323b667518789921427ac18b9d621bbf",
+        "bytes": 1497678,
+        "sha256": "b0f154a9b8df059e346b929018b180837eca83a184900a7ce2886744d0674f83",
         "role": "voice",
         "normalizeInMix": true,
         "synthesisUnit": "continuous paragraph",
@@ -4297,30 +4255,30 @@
         "captions": [
           {
             "text": "En 1957, Spoutnik devient le premier satellite artificiel.",
-            "start": 125.0,
-            "end": 129.675,
+            "start": 123.1,
+            "end": 127.85,
             "relativeStart": 0.0,
-            "relativeEnd": 4.675,
+            "relativeEnd": 4.75,
             "approximate": true,
             "textWeight": 58
           },
           {
-            "text": "Son signal fait le tour du monde.",
-            "start": 129.675,
-            "end": 131.754667,
-            "relativeStart": 4.675,
-            "relativeEnd": 6.754667,
+            "text": "Écoutez ses bips radio, captés dans le monde entier.",
+            "start": 127.85,
+            "end": 130.9,
+            "relativeStart": 4.75,
+            "relativeEnd": 7.8,
             "approximate": true,
-            "textWeight": 33
+            "textWeight": 52
           }
         ],
         "subtitleBoundaryDecisions": [
           {
             "afterClause": 1,
-            "expected": 4.2137,
-            "boundary": 4.675,
+            "expected": 4.0687,
+            "boundary": 4.75,
             "snappedToQuietRegion": true,
-            "quietSeconds": 0.25
+            "quietSeconds": 0.28
           }
         ]
       },
@@ -4891,23 +4849,23 @@
         "locale": "fr-fr",
         "voice": "ff_siwis",
         "synthetic": true,
-        "text": "En août 1977, Voyager 2 décolle vers les planètes géantes.",
-        "spokenText": "En août 1977, Voyager 2 décolle vers les planètes géantes.",
+        "text": "En août 1977, Voyager 2 décolle. Elle explorera Jupiter, Saturne, Uranus et Neptune.",
+        "spokenText": "En août 1977, Voyager 2 décolle. Elle explorera Jupiter, Saturne, Uranus et Neptune.",
         "file": "production-inputs/narration/voyager2-departure-fr.wav",
-        "start": 315.3,
-        "at": 315.3,
-        "end": 320.22,
-        "slotEnd": 322.7,
-        "duration": 4.92,
-        "slotSeconds": 7.399999999999977,
+        "start": 315.15,
+        "at": 315.15,
+        "end": 322.0113333333333,
+        "slotEnd": 322.9,
+        "duration": 6.8613333333333335,
+        "slotSeconds": 7.75,
         "fits": true,
         "extraSecondsNeeded": 0,
         "speed": 1.0,
         "nativeSampleRate": 24000,
         "sampleRate": 48000,
         "channels": 2,
-        "bytes": 944718,
-        "sha256": "0b29378ce058227a7e9a6b644a49274180b9bfc460ca0f4b804dda2ba32eacf0",
+        "bytes": 1317454,
+        "sha256": "db245f7469f0ca2a82a15c79022229b6b15c064866f4d13a8a31064198867b0a",
         "role": "voice",
         "normalizeInMix": true,
         "synthesisUnit": "continuous paragraph",
@@ -4915,16 +4873,33 @@
         "subtitlePronunciationAliasesProvided": false,
         "captions": [
           {
-            "text": "En août 1977, Voyager 2 décolle vers les planètes géantes.",
-            "start": 315.3,
-            "end": 320.22,
+            "text": "En août 1977, Voyager 2 décolle.",
+            "start": 315.15,
+            "end": 318.03,
             "relativeStart": 0.0,
-            "relativeEnd": 4.92,
+            "relativeEnd": 2.88,
             "approximate": true,
-            "textWeight": 58
+            "textWeight": 32
+          },
+          {
+            "text": "Elle explorera Jupiter, Saturne, Uranus et Neptune.",
+            "start": 318.03,
+            "end": 322.011333,
+            "relativeStart": 2.88,
+            "relativeEnd": 6.861333,
+            "approximate": true,
+            "textWeight": 51
           }
         ],
-        "subtitleBoundaryDecisions": []
+        "subtitleBoundaryDecisions": [
+          {
+            "afterClause": 1,
+            "expected": 2.6307,
+            "boundary": 2.88,
+            "snappedToQuietRegion": true,
+            "quietSeconds": 0.06
+          }
+        ]
       },
       {
         "id": "voyager1-departure",
@@ -6702,23 +6677,23 @@
         "locale": "fr-fr",
         "voice": "ff_siwis",
         "synthetic": true,
-        "text": "À travers le Système solaire et jusque dans l’espace interstellaire, nos engins explorent encore ou demeurent là où leur mission s’est achevée : sur la Lune, Mars, Titan, une comète ou en orbite. Chacun porte une part de notre histoire.",
-        "spokenText": "À travers le Système solaire et jusque dans l’espace interstellaire, nos engins explorent encore ou demeurent là où leur mission s’est achevée : sur la Lune, Mars, Titan, une comète ou en orbite. Chacun porte une part de notre histoire.",
+        "text": "Sur la Lune, Mars, Titan ou une comète, en orbite et jusque dans l’espace interstellaire, nos machines explorent encore ou gardent la trace de missions achevées. RELIC retrace leurs parcours à travers le Système solaire. Découvrez ce que nous avons laissé derrière nous.",
+        "spokenText": "Sur la Lune, Mars, Titan ou une comète, en orbite et jusque dans l’espace interstellaire, nos machines explorent encore ou gardent la trace de missions achevées. RELIC retrace leurs parcours à travers le Système solaire. Découvrez ce que nous avons laissé derrière nous.",
         "file": "production-inputs/narration/journeys-leave-traces-fr.wav",
         "start": 713.3,
         "at": 713.3,
-        "end": 726.5826666666666,
-        "slotEnd": 729.7,
-        "duration": 13.282666666666668,
-        "slotSeconds": 16.40000000000009,
+        "end": 728.2466666666667,
+        "slotEnd": 733.5,
+        "duration": 14.946666666666667,
+        "slotSeconds": 20.200000000000045,
         "fits": true,
         "extraSecondsNeeded": 0,
         "speed": 1.0,
         "nativeSampleRate": 24000,
         "sampleRate": 48000,
         "channels": 2,
-        "bytes": 2550350,
-        "sha256": "4f97ead90989865ee805416cd1038e9886ac5baf233e8aaf8b74a09fc851a278",
+        "bytes": 2869838,
+        "sha256": "8515d036eb182ccd413865e40b1c5d17a92805698802d8acdc7c8f0f3813943e",
         "role": "voice",
         "normalizeInMix": true,
         "synthesisUnit": "continuous paragraph",
@@ -6726,105 +6701,63 @@
         "subtitlePronunciationAliasesProvided": false,
         "captions": [
           {
-            "text": "À travers le Système solaire et jusque dans l’espace interstellaire, nos engins explorent encore ou",
+            "text": "Sur la Lune, Mars, Titan ou une comète, en orbite et jusque dans l’espace interstellaire, nos",
             "start": 713.3,
-            "end": 718.365,
+            "end": 718.32,
             "relativeStart": 0.0,
-            "relativeEnd": 5.065,
+            "relativeEnd": 5.02,
             "approximate": true,
-            "textWeight": 99
+            "textWeight": 93
           },
           {
-            "text": "demeurent là où leur mission s’est achevée : sur la Lune, Mars, Titan, une comète ou en orbite.",
-            "start": 718.365,
-            "end": 724.33,
-            "relativeStart": 5.065,
-            "relativeEnd": 11.03,
+            "text": "machines explorent encore ou gardent la trace de missions achevées.",
+            "start": 718.32,
+            "end": 722.355,
+            "relativeStart": 5.02,
+            "relativeEnd": 9.055,
             "approximate": true,
-            "textWeight": 95
+            "textWeight": 67
           },
           {
-            "text": "Chacun porte une part de notre histoire.",
-            "start": 724.33,
-            "end": 726.582667,
-            "relativeStart": 11.03,
-            "relativeEnd": 13.282667,
+            "text": "RELIC retrace leurs parcours à travers le Système solaire.",
+            "start": 722.355,
+            "end": 725.775,
+            "relativeStart": 9.055,
+            "relativeEnd": 12.475,
             "approximate": true,
-            "textWeight": 40
+            "textWeight": 58
+          },
+          {
+            "text": "Découvrez ce que nous avons laissé derrière nous.",
+            "start": 725.775,
+            "end": 728.246667,
+            "relativeStart": 12.475,
+            "relativeEnd": 14.946667,
+            "approximate": true,
+            "textWeight": 49
           }
         ],
         "subtitleBoundaryDecisions": [
           {
             "afterClause": 1,
-            "expected": 5.6323,
-            "boundary": 5.065,
+            "expected": 5.2275,
+            "boundary": 5.02,
             "snappedToQuietRegion": true,
-            "quietSeconds": 0.05
+            "quietSeconds": 0.04
           },
           {
             "afterClause": 2,
-            "expected": 10.8451,
-            "boundary": 11.03,
+            "expected": 8.8711,
+            "boundary": 9.055,
             "snappedToQuietRegion": true,
-            "quietSeconds": 0.3
-          }
-        ]
-      },
-      {
-        "id": "why-relic",
-        "language": "fr",
-        "locale": "fr-fr",
-        "voice": "ff_siwis",
-        "synthetic": true,
-        "text": "RELIC retrace l’histoire de ces machines. Explorez le Système solaire et découvrez ce que nous avons laissé derrière nous.",
-        "spokenText": "RELIC retrace l’histoire de ces machines. Explorez le Système solaire et découvrez ce que nous avons laissé derrière nous.",
-        "file": "production-inputs/narration/why-relic-fr.wav",
-        "start": 731.0,
-        "at": 731.0,
-        "end": 738.096,
-        "slotEnd": 741.5,
-        "duration": 7.096,
-        "slotSeconds": 10.5,
-        "fits": true,
-        "extraSecondsNeeded": 0,
-        "speed": 1.0,
-        "nativeSampleRate": 24000,
-        "sampleRate": 48000,
-        "channels": 2,
-        "bytes": 1362510,
-        "sha256": "245580ba157bf4a5b77dbe514992d6c93d7f1d943c6b053383ef70b132259b0b",
-        "role": "voice",
-        "normalizeInMix": true,
-        "synthesisUnit": "continuous paragraph",
-        "subtitleTimingMethod": "Approximate clause proportions refined at quiet regions of the actual paragraph waveform. The whole scene-bound paragraph has a verified delivery onset; no word-exact forced alignment is claimed.",
-        "subtitlePronunciationAliasesProvided": false,
-        "captions": [
-          {
-            "text": "RELIC retrace l’histoire de ces machines.",
-            "start": 731.0,
-            "end": 733.645,
-            "relativeStart": 0.0,
-            "relativeEnd": 2.645,
-            "approximate": true,
-            "textWeight": 41
+            "quietSeconds": 0.35
           },
           {
-            "text": "Explorez le Système solaire et découvrez ce que nous avons laissé derrière nous.",
-            "start": 733.645,
-            "end": 738.096,
-            "relativeStart": 2.645,
-            "relativeEnd": 7.096,
-            "approximate": true,
-            "textWeight": 80
-          }
-        ],
-        "subtitleBoundaryDecisions": [
-          {
-            "afterClause": 1,
-            "expected": 2.404,
-            "boundary": 2.645,
+            "afterClause": 3,
+            "expected": 12.0253,
+            "boundary": 12.475,
             "snappedToQuietRegion": true,
-            "quietSeconds": 0.29
+            "quietSeconds": 0.27
           }
         ]
       }
@@ -6834,8 +6767,8 @@
   },
   "syntheticNarrationApproved": true,
   "historicalVoicesSynthesized": false,
-  "narrationScriptSha256": "a784f6cbe5406e2a53e61e7f40de3182f61cde0d3095f698c1b5dd5599a65ddd",
-  "editPlanSha256": "1e317a4456934c4f78e53dba096501c49e1d8489b51a939194f4995ed5708684",
+  "narrationScriptSha256": "d72adcc8d4fa4a390ad0ffa85e126421d515c09e00803d7c66ac9edd13c74a5e",
+  "editPlanSha256": "481b5f1851491d0e823de7a0ecd37bd7975e05708f7a3ce626e7ab26a9732bfa",
   "paragraphTranscript": [
     {
       "id": "a-world-and-a-question",
@@ -6870,11 +6803,11 @@
     {
       "id": "a-signal-around-earth",
       "shot": "sputnik-wide",
-      "start": 125,
-      "end": 134.3,
+      "start": 123.1,
+      "end": 131.4,
       "text": {
-        "en": "In 1957, Sputnik became the first artificial satellite. Its signal carried the rivalry around the world.",
-        "fr": "En 1957, Spoutnik devient le premier satellite artificiel. Son signal fait le tour du monde."
+        "en": "In 1957, Sputnik became the first artificial satellite. Listen to its radio beeps, received around the world.",
+        "fr": "En 1957, Spoutnik devient le premier satellite artificiel. Écoutez ses bips radio, captés dans le monde entier."
       }
     },
     {
@@ -6980,11 +6913,11 @@
     {
       "id": "voyager2-departure",
       "shot": "voyager2-launch",
-      "start": 315.3,
-      "end": 322.7,
+      "start": 315.15,
+      "end": 322.9,
       "text": {
-        "en": "In August 1977, Voyager 2 launched towards the giant planets.",
-        "fr": "En août 1977, Voyager 2 décolle vers les planètes géantes."
+        "en": "Launched in August 1977, Voyager 2 would explore Jupiter, Saturn, Uranus and Neptune.",
+        "fr": "En août 1977, Voyager 2 décolle. Elle explorera Jupiter, Saturne, Uranus et Neptune."
       }
     },
     {
@@ -7281,20 +7214,10 @@
       "id": "journeys-leave-traces",
       "shot": "solar-system",
       "start": 713.3,
-      "end": 729.7,
+      "end": 733.5,
       "text": {
-        "en": "Across the Solar System and into interstellar space, our spacecraft keep exploring or remain where their missions ended: on the Moon, Mars, Titan, a comet, and in orbit. Each carries part of our history.",
-        "fr": "À travers le Système solaire et jusque dans l’espace interstellaire, nos engins explorent encore ou demeurent là où leur mission s’est achevée : sur la Lune, Mars, Titan, une comète ou en orbite. Chacun porte une part de notre histoire."
-      }
-    },
-    {
-      "id": "why-relic",
-      "shot": "relic",
-      "start": 731,
-      "end": 741.5,
-      "text": {
-        "en": "RELIC follows these machines and their stories. Explore the Solar System, and discover what we have left behind.",
-        "fr": "RELIC retrace l’histoire de ces machines. Explorez le Système solaire et découvrez ce que nous avons laissé derrière nous."
+        "en": "On the Moon, Mars, Titan or a comet, in orbit and into interstellar space, our machines keep exploring or preserve the traces of completed missions. RELIC follows their journeys across the Solar System. Discover what we have left behind.",
+        "fr": "Sur la Lune, Mars, Titan ou une comète, en orbite et jusque dans l’espace interstellaire, nos machines explorent encore ou gardent la trace de missions achevées. RELIC retrace leurs parcours à travers le Système solaire. Découvrez ce que nous avons laissé derrière nous."
       }
     }
   ],
@@ -7307,7 +7230,8 @@
     "Rosetta footage contains only the comet and spacecraft. Postmission reconstructed Philae bounces illustrate the actual failed anchoring, not the earlier predicted successful harpoon landing.",
     "No small scene labels or speaker captions. ISS is named in the main subtitle position.",
     "The final shot starts with a wide view of solar orbits after Webb, after the old Mars close-up has ended. No Mars pullout or repeated Titan, Rosetta, Voyager or Falcon pictures after Webb.",
-    "The final black picture supports the player’s accessible RELIC logo, name and exploration button. It stays until the viewer acts.",
+    "The closing score and narration finish before the silent final logo-and-name card. The last wide shot fades to black. No transport controls or play button interrupt the brand card; Explore appears after the brand and the final frame stays until the viewer acts.",
+    "Voyager 2 names Jupiter, Saturn, Uranus and Neptune rather than unexplained giant planets. Genuine Sputnik radio beeps follow their spoken introduction, without music.",
     "Stock bilingual paragraphs fit their scenes without truncation or post-synthesis time compression."
   ],
   "editorialChanges": [
@@ -7325,18 +7249,21 @@
     "The player switches English/French at the current playhead and preserves volume, captions, speed and play/pause state. The H control and shortcut are removed.",
     "Enterprise precedes the Voyager launches; Falcon 2019/2020 precedes Perseverance and Webb 2021. The legacy montage is explicitly identified as an epilogue.",
     "V10: synchronized von Braun audio; music-only Apollo flag; both Voyager launches and instruments before Enterprise; Tereshkova, Leonov, Apollo 8/Earthrise, Huygens and Chang’e 4; complete Rosetta descent and contact; spoken closing bridge without a title; hardware beyond the Moon and Mars; continuous closing music.",
-    "V11: coherent Cassini-Huygens sequence; distinct successful STS-1 and later Challenger loss; fifteen ISS partners; Nazi role of von Braun; actual Philae bounces and clean Rosetta imagery; ongoing Falcon explanation; expanded Webb; continuous quieter closing score; no small subtitle labels; final RELIC card and pause exploration controls."
+    "V11: coherent Cassini-Huygens sequence; distinct successful STS-1 and later Challenger loss; fifteen ISS partners; Nazi role of von Braun; actual Philae bounces and clean Rosetta imagery; ongoing Falcon explanation; expanded Webb; continuous quieter closing score; no small subtitle labels; final RELIC card and pause exploration controls.",
+    "V11.1: silent final logo-and-name card without transport controls, early music fade and picture fade to black; authentic Sputnik signal introduced by narration and played without music; Voyager 2 names Jupiter, Saturn, Uranus and Neptune."
   ],
-  "endingTreatment": "One wide view of solar orbits follows Webb, without repeated Falcon, Titan, Rosetta, Voyager or Mars footage. A sixteen-second black final scene supports the player RELIC logo, name and exploration button; the card remains until the viewer acts.",
+  "endingTreatment": "One wide view of solar orbits follows Webb, without repeated Falcon, Titan, Rosetta, Voyager or Mars footage. The final wide shot fades to black as the score ends, before a completely silent ten-second RELIC logo-and-name card. No transport or play controls appear; Explore follows the brand. The card remains until the viewer acts.",
   "historicalAudioWindows": [
     {
       "id": "sputnik-original-signal",
       "shot": "sputnik-wide",
-      "at": 123.1,
-      "sourceStart": 123.1,
-      "length": 1.7,
-      "source": "checked V9.0 bilingual mixed AAC",
-      "historicalVoiceSynthesized": false
+      "at": 131.7,
+      "sourceStart": 0,
+      "length": 3.1,
+      "source": "asset",
+      "historicalVoiceSynthesized": false,
+      "file": "assets/sputnik-nssdc.wav",
+      "gain": 0.62
     },
     {
       "id": "gagarin-poyekhali-1961",
@@ -7398,11 +7325,13 @@
     {
       "id": "sputnik-original-signal",
       "shot": "sputnik-wide",
-      "at": 123.1,
-      "sourceStart": 123.1,
-      "length": 1.7,
-      "source": "checked V9.0 bilingual mixed AAC",
-      "historicalVoiceSynthesized": false
+      "at": 131.7,
+      "sourceStart": 0,
+      "length": 3.1,
+      "source": "asset",
+      "historicalVoiceSynthesized": false,
+      "file": "assets/sputnik-nssdc.wav",
+      "gain": 0.62
     },
     {
       "id": "gagarin-poyekhali-1961",
@@ -7488,9 +7417,9 @@
     {
       "at": 648,
       "in": 200,
-      "length": 98,
+      "length": 87.39999999999998,
       "fadeIn": 6,
-      "fadeOut": 8,
+      "fadeOut": 4.5,
       "file": "assets/helios.oga"
     }
   ],
@@ -7516,7 +7445,7 @@
       "end": 495
     }
   ],
-  "musicContext": "Mars, Webb and the closing reflection use the same uninterrupted score passage. The Perseverance archive is mixed at reduced level, music returns over 1.8 seconds, and delivery targets -18 LUFS / -3 dBTP.",
+  "musicContext": "Mars, Webb and the closing reflection use the same uninterrupted score passage. The Perseverance archive is mixed at reduced level, music returns over 1.8 seconds, and delivery targets -18 LUFS / -3 dBTP. The final score fades out before the logo, with verified silence across the entire brand card.",
   "editTimeline": [
     {
       "id": "prologue",
@@ -8156,17 +8085,18 @@
     {
       "id": "solar-system",
       "source": "v9-0",
-      "duration": 17,
+      "duration": 23,
       "sourceStart": 548,
       "sourceDuration": 12.5,
+      "fadeOut": 1.6,
       "start": 713,
-      "end": 730
+      "end": 736
     },
     {
       "id": "relic",
       "source": "black",
-      "duration": 16,
-      "start": 730,
+      "duration": 10,
+      "start": 736,
       "end": 746
     }
   ],
@@ -9282,6 +9212,23 @@
       "context": "Official scientific deployment animation. Complete0–90seconds used once in continuous order:0–78accelerated to18seconds,78–90atnormal speed. Source audio muted.",
       "bytes": 17170785,
       "sha256": "108293144563d0b4c391c5fb4ea3e53ef95492b1af70ad127d585c3918c85b3b"
+    },
+    {
+      "file": "assets/sputnik-nssdc.wav",
+      "sourcePage": "https://nssdc.gsfc.nasa.gov/planetary/sound/index.html",
+      "credit": "Sputnik1 radio signal / NASA NSSDCA archive",
+      "classification": "Historical radio-signal recording distributed by NASA, not a synthesized beep",
+      "rights": "Historical Soviet radio-signal recording distributed by NASA NSSDCA; attribution under NASA media guidelines. Exact receiving station/date not documented.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "bytes": 113069,
+      "sha256": "e1b3fbdd96ea801ce70f35f7c51e75fb425f714c85c14b1db41232e0cd486695",
+      "sampleRate": 11025,
+      "channels": 1,
+      "sampleWidth": 1,
+      "frames": 113001,
+      "duration": 10.24952380952381,
+      "id": "sputnik-nssdc",
+      "sourceDownloadUrl": "https://nssdc.gsfc.nasa.gov/sound/sputnik.wav"
     }
   ],
   "inheritedLicensedSourceCatalog": {
@@ -11126,7 +11073,7 @@
     "The ending joins existing mission and visualization videos; it is not a physically continuous camera recording from a rover to the entire Solar System."
   ],
   "chronology": {
-    "revision": "11.0-hd50",
+    "revision": "11.1-hd50",
     "policy": [
       "All source timecodes refer explicitly to the frozen V9.0 master or to a named credited asset. No mixed revision clocks.",
       "Voyager precedes Enterprise by the owner’s explicit thematic ordering within 1977.",
@@ -11136,7 +11083,8 @@
       "Rosetta footage contains only the comet and spacecraft. Postmission reconstructed Philae bounces illustrate the actual failed anchoring, not the earlier predicted successful harpoon landing.",
       "No small scene labels or speaker captions. ISS is named in the main subtitle position.",
       "The final shot starts with a wide view of solar orbits after Webb, after the old Mars close-up has ended. No Mars pullout or repeated Titan, Rosetta, Voyager or Falcon pictures after Webb.",
-      "The final black picture supports the player’s accessible RELIC logo, name and exploration button. It stays until the viewer acts.",
+      "The closing score and narration finish before the silent final logo-and-name card. The last wide shot fades to black. No transport controls or play button interrupt the brand card; Explore appears after the brand and the final frame stays until the viewer acts.",
+      "Voyager 2 names Jupiter, Saturn, Uranus and Neptune rather than unexplained giant planets. Genuine Sputnik radio beeps follow their spoken introduction, without music.",
       "Stock bilingual paragraphs fit their scenes without truncation or post-synthesis time compression."
     ],
     "activePlan": "tools/film/scripts/prologue-edit-v11.json"
@@ -11145,6 +11093,21 @@
     "vonBraun": {
       "fact": "Nazi Party member and SS officer; led V2 development.",
       "source": "https://www.nasa.gov/people/wernher-von-braun/"
+    },
+    "sputnik": {
+      "fact": "The first artificial satellite transmitted radio beeps that listeners around the world could receive. The NASA NSSDCA historical recording is played after its spoken introduction, without music.",
+      "source": "https://www.nasa.gov/history/65-years-ago-sputnik-ushers-in-the-space-age/",
+      "audioSource": "https://nssdc.gsfc.nasa.gov/planetary/sound/index.html"
+    },
+    "voyager2": {
+      "route": [
+        "Jupiter",
+        "Saturn",
+        "Uranus",
+        "Neptune"
+      ],
+      "context": "The narration describes the completed journey, including later mission extensions.",
+      "source": "https://science.nasa.gov/mission/voyager/mission-overview/"
     },
     "shuttle": {
       "sts1": "1981-04-12 successful launch; 1981-04-14 successful landing",

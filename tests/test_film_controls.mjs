@@ -18,7 +18,7 @@ await module.link(specifier => {
   }, { context });
 });
 await module.evaluate();
-const { resolveFilmEnding } = module.namespace;
+const { resolveFilmEnding, suppressFilmOutroChrome } = module.namespace;
 
 // V10's final scene was correctly named, but its caption was `visual`. The
 // player must identify the final card without relying on a publisher's cue kind.
@@ -64,4 +64,35 @@ test('an explicit ending cue supports film editions without scene metadata', () 
 test('ended still offers a final card if caption metadata is absent', () => {
   assert.equal(resolveFilmEnding({ duration:92 }, [], 91.99), null);
   assert.equal(resolveFilmEnding({ duration:92 }, [], 92, true).start, 92);
+});
+
+test('the cinematic close suppresses the transport before the logo enters', () => {
+  assert.equal(suppressFilmOutroChrome(film, captions, 692.99), false);
+  assert.equal(suppressFilmOutroChrome(film, captions, 693), true);
+  assert.equal(suppressFilmOutroChrome(film, captions, 694.99), true);
+  assert.equal(suppressFilmOutroChrome(film, captions, 695), true);
+});
+
+test('the final brand never restores the progress bar on a pause, seek or ended frame', () => {
+  for (const position of [695, 698, 703, 703.04]) {
+    assert.equal(suppressFilmOutroChrome(film, captions, position, position >= 703), true);
+  }
+  assert.equal(suppressFilmOutroChrome({duration:92}, [], 92, true), true);
+});
+
+test('seeking back before the cinematic close restores ordinary film controls', () => {
+  assert.equal(suppressFilmOutroChrome(film, captions, 701), true);
+  assert.equal(suppressFilmOutroChrome(film, captions, 690), false);
+  assert.equal(suppressFilmOutroChrome(film, captions, 0), false);
+});
+
+test('the close follows the current edition and supports cue-only editions', () => {
+  const edition={duration:746,scenes:[{id:'relic',start:736,end:746}]};
+  assert.equal(suppressFilmOutroChrome(edition, captions, 732), false);
+  assert.equal(suppressFilmOutroChrome(edition, captions, 734), true);
+  assert.equal(suppressFilmOutroChrome(edition, captions, 746, true), true);
+  const cues=[{kind:'end',start:42,end:56}];
+  assert.equal(suppressFilmOutroChrome({}, cues, 39.99), false);
+  assert.equal(suppressFilmOutroChrome({}, cues, 40), true);
+  assert.equal(suppressFilmOutroChrome({}, [], 40), false);
 });

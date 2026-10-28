@@ -63,9 +63,9 @@ def main():
     parser.add_argument('--work',type=Path,required=True)
     args = parser.parse_args()
     global REVISION, RELEASE
-    REVISION, RELEASE = f'{args.edition}.0-hd50', f'v{args.edition}-0-hd50'
     root = args.repo.resolve(); work = args.work.resolve()
     plan = read(ROOT/f'tools/film/scripts/prologue-edit-v{args.edition}.json')
+    REVISION = plan['revision']; RELEASE = plan.get('release',f'v{args.edition}-0-hd50')
     script = read(ROOT/f'tools/film/scripts/prologue-narration-v{args.edition}.json')
     report = read(work/'report.json'); alignment = read(work/'alignment-report.json')
     assert report['revision'] == REVISION and report['duration'] == plan['duration']
@@ -144,6 +144,10 @@ def main():
                 complete.append({'id':f'quiet-v{args.edition}-{gap}','start':round(position,6),'end':cue['start'],'kind':'visual','title':{'en':'','fr':''}})
             complete.append(cue); position = cue['end']
         if position < duration:
+            brand_start = scene_index['relic']['start']
+            if position < brand_start:
+                complete.append({'id':f'quiet-v{args.edition}-before-ending','start':position,'end':brand_start,'kind':'visual','title':{'en':'','fr':''}})
+                position = brand_start
             complete.append({'id':f'quiet-v{args.edition}-ending','start':position,'end':duration,'kind':'end','title':{'en':'RELIC','fr':'RELIC'}})
         cue_tracks[language] = complete
     media['captions'] = cue_tracks
@@ -213,11 +217,13 @@ def main():
     sources['currentAdditionalSources'].extend(read(ROOT/f'tools/film/scripts/prologue-sources-v{args.edition}.json')['assets'])
     sources['editorialChanges'].append('V10: synchronized von Braun audio; music-only Apollo flag; both Voyager launches and instruments before Enterprise; Tereshkova, Leonov, Apollo 8/Earthrise, Huygens and Chang’e 4; complete Rosetta descent and contact; spoken closing bridge without a title; hardware beyond the Moon and Mars; continuous closing music.')
     if args.edition >= 11:
-        sources['endingTreatment'] = 'One wide view of solar orbits follows Webb, without repeated Falcon, Titan, Rosetta, Voyager or Mars footage. A sixteen-second black final scene supports the player RELIC logo, name and exploration button; the card remains until the viewer acts.'
+        sources['endingTreatment'] = 'One wide view of solar orbits follows Webb, without repeated Falcon, Titan, Rosetta, Voyager or Mars footage. The final wide shot fades to black as the score ends, before a completely silent ten-second RELIC logo-and-name card. No transport or play controls appear; Explore follows the brand. The card remains until the viewer acts.'
         sources['spaceXContext'] = 'The 2019 Falcon Heavy and 2020 Falcon 9 archive flights are identified as examples of an ongoing programme, not the full lifetime of Falcon activity.'
-        sources['musicContext'] = 'Mars, Webb and the closing reflection use the same uninterrupted score passage. The Perseverance archive is mixed at reduced level, music returns over 1.8 seconds, and delivery targets -18 LUFS / -3 dBTP.'
+        sources['musicContext'] = 'Mars, Webb and the closing reflection use the same uninterrupted score passage. The Perseverance archive is mixed at reduced level, music returns over 1.8 seconds, and delivery targets -18 LUFS / -3 dBTP. The final score fades out before the logo, with verified silence across the entire brand card.'
         sources['historicalCorrectionsV11'] = {
             'vonBraun':{'fact':'Nazi Party member and SS officer; led V2 development.','source':'https://www.nasa.gov/people/wernher-von-braun/'},
+            'sputnik':{'fact':'The first artificial satellite transmitted radio beeps that listeners around the world could receive. The NASA NSSDCA historical recording is played after its spoken introduction, without music.','source':'https://www.nasa.gov/history/65-years-ago-sputnik-ushers-in-the-space-age/','audioSource':'https://nssdc.gsfc.nasa.gov/planetary/sound/index.html'},
+            'voyager2':{'route':['Jupiter','Saturn','Uranus','Neptune'],'context':'The narration describes the completed journey, including later mission extensions.','source':'https://science.nasa.gov/mission/voyager/mission-overview/'},
             'shuttle':{'sts1':'1981-04-12 successful launch; 1981-04-14 successful landing','challengerLoss':'1986-01-28','columbiaLoss':'2003-02-01','source':'https://www.nasa.gov/history/space-shuttle-history-resources/'},
             'iss':{'countries':15,'agencies':5,'partners':['United States','Russia','Canada','Japan','Belgium','Denmark','France','Germany','Italy','Netherlands','Norway','Spain','Sweden','Switzerland','United Kingdom'],'source':'https://www.nasa.gov/international-space-station/space-station-international-cooperation/'},
             'rosetta':{'arrival':'2014-08-06','philaeRelease':'2014-11-12','beforeRelease':'Just over three months','philae':'Harpoons failed to fire; two bounces and three touchdowns','controlledImpact':'2016-09-30','source':'https://education.esa.int/rosetta_timeline/'},
@@ -225,6 +231,11 @@ def main():
             'webb':{'launch':'2021-12-25','partners':['NASA','ESA','CSA'],'mirrorMetres':6.5,'l2DistanceKm':1500000,'source':'https://science.nasa.gov/mission/webb/fact-sheet/'}
         }
         sources['editorialChanges'].append('V11: coherent Cassini-Huygens sequence; distinct successful STS-1 and later Challenger loss; fifteen ISS partners; Nazi role of von Braun; actual Philae bounces and clean Rosetta imagery; ongoing Falcon explanation; expanded Webb; continuous quieter closing score; no small subtitle labels; final RELIC card and pause exploration controls.')
+    if plan.get('musicEnd'):
+        sources['editorialChanges'].append('V11.1: silent final logo-and-name card without transport controls, early music fade and picture fade to black; authentic Sputnik signal introduced by narration and played without music; Voyager 2 names Jupiter, Saturn, Uranus and Neptune.')
+        encoding['quality']['silentFinalCard'] = alignment.get('silentFinalCard')
+        write(encoding_path,encoding)
+        sources['transport']['encodingManifestSha256'] = sha(encoding_path)
     sources['sceneDates'] = {s['id']:copy.deepcopy(sources['sceneDates'].get(s['id'],{})) for s in plan['shots']}
     for s in plan['shots']:
         if 'eventDate' in s: sources['sceneDates'][s['id']]['eventDate'] = s['eventDate']

@@ -218,6 +218,23 @@
       "context": "Official scientific deployment animation. Complete0–90seconds used once in continuous order:0–78accelerated to18seconds,78–90atnormal speed. Source audio muted.",
       "bytes": 17170785,
       "sha256": "108293144563d0b4c391c5fb4ea3e53ef95492b1af70ad127d585c3918c85b3b"
+    },
+    {
+      "file": "assets/sputnik-nssdc.wav",
+      "sourcePage": "https://nssdc.gsfc.nasa.gov/planetary/sound/index.html",
+      "credit": "Sputnik1 radio signal / NASA NSSDCA archive",
+      "classification": "Historical radio-signal recording distributed by NASA, not a synthesized beep",
+      "rights": "Historical Soviet radio-signal recording distributed by NASA NSSDCA; attribution under NASA media guidelines. Exact receiving station/date not documented.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "bytes": 113069,
+      "sha256": "e1b3fbdd96ea801ce70f35f7c51e75fb425f714c85c14b1db41232e0cd486695",
+      "sampleRate": 11025,
+      "channels": 1,
+      "sampleWidth": 1,
+      "frames": 113001,
+      "duration": 10.24952380952381,
+      "id": "sputnik-nssdc",
+      "sourceDownloadUrl": "https://nssdc.gsfc.nasa.gov/sound/sputnik.wav"
     }
   ]
 }

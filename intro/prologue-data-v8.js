@@ -1,21 +1,21 @@
 /** Documentary: scene-bound bilingual narration and verified media clock. */
 export const PROLOGUE_MEDIA=Object.freeze({
-  "revision": "11.0-hd50",
+  "revision": "11.1-hd50",
   "duration": 746,
   "preview": false,
   "encoding": "./assets/prologue/encoding-v9-hd50.json",
   "sources": "./assets/prologue/sources-v9.json",
   "poster": "./assets/prologue/poster-v9-hd50.jpg",
   "language": "en",
-  "hls": "./assets/prologue/v11-0-hd50/en.m3u8",
+  "hls": "./assets/prologue/v11-1-hd50/en.m3u8",
   "languages": {
     "en": {
       "language": "en",
-      "hls": "./assets/prologue/v11-0-hd50/en.m3u8"
+      "hls": "./assets/prologue/v11-1-hd50/en.m3u8"
     },
     "fr": {
       "language": "fr",
-      "hls": "./assets/prologue/v11-0-hd50/fr.m3u8"
+      "hls": "./assets/prologue/v11-1-hd50/fr.m3u8"
     }
   },
   "scenes": [
@@ -378,11 +378,11 @@ export const PROLOGUE_MEDIA=Object.freeze({
     {
       "id": "solar-system",
       "start": 713,
-      "end": 730
+      "end": 736
     },
     {
       "id": "relic",
-      "start": 730,
+      "start": 736,
       "end": 746
     }
   ],
@@ -503,7 +503,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
       {
         "id": "quiet-v11-3",
         "start": 120.373333,
-        "end": 125.0,
+        "end": 123.1,
         "kind": "visual",
         "title": {
           "en": "",
@@ -512,8 +512,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
       },
       {
         "id": "a-signal-around-earth-1",
-        "start": 125.0,
-        "end": 129.52,
+        "start": 123.1,
+        "end": 127.575,
         "kind": "narration",
         "title": {
           "en": "In 1957, Sputnik became the first artificial satellite."
@@ -521,16 +521,36 @@ export const PROLOGUE_MEDIA=Object.freeze({
       },
       {
         "id": "a-signal-around-earth-2",
-        "start": 129.52,
-        "end": 132.821333,
+        "start": 127.575,
+        "end": 131.412,
         "kind": "narration",
         "title": {
-          "en": "Its signal carried the rivalry around the world."
+          "en": "Listen to its radio beeps, received around the world."
         }
       },
       {
         "id": "quiet-v11-4",
-        "start": 132.821333,
+        "start": 131.412,
+        "end": 131.7,
+        "kind": "visual",
+        "title": {
+          "en": "",
+          "fr": ""
+        }
+      },
+      {
+        "id": "sputnik-original-signal-identification",
+        "start": 131.7,
+        "end": 134.8,
+        "kind": "subtitle",
+        "title": {
+          "en": "Sputnik 1 — original radio signal",
+          "fr": "Spoutnik 1 — signal radio original"
+        }
+      },
+      {
+        "id": "quiet-v11-5",
+        "start": 134.8,
         "end": 135.5,
         "kind": "visual",
         "title": {
@@ -557,7 +577,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-5",
+        "id": "quiet-v11-6",
         "start": 142.830667,
         "end": 147.1,
         "kind": "visual",
@@ -576,7 +596,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-6",
+        "id": "quiet-v11-7",
         "start": 149.673333,
         "end": 150.8,
         "kind": "visual",
@@ -602,7 +622,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-7",
+        "id": "quiet-v11-8",
         "start": 152.286,
         "end": 161.5,
         "kind": "visual",
@@ -621,7 +641,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-8",
+        "id": "quiet-v11-9",
         "start": 167.593333,
         "end": 169,
         "kind": "visual",
@@ -727,7 +747,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-9",
+        "id": "quiet-v11-10",
         "start": 187.95,
         "end": 189.5,
         "kind": "visual",
@@ -755,7 +775,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-10",
+        "id": "quiet-v11-11",
         "start": 200.052,
         "end": 203.5,
         "kind": "visual",
@@ -783,7 +803,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-11",
+        "id": "quiet-v11-12",
         "start": 214.158667,
         "end": 217.4,
         "kind": "visual",
@@ -802,7 +822,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-12",
+        "id": "quiet-v11-13",
         "start": 223.685333,
         "end": 227.4,
         "kind": "visual",
@@ -830,7 +850,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-13",
+        "id": "quiet-v11-14",
         "start": 233.642667,
         "end": 237.5,
         "kind": "visual",
@@ -858,7 +878,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-14",
+        "id": "quiet-v11-15",
         "start": 246.324,
         "end": 249,
         "kind": "visual",
@@ -948,7 +968,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-15",
+        "id": "quiet-v11-16",
         "start": 265,
         "end": 265.5,
         "kind": "visual",
@@ -976,7 +996,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-16",
+        "id": "quiet-v11-17",
         "start": 276.649333,
         "end": 280,
         "kind": "visual",
@@ -1018,7 +1038,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-17",
+        "id": "quiet-v11-18",
         "start": 289.412646,
         "end": 293,
         "kind": "visual",
@@ -1038,7 +1058,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-18",
+        "id": "quiet-v11-19",
         "start": 301,
         "end": 301.5,
         "kind": "visual",
@@ -1075,9 +1095,9 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-19",
+        "id": "quiet-v11-20",
         "start": 309.470667,
-        "end": 315.3,
+        "end": 315.15,
         "kind": "visual",
         "title": {
           "en": "",
@@ -1086,16 +1106,16 @@ export const PROLOGUE_MEDIA=Object.freeze({
       },
       {
         "id": "voyager2-departure-1",
-        "start": 315.3,
-        "end": 320.625333,
+        "start": 315.15,
+        "end": 322.246,
         "kind": "narration",
         "title": {
-          "en": "In August 1977, Voyager 2 launched towards the giant planets."
+          "en": "Launched in August 1977, Voyager 2 would explore Jupiter, Saturn, Uranus and Neptune."
         }
       },
       {
-        "id": "quiet-v11-20",
-        "start": 320.625333,
+        "id": "quiet-v11-21",
+        "start": 322.246,
         "end": 323.3,
         "kind": "visual",
         "title": {
@@ -1113,7 +1133,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-21",
+        "id": "quiet-v11-22",
         "start": 328.049333,
         "end": 331.3,
         "kind": "visual",
@@ -1132,7 +1152,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-22",
+        "id": "quiet-v11-23",
         "start": 337.137333,
         "end": 339.3,
         "kind": "visual",
@@ -1151,7 +1171,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-23",
+        "id": "quiet-v11-24",
         "start": 342.897333,
         "end": 347.1,
         "kind": "visual",
@@ -1170,7 +1190,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-24",
+        "id": "quiet-v11-25",
         "start": 354.025333,
         "end": 355.4,
         "kind": "visual",
@@ -1207,7 +1227,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-25",
+        "id": "quiet-v11-26",
         "start": 365.589333,
         "end": 371.3,
         "kind": "visual",
@@ -1226,7 +1246,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-26",
+        "id": "quiet-v11-27",
         "start": 378.609333,
         "end": 384.5,
         "kind": "visual",
@@ -1252,7 +1272,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-27",
+        "id": "quiet-v11-28",
         "start": 386.36,
         "end": 387.4,
         "kind": "visual",
@@ -1280,7 +1300,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-28",
+        "id": "quiet-v11-29",
         "start": 392.725333,
         "end": 395.5,
         "kind": "visual",
@@ -1308,7 +1328,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-29",
+        "id": "quiet-v11-30",
         "start": 404.26,
         "end": 409.3,
         "kind": "visual",
@@ -1345,7 +1365,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-30",
+        "id": "quiet-v11-31",
         "start": 424.353333,
         "end": 429.4,
         "kind": "visual",
@@ -1373,7 +1393,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-31",
+        "id": "quiet-v11-32",
         "start": 439.461333,
         "end": 441.3,
         "kind": "visual",
@@ -1401,7 +1421,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-32",
+        "id": "quiet-v11-33",
         "start": 448.396,
         "end": 451.3,
         "kind": "visual",
@@ -1438,7 +1458,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-33",
+        "id": "quiet-v11-34",
         "start": 465.734667,
         "end": 467.3,
         "kind": "visual",
@@ -1466,7 +1486,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-34",
+        "id": "quiet-v11-35",
         "start": 475.313333,
         "end": 478.1,
         "kind": "visual",
@@ -1486,7 +1506,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-35",
+        "id": "quiet-v11-36",
         "start": 483.5,
         "end": 495.3,
         "kind": "visual",
@@ -1523,7 +1543,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-36",
+        "id": "quiet-v11-37",
         "start": 508.518667,
         "end": 511.3,
         "kind": "visual",
@@ -1542,7 +1562,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-37",
+        "id": "quiet-v11-38",
         "start": 517.884,
         "end": 519.4,
         "kind": "visual",
@@ -1570,7 +1590,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-38",
+        "id": "quiet-v11-39",
         "start": 530.592,
         "end": 533.2,
         "kind": "visual",
@@ -1589,7 +1609,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-39",
+        "id": "quiet-v11-40",
         "start": 540.488,
         "end": 541.2,
         "kind": "visual",
@@ -1608,7 +1628,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-40",
+        "id": "quiet-v11-41",
         "start": 546.504,
         "end": 549.3,
         "kind": "visual",
@@ -1636,7 +1656,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-41",
+        "id": "quiet-v11-42",
         "start": 557.42,
         "end": 561.3,
         "kind": "visual",
@@ -1673,7 +1693,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-42",
+        "id": "quiet-v11-43",
         "start": 570.998667,
         "end": 575.4,
         "kind": "visual",
@@ -1728,7 +1748,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-43",
+        "id": "quiet-v11-44",
         "start": 590.218667,
         "end": 599.3,
         "kind": "visual",
@@ -1756,7 +1776,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-44",
+        "id": "quiet-v11-45",
         "start": 609.276,
         "end": 613.4,
         "kind": "visual",
@@ -1793,7 +1813,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-45",
+        "id": "quiet-v11-46",
         "start": 623.802667,
         "end": 625.4,
         "kind": "visual",
@@ -1821,7 +1841,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-46",
+        "id": "quiet-v11-47",
         "start": 635.717333,
         "end": 639.4,
         "kind": "visual",
@@ -1858,7 +1878,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-47",
+        "id": "quiet-v11-48",
         "start": 650.421333,
         "end": 651.4,
         "kind": "visual",
@@ -1877,7 +1897,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-48",
+        "id": "quiet-v11-49",
         "start": 656.96,
         "end": 659,
         "kind": "visual",
@@ -1903,7 +1923,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-49",
+        "id": "quiet-v11-50",
         "start": 661.15,
         "end": 663.25,
         "kind": "visual",
@@ -1929,7 +1949,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-50",
+        "id": "quiet-v11-51",
         "start": 665.3,
         "end": 667.15,
         "kind": "visual",
@@ -1955,7 +1975,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-51",
+        "id": "quiet-v11-52",
         "start": 669.2,
         "end": 671.5,
         "kind": "visual",
@@ -1983,7 +2003,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-52",
+        "id": "quiet-v11-53",
         "start": 682.564,
         "end": 683.4,
         "kind": "visual",
@@ -2020,7 +2040,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-53",
+        "id": "quiet-v11-54",
         "start": 698.026667,
         "end": 701.3,
         "kind": "visual",
@@ -2048,7 +2068,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-54",
+        "id": "quiet-v11-55",
         "start": 711.126667,
         "end": 713.3,
         "kind": "visual",
@@ -2060,34 +2080,43 @@ export const PROLOGUE_MEDIA=Object.freeze({
       {
         "id": "journeys-leave-traces-1",
         "start": 713.3,
-        "end": 720.095,
+        "end": 718.755,
         "kind": "narration",
         "title": {
-          "en": "Across the Solar System and into interstellar space, our spacecraft keep exploring or remain where"
+          "en": "On the Moon, Mars, Titan or a comet, in orbit and into interstellar space, our machines keep"
         }
       },
       {
         "id": "journeys-leave-traces-2",
-        "start": 720.095,
-        "end": 724.46,
+        "start": 718.755,
+        "end": 723.22,
         "kind": "narration",
         "title": {
-          "en": "their missions ended: on the Moon, Mars, Titan, a comet, and in orbit."
+          "en": "exploring or preserve the traces of completed missions."
         }
       },
       {
         "id": "journeys-leave-traces-3",
-        "start": 724.46,
-        "end": 726.518667,
+        "start": 723.22,
+        "end": 726.495,
         "kind": "narration",
         "title": {
-          "en": "Each carries part of our history."
+          "en": "RELIC follows their journeys across the Solar System."
         }
       },
       {
-        "id": "quiet-v11-55",
-        "start": 726.518667,
-        "end": 731.0,
+        "id": "journeys-leave-traces-4",
+        "start": 726.495,
+        "end": 728.588,
+        "kind": "narration",
+        "title": {
+          "en": "Discover what we have left behind."
+        }
+      },
+      {
+        "id": "quiet-v11-before-ending",
+        "start": 728.588,
+        "end": 736,
         "kind": "visual",
         "title": {
           "en": "",
@@ -2095,26 +2124,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "why-relic-1",
-        "start": 731.0,
-        "end": 733.875,
-        "kind": "narration",
-        "title": {
-          "en": "RELIC follows these machines and their stories."
-        }
-      },
-      {
-        "id": "why-relic-2",
-        "start": 733.875,
-        "end": 737.733333,
-        "kind": "narration",
-        "title": {
-          "en": "Explore the Solar System, and discover what we have left behind."
-        }
-      },
-      {
         "id": "quiet-v11-ending",
-        "start": 737.733333,
+        "start": 736,
         "end": 746,
         "kind": "end",
         "title": {
@@ -2248,7 +2259,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
       {
         "id": "quiet-v11-3",
         "start": 120.266667,
-        "end": 125.0,
+        "end": 123.1,
         "kind": "visual",
         "title": {
           "en": "",
@@ -2257,8 +2268,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
       },
       {
         "id": "a-signal-around-earth-1",
-        "start": 125.0,
-        "end": 129.675,
+        "start": 123.1,
+        "end": 127.85,
         "kind": "narration",
         "title": {
           "fr": "En 1957, Spoutnik devient le premier satellite artificiel."
@@ -2266,16 +2277,36 @@ export const PROLOGUE_MEDIA=Object.freeze({
       },
       {
         "id": "a-signal-around-earth-2",
-        "start": 129.675,
-        "end": 131.754667,
+        "start": 127.85,
+        "end": 130.9,
         "kind": "narration",
         "title": {
-          "fr": "Son signal fait le tour du monde."
+          "fr": "Écoutez ses bips radio, captés dans le monde entier."
         }
       },
       {
         "id": "quiet-v11-4",
-        "start": 131.754667,
+        "start": 130.9,
+        "end": 131.7,
+        "kind": "visual",
+        "title": {
+          "en": "",
+          "fr": ""
+        }
+      },
+      {
+        "id": "sputnik-original-signal-identification",
+        "start": 131.7,
+        "end": 134.8,
+        "kind": "subtitle",
+        "title": {
+          "en": "Sputnik 1 — original radio signal",
+          "fr": "Spoutnik 1 — signal radio original"
+        }
+      },
+      {
+        "id": "quiet-v11-5",
+        "start": 134.8,
         "end": 135.5,
         "kind": "visual",
         "title": {
@@ -2302,7 +2333,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-5",
+        "id": "quiet-v11-6",
         "start": 143.449333,
         "end": 147.1,
         "kind": "visual",
@@ -2321,7 +2352,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-6",
+        "id": "quiet-v11-7",
         "start": 149.716,
         "end": 150.8,
         "kind": "visual",
@@ -2347,7 +2378,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-7",
+        "id": "quiet-v11-8",
         "start": 152.286,
         "end": 161.5,
         "kind": "visual",
@@ -2366,7 +2397,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-8",
+        "id": "quiet-v11-9",
         "start": 167.486667,
         "end": 169,
         "kind": "visual",
@@ -2472,7 +2503,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-9",
+        "id": "quiet-v11-10",
         "start": 187.95,
         "end": 189.5,
         "kind": "visual",
@@ -2500,7 +2531,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-10",
+        "id": "quiet-v11-11",
         "start": 200.201333,
         "end": 203.5,
         "kind": "visual",
@@ -2528,7 +2559,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-11",
+        "id": "quiet-v11-12",
         "start": 213.838667,
         "end": 217.4,
         "kind": "visual",
@@ -2547,7 +2578,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-12",
+        "id": "quiet-v11-13",
         "start": 224.794667,
         "end": 227.4,
         "kind": "visual",
@@ -2575,7 +2606,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-13",
+        "id": "quiet-v11-14",
         "start": 234.901333,
         "end": 237.5,
         "kind": "visual",
@@ -2603,7 +2634,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-14",
+        "id": "quiet-v11-15",
         "start": 246.025333,
         "end": 249,
         "kind": "visual",
@@ -2693,7 +2724,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-15",
+        "id": "quiet-v11-16",
         "start": 265,
         "end": 265.5,
         "kind": "visual",
@@ -2730,7 +2761,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-16",
+        "id": "quiet-v11-17",
         "start": 277.310667,
         "end": 280,
         "kind": "visual",
@@ -2772,7 +2803,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-17",
+        "id": "quiet-v11-18",
         "start": 289.412646,
         "end": 293,
         "kind": "visual",
@@ -2792,7 +2823,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-18",
+        "id": "quiet-v11-19",
         "start": 301,
         "end": 301.5,
         "kind": "visual",
@@ -2829,9 +2860,9 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-19",
+        "id": "quiet-v11-20",
         "start": 310.857333,
-        "end": 315.3,
+        "end": 315.15,
         "kind": "visual",
         "title": {
           "en": "",
@@ -2840,16 +2871,25 @@ export const PROLOGUE_MEDIA=Object.freeze({
       },
       {
         "id": "voyager2-departure-1",
-        "start": 315.3,
-        "end": 320.22,
+        "start": 315.15,
+        "end": 318.03,
         "kind": "narration",
         "title": {
-          "fr": "En août 1977, Voyager 2 décolle vers les planètes géantes."
+          "fr": "En août 1977, Voyager 2 décolle."
         }
       },
       {
-        "id": "quiet-v11-20",
-        "start": 320.22,
+        "id": "voyager2-departure-2",
+        "start": 318.03,
+        "end": 322.011333,
+        "kind": "narration",
+        "title": {
+          "fr": "Elle explorera Jupiter, Saturne, Uranus et Neptune."
+        }
+      },
+      {
+        "id": "quiet-v11-21",
+        "start": 322.011333,
         "end": 323.3,
         "kind": "visual",
         "title": {
@@ -2867,7 +2907,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-21",
+        "id": "quiet-v11-22",
         "start": 329.201333,
         "end": 331.3,
         "kind": "visual",
@@ -2895,7 +2935,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-22",
+        "id": "quiet-v11-23",
         "start": 337.222667,
         "end": 339.3,
         "kind": "visual",
@@ -2914,7 +2954,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-23",
+        "id": "quiet-v11-24",
         "start": 343.622667,
         "end": 347.1,
         "kind": "visual",
@@ -2933,7 +2973,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-24",
+        "id": "quiet-v11-25",
         "start": 354.046667,
         "end": 355.4,
         "kind": "visual",
@@ -2970,7 +3010,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-25",
+        "id": "quiet-v11-26",
         "start": 365.589333,
         "end": 371.3,
         "kind": "visual",
@@ -2989,7 +3029,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-26",
+        "id": "quiet-v11-27",
         "start": 378.204,
         "end": 384.5,
         "kind": "visual",
@@ -3015,7 +3055,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-27",
+        "id": "quiet-v11-28",
         "start": 386.36,
         "end": 387.4,
         "kind": "visual",
@@ -3043,7 +3083,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-28",
+        "id": "quiet-v11-29",
         "start": 393.216,
         "end": 395.5,
         "kind": "visual",
@@ -3071,7 +3111,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-29",
+        "id": "quiet-v11-30",
         "start": 404.217333,
         "end": 409.3,
         "kind": "visual",
@@ -3108,7 +3148,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-30",
+        "id": "quiet-v11-31",
         "start": 422.241333,
         "end": 429.4,
         "kind": "visual",
@@ -3136,7 +3176,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-31",
+        "id": "quiet-v11-32",
         "start": 439.888,
         "end": 441.3,
         "kind": "visual",
@@ -3164,7 +3204,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-32",
+        "id": "quiet-v11-33",
         "start": 448.118667,
         "end": 451.3,
         "kind": "visual",
@@ -3201,7 +3241,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-33",
+        "id": "quiet-v11-34",
         "start": 464.326667,
         "end": 467.3,
         "kind": "visual",
@@ -3229,7 +3269,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-34",
+        "id": "quiet-v11-35",
         "start": 474.865333,
         "end": 478.1,
         "kind": "visual",
@@ -3249,7 +3289,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-35",
+        "id": "quiet-v11-36",
         "start": 483.5,
         "end": 495.3,
         "kind": "visual",
@@ -3286,7 +3326,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-36",
+        "id": "quiet-v11-37",
         "start": 506.982667,
         "end": 511.3,
         "kind": "visual",
@@ -3305,7 +3345,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-37",
+        "id": "quiet-v11-38",
         "start": 517.030667,
         "end": 519.4,
         "kind": "visual",
@@ -3342,7 +3382,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-38",
+        "id": "quiet-v11-39",
         "start": 529.802667,
         "end": 533.2,
         "kind": "visual",
@@ -3361,7 +3401,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-39",
+        "id": "quiet-v11-40",
         "start": 540.637333,
         "end": 541.2,
         "kind": "visual",
@@ -3380,7 +3420,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-40",
+        "id": "quiet-v11-41",
         "start": 546.525333,
         "end": 549.3,
         "kind": "visual",
@@ -3408,7 +3448,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-41",
+        "id": "quiet-v11-42",
         "start": 556.588,
         "end": 561.3,
         "kind": "visual",
@@ -3445,7 +3485,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-42",
+        "id": "quiet-v11-43",
         "start": 571.510667,
         "end": 575.4,
         "kind": "visual",
@@ -3500,7 +3540,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-43",
+        "id": "quiet-v11-44",
         "start": 590.112,
         "end": 599.3,
         "kind": "visual",
@@ -3537,7 +3577,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-44",
+        "id": "quiet-v11-45",
         "start": 610.641333,
         "end": 613.4,
         "kind": "visual",
@@ -3574,7 +3614,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-45",
+        "id": "quiet-v11-46",
         "start": 623.738667,
         "end": 625.4,
         "kind": "visual",
@@ -3602,7 +3642,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-46",
+        "id": "quiet-v11-47",
         "start": 636.208,
         "end": 639.4,
         "kind": "visual",
@@ -3639,7 +3679,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-47",
+        "id": "quiet-v11-48",
         "start": 649.568,
         "end": 651.4,
         "kind": "visual",
@@ -3658,7 +3698,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-48",
+        "id": "quiet-v11-49",
         "start": 656.426667,
         "end": 659,
         "kind": "visual",
@@ -3684,7 +3724,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-49",
+        "id": "quiet-v11-50",
         "start": 661.15,
         "end": 663.25,
         "kind": "visual",
@@ -3710,7 +3750,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-50",
+        "id": "quiet-v11-51",
         "start": 665.3,
         "end": 667.15,
         "kind": "visual",
@@ -3736,7 +3776,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-51",
+        "id": "quiet-v11-52",
         "start": 669.2,
         "end": 671.5,
         "kind": "visual",
@@ -3764,7 +3804,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-52",
+        "id": "quiet-v11-53",
         "start": 682.329333,
         "end": 683.4,
         "kind": "visual",
@@ -3801,7 +3841,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-53",
+        "id": "quiet-v11-54",
         "start": 697.322667,
         "end": 701.3,
         "kind": "visual",
@@ -3838,7 +3878,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "quiet-v11-54",
+        "id": "quiet-v11-55",
         "start": 712.492,
         "end": 713.3,
         "kind": "visual",
@@ -3850,34 +3890,43 @@ export const PROLOGUE_MEDIA=Object.freeze({
       {
         "id": "journeys-leave-traces-1",
         "start": 713.3,
-        "end": 718.365,
+        "end": 718.32,
         "kind": "narration",
         "title": {
-          "fr": "À travers le Système solaire et jusque dans l’espace interstellaire, nos engins explorent encore ou"
+          "fr": "Sur la Lune, Mars, Titan ou une comète, en orbite et jusque dans l’espace interstellaire, nos"
         }
       },
       {
         "id": "journeys-leave-traces-2",
-        "start": 718.365,
-        "end": 724.33,
+        "start": 718.32,
+        "end": 722.355,
         "kind": "narration",
         "title": {
-          "fr": "demeurent là où leur mission s’est achevée : sur la Lune, Mars, Titan, une comète ou en orbite."
+          "fr": "machines explorent encore ou gardent la trace de missions achevées."
         }
       },
       {
         "id": "journeys-leave-traces-3",
-        "start": 724.33,
-        "end": 726.582667,
+        "start": 722.355,
+        "end": 725.775,
         "kind": "narration",
         "title": {
-          "fr": "Chacun porte une part de notre histoire."
+          "fr": "RELIC retrace leurs parcours à travers le Système solaire."
         }
       },
       {
-        "id": "quiet-v11-55",
-        "start": 726.582667,
-        "end": 731.0,
+        "id": "journeys-leave-traces-4",
+        "start": 725.775,
+        "end": 728.246667,
+        "kind": "narration",
+        "title": {
+          "fr": "Découvrez ce que nous avons laissé derrière nous."
+        }
+      },
+      {
+        "id": "quiet-v11-before-ending",
+        "start": 728.246667,
+        "end": 736,
         "kind": "visual",
         "title": {
           "en": "",
@@ -3885,26 +3934,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         }
       },
       {
-        "id": "why-relic-1",
-        "start": 731.0,
-        "end": 733.645,
-        "kind": "narration",
-        "title": {
-          "fr": "RELIC retrace l’histoire de ces machines."
-        }
-      },
-      {
-        "id": "why-relic-2",
-        "start": 733.645,
-        "end": 738.096,
-        "kind": "narration",
-        "title": {
-          "fr": "Explorez le Système solaire et découvrez ce que nous avons laissé derrière nous."
-        }
-      },
-      {
         "id": "quiet-v11-ending",
-        "start": 738.096,
+        "start": 736,
         "end": 746,
         "kind": "end",
         "title": {
@@ -3915,7 +3946,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
     ]
   },
   "offline": {
-    "id": "relic-documentary-v11-hd50-e328436d572561b7f824"
+    "id": "relic-documentary-v11-hd50-4d394d0b721fe1c025cd"
   },
   "width": 1920,
   "height": 1080,

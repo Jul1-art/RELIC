@@ -45,15 +45,26 @@ def main():
             assert not (row['at'] < end and row['end'] > start),(name,row['id'])
         for row in plan['archivalAudio']:
             assert not (row['at'] < end and row['at']+row['length'] > start),(name,row['id'])
-    measurements = []
+    measurements = []; silent_cards = []; archival_signals = []
     for language in ['en','fr']:
-        directory = work/f'v{args.edition}-0-hd50'/f'audio-{language}'
+        directory = work/plan.get('release',f'v{args.edition}-0-hd50')/f'audio-{language}'
         output = work/f'verified-delivery-{language}.f32'; receipt = output.with_suffix('.json')
         signature = audio_report['languages'][language]['masterSha256']
         if not (output.is_file() and receipt.is_file() and load(receipt).get('masterSha256') == signature):
             build.run(exe,'-i',directory/'index.m3u8','-vn','-ar',RATE,'-ac',2,'-f','f32le',output)
             build.write(receipt,{'masterSha256':signature})
         actual = np.memmap(output,dtype='<f4',mode='r').reshape(-1,2)
+        if plan.get('musicEnd'):
+            start = index['relic']['start']
+            peak = float(np.max(np.abs(actual[round(start*RATE):round(plan['duration']*RATE)])))
+            assert peak <= 1e-5,('Final card is not silent',language,peak)
+            silent_cards.append({'language':language,'start':start,'end':plan['duration'],'maximumAbsoluteSample':peak})
+        for archive in [a for a in plan['archivalAudio'] if a.get('file')]:
+            reference = build.decoded(exe,work/archive['file'],work/(archive['id']+'.f32'))
+            count = min(round(1.8*RATE),len(reference)); pad = round(.15*RATE); at = round(archive['at']*RATE)
+            lag,score = correlate(reference[:count].mean(axis=1),actual[at-pad:at+count+pad].mean(axis=1),pad)
+            assert abs(lag)<=240 and score>.9,(language,archive['id'],lag,score)
+            archival_signals.append({'id':archive['id'],'language':language,'at':archive['at'],'lagSamples':lag,'waveformCorrelation':score})
         for row in [r for r in narration['lines'] if r['language'] == language]:
             reference = build.decoded(exe,work/row['file'],work/'narration'/(row['id']+'-'+language+'.f32'))
             count = min(len(reference),round(1.8*RATE)); pad = round(.15*RATE); at = round(row['at']*RATE)
@@ -66,7 +77,7 @@ def main():
         print(json.dumps({'language':language,'paragraphsVerified':len([r for r in measurements if r['language']==language])}),flush=True)
     report = {'revision':plan['revision'],'duration':plan['duration'],'passed':True,
               'method':'Cross-correlation of each actual delivered AAC paragraph onset against its rendered PCM stock narration; search ±150 ms, maximum allowed error 5 ms.',
-              'paragraphs':measurements,'protectedMusicOnlyIntervals':[{'start':a,'end':b,'name':name} for a,b,name in protected],
+              'paragraphs':measurements,'silentFinalCard':silent_cards,'archivalSignals':archival_signals,'protectedMusicOnlyIntervals':[{'start':a,'end':b,'name':name} for a,b,name in protected],
               'maximumAbsoluteLagSamples':max(abs(r['lagSamples']) for r in measurements)}
     build.write(work/'alignment-report.json',report)
     print(json.dumps({'passed':True,'paragraphs':len(measurements),'maximumAbsoluteLagSamples':report['maximumAbsoluteLagSamples']}),flush=True)

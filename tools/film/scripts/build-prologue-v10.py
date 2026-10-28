@@ -188,6 +188,8 @@ def picture(plan, work, exe, helper):
             inputs = ['-ss', s['in'], '-i', work/s['file']]
             filters = (f'trim=duration={s["sourceDuration"]},setpts=(PTS-STARTPTS)*{duration}/{s["sourceDuration"]},'
                        f'{fit}'+(f',fade=t=in:st=0:d={s.get("fadeIn",.25)}' if s.get('fadeIn',.25)>0 else ''))
+        if s.get('fadeOut'):
+            filters += f',fade=t=out:st={duration-s["fadeOut"]}:d={s["fadeOut"]}'
         item['packets'] = encode(exe, inputs, target, duration, filters, template, s['source'] == 'bridge')
         write(receipt, {'input': signature, 'sha256': sha(target)})
         print(json.dumps({'stage': 'picture-shot', 'id': s['id'], 'duration': duration}), flush=True)
@@ -270,8 +272,9 @@ def audio(plan, work, exe, helper):
         span = min(183, closing+6-cursor)
         add_music(cursor, 171, span, 6, 6)
         cursor += span-6
-    source_in = min(200, len(source_music)/RATE-(seconds-closing))
-    add_music(closing, source_in, seconds-closing, 6, 8)
+    music_end = plan.get('musicEnd',seconds)
+    source_in = min(200, len(source_music)/RATE-(music_end-closing))
+    add_music(closing, source_in, music_end-closing, 6, plan.get('musicFinalFadeSeconds',8))
     # Protect the respectful Challenger passage from the heroic score.
     for interval in plan['silenceMusic']:
         a, b = round(interval['start']*RATE), round(interval['end']*RATE)
@@ -311,8 +314,18 @@ def audio(plan, work, exe, helper):
             a = round(row['at']*RATE)
             mix[a:a+len(samples)] += np.array(samples)*.84
         for archive in archives:
+            source_audio = original
+            if archive.get('file'):
+                asset = next(a for a in load(ROOT/f'tools/film/scripts/prologue-sources-v{EDITION}.json')['assets'] if a['file']==archive['file'])
+                if sha(work/archive['file']) != asset['sha256']: raise ValueError('Historical signal checksum changed')
+                source_audio = decoded(exe,work/archive['file'],work/(archive['id']+'.f32'))
             a, first, count = round(archive['at']*RATE), round(archive['sourceStart']*RATE), round(archive['length']*RATE)
-            mix[a:a+count] += fade(original[first:first+count], .06, .18) * archive.get('gain', 1)
+            mix[a:a+count] += fade(source_audio[first:first+count], .06, .18) * archive.get('gain', 1)
+        if 'musicEnd' in plan:
+            assert all(row['end'] <= index['relic']['start'] for row in spoken),'Narration overlaps silent brand card'
+            assert all(row['at']+row['length'] <= index['relic']['start'] for row in archives),'Archive overlaps silent brand card'
+            assert not np.any(mix[round(index['relic']['start']*RATE):]),'Final brand card must be silent'
+
         raw = work/f'mix-{language}.f32'; mix.astype('<f4').tofile(raw)
         peak = float(np.max(np.abs(mix))); del mix, duck
         target = work/f'master-{language}.m4a'
@@ -345,9 +358,10 @@ def main():
     parser.add_argument('--work',type=Path)
     args = parser.parse_args()
     global EDITION, RELEASE
-    EDITION, RELEASE = args.edition, f'v{args.edition}-0-hd50'
+    EDITION = args.edition
     work = (args.work or DEFAULT_WORK.parent/f'v{EDITION}').resolve(); work.mkdir(parents=True,exist_ok=True)
     plan = load(ROOT/f'tools/film/scripts/prologue-edit-v{EDITION}.json')
+    RELEASE = plan.get('release',f'v{EDITION}-0-hd50')
     helper = utility(); exe = helper.ffmpeg_path(None)
     if args.stage in ['all','picture']: picture(plan,work,exe,helper)
     if args.stage in ['all','audio']: audio(plan,work,exe,helper)

@@ -43,8 +43,9 @@ test('the chronological edit partitions every second of the existing film exactl
 });
 
 test('the active production plan and player scenes share the complete chronological timeline', () => {
-  assert.equal(PROLOGUE_MEDIA.revision, '11.0-hd50');
+  assert.equal(PROLOGUE_MEDIA.revision, '11.1-hd50');
   assert.equal(PROLOGUE_MEDIA.revision, production.revision);
+  assert.equal(encoding.revision, production.revision);
   assert.equal(PROLOGUE_MEDIA.duration, 746);
   assert.equal(production.duration, 746);
   continuous(PROLOGUE_MEDIA.scenes, production.duration, 'player scenes');
@@ -70,6 +71,11 @@ test('both Voyager launches and the instruments precede Enterprise as requested'
   assert(scene('voyager').end <= scene('shuttle-carrier').start);
   assert(scene('shuttle-carrier').end <= scene('sts1').start);
   assert(!narration.lines.some(line => /closer to home|plus près de nous/i.test(JSON.stringify(line.text))));
+  const departure = narration.lines.find(line=>line.id==='voyager2-departure');
+  assert(departure);
+  for (const name of ['Jupiter','Saturn','Uranus','Neptune']) assert(departure.text.en.includes(name));
+  for (const name of ['Jupiter','Saturne','Uranus','Neptune']) assert(departure.text.fr.includes(name));
+  for (const text of Object.values(departure.text)) assert(!/giant planets|planètes géantes/i.test(text));
 });
 
 test('the five added milestones occupy their historical periods', () => {
@@ -126,8 +132,13 @@ test('Webb leads directly to one wide solar view and the RELIC card, without old
   const ending = production.shots.slice(production.shots.findIndex(shot=>shot.id==='webb'));
   assert.deepEqual(ending.map(shot=>shot.id),['webb','webb-deployment','webb-observatory','solar-system','relic']);
   assert.equal(ending.at(-1).source,'black');
-  assert(ending.at(-1).duration>=14);
+  close(ending.at(-1).start,736);
+  close(ending.at(-1).end,746);
+  close(ending.at(-1).duration,10);
   const wide=ending.find(shot=>shot.id==='solar-system');
+  close(wide.start,713);
+  close(wide.end,736);
+  close(wide.fadeOut,1.6);
   assert.equal(wide.source,'v9-0');
   assert(wide.sourceStart>=548,'Exclude the Mars close-up retained at the beginning of the old wide shot');
   assert(wide.sourceStart+wide.sourceDuration<=561);
@@ -135,7 +146,81 @@ test('Webb leads directly to one wide solar view and the RELIC card, without old
   for(const text of Object.values(reflection.text)) assert.match(text,/Titan/);
   assert.match(reflection.text.en,/interstellar/);
   assert.match(reflection.text.fr,/interstellaire/);
-  for(const cues of Object.values(PROLOGUE_MEDIA.captions)) assert(cues.some(cue=>cue.kind==='end'));
+  for(const cues of Object.values(PROLOGUE_MEDIA.captions)) {
+    const cards=cues.filter(cue=>cue.kind==='end');
+    assert.equal(cards.length,1);
+    close(cards[0].start,736,'The final caption must not turn the preceding wide shot into a brand card');
+    close(cards[0].end,746);
+  }
+});
+
+test('all narration and music finish before the silent RELIC logo-and-name card',()=>{
+  const brand=scene('relic');
+  close(production.musicEnd,735.4);
+  assert(production.musicEnd<brand.start);
+  assert(production.musicFinalFadeSeconds>=4);
+  for(const line of narration.lines) {
+    assert.notEqual(line.shot,'relic','The brand card has no spoken outro');
+    assert(line.end<=brand.start,`${line.id}: narration slot overlaps the brand card`);
+  }
+  for(const archive of production.archivalAudio) assert(archive.at+archive.length<=brand.start);
+  for(const language of ['en','fr']) {
+    for(const voice of encoding.languages[language].audioSources) assert(voice.start+voice.duration<=brand.start);
+    const measured=encoding.quality.silentFinalCard?.find(row=>row.language===language);
+    assert(measured,`${language}: missing actual delivered-AAC silence verification`);
+    close(measured.start,brand.start);
+    close(measured.end,production.duration);
+    assert(measured.maximumAbsoluteSample<=1e-5,`${language}: audio continues under the final logo`);
+  }
+});
+
+test('Sputnik introduces its genuine worldwide radio signal before playing it without music',()=>{
+  const introduction=narration.lines.find(row=>row.id==='a-signal-around-earth');
+  assert(introduction);
+  close(introduction.start,123.1);
+  close(introduction.end,131.4);
+  assert.match(introduction.text.en,/Listen.*radio beeps.*received around the world/);
+  assert.match(introduction.text.fr,/Écoutez.*bips radio.*captés dans le monde entier/);
+  const signal=production.archivalAudio.find(row=>row.id==='sputnik-original-signal');
+  assert(signal);
+  assert.equal(signal.source,'asset');
+  assert.equal(signal.historicalVoiceSynthesized,false);
+  assert.match(signal.file,/sputnik.*\.wav$/);
+  close(signal.at,131.7);
+  close(signal.at+signal.length,134.8);
+  assert(signal.at>=introduction.end);
+  assert(signal.at>=scene('sputnik').start && signal.at+signal.length<=scene('sputnik').end);
+  for(const interval of production.silenceMusic) assert(interval.end>interval.start,'Music-silence windows must have a positive duration');
+  assert(production.silenceMusic.some(interval=>interval.start<=signal.at&&interval.end>=signal.at+signal.length));
+  for(const line of narration.lines) assert(!(line.start<signal.at+signal.length&&line.end>signal.at));
+  for(const [language,cues] of Object.entries(PROLOGUE_MEDIA.captions)) {
+    const cue=cues.find(row=>row.id==='sputnik-original-signal-identification');
+    assert.equal(cue?.kind,'subtitle');
+    close(cue.start,signal.at);
+    close(cue.end,signal.at+signal.length);
+    assert.match(cue.title[language],/Sputnik|Spoutnik/);
+    const voice=encoding.languages[language].audioSources.find(row=>row.id===introduction.id);
+    assert(voice&&voice.start+voice.duration<=signal.at,`${language}: spoken introduction overlaps the beeps`);
+    const waveform=encoding.quality.narrationAlignment.archivalSignals?.find(row=>row.id===signal.id&&row.language===language);
+    assert(waveform,`${language}: missing genuine-signal delivered-waveform verification`);
+    close(waveform.at,signal.at);
+    assert(Math.abs(waveform.lagSamples)<=240);
+    assert(waveform.waveformCorrelation>.9);
+  }
+});
+
+test('each delivered bilingual paragraph retains verified waveform alignment in the current edition',()=>{
+  const alignment=encoding.quality.narrationAlignment;
+  assert.equal(alignment.revision,production.revision);
+  assert.equal(alignment.passed,true);
+  assert.equal(alignment.paragraphs.length,narration.lines.length*2);
+  for(const line of narration.lines) for(const language of ['en','fr']) {
+    const measured=alignment.paragraphs.find(row=>row.id===line.id&&row.language===language);
+    assert(measured,`${line.id}/${language}: missing delivered-waveform verification`);
+    close(measured.at,line.start);
+    assert(Math.abs(measured.lagSeconds)<=.005);
+    assert(measured.waveformCorrelation>.8);
+  }
 });
 
 test('Titan is introduced through Saturn and Cassini before one continuous Huygens descent',()=>{
