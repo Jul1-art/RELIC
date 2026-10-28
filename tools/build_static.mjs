@@ -6,7 +6,7 @@ import { restoreFilms } from './restore_film.mjs';
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const output = join(root, 'dist');
 const rootExtensions = new Set(['.html', '.css', '.js', '.json', '.webmanifest', '.svg', '.ico', '.png']);
-const assetDirectories = ['assets', 'vendor', 'earth-search', 'intro'];
+const assetDirectories = ['assets', 'vendor', 'intro', 'src', 'pages'];
 
 const hdRelease = 'intro/assets/prologue/v9-0-hd50/';
 let hasHdRelease = false;

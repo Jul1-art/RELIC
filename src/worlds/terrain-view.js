@@ -1,6 +1,7 @@
+import { appURL } from '../core/paths.js';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { EARTH_SITES, PLANET_SITES } from './nasa-worlds.js';
+import { EARTH_SITES, PLANET_SITES } from '../atlas/nasa-worlds.js';
 
 const $ = selector => document.querySelector(selector);
 const params = new URLSearchParams(location.search);
@@ -29,7 +30,7 @@ const forward = new THREE.Vector3();
 const right = new THREE.Vector3();
 
 $('#world-title').textContent = names[body];
-$('#back-link').href = body === 'earth' ? './earth.html' : `./index.html?body=${body}`;
+$('#back-link').href = body === 'earth' ? appURL('pages/earth.html').href : appURL(`index.html?body=${body}`).href;
 document.querySelector(`[data-world="${body}"]`)?.classList.add('active');
 document.body.dataset.world = body;
 
@@ -237,13 +238,13 @@ async function loadSite(site) {
   $('#data-note').textContent = `${data.elevation}. Maillage 3D : ${Math.round(data.meshMeters)} m. ${data.imagery}. Relief amplifié × ${exaggeration}.`;
   $('#scene-credit').textContent = `${data.elevation} · ${data.imagery}`.toUpperCase();
   document.querySelectorAll('[data-site]').forEach(button => button.classList.toggle('active', button.dataset.site === site.id));
-  history.replaceState({}, '', `./terrain.html?body=${body}&site=${encodeURIComponent(site.id)}`);
+  history.replaceState({}, '', appURL(`pages/terrain.html?body=${body}&site=${encodeURIComponent(site.id)}`).href);
 
   let entry = siteCache.get(key);
   if (!entry) {
     entry = Promise.all([
-      fetch(`./assets/terrain/${key}.bin`).then(response => { if (!response.ok) throw new Error(`Relief ${response.status}`); return response.arrayBuffer(); }),
-      textureLoader.loadAsync(`./assets/terrain/${key}.webp`),
+      fetch(appURL(`assets/terrain/${key}.bin`)).then(response => { if (!response.ok) throw new Error(`Relief ${response.status}`); return response.arrayBuffer(); }),
+      textureLoader.loadAsync(appURL(`assets/terrain/${key}.webp`).href),
     ]).then(([buffer, texture]) => {
       if (buffer.byteLength !== catalog.grid * catalog.grid * 2) throw new Error('Fichier altimétrique incomplet');
       texture.colorSpace = THREE.SRGBColorSpace;
@@ -376,7 +377,7 @@ window.addEventListener('blur', () => pressed.clear());
 
 async function start() {
   try {
-    const response = await fetch('./assets/terrain/catalog.json');
+    const response = await fetch(appURL('assets/terrain/catalog.json'));
     if (!response.ok) throw new Error('Catalogue du relief indisponible');
     catalog = await response.json();
     setup();

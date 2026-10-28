@@ -1,11 +1,11 @@
-import { getLanguage, setLanguage, onLanguageChange } from './atlas-live.js?v=3';
-import { openSources as showCredits } from './app-sources.js';
-import { createPrologue } from './intro/prologue-v8.js';
-import { PROLOGUE, PROLOGUE_MEDIA } from './intro/prologue-data-v8.js';
-import * as offlineFilm from './intro/film-offline.js';
-import { registerApplicationWorker, warmOfflineShell, RETURN_MARKER } from './world-bridge.js';
+import { getLanguage, setLanguage, onLanguageChange } from '../src/atlas/atlas-live.js?v=3';
+import { openSources as showCredits } from '../src/ui/app-sources.js';
+import { createPrologue } from './prologue-v8.js';
+import { PROLOGUE, PROLOGUE_MEDIA } from './prologue-data-v8.js';
+import * as offlineFilm from './film-offline.js';
+import { registerApplicationWorker, warmOfflineShell, RETURN_MARKER } from '../src/core/world-bridge.js';
 
-const INTRO_ROOT = new URL('./intro/', import.meta.url);
+const INTRO_ROOT = new URL('./', import.meta.url);
 const introduction = document.querySelector('#intro');
 const reducedMotion = () => document.documentElement.dataset.motion === 'reduced'
   || (!document.documentElement.dataset.motion && matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -39,7 +39,7 @@ function createDialog(title, trigger) {
   dialog.className = 'relic-dialog';
   const headingId = `relic-dialog-title-${Date.now()}`;
   dialog.setAttribute('aria-labelledby', headingId);
-  dialog.innerHTML = `<header class="relic-dialog-header"><div><p class="relic-dialog-eyebrow"><img class="relic-dialog-logo" src="./assets/relic-logo-v1.png" alt="" width="26" height="23">RELIC</p><h2 id="${headingId}"></h2></div><button class="relic-dialog-close" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></header><div class="relic-dialog-content"></div>`;
+  dialog.innerHTML = `<header class="relic-dialog-header"><div><p class="relic-dialog-eyebrow"><img class="relic-dialog-logo" src="${new URL('../assets/relic-logo-v1.png', import.meta.url).href}" alt="" width="26" height="23">RELIC</p><h2 id="${headingId}"></h2></div><button class="relic-dialog-close" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></header><div class="relic-dialog-content"></div>`;
   dialog.querySelector('h2').textContent = title;
   const close = dialog.querySelector('.relic-dialog-close');
   close.setAttribute('aria-label', french() ? 'Fermer' : 'Close');
@@ -173,7 +173,7 @@ let returningToAtlas = performance.getEntriesByType('navigation')[0]?.type === '
 try {
   const marker = JSON.parse(sessionStorage.getItem(RETURN_MARKER) || 'null');
   sessionStorage.removeItem(RETURN_MARKER);
-  if (marker?.path === new URL('./', import.meta.url).pathname && Date.now() - marker.at < 5 * 60 * 1000) returningToAtlas = true;
+  if (marker?.path === new URL('../', import.meta.url).pathname && Date.now() - marker.at < 5 * 60 * 1000) returningToAtlas = true;
 } catch { /* Direct visits continue to show the opening. */ }
 const startupParameters = new URL(location.href).searchParams;
 if (startupParameters.has('sources') || returningToAtlas && !startupParameters.has('film')) { introduction.classList.add('hidden'); setFilmActive(false); }

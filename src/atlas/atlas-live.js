@@ -1,4 +1,4 @@
-import { backendJSON, publicRequests } from './atlas-services.js';
+import { backendJSON, publicRequests } from '../core/atlas-services.js';
 import { approximatePositions, parseSolarWind } from './orbital-data.js';
 
 let language = 'en';

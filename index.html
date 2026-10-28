@@ -12,26 +12,26 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <script>try{document.documentElement.dataset.theme=localStorage.getItem('nasa-atlas-theme')==='day'?'day':'night'}catch{document.documentElement.dataset.theme='night'}</script>
-  <link rel="stylesheet" href="./styles.css?v=7">
-  <link rel="stylesheet" href="./live.css?v=1">
-  <link rel="stylesheet" href="./premium.css?v=8">
-  <link rel="stylesheet" href="./theme.css?v=1">
-  <link rel="stylesheet" href="./compact.css?v=3">
-  <link rel="stylesheet" href="./relic-shell.css?v=1">
-  <link rel="stylesheet" href="./app-settings.css?v=polish-4">
-  <link rel="stylesheet" href="./navigation.css?v=2">
-  <link rel="stylesheet" href="./film-bridge.css?v=1">
+  <link rel="stylesheet" href="./src/atlas/styles.css?v=7">
+  <link rel="stylesheet" href="./src/atlas/live.css?v=1">
+  <link rel="stylesheet" href="./src/atlas/premium.css?v=8">
+  <link rel="stylesheet" href="./src/ui/theme.css?v=1">
+  <link rel="stylesheet" href="./src/atlas/compact.css?v=3">
+  <link rel="stylesheet" href="./src/atlas/relic-shell.css?v=1">
+  <link rel="stylesheet" href="./src/ui/app-settings.css?v=polish-4">
+  <link rel="stylesheet" href="./src/ui/navigation.css?v=2">
+  <link rel="stylesheet" href="./intro/film-bridge.css?v=1">
   <link rel="stylesheet" href="./intro/prologue-v8.css?v=9.0-story">
   <link rel="stylesheet" href="./intro/prologue-player.css">
   <link rel="stylesheet" href="./intro/prologue-typing.css">
-  <link rel="stylesheet" href="./planet-dashboard.css?v=polish-4">
-  <link rel="stylesheet" href="./view-loading.css?v=polish-4">
-  <link rel="stylesheet" href="./provider-credits.css?v=polish-4">
-  <link rel="stylesheet" href="./atlas-presentation.css?v=polish-4">
+  <link rel="stylesheet" href="./src/ui/planet-dashboard.css?v=polish-4">
+  <link rel="stylesheet" href="./src/ui/view-loading.css?v=polish-4">
+  <link rel="stylesheet" href="./src/ui/provider-credits.css?v=polish-4">
+  <link rel="stylesheet" href="./src/atlas/atlas-presentation.css?v=polish-4">
   <script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/controls/OrbitControls.js":"./vendor/OrbitControls.js"}}</script>
-  <link rel="stylesheet" href="./branding.css?v=brand-7">
+  <link rel="stylesheet" href="./src/ui/branding.css?v=brand-7">
   <link rel="stylesheet" href="./intro/prologue-ending-v9.css?v=9">
-  <link rel="stylesheet" href="./interaction-motion.css?v=story-9">
+  <link rel="stylesheet" href="./src/ui/interaction-motion.css?v=story-9">
 </head>
 <body class="atlas-page" data-mode="overview">
   <div id="scene" aria-label="Interactive solar system"></div>
@@ -80,8 +80,8 @@
   <div class="loading" id="loading" role="status"><span class="view-loading-mark" aria-hidden="true"><img src="./assets/relic-logo-v1.png" alt="" width="30" height="27"></span><span>Opening the solar system</span></div>
   <div class="error-screen" id="error-screen" role="alert" hidden><strong>The 3D view could not start.</strong><p id="error-message">Reload the page to try again.</p></div>
   <section id="intro" class="intro" aria-label="RELIC — the story of exploration"></section>
-  <script type="module" src="./theme.js?v=polish-4"></script>
-  <script type="module" src="./film-bridge.js?v=story-9"></script>
-  <script type="module" src="./app.js?v=polish-4"></script>
+  <script type="module" src="./src/ui/theme.js?v=polish-4"></script>
+  <script type="module" src="./intro/film-bridge.js?v=story-9"></script>
+  <script type="module" src="./src/atlas/app.js?v=polish-4"></script>
 </body>
 </html>

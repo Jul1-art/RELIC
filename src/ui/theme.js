@@ -1,4 +1,4 @@
-import { getLanguage, onLanguageChange } from './atlas-live.js?v=3';
+import { getLanguage, onLanguageChange } from '../atlas/atlas-live.js?v=3';
 import { getPreferences, setPreferences } from './app-settings.js';
 
 const root = document.documentElement;

@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from earth_surface import NICE_RUNWAYS, RUNWAYS, correct_runways
+from server.earth_surface import NICE_RUNWAYS, RUNWAYS, correct_runways
 
 
 class EarthSurfaceTests(unittest.TestCase):

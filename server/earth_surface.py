@@ -19,7 +19,7 @@ NICE_RUNWAYS = (
     ("04R/22L", (7.2024944, 43.6467389), (7.2284444, 43.6656083), 9.5 * .3048, 11 * .3048),
 )
 EDGE_BLEND_METRES = 75.0
-RUNWAY_DATA = Path(__file__).resolve().parent / "assets" / "runways-paved.json"
+RUNWAY_DATA = Path(__file__).resolve().parents[1] / "assets" / "runways-paved.json"
 
 
 def _runways_and_index():

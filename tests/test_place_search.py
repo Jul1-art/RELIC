@@ -1,6 +1,6 @@
 import unittest
 
-from place_search import camera_range, normalize_feature
+from server.place_search import camera_range, normalize_feature
 
 
 class PlaceSearchTests(unittest.TestCase):

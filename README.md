@@ -26,19 +26,19 @@ cd RELIC
 python3 -m venv .venv
 . .venv/bin/activate
 python3 -m pip install -r requirements.txt
-python3 terrain_server.py
+python3 -m server
 ```
 
 The current 9-minute 29-second film is delivered as local HLS segments at 1920 × 1080 and 50 frames per second, with English and French audio. Playback uses browser-native HLS or the bundled HLS player. The offline action saves and verifies the complete bilingual segmented edition. Older MP4 transport parts remain in source history but are not the active HD edition.
 
 Open **http://localhost:8000/**. On Windows, use the corresponding virtual-environment activation command and `python` if `python3` is unavailable.
 
-Run `terrain_server.py` for the complete experience. A generic static HTTP server does not implement the generated elevation, live-data or place-search endpoints. Some upstream terrain products are large and are downloaded on first use, then reused from the server cache. External imagery, geocoding and current data require a network connection.
+Run `python -m server` for the complete experience. A generic static HTTP server does not implement the generated elevation, live-data or place-search endpoints. Some upstream terrain products are large and are downloaded on first use, then reused from the server cache. External imagery, geocoding and current data require a network connection.
 
 To choose a different port, set `NASA_ATLAS_PORT` before starting the server. For example:
 
 ```sh
-NASA_ATLAS_PORT=8080 python3 terrain_server.py
+NASA_ATLAS_PORT=8080 python3 -m server
 ```
 
 ### Enable current JPL data
@@ -55,7 +55,7 @@ On a POSIX shell:
 set -a
 . ./.env
 set +a
-python3 terrain_server.py
+python3 -m server
 ```
 
 The contact is a server setting, not an API key, and is not saved by the browser's key panel. With no valid contact configured, the app uses available cached positions with their timestamps or reports that current data is unavailable instead of sending anonymous JPL requests.
@@ -112,7 +112,7 @@ The documentary and other third-party media are **not relicensed as Apache 2.0**
 
 RELIC est un projet open source ouvert aux idées, signalements et contributions de toutes et tous. Le code original est sous licence Apache 2.0 ; les médias et bibliothèques tiers conservent leurs propres conditions.
 
-Installez Python et les dépendances indiquées plus haut, puis lancez `python3 terrain_server.py` et ouvrez `http://localhost:8000/`. Le mode NASA de base n'exige aucune clé API. Pour les données JPL actualisées, renseignez votre propre contact public côté serveur. Pour Google 3D, ajoutez votre jeton Cesium ion dans **Réglages → Clés API** et enregistrez-le localement. Ne publiez aucune clé dans Git.
+Installez Python et les dépendances indiquées plus haut, puis lancez `python3 -m server` et ouvrez `http://localhost:8000/`. Le mode NASA de base n'exige aucune clé API. Pour les données JPL actualisées, renseignez votre propre contact public côté serveur. Pour Google 3D, ajoutez votre jeton Cesium ion dans **Réglages → Clés API** et enregistrez-le localement. Ne publiez aucune clé dans Git.
 
 Une publication statique reste possible avec `node tools/build_static.mjs`, mais elle n'exécute pas les routes Python de relief, de recherche et de données actualisées.
 
@@ -150,3 +150,7 @@ Earth, Moon and Mars share a responsive command bar, location search and compact
 GitHub Pages serves static files and cannot run the Python API. The browser detects that mode, avoids missing `/api` requests and falls back to clearly labelled NASA/JPL model positions, timestamped NOAA solar-wind observations, public geocoding, local destinations and coordinates. Model values are estimates, not telemetry; expired measurements are omitted. Without a terrain backend, the globe is an unmeasured ellipsoid with imagery. Optional Google 3D remains a separate provider layer.
 
 Build with `node tools/build_static.mjs` and publish only `dist/`; the build includes the current HD HLS edition and omits retired film assets. A custom GitHub Pages workflow must use **Settings → Pages → Source: GitHub Actions**. Branch/Jekyll publication serves the source tree without that build. GitHub Pages can still impose host-level IP or bandwidth limits; the application reduces request bursts, reuses cached modules and honours `Retry-After`, but cannot disable the hosting service’s protection.
+
+## Project structure
+
+See [the architecture guide](docs/ARCHITECTURE.md) for the source folders, entry points, server and deployment layout.

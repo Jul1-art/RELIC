@@ -1,15 +1,16 @@
-import * as Cesium from './vendor/cesium/index.js';
+import { appURL } from '../core/paths.js';
+import * as Cesium from '../../vendor/cesium/index.js';
 Cesium.Ion.defaultAccessToken = ''; // RELIC uses only a user-supplied token for optional ion assets.
-import { EARTH_SITES, PLANET_SITES } from './nasa-worlds.js';
+import { EARTH_SITES, PLANET_SITES } from '../atlas/nasa-worlds.js';
 import { createMeasuredTerrain } from './earth-terrain.js';
 import { createDetailedEarthImagery, ESRI_IMAGERY_URL } from './earth-imagery.js';
-import { createGoogle3D, askForCesiumToken } from './google-3d.js';
-import { createPlaceSearch } from './place-search.js?v=5';
-import { startLiveData, getLanguage, onLanguageChange } from './atlas-live.js?v=3';
+import { createGoogle3D, askForCesiumToken } from '../core/google-3d.js';
+import { createPlaceSearch } from '../search/place-search.js?v=5';
+import { startLiveData, getLanguage, onLanguageChange } from '../atlas/atlas-live.js?v=3';
 import { configureWorldPerformance, cameraDuration, flyToLocation, createOverviewFraming, TOP_DOWN_PITCH } from './world-performance.js';
-import { createViewLoading } from './view-loading.js';
-import { initializeProviderCredits } from './provider-credits.js';
-import { backendFeatureAvailable, markBackendFeatureUnavailable } from './atlas-services.js';
+import { createViewLoading } from '../ui/view-loading.js';
+import { initializeProviderCredits } from '../ui/provider-credits.js';
+import { backendFeatureAvailable, markBackendFeatureUnavailable } from '../core/atlas-services.js';
 
 const $ = selector => document.querySelector(selector);
 const viewLoading = createViewLoading({ element:$('#loading'), errorElement:$('#error'), getLanguage });
@@ -45,7 +46,7 @@ let placeSearch;
 document.body.dataset.world = body;
 document.title = `${names[body]} · Exploration libre 3D — RELIC`;
 $('#world-title').textContent = names[body];
-$('#back-link').href = body === 'earth' ? './earth.html' : `./index.html?body=${body}`;
+$('#back-link').href = body === 'earth' ? appURL('pages/earth.html').href : appURL(`index.html?body=${body}`).href;
 document.querySelector(`.world-nav [data-world="${body}"]`)?.classList.add('active');
 
 function provider(url, level, credit, tilingScheme = geographic, rectangle) {
@@ -60,7 +61,7 @@ async function addImagery() {
   const local = body === 'earth' ? 'earth-blue-marble-4k.webp'
     : body === 'mars' ? 'mars-viking-global.webp' : 'moon-wac-8k.webp';
   layers.addImageryProvider(await Cesium.SingleTileImageryProvider.fromUrl(
-    new URL(`./assets/${local}`, import.meta.url).href,
+    new URL(`../../assets/${local}`, import.meta.url).href,
     { credit:body === 'earth' ? 'NASA · Blue Marble' : body === 'mars' ? 'NASA · Viking' : 'NASA · LROC WAC' },
   ));
   baseImageryReady = true;
@@ -102,7 +103,7 @@ async function addDetailImagery() {
     ));
     if (backendFeatureAvailable('height:moon') && backendFeatureAvailable('tycho-imagery')) {
       const imagery = new Cesium.UrlTemplateImageryProvider({
-        url:new URL('./api/imagery/moon/tycho/{z}/{x}/{y}.png', document.baseURI).href,
+        url:appURL('api/imagery/moon/tycho/{z}/{x}/{y}.png').href,
         tilingScheme:geographic, rectangle:tychoLocal,
         minimumLevel:7, maximumLevel:15,
         credit:'NASA LRO · LROC NAC Tycho · orthophoto 2 m',
@@ -354,7 +355,7 @@ async function goToSite(site) {
   viewer.scene.verticalExaggeration = ['jezero', 'apollo11', 'tycho'].includes(site.id) ? 1 : 2;
   $('#height-button span').textContent = `Relief × ${viewer.scene.verticalExaggeration}`;
   $('#site-title').textContent = site.name;
-  history.replaceState({}, '', `./terrain.html?body=${body}&site=${encodeURIComponent(site.id)}`);
+  history.replaceState({}, '', appURL(`pages/terrain.html?body=${body}&site=${encodeURIComponent(site.id)}`).href);
   await focus(site.lat, site.lon, await initialRange(site), 1.1, site.name);
 }
 
@@ -561,7 +562,7 @@ placeSearch = createPlaceSearch({
       $('#height-button span').textContent = 'Relief × 1';
     }
     $('#site-title').textContent = place.name;
-    history.replaceState({}, '', `./terrain.html?body=${body}&lat=${place.lat}&lon=${place.lon}`);
+    history.replaceState({}, '', appURL(`pages/terrain.html?body=${body}&lat=${place.lat}&lon=${place.lon}`).href);
     await focus(place.lat, place.lon, place.range || 2500, 1.1,
       place.detail ? `${place.name}, ${place.detail}` : place.name);
   },

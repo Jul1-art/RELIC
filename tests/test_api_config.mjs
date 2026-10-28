@@ -3,7 +3,7 @@ import test from 'node:test';
 import vm from 'node:vm';
 import { readFile } from 'node:fs/promises';
 
-const file = new URL('../api-config.js', import.meta.url);
+const file = new URL('../src/core/api-config.js', import.meta.url);
 const source = await readFile(file, 'utf8');
 const fixtureToken = 'exampleHeader.examplePayload.exampleSignature';
 
@@ -104,8 +104,8 @@ async function googleView({ rejectProvider = false } = {}) {
   const local = new vm.SourceTextModule(source, { context });
   await local.link(() => { throw new Error('Unexpected API config import'); });
   await local.evaluate();
-  const module = new vm.SourceTextModule(await readFile(new URL('../google-3d.js', import.meta.url), 'utf8'), { context });
-  await module.link(name => name === './api-config.js' ? local : name === './api-settings.js' ? settings : provider);
+  const module = new vm.SourceTextModule(await readFile(new URL('../src/core/google-3d.js', import.meta.url), 'utf8'), { context });
+  await module.link(name => name === './api-config.js' ? local : name === '../ui/api-settings.js' ? settings : provider);
   await module.evaluate();
   const removed = [];
   const viewer = { scene: { globe: { show: true }, primitives: { add: item => item, remove: item => { removed.push(item); item.destroy(); } }, requestRender() {} } };

@@ -1,7 +1,7 @@
-import * as Cesium from './vendor/cesium/index.js';
+import * as Cesium from '../../vendor/cesium/index.js';
 Cesium.Ion.defaultAccessToken = ''; // RELIC uses only a user-supplied token for optional ion assets.
 import { getCesiumToken, setCesiumToken, validateCesiumToken, API_KEYS_CHANGED_EVENT } from './api-config.js';
-import { openApiSettings } from './api-settings.js';
+import { openApiSettings } from '../ui/api-settings.js';
 
 const GOOGLE_ASSET_ID = 2275207;
 

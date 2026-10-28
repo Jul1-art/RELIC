@@ -23,7 +23,7 @@ export function createViewLoading({ element, errorElement = null, getLanguage = 
   let state = 'loading', timer = null, disposed = false, suspended = document.hidden, failureReason = 'failed';
   const copy = () => COPY[getLanguage() === 'fr' ? 'fr' : 'en'];
   const card = document.createElement('div'); card.className = 'view-loading-card';
-  const mark = document.createElement('span'); mark.className = 'view-loading-mark'; const logo = document.createElement('img'); logo.src = new URL('./assets/relic-logo-v1.png', import.meta.url).href; logo.alt = ''; logo.width = 30; logo.height = 27; mark.append(logo); mark.setAttribute('aria-hidden','true');
+  const mark = document.createElement('span'); mark.className = 'view-loading-mark'; const logo = document.createElement('img'); logo.src = new URL('../../assets/relic-logo-v1.png', import.meta.url).href; logo.alt = ''; logo.width = 30; logo.height = 27; mark.append(logo); mark.setAttribute('aria-hidden','true');
   const message = document.createElement('span'); message.className = 'view-loading-message';
   const track = document.createElement('span'); track.className = 'view-loading-track'; track.setAttribute('aria-hidden','true'); track.append(document.createElement('span'));
   const retrySlow = document.createElement('button'); retrySlow.type = 'button'; retrySlow.className = 'view-loading-retry'; retrySlow.hidden = true;
@@ -66,7 +66,7 @@ export function createViewLoading({ element, errorElement = null, getLanguage = 
     const text = document.createElement('p'); text.textContent = copy().help;
     const actions = document.createElement('div'); actions.className = 'view-error-actions';
     const retry = document.createElement('button'); retry.type = 'button'; retry.textContent = copy().retry; retry.addEventListener('click', () => view.location.reload());
-    const back = document.createElement('a'); back.href = new URL('./index.html', import.meta.url).href; back.textContent = copy().back;
+    const back = document.createElement('a'); back.href = new URL('../../index.html', import.meta.url).href; back.textContent = copy().back;
     actions.append(retry,back); content.append(heading,text,actions); errorElement.replaceChildren(content);
   }
   function pause() { suspended = true; clear(); }

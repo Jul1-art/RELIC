@@ -1,14 +1,14 @@
-import * as Cesium from './vendor/cesium/index.js';
+import * as Cesium from '../../vendor/cesium/index.js';
 Cesium.Ion.defaultAccessToken = ''; // RELIC uses only a user-supplied token for optional ion assets.
-import { EARTH_SITES, NASA_IMAGERY } from './nasa-worlds.js';
+import { EARTH_SITES, NASA_IMAGERY } from '../atlas/nasa-worlds.js';
 import { createMeasuredTerrain } from './earth-terrain.js';
 import { createDetailedEarthImagery, ESRI_IMAGERY_URL } from './earth-imagery.js';
-import { createGoogle3D, askForCesiumToken } from './google-3d.js';
-import { createPlaceSearch } from './place-search.js?v=5';
-import { startLiveData, getLanguage, onLanguageChange } from './atlas-live.js?v=3';
+import { createGoogle3D, askForCesiumToken } from '../core/google-3d.js';
+import { createPlaceSearch } from '../search/place-search.js?v=5';
+import { startLiveData, getLanguage, onLanguageChange } from '../atlas/atlas-live.js?v=3';
 import { configureWorldPerformance, cameraDuration, flyToLocation, createOverviewFraming } from './world-performance.js';
-import { createViewLoading } from './view-loading.js';
-import { initializeProviderCredits } from './provider-credits.js';
+import { createViewLoading } from '../ui/view-loading.js';
+import { initializeProviderCredits } from '../ui/provider-credits.js';
 
 const $ = selector => document.querySelector(selector);
 const viewLoading = createViewLoading({ element:$('#earth-loading'), errorElement:$('#earth-error'), getLanguage });
@@ -155,7 +155,7 @@ async function start() {
     // Render the packaged NASA base first; live layers and optional 3D tiles
     // refine the visible globe after that first complete image.
     viewer.scene.requestRender();
-    Cesium.SingleTileImageryProvider.fromUrl(new URL('./assets/earth-blue-marble-4k.webp', import.meta.url).href, {
+    Cesium.SingleTileImageryProvider.fromUrl(new URL('../../assets/earth-blue-marble-4k.webp', import.meta.url).href, {
       credit:'NASA · Blue Marble',
     }).then(provider => {
       if (viewer.isDestroyed()) return;

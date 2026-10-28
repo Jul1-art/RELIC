@@ -1,7 +1,7 @@
-import { getLanguage, onLanguageChange } from './atlas-live.js?v=3';
+import { getLanguage, onLanguageChange } from '../atlas/atlas-live.js?v=3';
 import { worldIcon } from './world-icons.js';
 
-const INTRO_ROOT = new URL('./intro/', import.meta.url);
+const INTRO_ROOT = new URL('../../intro/', import.meta.url);
 const french = () => getLanguage() === 'fr';
 const localize = value => typeof value === 'string' ? value : value?.[getLanguage()] || value?.en || '';
 let activeDialog = null;
@@ -40,7 +40,7 @@ function createDialog(trigger) {
   const request = new AbortController();
   const dialog = document.createElement('dialog'); dialog.className = 'relic-sources-dialog';
   dialog.id = 'relic-app-sources'; dialog.setAttribute('aria-labelledby', 'relic-sources-title');
-  dialog.innerHTML = `<header class="relic-sources-header"><div><p class="relic-sources-eyebrow"><img class="relic-dialog-logo" src="./assets/relic-logo-v1.png" alt="" width="26" height="23">RELIC</p><h2 id="relic-sources-title"></h2></div><button type="button" class="relic-sources-close">${worldIcon('xmark')}</button></header><div class="relic-sources-content"></div>`;
+  dialog.innerHTML = `<header class="relic-sources-header"><div><p class="relic-sources-eyebrow"><img class="relic-dialog-logo" src="${new URL('../../assets/relic-logo-v1.png', import.meta.url).href}" alt="" width="26" height="23">RELIC</p><h2 id="relic-sources-title"></h2></div><button type="button" class="relic-sources-close">${worldIcon('xmark')}</button></header><div class="relic-sources-content"></div>`;
   dialog.querySelector('h2').textContent = french() ? 'Sources et créateurs' : 'Sources and creators';
   const close = dialog.querySelector('.relic-sources-close');
   close.setAttribute('aria-label', french() ? 'Fermer les sources' : 'Close sources');
@@ -74,7 +74,7 @@ export async function openSources(trigger) {
     const avatar = document.createElement('span'); avatar.className = 'relic-creator-avatar'; avatar.setAttribute('aria-hidden','true');
     const initial = document.createElement('span'); initial.textContent = name[0]; avatar.append(initial);
     if (name === 'Jules') {
-      const image = document.createElement('img'); image.src = new URL('./assets/jules-avatar.jpg', import.meta.url).href;
+      const image = document.createElement('img'); image.src = new URL('../../assets/jules-avatar.jpg', import.meta.url).href;
       image.alt = ''; image.width = 56; image.height = 56; image.loading = 'lazy'; image.decoding = 'async';
       image.addEventListener('error', () => image.remove(), {once:true}); avatar.append(image);
     }

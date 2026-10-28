@@ -6,7 +6,7 @@ from unittest.mock import patch as mock_patch
 
 import numpy as np
 
-import planetary_patches as patches
+from server import planetary_patches as patches
 
 
 class PlanetaryPatchTests(unittest.TestCase):

@@ -43,7 +43,7 @@ function restore() {
 
 function begin(url) {
   if (url) {
-    const root = new URL('./', import.meta.url);
+    const root = new URL('../../', import.meta.url);
     if ([root.pathname, new URL('index.html', root).pathname].includes(url.pathname)) {
       try { sessionStorage.setItem('relic:return-to-atlas', JSON.stringify({at:Date.now(),path:root.pathname})); } catch { /* Navigation also works without storage. */ }
     }

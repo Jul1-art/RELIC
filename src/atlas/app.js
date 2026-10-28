@@ -3,10 +3,10 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { SurfaceDetail } from './surface-detail.js?v=5';
 import { PLANET_SITES, NASA_IMAGERY } from './nasa-worlds.js';
 import { startLiveData, getLanguage, onLanguageChange } from './atlas-live.js?v=3';
-import { navigateTo } from './navigation.js';
-import { initializePlanetDashboard, setDashboardBody } from './planet-dashboard.js';
-import { createViewLoading } from './view-loading.js';
-import { initializeProviderCredits } from './provider-credits.js';
+import { navigateTo } from '../ui/navigation.js';
+import { initializePlanetDashboard, setDashboardBody } from '../ui/planet-dashboard.js';
+import { createViewLoading } from '../ui/view-loading.js';
+import { initializeProviderCredits } from '../ui/provider-credits.js';
 
 const dashboard = initializePlanetDashboard({ view:'atlas' });
 
@@ -489,7 +489,7 @@ function updateDetail(id) {
 }
 
 function selectBody(id, recenter = false) {
-  if (id === 'earth') { navigateTo('./earth.html'); return; }
+  if (id === 'earth') { navigateTo('./pages/earth.html'); return; }
   if (selected === id && id !== 'overview') {
     if (!recenter) return;
     const target = worldPosition(id).clone();

@@ -16,7 +16,7 @@ from unittest.mock import patch
 _cache = tempfile.TemporaryDirectory(prefix="relic-test-cache-")
 unittest.addModuleCleanup(_cache.cleanup)
 with patch.dict(os.environ, {"NASA_ATLAS_CACHE": _cache.name}):
-    import terrain_server as server
+    from server import terrain_server as server
 
 
 class StaticServerTests(unittest.TestCase):
@@ -36,8 +36,6 @@ class StaticServerTests(unittest.TestCase):
         for name in (".git", "certs", "localconfig"):
             (cls.root / name).mkdir()
             (cls.root / name / "private.txt").write_text("private-fixture", encoding="utf-8")
-        (cls.root / "hidden-link.txt").symlink_to(cls.root / ".env")
-        (cls.root / "outside-link.txt").symlink_to(cls.root.parent / "outside-fixture.txt")
         cls.logs = []
 
         class QuietHandler(server.Handler):
@@ -135,7 +133,7 @@ class StaticServerTests(unittest.TestCase):
             "/certificate.key", "/config.local.json", "/credentials.json", "/api-keys.json",
             "/localconfig/private.txt", "/../index.html", "/%2e%2e/index.html",
             "/plain/../index.html", "/plain/%2E%2E/index.html", "/plain%5c..%5c.env",
-            "/hidden-link.txt", "/outside-link.txt", "/%00.env",
+            "/%00.env",
         )
         for method in ("GET", "HEAD"):
             for path in paths:
@@ -143,6 +141,17 @@ class StaticServerTests(unittest.TestCase):
                     status, _, body = self.request(path, method=method)
                     self.assertEqual(status, 403)
                     self.assertNotIn(b"private-fixture", body)
+
+    def test_symbolic_links_are_denied_for_get_and_head(self):
+        try:
+            (self.root / "hidden-link.txt").symlink_to(self.root / ".env")
+            (self.root / "outside-link.txt").symlink_to(self.root.parent / "outside-fixture.txt")
+        except (OSError, NotImplementedError):
+            self.skipTest("This OS does not permit creating symbolic links")
+        for method in ("GET", "HEAD"):
+            for path in ("/hidden-link.txt", "/outside-link.txt"):
+                with self.subTest(method=method, path=path):
+                    self.assertEqual(self.request(path, method=method)[0], 403)
 
     def test_directory_listing_is_disabled_and_index_redirect_is_relative(self):
         self.assertEqual(self.request("/plain/")[0], 403)
@@ -219,13 +228,16 @@ class StaticBuildTests(unittest.TestCase):
             # Exercise the real builder with its runtime dependency; a checkout
             # without a packaged film legitimately has no parts manifest.
             shutil.copy2(builder.with_name("restore_film.mjs"), root / "tools" / "restore_film.mjs")
-            for name in ("assets", "vendor", "earth-search", "intro"):
-                (root / name).mkdir()
-            public_files = ("index.html", "api-config.js", "manifest.webmanifest", "catalog.json", "intro/film.mp4", "intro/film.json", "assets/icon.png", "vendor/library.js", "earth-search/places.js")
+            for name in ("assets", "vendor", "intro", "src", "src/core", "src/search", "pages"):
+                (root / name).mkdir(exist_ok=True)
+            public_files = ("index.html", "src/core/api-config.js", "manifest.webmanifest", "catalog.json", "intro/film.mp4", "intro/film.json", "assets/icon.png", "vendor/library.js", "src/search/places.js", "pages/earth.html")
             private_files = (".env", "config.json", "settings.json", "api-keys.json", "credentials.json", "assets/.env", "intro/config.local.json", "intro/certificate.pem")
             for name in public_files + private_files:
                 (root / name).write_text("fixture", encoding="utf-8")
-            (root / "intro" / "linked.mp4").symlink_to(root / ".env")
+            try:
+                (root / "intro" / "linked.mp4").symlink_to(root / ".env")
+            except (OSError, NotImplementedError):
+                pass  # Dedicated symlink checks report unsupported OS permissions.
             (root / "assets" / ".private").mkdir()
             (root / "assets" / ".private" / "data.json").write_text("fixture", encoding="utf-8")
             subprocess.run([shutil.which("node"), str(root / "tools" / builder.name)], check=True, capture_output=True, text=True)

@@ -3,7 +3,7 @@ import test from 'node:test';
 import vm from 'node:vm';
 import {readFile} from 'node:fs/promises';
 
-const source=await readFile(new URL('../intro/film-stream-v7.js',import.meta.url),'utf8');
+const source=await readFile(new URL('../intro/film-stream-v7.js', import.meta.url),'utf8');
 async function fixture({hlsSupported=true,nativeHls=false,src='fixture.mp4'}={}){
  class Hls {
   static Events={ERROR:'error'};

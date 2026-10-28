@@ -1,4 +1,4 @@
-import { getLanguage, setLanguage, onLanguageChange } from './atlas-live.js?v=3';
+import { getLanguage, setLanguage, onLanguageChange } from '../atlas/atlas-live.js?v=3';
 import { worldIcon } from './world-icons.js';
 
 const STORAGE_KEY = 'relic.preferences.v1';
@@ -127,7 +127,7 @@ function buildDialog() {
   dialog.id = 'relic-app-settings';
   dialog.setAttribute('aria-labelledby','relic-settings-title');
   dialog.setAttribute('aria-describedby','relic-settings-subtitle');
-  dialog.innerHTML = `<header class="relic-settings-header"><div><p class="relic-settings-eyebrow"><img class="relic-dialog-logo" src="./assets/relic-logo-v1.png" alt="" width="26" height="23">RELIC <span aria-hidden="true">/</span> <span data-settings-copy="settings"></span></p><h2 id="relic-settings-title" data-settings-copy="settings"></h2><p id="relic-settings-subtitle" class="relic-settings-intro" data-settings-copy="subtitle"></p></div><button class="relic-settings-close" type="button" data-settings-close>${worldIcon('xmark')}</button></header>
+  dialog.innerHTML = `<header class="relic-settings-header"><div><p class="relic-settings-eyebrow"><img class="relic-dialog-logo" src="${new URL('../../assets/relic-logo-v1.png', import.meta.url).href}" alt="" width="26" height="23">RELIC <span aria-hidden="true">/</span> <span data-settings-copy="settings"></span></p><h2 id="relic-settings-title" data-settings-copy="settings"></h2><p id="relic-settings-subtitle" class="relic-settings-intro" data-settings-copy="subtitle"></p></div><button class="relic-settings-close" type="button" data-settings-close>${worldIcon('xmark')}</button></header>
     <nav class="relic-settings-tabs" role="tablist" aria-label="Settings sections">${sections.map((section, index) => `<button type="button" role="tab" id="settings-tab-${section}" data-settings-tab="${section}" aria-controls="settings-panel-${section}" aria-selected="${index === 0}" tabindex="${index === 0 ? '0' : '-1'}">${worldIcon(['globe','sliders','compass'][index])}<span data-settings-copy="${section}"></span></button>`).join('')}</nav>
     <div class="relic-settings-content">
       <section class="relic-settings-section" id="settings-panel-general" data-settings-panel="general" role="tabpanel" aria-labelledby="settings-tab-general">${sectionHeading('general')}${field('language', [['en'],['fr']])}${field('theme', [['night','moon'],['day','sun']])}</section>

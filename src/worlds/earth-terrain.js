@@ -1,5 +1,6 @@
-import * as Cesium from './vendor/cesium/index.js';
-import { backendFeatureAvailable, markBackendFeatureUnavailable, retryDelay } from './atlas-services.js';
+import { appURL } from '../core/paths.js';
+import * as Cesium from '../../vendor/cesium/index.js';
+import { backendFeatureAvailable, markBackendFeatureUnavailable, retryDelay } from '../core/atlas-services.js';
 
 const SAMPLES = 65 * 65;
 const states = new Map();
@@ -12,7 +13,7 @@ async function limited(task) {
   finally { active--; queue.shift()?.(); }
 }
 function stateFor(body) {
-  const key = `${new URL('./', document.baseURI).href}:${body}`;
+  const key = `${appURL('./').href}:${body}`;
   if (!states.has(key)) states.set(key, { probe:null, ready:false, cache:new Map(), pending:new Map() });
   return states.get(key);
 }
@@ -31,7 +32,7 @@ export function createMeasuredTerrain(body, ellipsoid, onStatus = () => {}) {
       if (!backendFeatureAvailable(feature)) throw new Error('No terrain backend');
       const controller = new AbortController(), timer = setTimeout(() => controller.abort(), 12000);
       try {
-        const url = new URL(`./api/height/${body}/${key}.bin?v=4`, document.baseURI);
+        const url = appURL(`api/height/${body}/${key}.bin?v=4`);
         const response = await fetch(url, { signal:controller.signal, cache:'force-cache', credentials:'same-origin' });
         if (!response.ok) {
           const cooldown = response.status === 429 ? retryDelay(response.headers.get('Retry-After')) / 1000 : [404,405,410,501].includes(response.status) ? 21600 : 60;

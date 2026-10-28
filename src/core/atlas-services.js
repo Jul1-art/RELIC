@@ -1,3 +1,5 @@
+import { APP_ROOT } from './paths.js';
+
 /** Bounded, shared requests for public data sources; no credential-bearing APIs. */
 export function retryDelay(value, now = Date.now()) {
   const seconds = Number(value);
@@ -48,7 +50,7 @@ export function createRequestClient({ fetcher = (...args) => globalThis.fetch(..
 }
 
 export const publicRequests = createRequestClient();
-const baseURL = () => globalThis.document?.baseURI || globalThis.location?.href || 'https://relic.invalid/';
+const baseURL = () => APP_ROOT.href;
 const capability = new Map();
 const storage = () => { try { return globalThis.sessionStorage; } catch { return null; } };
 

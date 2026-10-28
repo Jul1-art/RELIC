@@ -1,4 +1,4 @@
-import { getCesiumToken, setCesiumToken, clearApiKeys, validateCesiumToken } from './api-config.js';
+import { getCesiumToken, setCesiumToken, clearApiKeys, validateCesiumToken } from '../core/api-config.js';
 
 const COPY = {
   en: {

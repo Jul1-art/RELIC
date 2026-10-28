@@ -1,6 +1,6 @@
-import { parseCoordinateQuery } from './earth-search/coordinateParser.js';
-import { backendJSON, publicRequests } from './atlas-services.js';
-import { worldIcon } from './world-icons.js';
+import { parseCoordinateQuery } from './coordinateParser.js';
+import { backendJSON, publicRequests } from '../core/atlas-services.js';
+import { worldIcon } from '../ui/world-icons.js';
 
 const fold = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase().trim();
 

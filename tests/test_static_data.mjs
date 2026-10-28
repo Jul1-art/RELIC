@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { approximatePosition, approximatePositions, parseSolarWind } from '../orbital-data.js';
-import { createRequestClient, retryDelay, isStaticHost } from '../atlas-services.js';
-import { normalizePhotonFeature } from '../place-search.js';
+import { approximatePosition, approximatePositions, parseSolarWind } from '../src/atlas/orbital-data.js';
+import { createRequestClient, retryDelay, isStaticHost } from '../src/core/atlas-services.js';
+import { normalizePhotonFeature } from '../src/search/place-search.js';
 
 test('the documented JPL model stays within Earth perihelion/aphelion and never claims live telemetry', () => {
   const winter=approximatePosition('earth',new Date('2026-01-04T12:00:00Z'));

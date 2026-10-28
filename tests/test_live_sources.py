@@ -8,11 +8,12 @@ from pathlib import Path
 
 import requests
 
-from live_sources import horizons, noaa_swpc
-from live_sources.cache import LiveCache
+from server.live_sources import horizons, noaa_swpc
+from server.live_sources.cache import LiveCache
 
 
 class LiveSourceTests(unittest.TestCase):
+    @unittest.skipUnless(os.environ.get("NASA_ATLAS_LIVE_TESTS") == "1", "Set NASA_ATLAS_LIVE_TESTS=1 for upstream integration checks")
     @unittest.skipUnless(os.environ.get("NASA_ATLAS_CONTACT"), "Set NASA_ATLAS_CONTACT for JPL fair-use policy")
     def test_horizons_earth_vector(self):
         value = horizons.fetch("earth")
@@ -22,12 +23,14 @@ class LiveSourceTests(unittest.TestCase):
         self.assertTrue(all(math.isfinite(value["positionKm"][axis]) for axis in "xyz"))
         self.assertTrue(value["validAt"].endswith("Z"))
 
+    @unittest.skipUnless(os.environ.get("NASA_ATLAS_LIVE_TESTS") == "1", "Set NASA_ATLAS_LIVE_TESTS=1 for upstream integration checks")
     def test_noaa_near_earth_wind(self):
         value = noaa_swpc.fetch()
         self.assertGreater(value["speedKmS"], 0)
         self.assertTrue(value["measuredAt"].endswith("Z"))
         self.assertEqual(value["kind"], "measurement")
 
+    @unittest.skipUnless(os.environ.get("NASA_ATLAS_LIVE_TESTS") == "1", "Set NASA_ATLAS_LIVE_TESTS=1 for upstream integration checks")
     def test_nasa_trek_mars_and_moon_tiles(self):
         urls = (
             "https://trek.nasa.gov/tiles/Mars/EQ/Mars_Viking_MDIM21_ClrMosaic_global_232m/1.0.0/default/default028mm/0/0/0.jpg",

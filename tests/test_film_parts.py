@@ -66,16 +66,19 @@ class FilmPartsTests(unittest.TestCase):
         self.assertFalse(self.target.exists())
         self.assertEqual(list(self.target.parent.glob("*.restore")), [])
 
-    def test_paths_cannot_escape_or_follow_symbolic_links(self):
+    def test_paths_cannot_escape_the_project(self):
         self.description["files"][0]["path"] = "../outside.mp4"
         self.save_manifest()
         with self.assertRaisesRegex(ValueError, "inside the project"):
             restore_films(self.root)
-        self.description["files"][0]["path"] = self.target.relative_to(self.root).as_posix()
-        self.save_manifest()
+
+    def test_paths_cannot_follow_symbolic_links(self):
         outside = self.root / "untouched.bin"
         outside.write_bytes(b"keep me")
-        self.target.symlink_to(outside)
+        try:
+            self.target.symlink_to(outside)
+        except (OSError, NotImplementedError):
+            self.skipTest("This OS does not permit creating symbolic links")
         with self.assertRaisesRegex(ValueError, "symbolic links"):
             restore_films(self.root)
         self.assertEqual(outside.read_bytes(), b"keep me")

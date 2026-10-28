@@ -1,6 +1,6 @@
 import { attachFilmSource } from './film-stream-v7.js';
 import { solidIcon } from './assets/vendor/fontawesome-solid.js';
-import { worldIcon } from '../world-icons.js';
+import { worldIcon } from '../src/ui/world-icons.js';
 import { createOpeningTyping } from './prologue-typing.js';
 
 const COPY = {
@@ -58,7 +58,7 @@ export function createPrologue({
   if (!element?.ownerDocument) throw new TypeError('A prologue element is required.');
   const document = element.ownerDocument;
   const view = document.defaultView;
-  if(!document.querySelector('link[data-prologue-player],link[href*="prologue-player.css"]')){const sheet=document.createElement('link');sheet.rel='stylesheet';sheet.href=new URL('./prologue-player.css',import.meta.url).href;sheet.dataset.prologuePlayer='';document.head.append(sheet);}
+  if(!document.querySelector('link[data-prologue-player],link[href*="prologue-player.css"]')){const sheet=document.createElement('link');sheet.rel='stylesheet';sheet.href=new URL('./prologue-player.css', import.meta.url).href;sheet.dataset.prologuePlayer='';document.head.append(sheet);}
   const defaultCues = [...timeline].sort((a, b) => a.start - b.start);
   let session = null;
   let closing = null;

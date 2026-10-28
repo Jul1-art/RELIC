@@ -1,5 +1,5 @@
 import { hydrateWorldIcons } from './world-icons.js';
-import { getLanguage, onLanguageChange } from './atlas-live.js?v=3';
+import { getLanguage, onLanguageChange } from '../atlas/atlas-live.js?v=3';
 import { initializePlanetDashboard } from './planet-dashboard.js';
 
 const dashboard = initializePlanetDashboard();

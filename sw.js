@@ -1,7 +1,7 @@
 /* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'story-v9-20261027-no-lunar-base-public';
+const VERSION = 'layout-v1-20261028-public';
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
 const APP_PREFIX = `relic-atlas-${encodeURIComponent(SCOPE.pathname)}-`;
@@ -20,7 +20,7 @@ const STATIC = /\.(?:html|css|js|mjs|json|webmanifest|jpe?g|png|svg|webp|avif|wo
 // already-open page continues loading its own resources normally, without a
 // second burst of dozens of script and library requests from the worker.
 const CORE = [
-  'index.html', 'earth.html', 'terrain.html',
+  'index.html', 'pages/earth.html', 'pages/terrain.html',
   'manifest.webmanifest', 'assets/relic-logo-v1.png', 'assets/relic-icon-v1-192.png', 'assets/relic-icon-v1-512.png',
 ].map(local);
 
@@ -28,17 +28,18 @@ const CORE = [
 // This also covers a first visit whose early imports preceded worker control.
 const OFFLINE_CORE = [
   ...CORE,
-  'styles.css', 'earth.css', 'terrain.css', 'live.css',
-  'premium.css', 'theme.css', 'compact.css', 'relic-shell.css', 'relic-worlds.css',
-  'film-bridge.css', 'app-settings.css', 'navigation.css', 'branding.css', 'interaction-motion.css', 'assets/jules-avatar.jpg',
-  'app.js', 'atlas-live.js', 'atlas-services.js', 'orbital-data.js', 'theme.js',
-  'surface-detail.js', 'nasa-worlds.js', 'earth-view.js', 'earth-imagery.js',
-  'earth-terrain.js', 'terrain-globe.js', 'terrain-view.js',
-  'api-config.js', 'api-settings.js', 'api-settings.css', 'google-3d.js', 'google3d.css', 'place-search.js', 'place-search.css',
-  'film-bridge.js', 'world-bridge.js', 'app-settings.js', 'navigation.js',
-  'world-ui.js', 'world-icons.js', 'world-performance.js',
-  'planet-dashboard.js', 'planet-dashboard.css', 'view-loading.js', 'view-loading.css',
-  'app-sources.js', 'app-sources.css', 'provider-credits.js', 'provider-credits.css', 'atlas-presentation.css',
+  'src/atlas/styles.css', 'src/worlds/earth.css', 'src/worlds/terrain.css', 'src/atlas/live.css',
+  'src/atlas/premium.css', 'src/ui/theme.css', 'src/atlas/compact.css', 'src/atlas/relic-shell.css', 'src/worlds/relic-worlds.css',
+  'intro/film-bridge.css', 'src/ui/app-settings.css', 'src/ui/navigation.css', 'src/ui/branding.css', 'src/ui/interaction-motion.css', 'assets/jules-avatar.jpg',
+  'src/atlas/app.js', 'src/atlas/atlas-live.js', 'src/core/atlas-services.js', 'src/atlas/orbital-data.js', 'src/ui/theme.js',
+  'src/atlas/surface-detail.js', 'src/atlas/nasa-worlds.js', 'src/worlds/earth-view.js', 'src/worlds/earth-imagery.js',
+  'src/worlds/earth-terrain.js', 'src/worlds/terrain-globe.js', 'src/worlds/terrain-view.js',
+  'src/core/paths.js', 'src/search/coordinateParser.js',
+  'src/core/api-config.js', 'src/ui/api-settings.js', 'src/ui/api-settings.css', 'src/core/google-3d.js', 'src/core/google3d.css', 'src/search/place-search.js', 'src/search/place-search.css',
+  'intro/film-bridge.js', 'src/core/world-bridge.js', 'src/ui/app-settings.js', 'src/ui/navigation.js',
+  'src/ui/world-ui.js', 'src/ui/world-icons.js', 'src/worlds/world-performance.js',
+  'src/ui/planet-dashboard.js', 'src/ui/planet-dashboard.css', 'src/ui/view-loading.js', 'src/ui/view-loading.css',
+  'src/ui/app-sources.js', 'src/ui/app-sources.css', 'src/ui/provider-credits.js', 'src/ui/provider-credits.css', 'src/atlas/atlas-presentation.css',
   'intro/prologue-v8.js', 'intro/prologue-data-v8.js', 'intro/prologue-v8.css',
   'intro/prologue-player.css', 'intro/prologue-ending-v9.css', 'intro/prologue-typing.js', 'intro/prologue-typing.css',
   'intro/film-stream-v7.js', 'intro/film-offline.js', 'intro/film-cache.js',

@@ -1,12 +1,12 @@
-import { openApiSettings } from './api-settings.js';
-import { initializeAppSettings } from './app-settings.js';
-import { initializeNavigation } from './navigation.js';
-import { openSources } from './app-sources.js';
-import { initializePlanetDashboard } from './planet-dashboard.js';
-import { worldIcon, hydrateWorldIcons } from './world-icons.js';
-import { getLanguage, onLanguageChange } from './atlas-live.js?v=3';
+import { openApiSettings } from '../ui/api-settings.js';
+import { initializeAppSettings } from '../ui/app-settings.js';
+import { initializeNavigation } from '../ui/navigation.js';
+import { openSources } from '../ui/app-sources.js';
+import { initializePlanetDashboard } from '../ui/planet-dashboard.js';
+import { worldIcon, hydrateWorldIcons } from '../ui/world-icons.js';
+import { getLanguage, onLanguageChange } from '../atlas/atlas-live.js?v=3';
 
-const APP_ROOT = new URL('./', import.meta.url);
+const APP_ROOT = new URL('../../', import.meta.url);
 export const RETURN_MARKER = 'relic:return-to-atlas';
 
 initializePlanetDashboard();

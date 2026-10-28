@@ -1,7 +1,7 @@
-import { getLanguage, onLanguageChange } from './atlas-live.js?v=3';
+import { getLanguage, onLanguageChange } from '../atlas/atlas-live.js?v=3';
 import { worldIcon } from './world-icons.js';
-import { parseCoordinateQuery } from './earth-search/coordinateParser.js';
-import { searchPlaces } from './place-search.js';
+import { parseCoordinateQuery } from '../search/coordinateParser.js';
+import { searchPlaces } from '../search/place-search.js';
 import { navigateTo } from './navigation.js';
 
 const BODIES = ['overview','sun','mercury','venus','earth','moon','mars','jupiter','saturn','uranus','neptune'];
@@ -15,9 +15,9 @@ const text = (en,fr) => language() === 'fr' ? fr : en;
 const node = (tag,className) => Object.assign(document.createElement(tag),{className});
 
 export function dashboardDestination(body) {
-  if (body === 'earth') return new URL('./earth.html',import.meta.url);
-  if (['mars','moon'].includes(body)) { const url=new URL('./terrain.html',import.meta.url);url.searchParams.set('body',body);return url; }
-  const url=new URL('./index.html',import.meta.url);
+  if (body === 'earth') return new URL('../../pages/earth.html', import.meta.url);
+  if (['mars','moon'].includes(body)) { const url=new URL('../../pages/terrain.html', import.meta.url);url.searchParams.set('body',body);return url; }
+  const url=new URL('../../index.html', import.meta.url);
   if (body !== 'overview') url.searchParams.set('body',body);
   return url;
 }
@@ -205,7 +205,7 @@ export function initializePlanetDashboard(options = {}) {
       const event=new CustomEvent('planet-dashboard-location',{detail:{body:targetBody,...place},cancelable:true});window.dispatchEvent(event);
       dismiss();state.textContent='';
       if(!event.defaultPrevented&&['earth','mars','moon'].includes(targetBody)){
-        const url=new URL('./terrain.html',import.meta.url);url.search=new URLSearchParams({body:targetBody,lat:String(place.lat),lon:String(place.lon)});navigateTo(url);
+        const url=new URL('../../pages/terrain.html', import.meta.url);url.search=new URLSearchParams({body:targetBody,lat:String(place.lat),lon:String(place.lon)});navigateTo(url);
       }else if(!event.defaultPrevented){state.textContent=text('Coordinates selected','Coordonnées sélectionnées');}
     }
     form.addEventListener('submit',async event=>{

@@ -42,3 +42,5 @@ Keep credentials out of source, fixtures, commit messages, screenshots and issue
 By submitting an original contribution for inclusion, you agree to license it under Apache 2.0. Identify any third-party material you introduce and supply its source, applicable license and required notices; the project's license does not override those terms.
 
 Be specific, patient and respectful in reviews. Explain the behavior or evidence behind a suggestion, and help others reproduce your findings.
+
+The default Python suite uses local fixtures. Set `NASA_ATLAS_LIVE_TESTS=1` to enable upstream NASA/NOAA integration checks; JPL also requires `NASA_ATLAS_CONTACT`. Symbolic-link checks report a skip when the operating system cannot create their fixtures.

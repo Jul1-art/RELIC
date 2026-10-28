@@ -23,14 +23,14 @@ from urllib.parse import parse_qs, quote, unquote, urlparse, urlsplit, urlunspli
 import numpy as np
 import requests
 
-from live_sources import horizons, noaa_swpc
-from live_sources.cache import LiveCache
-from earth_surface import correct_runways
-from place_search import search_places
-from planetary_patches import JEZERO, TYCHO, blend_patch, tycho_image_tile
+from .live_sources import horizons, noaa_swpc
+from .live_sources.cache import LiveCache
+from .earth_surface import correct_runways
+from .place_search import search_places
+from .planetary_patches import JEZERO, TYCHO, blend_patch, tycho_image_tile
 
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 CACHE = Path(os.environ.get("NASA_ATLAS_CACHE", Path.home() / ".cache/relic"))
 CACHE.mkdir(parents=True, exist_ok=True)
 TILES = CACHE / "height-tiles-v2"
@@ -485,7 +485,12 @@ class Handler(SimpleHTTPRequestHandler):
         self.wfile.write(raw)
 
 
-if __name__ == "__main__":
+def main():
     from tools.restore_film import restore_films
-    restore_films()
+    if not (ROOT / "intro/assets/prologue/encoding-v9-hd50.json").is_file():
+        restore_films(ROOT)
     ThreadingHTTPServer(("0.0.0.0", int(os.environ.get("NASA_ATLAS_PORT", "8000"))), Handler).serve_forever()
+
+
+if __name__ == "__main__":
+    main()
