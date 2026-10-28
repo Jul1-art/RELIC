@@ -230,7 +230,7 @@ class StaticBuildTests(unittest.TestCase):
             shutil.copy2(builder.with_name("restore_film.mjs"), root / "tools" / "restore_film.mjs")
             for name in ("assets", "vendor", "intro", "src", "src/core", "src/search", "pages"):
                 (root / name).mkdir(exist_ok=True)
-            public_files = ("index.html", "src/core/api-config.js", "manifest.webmanifest", "catalog.json", "intro/film.mp4", "intro/film.json", "assets/icon.png", "vendor/library.js", "src/search/places.js", "pages/earth.html")
+            public_files = ("index.html", "src/core/api-config.js", "assets/manifest.webmanifest", "catalog.json", "intro/film.mp4", "intro/film.json", "assets/icon.png", "vendor/library.js", "src/search/places.js", "pages/earth.html")
             private_files = (".env", "config.json", "settings.json", "api-keys.json", "credentials.json", "assets/.env", "intro/config.local.json", "intro/certificate.pem")
             for name in public_files + private_files:
                 (root / name).write_text("fixture", encoding="utf-8")

@@ -4,7 +4,164 @@
 
 RELIC combines an interactive Solar System atlas, detailed views of Earth, the Moon and Mars, and a bilingual documentary introduction. Explore measured terrain, follow the history behind missions, and help improve the project through ideas, issues and pull requests.
 
-The original application code is available under the [Apache License 2.0](LICENSE). Third-party libraries, scientific datasets, imagery, music and archival film retain their own licenses; see [Third-party notices](THIRD_PARTY_NOTICES.md). RELIC is an independent project and does not imply endorsement by the organizations whose data it uses.
+The original application code is available under the [Apache License 2.0](LICENSE). Third-party libraries, scientific datasets, imagery, music and archival film retain their own licenses; see [Third-party notices](docs/legal/THIRD_PARTY_NOTICES.md). RELIC is an independent project and does not imply endorsement by the organizations whose data it uses.
+
+## Carte du projet
+
+Vue des sources versionnées. Les médias et les bibliothèques sont regroupés pour garder la carte lisible.
+
+```mermaid
+flowchart LR
+    project["RELIC"] --> entry["index.html"]
+    project --> frontend["src/"]
+    frontend --> atlas["atlas/ · worlds/"]
+    frontend --> shared["ui/ · core/ · search/"]
+    project --> pages["pages/<br/>earth.html · terrain.html"]
+    project --> backend["server/<br/>Python · live_sources/ · requirements.txt"]
+    project --> media["assets/ · intro/ · vendor/<br/>Images, film et bibliothèques"]
+    project --> configuration["config/ · wrangler.toml<br/>Configuration et déploiement"]
+    project --> documentation["docs/ · .github/<br/>Identité, notices et règles du dépôt"]
+    project --> development["tools/ · tests/<br/>Construction et vérification"]
+```
+
+<details>
+<summary>Arborescence détaillée — médias et bibliothèques regroupés</summary>
+
+```text
+RELIC/
+├── index.html  # Point d'entrée
+├── README.md  # Présentation et carte du projet
+├── src/
+│   ├── atlas/  # Système solaire et données orbitales
+│   │   ├── app.js
+│   │   ├── atlas-live.js
+│   │   ├── atlas-presentation.css
+│   │   ├── compact.css
+│   │   ├── live.css
+│   │   ├── nasa-worlds.js
+│   │   ├── orbital-data.js
+│   │   ├── premium.css
+│   │   ├── relic-shell.css
+│   │   ├── styles.css
+│   │   └── surface-detail.js
+│   ├── core/  # Configuration et services
+│   │   ├── api-config.js
+│   │   ├── atlas-services.js
+│   │   ├── google-3d.js
+│   │   ├── google3d.css
+│   │   ├── paths.js
+│   │   └── world-bridge.js
+│   ├── search/  # Recherche de lieux et coordonnées
+│   │   ├── coordinateParser.js
+│   │   ├── place-search.css
+│   │   └── place-search.js
+│   ├── ui/  # Interface, dialogues et styles
+│   │   ├── api-settings.css
+│   │   ├── api-settings.js
+│   │   ├── app-settings.css
+│   │   ├── app-settings.js
+│   │   ├── app-sources.css
+│   │   ├── app-sources.js
+│   │   ├── branding.css
+│   │   ├── interaction-motion.css
+│   │   ├── navigation.css
+│   │   ├── navigation.js
+│   │   ├── planet-dashboard.css
+│   │   ├── planet-dashboard.js
+│   │   ├── provider-credits.css
+│   │   ├── provider-credits.js
+│   │   ├── theme.css
+│   │   ├── theme.js
+│   │   ├── view-loading.css
+│   │   ├── view-loading.js
+│   │   ├── world-icons.js
+│   │   └── world-ui.js
+│   └── worlds/  # Vues Terre, Lune et Mars
+│       ├── earth-imagery.js
+│       ├── earth-terrain.js
+│       ├── earth-view.js
+│       ├── earth.css
+│       ├── relic-worlds.css
+│       ├── terrain-globe.js
+│       ├── terrain-view.js
+│       ├── terrain.css
+│       └── world-performance.js
+├── pages/
+│   ├── earth.html
+│   └── terrain.html
+├── server/  # Serveur Python et dépendances
+│   ├── __init__.py
+│   ├── __main__.py
+│   ├── earth_surface.py
+│   ├── live_sources/
+│   │   ├── __init__.py
+│   │   ├── cache.py
+│   │   ├── horizons.py
+│   │   └── noaa_swpc.py
+│   ├── place_search.py
+│   ├── planetary_patches.py
+│   ├── requirements.txt
+│   └── terrain_server.py
+├── intro/
+│   ├── assets/  # Film, pistes audio, sources et licences
+│   ├── film-bridge.css
+│   ├── film-bridge.js
+│   ├── film-cache.js
+│   ├── film-offline.js
+│   ├── film-stream-v7.js
+│   ├── prologue-data-v8.js
+│   ├── prologue-ending-v9.css
+│   ├── prologue-player.css
+│   ├── prologue-typing.css
+│   ├── prologue-typing.js
+│   ├── prologue-v8.css
+│   └── prologue-v8.js
+├── assets/  # Images, manifeste et reliefs
+├── vendor/  # Bibliothèques tierces et licences
+├── config/
+│   └── .env.example  # Modèle de configuration sans valeur personnelle
+├── docs/
+│   ├── BRANDING.md
+│   └── legal/  # Notices et attributions conservées
+│       ├── NOTICE
+│       └── THIRD_PARTY_NOTICES.md
+├── .github/
+│   ├── CONTRIBUTING.md
+│   └── SECURITY.md
+├── tools/
+│   ├── build_runway_assets.py
+│   ├── build_static.mjs
+│   ├── build_terrain_assets.py
+│   ├── film/  # Production du documentaire
+│   ├── restore_film.mjs
+│   └── restore_film.py
+├── tests/
+│   ├── test_api_config.mjs
+│   ├── test_earth_surface.py
+│   ├── test_film_parts.py
+│   ├── test_film_recovery.mjs
+│   ├── test_live_sources.py
+│   ├── test_place_search.py
+│   ├── test_planetary_patches.py
+│   ├── test_project_layout.mjs
+│   ├── test_static_data.mjs
+│   ├── test_static_server.py
+│   ├── test_terrain_requests.mjs
+│   └── test_worker_cache.mjs
+├── LICENSE  # Licence du code original
+├── sw.js  # Service worker : portée sur toute l’application
+├── wrangler.toml  # Déploiement Cloudflare
+├── .gitignore  # Exclusions Git
+└── .nojekyll  # Publication GitHub Pages
+```
+
+</details>
+
+`index.html` reste à la racine. `sw.js` garde sa portée sur toute l’application et `wrangler.toml` reste au point d’entrée du déploiement. Les fichiers générés (`dist/`, `.venv/` et les caches Python) ne sont pas versionnés.
+
+Le code navigateur est regroupé par fonction dans `src/`, avec les styles près des composants. Utiliser `appURL()` dans `src/core/paths.js` pour construire les adresses des pages, des ressources et de l’API depuis une sous-page ; les chemins fonctionnent aussi sous un préfixe tel que `/RELIC/`. Les médias du film restent sous `intro/assets/`.
+
+Le serveur démarre depuis la racine avec `python -m server`. La construction statique avec `node tools/build_static.mjs` produit `dist/` sans embarquer le serveur, les tests, la configuration locale ou l’environnement de développement. Chaque édition conserve sa propre configuration de fournisseur dans `src/core/api-config.js`.
 
 ## Explore
 
@@ -25,7 +182,7 @@ git clone https://github.com/Jul1-art/RELIC.git
 cd RELIC
 python3 -m venv .venv
 . .venv/bin/activate
-python3 -m pip install -r requirements.txt
+python3 -m pip install -r server/requirements.txt
 python3 -m server
 ```
 
@@ -45,7 +202,7 @@ NASA_ATLAS_PORT=8080 python3 -m server
 
 The NASA/JPL, NOAA and public NASA imagery paths used here do **not** require a NASA API key. Automated JPL requests require a real contact in the server's `User-Agent`, according to the [JPL API policy](https://ssd-api.jpl.nasa.gov/doc/index.php).
 
-1. Copy `.env.example` to `.env`.
+1. Copy `config/.env.example` to `.env`.
 2. Set `NASA_ATLAS_CONTACT` to your own public HTTPS contact page or contact address.
 3. Load that file in the server's environment before starting Python. The server does not automatically load `.env`.
 
@@ -98,15 +255,15 @@ Live JPL tests may be skipped when no contact is configured. For visual changes,
 
 ## Contribute
 
-Everyone is welcome to propose improvements, suggest missions or datasets, report bugs and submit pull requests. Start with [Contributing](CONTRIBUTING.md). Include reliable references for scientific additions and keep measured data, approximations, historical imagery and fictional simulations clearly distinguished.
+Everyone is welcome to propose improvements, suggest missions or datasets, report bugs and submit pull requests. Start with [Contributing](.github/CONTRIBUTING.md). Include reliable references for scientific additions and keep measured data, approximations, historical imagery and fictional simulations clearly distinguished.
 
-Do not include personal tokens, service-account files or other credentials in issues, screenshots, example configuration or commits. See [Security](SECURITY.md) for reporting guidance.
+Do not include personal tokens, service-account files or other credentials in issues, screenshots, example configuration or commits. See [Security](.github/SECURITY.md) for reporting guidance.
 
 ## License and credits
 
-Original RELIC source code and original interface artwork are licensed under **Apache 2.0**. Preserve [NOTICE](NOTICE) and the notices that accompany bundled dependencies.
+Original RELIC source code and original interface artwork are licensed under **Apache 2.0**. Preserve [NOTICE](docs/legal/NOTICE) and the notices that accompany bundled dependencies.
 
-The documentary and other third-party media are **not relicensed as Apache 2.0**. They combine NASA and other archives, ESA material, CC-BY media, Pixabay material and the score **“Helios” by Scott Buckley, CC-BY 4.0**. Their source credits, modifications and individual terms remain applicable. Review [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and the film's source manifest before redistributing, replacing or repurposing those media. The original source recordings and large intermediate rendering files are not included.
+The documentary and other third-party media are **not relicensed as Apache 2.0**. They combine NASA and other archives, ESA material, CC-BY media, Pixabay material and the score **“Helios” by Scott Buckley, CC-BY 4.0**. Their source credits, modifications and individual terms remain applicable. Review [THIRD_PARTY_NOTICES.md](docs/legal/THIRD_PARTY_NOTICES.md) and the film's source manifest before redistributing, replacing or repurposing those media. The original source recordings and large intermediate rendering files are not included.
 
 ## Guide rapide en français
 
@@ -150,7 +307,3 @@ Earth, Moon and Mars share a responsive command bar, location search and compact
 GitHub Pages serves static files and cannot run the Python API. The browser detects that mode, avoids missing `/api` requests and falls back to clearly labelled NASA/JPL model positions, timestamped NOAA solar-wind observations, public geocoding, local destinations and coordinates. Model values are estimates, not telemetry; expired measurements are omitted. Without a terrain backend, the globe is an unmeasured ellipsoid with imagery. Optional Google 3D remains a separate provider layer.
 
 Build with `node tools/build_static.mjs` and publish only `dist/`; the build includes the current HD HLS edition and omits retired film assets. A custom GitHub Pages workflow must use **Settings → Pages → Source: GitHub Actions**. Branch/Jekyll publication serves the source tree without that build. GitHub Pages can still impose host-level IP or bandwidth limits; the application reduces request bursts, reuses cached modules and honours `Retry-After`, but cannot disable the hosting service’s protection.
-
-## Project structure
-
-See [the architecture guide](docs/ARCHITECTURE.md) for the source folders, entry points, server and deployment layout.

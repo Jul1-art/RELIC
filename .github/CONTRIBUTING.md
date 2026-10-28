@@ -11,7 +11,7 @@ For a substantial change, open an issue before investing in a large implementati
 ## Submit a change
 
 1. Fork the repository and create a branch for one focused change.
-2. Follow the local setup in [README.md](README.md).
+2. Follow the local setup in [README.md](../README.md).
 3. Make the change, retaining third-party notices and source credits.
 4. Run the relevant checks and describe the results in your pull request.
 5. Explain the concrete problem and resulting behavior. Add phone and desktop screenshots when they help reviewers assess a visual change.
@@ -37,7 +37,7 @@ Check both the full Python-server mode and the static fallback when your change 
 
 ## Code, credentials and licensing
 
-Keep credentials out of source, fixtures, commit messages, screenshots and issues. Browser-facing provider tokens belong in the local API-key panel. Server settings belong in an ignored local environment file or your hosting environment. Use the blank `.env.example` for documentation.
+Keep credentials out of source, fixtures, commit messages, screenshots and issues. Browser-facing provider tokens belong in the local API-key panel. Server settings belong in an ignored local environment file or your hosting environment. Use the blank `config/.env.example` for documentation.
 
 By submitting an original contribution for inclusion, you agree to license it under Apache 2.0. Identify any third-party material you introduce and supply its source, applicable license and required notices; the project's license does not override those terms.
 

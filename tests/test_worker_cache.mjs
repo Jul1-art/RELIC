@@ -82,3 +82,11 @@ test('a new interface revalidates browser HTTP cache once and keeps unchanged ve
  assert.equal(w.requests.length,2);
  assert.equal(w.networkPolicies[1],'default');
 });
+
+test('the install manifest stays mutable inside the assets folder',async()=>{
+ const w=await worker();
+ await w.dispatch('fetch',{request:w.request('assets/manifest.webmanifest')});
+ await w.dispatch('fetch',{request:w.request('assets/manifest.webmanifest')});
+ assert.equal(w.requests.length,1);
+ assert.equal(w.networkPolicies[0],'no-cache');
+});

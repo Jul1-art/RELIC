@@ -1,7 +1,7 @@
 /* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'layout-v1-20261028-public';
+const VERSION = 'layout-v2-20261028-public';
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
 const APP_PREFIX = `relic-atlas-${encodeURIComponent(SCOPE.pathname)}-`;
@@ -21,7 +21,7 @@ const STATIC = /\.(?:html|css|js|mjs|json|webmanifest|jpe?g|png|svg|webp|avif|wo
 // second burst of dozens of script and library requests from the worker.
 const CORE = [
   'index.html', 'pages/earth.html', 'pages/terrain.html',
-  'manifest.webmanifest', 'assets/relic-logo-v1.png', 'assets/relic-icon-v1-192.png', 'assets/relic-icon-v1-512.png',
+  'assets/manifest.webmanifest', 'assets/relic-logo-v1.png', 'assets/relic-icon-v1-192.png', 'assets/relic-icon-v1-512.png',
 ].map(local);
 
 // Requested only when the visitor explicitly saves the film for offline use.
@@ -70,7 +70,7 @@ function cacheKey(request) {
 function immutable(url) {
   return url.pathname.startsWith(new URL('vendor/', SCOPE).pathname)
     || url.pathname.startsWith(new URL('intro/assets/vendor/', SCOPE).pathname)
-    || (url.pathname.startsWith(new URL('assets/', SCOPE).pathname) && !/\.json$/i.test(url.pathname));
+    || (url.pathname.startsWith(new URL('assets/', SCOPE).pathname) && !/\.(?:json|webmanifest)$/i.test(url.pathname));
 }
 async function cacheable(response, url) {
   if (!response?.ok || response.redirected || response.type === 'opaque') return false;

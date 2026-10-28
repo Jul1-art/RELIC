@@ -72,3 +72,14 @@ test('page, asset and API URLs retain the deployment prefix from nested source f
     for(const path of ['index.html','pages/earth.html','pages/terrain.html?body=moon','api/live/atlas','assets/relic-logo-v1.png'])assert.equal(paths.namespace.appURL(path).href,prefix+path);
   }
 });
+
+test('the relocated install manifest preserves application identity, scope and icon URLs',async()=>{
+  const manifestPath='assets/manifest.webmanifest';
+  const manifest=JSON.parse(await readFile(new URL(manifestPath,root),'utf8'));
+  for(const prefix of ['https://example.invalid/','https://example.invalid/RELIC/']){
+    const url=new URL(manifestPath,prefix);
+    for(const field of ['id','start_url','scope'])assert.equal(new URL(manifest[field],url).href,prefix);
+    for(const icon of manifest.icons)assert(new URL(icon.src,url).href.startsWith(prefix+'assets/'));
+  }
+  for(const icon of manifest.icons)assert(await exists(new URL(icon.src,new URL(manifestPath,root))));
+});

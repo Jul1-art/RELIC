@@ -1,13 +1,13 @@
 # Third-party notices
 
-The [Apache License 2.0](LICENSE) applies to original RELIC code and original interface artwork. It does not replace the terms of the third-party materials below. Preserve upstream copyright notices, licenses, dataset credits and required on-screen provider attributions when sharing a modified build.
+The [Apache License 2.0](../../LICENSE) applies to original RELIC code and original interface artwork. It does not replace the terms of the third-party materials below. Preserve upstream copyright notices, licenses, dataset credits and required on-screen provider attributions when sharing a modified build.
 
 ## Software
 
 | Component | License / notice | Upstream |
 | --- | --- | --- |
-| CesiumJS 1.138.0 | Apache 2.0, with separately licensed dependencies documented in its full upstream license and dependency catalog. Preserve [CESIUM-LICENSE.txt](vendor/CESIUM-LICENSE.txt), [CESIUM-NOTICE.txt](vendor/CESIUM-NOTICE.txt) and [CESIUM-THIRD-PARTY.json](vendor/CESIUM-THIRD-PARTY.json). | [CesiumJS](https://github.com/CesiumGS/cesium) |
-| Three.js r164 and OrbitControls | MIT; preserve [THREE-LICENSE.txt](vendor/THREE-LICENSE.txt) | [Three.js](https://github.com/mrdoob/three.js) |
+| CesiumJS 1.138.0 | Apache 2.0, with separately licensed dependencies documented in its full upstream license and dependency catalog. Preserve [CESIUM-LICENSE.txt](../../vendor/CESIUM-LICENSE.txt), [CESIUM-NOTICE.txt](../../vendor/CESIUM-NOTICE.txt) and [CESIUM-THIRD-PARTY.json](../../vendor/CESIUM-THIRD-PARTY.json). | [CesiumJS](https://github.com/CesiumGS/cesium) |
+| Three.js r164 and OrbitControls | MIT; preserve [THREE-LICENSE.txt](../../vendor/THREE-LICENSE.txt) | [Three.js](https://github.com/mrdoob/three.js) |
 | HLS.js 1.6.15 | Apache 2.0, with bundled derived-component notices; preserve `intro/assets/vendor/hls.LICENSE.txt` | [HLS.js](https://github.com/video-dev/hls.js) |
 | Font Awesome Free icons | CC-BY 4.0 for the icon artwork; upstream code is MIT where applicable. Font files, if added, use SIL OFL 1.1. | [Font Awesome Free license](https://fontawesome.com/license/free) |
 | Kokoro-82M voice model | Apache 2.0; model files are external build inputs | [Kokoro](https://huggingface.co/hexgrad/Kokoro-82M) |
