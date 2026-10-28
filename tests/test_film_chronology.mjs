@@ -5,8 +5,8 @@ import { PROLOGUE_MEDIA } from '../intro/prologue-data-v8.js';
 
 const readJSON = async path => JSON.parse(await readFile(new URL(path, import.meta.url), 'utf8'));
 const chronology = await readJSON('../tools/film/scripts/prologue-chronology-v9.json');
-const production = await readJSON('../tools/film/scripts/prologue-edit-v10.json');
-const narration = await readJSON('../tools/film/scripts/prologue-narration-v10.json');
+const production = await readJSON('../tools/film/scripts/prologue-edit-v11.json');
+const narration = await readJSON('../tools/film/scripts/prologue-narration-v11.json');
 const encoding = await readJSON('../intro/assets/prologue/encoding-v9-hd50.json');
 const close = (actual, expected, message) => assert(Math.abs(actual - expected) < 0.000001, message ?? `${actual} != ${expected}`);
 
@@ -43,10 +43,10 @@ test('the chronological edit partitions every second of the existing film exactl
 });
 
 test('the active production plan and player scenes share the complete chronological timeline', () => {
-  assert.equal(PROLOGUE_MEDIA.revision, '10.0-hd50');
+  assert.equal(PROLOGUE_MEDIA.revision, '11.0-hd50');
   assert.equal(PROLOGUE_MEDIA.revision, production.revision);
-  assert.equal(PROLOGUE_MEDIA.duration, 703);
-  assert.equal(production.duration, 703);
+  assert.equal(PROLOGUE_MEDIA.duration, 746);
+  assert.equal(production.duration, 746);
   continuous(PROLOGUE_MEDIA.scenes, production.duration, 'player scenes');
   continuous(production.shots, production.duration, 'production shots');
   assert.deepEqual(PROLOGUE_MEDIA.scenes.map(item => item.id), production.shots.map(item => item.id));
@@ -75,7 +75,7 @@ test('both Voyager launches and the instruments precede Enterprise as requested'
 test('the five added milestones occupy their historical periods', () => {
   const dates={tereshkova:'1963-06-16',leonov:'1965-03-18','apollo8-orbit':'1968-12-24','huygens-descent':'2005-01-14','change4-wide':'2019-01-03'};
   for (const [id,date] of Object.entries(dates)) assert.equal(production.shots.find(s=>s.id===id)?.eventDate,date);
-  for (const [before,after] of [['kennedy','tereshkova'],['tereshkova','leonov'],['leonov','apollo8-orbit'],['apollo8-earthrise','saturn-v'],['iss-unity','huygens-descent'],['huygens-surface','europe'],['rosetta-descent','change4-wide'],['change4-site','falcon-launch']]) assert(scene(before).end<=scene(after).start);
+  for (const [before,after] of [['kennedy','tereshkova'],['tereshkova','leonov'],['leonov','apollo8-orbit'],['apollo8-earthrise','saturn-v'],['iss-unity','huygens-descent'],['huygens-descent','europe'],['rosetta-descent','change4-wide'],['change4-site','falcon-launch']]) assert(scene(before).end<=scene(after).start);
   assert(scene('falcon-launch').end <= scene('falcon-dual-return').start);
   assert(scene('falcon-dual-return').end <= scene('falcon-return').start);
   assert(scene('falcon-return').end <= scene('mars-approach').start);
@@ -122,13 +122,61 @@ test('the flag planting has only music before the astronauts-returned narration'
   }
 });
 
-test('the closing reflection uses a spoken picture transition and includes objects beyond the Moon and Mars', () => {
-  assert(scene('webb').end===scene('webb-legacy-transition').start);
-  assert(scene('webb-legacy-transition').end===scene('lunar-orbiter').start);
-  const bridge=narration.lines.find(row=>row.id==='journeys-leave-traces');
-  assert(bridge.start>scene('webb-legacy-transition').start);
-  for(const row of PROLOGUE_MEDIA.scenes) assert(!/epilogue/i.test(JSON.stringify(row.label??{}).normalize('NFD').replace(/[\u0300-\u036f]/g,'')));
-  const beyond=narration.lines.find(row=>row.id==='traces-beyond-moon-and-mars');
-  assert.match(beyond.text.en,/Titan.*comet.*orbit.*interstellar/);
-  assert.match(beyond.text.fr,/Titan.*comète.*orbite.*interstellaire/);
+test('Webb leads directly to one wide solar view and the RELIC card, without old replays', () => {
+  const ending = production.shots.slice(production.shots.findIndex(shot=>shot.id==='webb'));
+  assert.deepEqual(ending.map(shot=>shot.id),['webb','webb-deployment','webb-observatory','solar-system','relic']);
+  assert.equal(ending.at(-1).source,'black');
+  assert(ending.at(-1).duration>=14);
+  const wide=ending.find(shot=>shot.id==='solar-system');
+  assert.equal(wide.source,'v9-0');
+  assert(wide.sourceStart>=548,'Exclude the Mars close-up retained at the beginning of the old wide shot');
+  assert(wide.sourceStart+wide.sourceDuration<=561);
+  const reflection=narration.lines.find(row=>row.id==='journeys-leave-traces');
+  for(const text of Object.values(reflection.text)) assert.match(text,/Titan/);
+  assert.match(reflection.text.en,/interstellar/);
+  assert.match(reflection.text.fr,/interstellaire/);
+  for(const cues of Object.values(PROLOGUE_MEDIA.captions)) assert(cues.some(cue=>cue.kind==='end'));
+});
+
+test('Titan is introduced through Saturn and Cassini before one continuous Huygens descent',()=>{
+  for(const [before,after] of [['iss-unity','cassini-saturn'],['cassini-saturn','huygens-separation'],['huygens-separation','huygens-descent'],['huygens-descent','europe']]) assert(scene(before).end<=scene(after).start);
+  const descents=production.shots.filter(shot=>shot.file?.endsWith('huygens-experience.mp4'));
+  assert.equal(descents.length,1);
+  assert.equal(descents[0].in,6);
+  assert.equal(descents[0].sourceDuration,24);
+  assert.match(narration.lines.find(line=>line.id==='cassini-arrives-saturn').text.en,/Cassini.*Saturn/);
+  assert.match(narration.lines.find(line=>line.id==='a-shared-laboratory').text.en,/Earth orbit/);
+});
+
+test('Rosetta excludes introduction cards and does not replay its descent intervals',()=>{
+  const shots=production.shots.filter(shot=>/rosetta|philae/.test(shot.id));
+  assert.deepEqual(shots.map(shot=>shot.id),['rosetta-comet','rosetta-observation','philae-separation','philae-bounces','rosetta-descent']);
+  for(const shot of shots) assert(shot.in>=4,'Exclude source introduction cards');
+  const descent=shots.filter(shot=>shot.file.endsWith('rosetta-descent-original.mov'));
+  assert.equal(descent.length,2);
+  assert(descent[0].in+descent[0].sourceDuration<=descent[1].in);
+  assert.match(narration.lines.find(line=>line.id==='rosetta-observes').text.en,/three months/);
+  assert.match(narration.lines.find(line=>line.id==='philae-real-landing').text.en,/harpoons.*failed.*bounced twice/);
+});
+
+test('historical corrections distinguish the two Shuttle losses and identify the fifteen ISS partners',()=>{
+  const text=id=>narration.lines.find(line=>line.id===id).text;
+  assert.match(text('shuttle-first-orbit').en,/1981.*succeeded/);
+  assert.match(text('challenger-date').en,/28 January 1986/);
+  assert(scene('challenger-ascent').end<=scene('challenger').start);
+  assert.match(text('retiring-the-shuttle').en,/Columbia.*2003/);
+  assert.match(text('rivals-build-together').en,/Fifteen.*United States, Russia, Canada, Japan.*eleven European/);
+  assert.match(text('von-braun-postwar').en,/Nazi.*von Braun.*V2/);
+  assert.match(text('falcon-ongoing').en,/continue today/);
+});
+
+test('scene kickers are absent and ISS is identified in the main subtitle track',()=>{
+  for(const scene of PROLOGUE_MEDIA.scenes) for(const key of ['label','speaker','kicker']) assert(!Object.hasOwn(scene,key));
+  for(const cues of Object.values(PROLOGUE_MEDIA.captions)) {
+    for(const cue of cues) for(const key of ['label','speaker','kicker']) assert(!Object.hasOwn(cue,key));
+    const name=cues.find(cue=>cue.id==='iss-name');
+    assert.equal(name?.kind,'subtitle');
+    assert(name.start>=scene('iss-whole').start && name.end<=scene('iss-whole').end);
+    assert(Object.values(name.title).includes('International Space Station'));
+  }
 });

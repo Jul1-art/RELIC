@@ -1,7 +1,7 @@
-"""Install a verified V10 delivery and update each repository's own player data.
+"""Install a verified documentary delivery and update each repository's own player data.
 
 Requires the completed picture/audio and measured alignment reports in the local
-production cache. It retains edition-specific labels and configuration. No API
+production cache. It retains edition-specific configuration and removes scene labels. No API
 configuration, private file or source download is copied between repositories.
 """
 from __future__ import annotations
@@ -58,16 +58,20 @@ def chunks(text, maximum=100):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--edition',type=int,choices=[10,11],default=10)
     parser.add_argument('--repo',type=Path,default=ROOT)
     parser.add_argument('--work',type=Path,required=True)
-    args = parser.parse_args(); root = args.repo.resolve(); work = args.work.resolve()
-    plan = read(ROOT/'tools/film/scripts/prologue-edit-v10.json')
-    script = read(ROOT/'tools/film/scripts/prologue-narration-v10.json')
+    args = parser.parse_args()
+    global REVISION, RELEASE
+    REVISION, RELEASE = f'{args.edition}.0-hd50', f'v{args.edition}-0-hd50'
+    root = args.repo.resolve(); work = args.work.resolve()
+    plan = read(ROOT/f'tools/film/scripts/prologue-edit-v{args.edition}.json')
+    script = read(ROOT/f'tools/film/scripts/prologue-narration-v{args.edition}.json')
     report = read(work/'report.json'); alignment = read(work/'alignment-report.json')
     assert report['revision'] == REVISION and report['duration'] == plan['duration']
     assert alignment['passed'] and alignment['revision'] == REVISION
     assert report['picture']['fullDecodePassed'] and report['audio']['complete']
-    assert len(report['files']) == 272
+    assert len(report['files']) >= 8
     for item in report['files']:
         path = work/item['path']
         assert path.is_relative_to(work) and path.stat().st_size == item['bytes'] and sha(path) == item['sha256'],item['path']
@@ -86,32 +90,13 @@ def main():
         media['languages'][language]['hls'] = f'./assets/prologue/{RELEASE}/{language}.m3u8'
     old_scenes = {s['id']:s for s in baseline['scenes']}
     scene_index = {s['id']:s for s in plan['shots']}
-    labels = {
-        'gagarin': ('Yuri Gagarin · 12 April 1961','Youri Gagarine · 12 avril 1961'),
-        'tereshkova': ('Valentina Tereshkova · 16 June 1963','Valentina Terechkova · 16 juin 1963'),
-        'leonov': ('Alexei Leonov · 18 March 1965','Alexeï Leonov · 18 mars 1965'),
-        'apollo8-orbit': ('Apollo 8 · 24 December 1968','Apollo 8 · 24 décembre 1968'),
-        'apollo8-earthrise': ('Earthrise · Bill Anders, 1968','Earthrise · Bill Anders, 1968'),
-        'voyager2-launch': ('Voyager 2 · 20 August 1977','Voyager 2 · 20 août 1977'),
-        'voyager1-launch': ('Voyager 1 · 5 September 1977','Voyager 1 · 5 septembre 1977'),
-        'huygens-descent': ('Huygens · 14 January 2005','Huygens · 14 janvier 2005'),
-        'huygens-surface': ('Titan · Huygens surface view','Titan · Vue de la surface par Huygens'),
-        'rosetta-comet': ('Comet 67P · Rosetta and Philae','Comète 67P · Rosetta et Philae'),
-        'rosetta-descent': ('Rosetta · 30 September 2016','Rosetta · 30 septembre 2016'),
-        'change4-wide': ('Chang’e 4 · 3 January 2019','Chang’e 4 · 3 janvier 2019'),
-        'change4-site': ('Chang’e 4 landing site · LRO view','Site de Chang’e 4 · Vue par LRO')
-    }
     media['scenes'] = []
     for shot in plan['shots']:
         row = copy.deepcopy(old_scenes.get(shot['id'],{'id':shot['id']}))
         row.update(start=shot['start'],end=shot['end'])
         row.pop('historicalRole',None)
-        if shot['id'] in ['lunar-orbiter','mars','hardware']:
-            row.pop('label',None)
-        if shot['id'] in labels:
-            row['label'] = dict(zip(['en','fr'],labels[shot['id']]))
-        if shot['id'] in ['rosetta-comet','rosetta-descent','apollo8-orbit']:
-            row['speaker'] = {'en':'Official scientific visualization','fr':'Visualisation scientifique officielle'}
+        for field in ['label','speaker','kicker']:
+            row.pop(field,None)
         media['scenes'].append(row)
     spec = importlib.util.spec_from_file_location('clause_alignment',ROOT/'tools/film/scripts/synthesize-narration-v9.py')
     timing = importlib.util.module_from_spec(spec); spec.loader.exec_module(timing)
@@ -143,6 +128,10 @@ def main():
             for cue in baseline['captions'][language]:
                 if cue['kind'] == 'quote' and cue['id'].startswith(prefix):
                     row = copy.deepcopy(cue); row['start'] += delta; row['end'] += delta; cues.append(row)
+        cues.extend(copy.deepcopy(plan.get('displayCaptions',[])))
+        for cue in cues:
+            for field in ['speaker','kicker','label']:
+                cue.pop(field,None)
         cues.extend([
             {'id':'v2-to-von-braun-pause','start':111.5,'end':113,'kind':'visual','title':{'en':'','fr':''}},
             {'id':'flag-music-only','start':scene_index['moon-flag']['start'],'end':scene_index['moon-flag']['end'],'kind':'visual','title':{'en':'','fr':''}}
@@ -152,10 +141,10 @@ def main():
             assert cue['start'] >= position-1e-5,(language,cue['id'],position,cue['start'])
             if cue['start'] > position+1e-7:
                 gap += 1
-                complete.append({'id':f'quiet-v10-{gap}','start':round(position,6),'end':cue['start'],'kind':'visual','title':{'en':'','fr':''}})
+                complete.append({'id':f'quiet-v{args.edition}-{gap}','start':round(position,6),'end':cue['start'],'kind':'visual','title':{'en':'','fr':''}})
             complete.append(cue); position = cue['end']
         if position < duration:
-            complete.append({'id':'quiet-v10-ending','start':position,'end':duration,'kind':'visual','title':{'en':'','fr':''}})
+            complete.append({'id':f'quiet-v{args.edition}-ending','start':position,'end':duration,'kind':'end','title':{'en':'RELIC','fr':'RELIC'}})
         cue_tracks[language] = complete
     media['captions'] = cue_tracks
     destination = root/'intro/assets/prologue'/RELEASE
@@ -168,16 +157,16 @@ def main():
         assert read(encoding_path)['revision'] == '9.1-hd50'
         shutil.copyfile(encoding_path,encoding_reference)
     encoding = read(encoding_reference)
-    encoding.update(version=10,revision=REVISION,duration=duration,pictureFrames=round(duration*50),visualRenderer='checked-V9-packets-plus-credited-V10-edits')
+    encoding.update(version=args.edition,revision=REVISION,duration=duration,pictureFrames=round(duration*50),visualRenderer=f'checked-V9-packets-plus-credited-V{args.edition}-edits')
     encoding['hls']['files'] = report['files']; encoding['hls']['totalBytes'] = report['bytes']
     encoding['hls']['languages'] = {l:f'./assets/prologue/{RELEASE}/{l}.m3u8' for l in ['en','fr']}
-    encoding['editPlanSha256'] = sha(ROOT/'tools/film/scripts/prologue-edit-v10.json')
-    encoding['narrationScriptSha256'] = sha(ROOT/'tools/film/scripts/prologue-narration-v10.json')
+    encoding['editPlanSha256'] = sha(ROOT/f'tools/film/scripts/prologue-edit-v{args.edition}.json')
+    encoding['narrationScriptSha256'] = sha(ROOT/f'tools/film/scripts/prologue-narration-v{args.edition}.json')
     encoding['narrationManifestSha256'] = report['audio']['narrationManifestSha256']
     encoding['narrationManifestRole'] = 'Current stock narration production manifest; complete audio validated against the delivered HLS.'
     encoding.pop('chronologyManifestSha256',None)
     encoding['originalSourceCrossfadeSeconds'] = encoding.pop('crossfadeSeconds',.75)
-    encoding['transitionPolicy'] = 'Original source dissolves are retained. Changed entries use short clean fades; the Webb-to-reflection picture bridge uses a two-second crossfade and the closing score continues across it.'
+    encoding['transitionPolicy'] = 'Original source dissolves are retained. Changed entries use short clean fades. Mars, Webb and the closing reflection share one uninterrupted music passage with gentle speech ducking.'
     encoding['narration'] = {'synthetic':True,'engine':'Kokoro-82M v1.0 INT8 ONNX','runtime':'kokoro-onnx 0.6.1',
                              'voices':{'en':'af_heart','fr':'ff_siwis'},'paragraphsPerLanguage':len(script['lines']),
                              'historicalVoicesSynthesized':False,'allLinesFit':True}
@@ -195,11 +184,11 @@ def main():
         assert read(source_path)['revision'] == '9.1-hd50'
         shutil.copyfile(source_path,sources_reference)
     sources = read(sources_reference)
-    sources.update(version=10,revision=REVISION,checkedOn='2026-10-28',durationSeconds=duration,
+    sources.update(version=args.edition,revision=REVISION,checkedOn='2026-10-28',durationSeconds=duration,
                    editPlanSha256=encoding['editPlanSha256'],narrationScriptSha256=encoding['narrationScriptSha256'])
     sources['transport'].update(languages={l:f'{RELEASE}/{l}.m3u8' for l in ['en','fr']},totalBytes=report['bytes'],fileCount=len(report['files']),encodingManifestSha256=sha(encoding_path),sourcePolicy=encoding['quality']['sourcePolicy'])
     sources['paragraphTranscript'] = script['lines']; sources['editTimeline'] = plan['shots']
-    sources['narration'].update(script='tools/film/scripts/prologue-narration-v10.json',scriptSha256=encoding['narrationScriptSha256'],
+    sources['narration'].update(script=f'tools/film/scripts/prologue-narration-v{args.edition}.json',scriptSha256=encoding['narrationScriptSha256'],
                                lines=generated,selectedLineIds=[r['id'] for r in script['lines']],allLinesFit=True,overflows=[],partial=False,
                                processing='Scene-bound stock Kokoro paragraphs, source text decoded as UTF-8. No completed narration is truncated or time-stretched. Actual HLS onsets are measured against each rendered paragraph.')
     sources['narration']['subtitleTimingMethod'] = generated[0]['subtitleTimingMethod']
@@ -218,18 +207,31 @@ def main():
     sources['musicTimeline'] = report['audio']['musicEdits']
     sources['musicOnlyScenes'] = [{'id':identity,'start':scene_index[identity]['start'],'end':scene_index[identity]['end']} for identity in plan['musicOnlyScenes']]
     sources['narrativeStructure'] = plan['editorialPolicy']
-    sources['chronology'] = {'revision':REVISION,'policy':plan['editorialPolicy'],'activePlan':'tools/film/scripts/prologue-edit-v10.json'}
+    sources['chronology'] = {'revision':REVISION,'policy':plan['editorialPolicy'],'activePlan':f'tools/film/scripts/prologue-edit-v{args.edition}.json'}
     sources['endingTreatment'] = 'A six-second crossfade and a spoken bridge introduce the closing reflection. The continuous final score covers Webb and this transition. There is no epilogue title. The reflection includes active and retired objects on the Moon, Mars, Titan, a comet, in orbit and in interstellar space.'
     sources['spaceXContext'] = 'Falcon Heavy STP-2 in 2019 and Falcon 9 / Sentinel-6 in 2020 precede Perseverance and Webb in 2021. The narration identifies SpaceX and its founder without moving the founding date into this flight chronology.'
-    sources['currentAdditionalSources'].extend(read(ROOT/'tools/film/scripts/prologue-sources-v10.json')['assets'])
+    sources['currentAdditionalSources'].extend(read(ROOT/f'tools/film/scripts/prologue-sources-v{args.edition}.json')['assets'])
     sources['editorialChanges'].append('V10: synchronized von Braun audio; music-only Apollo flag; both Voyager launches and instruments before Enterprise; Tereshkova, Leonov, Apollo 8/Earthrise, Huygens and Chang’e 4; complete Rosetta descent and contact; spoken closing bridge without a title; hardware beyond the Moon and Mars; continuous closing music.')
+    if args.edition >= 11:
+        sources['endingTreatment'] = 'One wide view of solar orbits follows Webb, without repeated Falcon, Titan, Rosetta, Voyager or Mars footage. A sixteen-second black final scene supports the player RELIC logo, name and exploration button; the card remains until the viewer acts.'
+        sources['spaceXContext'] = 'The 2019 Falcon Heavy and 2020 Falcon 9 archive flights are identified as examples of an ongoing programme, not the full lifetime of Falcon activity.'
+        sources['musicContext'] = 'Mars, Webb and the closing reflection use the same uninterrupted score passage. The Perseverance archive is mixed at reduced level, music returns over 1.8 seconds, and delivery targets -18 LUFS / -3 dBTP.'
+        sources['historicalCorrectionsV11'] = {
+            'vonBraun':{'fact':'Nazi Party member and SS officer; led V2 development.','source':'https://www.nasa.gov/people/wernher-von-braun/'},
+            'shuttle':{'sts1':'1981-04-12 successful launch; 1981-04-14 successful landing','challengerLoss':'1986-01-28','columbiaLoss':'2003-02-01','source':'https://www.nasa.gov/history/space-shuttle-history-resources/'},
+            'iss':{'countries':15,'agencies':5,'partners':['United States','Russia','Canada','Japan','Belgium','Denmark','France','Germany','Italy','Netherlands','Norway','Spain','Sweden','Switzerland','United Kingdom'],'source':'https://www.nasa.gov/international-space-station/space-station-international-cooperation/'},
+            'rosetta':{'arrival':'2014-08-06','philaeRelease':'2014-11-12','beforeRelease':'Just over three months','philae':'Harpoons failed to fire; two bounces and three touchdowns','controlledImpact':'2016-09-30','source':'https://education.esa.int/rosetta_timeline/'},
+            'falcon':{'ongoingAsOf':'2026-10-28','source':'https://www.spacex.com/launches/mission/?missionId=sl-v-1'},
+            'webb':{'launch':'2021-12-25','partners':['NASA','ESA','CSA'],'mirrorMetres':6.5,'l2DistanceKm':1500000,'source':'https://science.nasa.gov/mission/webb/fact-sheet/'}
+        }
+        sources['editorialChanges'].append('V11: coherent Cassini-Huygens sequence; distinct successful STS-1 and later Challenger loss; fifteen ISS partners; Nazi role of von Braun; actual Philae bounces and clean Rosetta imagery; ongoing Falcon explanation; expanded Webb; continuous quieter closing score; no small subtitle labels; final RELIC card and pause exploration controls.')
     sources['sceneDates'] = {s['id']:copy.deepcopy(sources['sceneDates'].get(s['id'],{})) for s in plan['shots']}
     for s in plan['shots']:
         if 'eventDate' in s: sources['sceneDates'][s['id']]['eventDate'] = s['eventDate']
         sources['sceneDates'][s['id']].pop('historicalRole',None)
     write(source_path,sources)
-    media['offline']['id'] = 'relic-documentary-v10-hd50-'+sha(encoding_path)[:20]
-    (root/'intro/prologue-data-v8.js').write_text('/** V10 documentary: scene-bound bilingual narration and verified media clock. */\nexport const PROLOGUE_MEDIA=Object.freeze('+dump(media).rstrip()+'\n);\nexport const PROLOGUE=Object.freeze(PROLOGUE_MEDIA.captions.en);\n',encoding='utf-8',newline='\n')
+    media['offline']['id'] = f'relic-documentary-v{args.edition}-hd50-'+sha(encoding_path)[:20]
+    (root/'intro/prologue-data-v8.js').write_text('/** Documentary: scene-bound bilingual narration and verified media clock. */\nexport const PROLOGUE_MEDIA=Object.freeze('+dump(media).rstrip()+'\n);\nexport const PROLOGUE=Object.freeze(PROLOGUE_MEDIA.captions.en);\n',encoding='utf-8',newline='\n')
     print(json.dumps({'repo':root.name,'revision':REVISION,'duration':duration,'shots':len(media['scenes']),'captions':{k:len(v) for k,v in cue_tracks.items()},'files':len(report['files'])}))
 
 

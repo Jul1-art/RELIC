@@ -1,14 +1,24 @@
-import { access, cp, lstat, mkdir, readdir, rm } from 'node:fs/promises';
+import { access, cp, lstat, mkdir, readdir, readFile, rm } from 'node:fs/promises';
 import { extname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { restoreFilms } from './restore_film.mjs';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
-const output = join(root, 'dist');
+const outputArgument = process.argv.indexOf('--output');
+const explicitOutput = outputArgument >= 0;
+if (explicitOutput && !process.argv[outputArgument + 1]) throw new Error('--output requires a directory');
+const output = explicitOutput ? resolve(process.argv[outputArgument + 1]) : join(root, 'dist');
+if (output === root || root.startsWith(output + sep)) throw new Error('Build output cannot replace the source directory or its parents');
 const rootExtensions = new Set(['.html', '.css', '.js', '.json', '.webmanifest', '.svg', '.ico', '.png']);
 const assetDirectories = ['assets', 'vendor', 'intro', 'src', 'pages'];
 
-const hdRelease = 'intro/assets/prologue/v10-0-hd50/';
+let hdRelease = '';
+try {
+  const encoding = JSON.parse(await readFile(join(root, 'intro/assets/prologue/encoding-v9-hd50.json'), 'utf8'));
+  const match = encoding.hls.languages.en.match(/\/prologue\/(v[\w.-]+)\//);
+  if (!match) throw new Error('Invalid current film release path');
+  hdRelease = `intro/assets/prologue/${match[1]}/`;
+} catch (error) { if (error.code !== 'ENOENT') throw error; }
 let hasHdRelease = false;
 try { await access(join(root,'intro/assets/prologue/encoding-v9-hd50.json')); hasHdRelease=true; }
 catch { /* Older source snapshots still use their verified MP4 transport parts. */ }
@@ -41,7 +51,13 @@ async function publicAsset(source) {
   return !(await lstat(source)).isSymbolicLink();
 }
 
-await rm(output, { recursive: true, force: true });
+if (explicitOutput) {
+  try { await access(output); throw new Error('Explicit build output must be a new directory'); }
+  catch (error) { if (error.code !== 'ENOENT') throw error; }
+} else {
+  if (output !== join(root, 'dist')) throw new Error('Unsafe build output');
+  await rm(output, { recursive: true, force: true });
+}
 await mkdir(output, { recursive: true });
 
 for (const entry of await readdir(root, { withFileTypes: true })) {
@@ -58,4 +74,4 @@ for (const directory of assetDirectories) {
   }
 }
 
-console.log(`Static build ready: ${(await readdir(output)).length} root entries in dist/`);
+console.log(`Static build ready: ${(await readdir(output)).length} root entries`);

@@ -1,12 +1,23 @@
-/* The ending follows the film clock, including pause and reverse seeks. */
+/* The final brand belongs to the player and waits for the viewer's choice. */
 .intro.prologue[data-cue-kind=end]{background:#000}
-.intro.prologue[data-cue-kind=end] .prologue-film{opacity:var(--end-picture-opacity,1);filter:none;transform:none;transition:none}
+.intro.prologue[data-cue-kind=end] .prologue-film,.intro.prologue[data-cue-kind=end] .prologue-language-frame{opacity:var(--end-picture-opacity,0);filter:none;transform:none;transition:none}
 .intro.prologue[data-cue-kind=end] .prologue-backdrop{display:none!important}
 .intro.prologue[data-cue-kind=end] .prologue-shade{background:transparent}
-.intro.prologue[data-cue-kind=end] .prologue-caption{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;top:50%;bottom:auto;width:calc(100% - 56px);margin:0;translate:none;transform:translate(-50%,-50%);opacity:1;filter:none}
-.intro.prologue[data-cue-kind=end] .prologue-context{display:none}
-.intro.prologue[data-cue-kind=end] img.prologue-endmark{display:block;width:clamp(104px,10vw,144px);height:auto;aspect-ratio:1336/1177;margin:0;opacity:var(--end-mark-opacity,0);filter:none;transform:none}
-.intro.prologue[data-cue-kind=end] #intro-line{min-height:0;margin:0;padding:0 0 0 .26em;color:#f6f6f4;font:400 clamp(31px,3.4vw,46px)/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;letter-spacing:.26em;text-shadow:none;clip-path:none;opacity:var(--end-word-opacity,0);filter:none;transform:none}
-.intro.prologue[data-cue-kind=end] .prologue-caption::after{content:"";display:block;width:48px;height:1px;margin-top:2px;background:#ffffff70;opacity:var(--end-rule-progress,0);transform:scaleX(var(--end-rule-progress,0));transform-origin:center}
-@media(max-width:650px){.intro.prologue[data-cue-kind=end] .prologue-caption{gap:20px}.intro.prologue[data-cue-kind=end] img.prologue-endmark{width:106px}}
-@media(max-height:500px) and (orientation:landscape){.intro.prologue[data-cue-kind=end] .prologue-caption{gap:12px}.intro.prologue[data-cue-kind=end] img.prologue-endmark{width:75px}.intro.prologue[data-cue-kind=end] #intro-line{font-size:30px}.intro.prologue[data-cue-kind=end] .prologue-caption::after{width:38px;margin-top:0}}
+.intro.prologue[data-cue-kind=end] .prologue-header{visibility:hidden}
+.intro.prologue[data-cue-kind=end] .prologue-caption{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;top:calc(50% - 32px);bottom:auto;width:calc(100% - 48px);margin:0;translate:none;transform:translate(-50%,-50%);opacity:1;filter:none;visibility:visible}
+.intro.prologue[data-cue-kind=end] img.prologue-endmark{display:block;width:clamp(104px,10vw,136px);height:auto;aspect-ratio:1336/1177;margin:0;opacity:var(--end-mark-opacity,1);filter:none;transform:none}
+.intro.prologue[data-cue-kind=end] #intro-line{min-height:0;margin:0;padding:0 0 0 .26em;color:#f6f6f4;font:400 clamp(31px,3.4vw,46px)/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;letter-spacing:.26em;text-shadow:none;clip-path:none;opacity:var(--end-word-opacity,1);filter:none;transform:none}
+.intro.prologue[data-cue-kind=end] .prologue-gate{position:static;width:auto;margin:8px 0 0;transform:none}
+.intro.prologue[data-cue-kind=end] .prologue-gate-actions{gap:12px}
+.intro.prologue[data-cue-kind=end] .prologue-gate-actions .prologue-play-film{width:56px;min-width:56px;height:56px;min-height:56px}
+.intro.prologue[data-cue-kind=end] .prologue-gate-actions .prologue-play-film svg.fas{width:29px;height:29px}
+@media(max-width:650px){.intro.prologue[data-cue-kind=end] img.prologue-endmark{width:106px}}
+@media(max-height:500px) and (orientation:landscape){
+ .intro.prologue[data-cue-kind=end] .prologue-caption{top:calc(50% - 33px);gap:10px}
+ .intro.prologue[data-cue-kind=end] img.prologue-endmark{width:58px}
+ .intro.prologue[data-cue-kind=end] #intro-line{font-size:28px}
+ .intro.prologue[data-cue-kind=end] .prologue-gate{margin-top:0}
+ .intro.prologue[data-cue-kind=end] .prologue-gate-actions{gap:8px}
+ .intro.prologue[data-cue-kind=end] .prologue-gate-actions .prologue-play-film{width:44px;min-width:44px;height:44px;min-height:44px}
+ .intro.prologue[data-cue-kind=end] .prologue-gate-actions .prologue-enter{min-height:40px;padding-block:8px}
+}

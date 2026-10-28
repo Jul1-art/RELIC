@@ -1,5 +1,6 @@
 import { getLanguage, onLanguageChange } from '../atlas/atlas-live.js?v=3';
 import { worldIcon } from './world-icons.js';
+import { PROLOGUE_MEDIA } from '../../intro/prologue-data-v8.js';
 
 const INTRO_ROOT = new URL('../../intro/', import.meta.url);
 const french = () => getLanguage() === 'fr';
@@ -97,9 +98,11 @@ export async function openSources(trigger) {
     ? 'Les tailles et les distances sont adaptées pour faciliter la lecture. Le mouvement bleu des orbites indique le sens de parcours avec une vitesse illustrative, distincte de la vitesse réelle des planètes.'
     : 'Sizes and distances are adapted for readability. Blue orbital motion shows the direction of travel at an illustrative speed, distinct from the planets’ real speeds.','relic-sources-note');
   heading(content, french() ? 'Le film' : 'The film');
+  const minutes = Math.floor(PROLOGUE_MEDIA.duration / 60);
+  const seconds = Math.round(PROLOGUE_MEDIA.duration % 60);
   paragraph(content, french()
-    ? 'Un documentaire de 9 min 29, exporté en 1080p50 à partir des meilleures sources disponibles. Les archives de définition inférieure sont agrandies et leur cadence adaptée ; cela ne recrée pas de détails manquants. Les origines et certaines missions utilisent des animations ; les dinosaures sont des reconstitutions. La narration nouvelle utilise des voix de synthèse en anglais et en français. Les voix historiques sont des enregistrements originaux.'
-    : 'A 9-minute 29-second documentary exported at 1080p50 from the best available source footage. Lower-resolution archives are upscaled and their frame rates resampled; this does not recreate missing detail. The origins and some missions use animations; dinosaurs are reconstructed. New narration uses synthetic voices in English and French. Historical voices are original recordings.');
+    ? `Un documentaire de ${minutes} min ${String(seconds).padStart(2, '0')}, exporté en 1080p50 à partir des meilleures sources disponibles. Les archives de définition inférieure sont agrandies et leur cadence adaptée ; cela ne recrée pas de détails manquants. Les origines et certaines missions utilisent des animations ; les dinosaures sont des reconstitutions. La narration nouvelle utilise des voix de synthèse en anglais et en français. Les voix historiques sont des enregistrements originaux.`
+    : `A ${minutes}-minute ${seconds}-second documentary exported at 1080p50 from the best available source footage. Lower-resolution archives are upscaled and their frame rates resampled; this does not recreate missing detail. The origins and some missions use animations; dinosaurs are reconstructed. New narration uses synthetic voices in English and French. Historical voices are original recordings.`);
   paragraph(content,'“Helios” — Scott Buckley · CC BY 4.0','relic-sources-music');
   const filmSources = document.createElement('div'); filmSources.className = 'relic-sources-links'; content.append(filmSources);
   for (const [label,url] of [

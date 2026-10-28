@@ -5,7 +5,7 @@ import { createOpeningTyping } from './prologue-typing.js';
 
 const COPY = {
   en: {
-    skip: 'Explore the solar system', play: 'Play', enter: 'Explore the solar system', watchSound: 'Watch with sound',
+    play: 'Play', enter: 'Explore the solar system', watchSound: 'Watch with sound',
     pause: 'Pause film', resume: 'Resume film', mute: 'Turn sound off', unmute: 'Turn sound on',
     position: 'Film position', introduction: 'RELIC introduction', preview: 'Preview', offline: 'Save film offline', offlineReady: 'Film available offline',
     show: 'Show controls', captions: 'Show story captions (C)', hideCaptions: 'Hide story captions (C)', narrationLanguage:'Narration language', switchLanguage:'Switch narration to French',
@@ -17,7 +17,7 @@ const COPY = {
     ready:'Press play when you are ready.', volume:'Volume', settings:'Playback settings', speed:'Playback speed', shortcuts:'Keyboard shortcuts (?)', help:'Shortcuts', restart:'Replay film',
   },
   fr: {
-    skip: 'Explorer le système solaire', play: 'Lire', enter: 'Explorer le système solaire', watchSound: 'Activer le son',
+    play: 'Lire', enter: 'Explorer le système solaire', watchSound: 'Activer le son',
     pause: 'Mettre le film en pause', resume: 'Reprendre le film', mute: 'Couper le son', unmute: 'Activer le son',
     position: 'Position dans le film', introduction: 'Introduction de RELIC', preview: 'Aperçu', offline: 'Garder le film hors ligne', offlineReady: 'Film disponible hors ligne',
     show: 'Afficher les commandes', captions: 'Afficher les textes (C)', hideCaptions: 'Masquer les textes (C)', narrationLanguage:'Langue de narration', switchLanguage:'Passer la narration en anglais',
@@ -41,6 +41,16 @@ const clock = seconds => {
   const total = Math.max(0, Math.floor(Number(seconds) || 0));
   return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`;
 };
+
+// The final brand is a player card, independent of spoken captions. Older film
+// editions mark its black picture as `visual`; scene identity remains reliable
+// across narration languages, media durations, pauses and the exact last frame.
+export function resolveFilmEnding(media, cues, position, ended = false) {
+  const scene = media.scenes?.find(item => item.id === 'relic' && Number.isFinite(Number(item.start)));
+  const cue = cues.find(item => item.kind === 'end' && Number.isFinite(Number(item.start)));
+  const start = Number(scene?.start ?? cue?.start ?? (ended ? position : Infinity));
+  return Number.isFinite(start) && position >= start ? { start, scene } : null;
+}
 
 /** A film-led opening. Editorial cues always follow the video's media clock. */
 export function createPrologue({
@@ -102,7 +112,7 @@ export function createPrologue({
     exitTimer = null;
     closing = null;
     releaseVideo(active);
-    element.classList.remove('leaving', 'prologue-gated', 'prologue-failed', 'prologue-language-switching');
+    element.classList.remove('leaving', 'prologue-gated', 'prologue-failed', 'prologue-language-switching', 'prologue-ending', 'prologue-paused');
     element.classList.add('hidden');
     delete element.dataset.scene;
     delete element.dataset.chapter;
@@ -146,7 +156,7 @@ export function createPrologue({
     let filmMedia = { ...media, ...(media.languages?.[language()] ?? {}) };
     let cues = [...(media.captions?.[language()] ?? defaultCues)].sort((a,b)=>a.start-b.start);
     element.classList.add('prologue');
-    element.classList.remove('hidden', 'leaving', 'prologue-failed', 'prologue-backdrop-ready');
+    element.classList.remove('hidden', 'leaving', 'prologue-failed', 'prologue-backdrop-ready', 'prologue-ending', 'prologue-paused');
     for (const name of ['--end-blur', '--end-brightness', '--end-scale', '--end-progress', '--end-picture-opacity', '--end-mark-opacity', '--end-word-opacity', '--end-rule-progress']) element.style.removeProperty(name);
     element.classList.toggle('prologue-reduced', Boolean(reducedMotion()));
     element.setAttribute('role', 'dialog');
@@ -158,17 +168,16 @@ export function createPrologue({
     // Only static interface markup uses HTML. Every supplied cue uses textContent.
     element.innerHTML = `<canvas class="prologue-backdrop" width="0" height="0" aria-hidden="true"></canvas><video id="intro-video" class="prologue-film" playsinline preload="none" aria-hidden="true" tabindex="-1"></video><canvas class="prologue-language-frame" width="0" height="0" aria-hidden="true" hidden></canvas>
       <div class="prologue-shade" aria-hidden="true"></div>
-      <header class="prologue-header"><span class="prologue-brand" aria-hidden="true"><img src="${BRAND_ASSET}" alt="" width="32" height="28">RELIC</span><span class="prologue-preview" hidden></span><button id="skip-intro" class="prologue-skip"><span></span></button></header>
+      <header class="prologue-header"><span class="prologue-brand" aria-hidden="true"><img src="${BRAND_ASSET}" alt="" width="32" height="28">RELIC</span><span class="prologue-preview" hidden></span></header>
       <button class="prologue-reveal prologue-visually-hidden" type="button" hidden></button>
-      <div class="prologue-caption"><img class="prologue-endmark" src="${BRAND_ASSET}" alt="" width="128" height="112" aria-hidden="true"><div class="prologue-context"><p id="intro-kicker"></p><p id="intro-speaker"></p></div><h1 id="intro-line"></h1><span class="prologue-visually-hidden" id="intro-transcript" aria-live="polite" aria-atomic="true"></span><p id="intro-source" hidden></p>
-        <div class="prologue-gate" hidden><p id="intro-status" role="status"></p><div class="prologue-gate-actions"><button class="prologue-play-film" type="button">${icon('play')}</button><button class="prologue-enter"><span></span></button></div></div>
-      </div>
+      <div class="prologue-caption"><img class="prologue-endmark" src="${BRAND_ASSET}" alt="" width="128" height="112" aria-hidden="true"><h1 id="intro-line"></h1><span class="prologue-visually-hidden" id="intro-transcript" aria-live="polite" aria-atomic="true"></span></div>
+      <div class="prologue-gate" hidden><p id="intro-status" role="status"></p><div class="prologue-gate-actions"><button class="prologue-play-film" type="button">${icon('play')}</button><button class="prologue-enter" type="button"><span></span></button></div></div>
       <p class="prologue-loading" role="status" hidden></p>
       <p class="prologue-feedback" role="status" aria-live="polite" hidden></p>
       <footer class="prologue-controls">
         <label class="prologue-scrubber"><span class="prologue-visually-hidden"></span><input type="range" min="0" max="1" step="0.01" value="0" disabled></label>
         <div class="prologue-transport">
-          <div class="prologue-main-controls"><button class="prologue-pause" type="button"></button><div class="prologue-volume-group"><button class="prologue-audio" type="button" aria-pressed="false"></button><label class="prologue-inline-volume"><span class="prologue-visually-hidden"></span><input class="prologue-volume-input" data-player-volume type="range" min="0" max="100" step="1" value="100"><output class="prologue-volume-value">100%</output></label></div><time class="prologue-time">0:00 / 8:49</time></div>
+          <div class="prologue-main-controls"><button class="prologue-pause" type="button"></button><div class="prologue-volume-group"><button class="prologue-audio" type="button" aria-pressed="false"></button><label class="prologue-inline-volume"><span class="prologue-visually-hidden"></span><input class="prologue-volume-input" data-player-volume type="range" min="0" max="100" step="1" value="100"><output class="prologue-volume-value">100%</output></label></div><time class="prologue-time"></time></div>
           <div class="prologue-extra-controls"><button class="prologue-language" type="button"><span></span></button><button class="prologue-captions" type="button" aria-pressed="true">${icon('captions')}</button><button class="prologue-settings" type="button" aria-controls="prologue-player-menu" aria-expanded="false">${worldIcon('gear')}</button><button class="prologue-fullscreen" type="button">${icon('fullscreen')}</button></div>
         </div>
         <section class="prologue-player-menu" id="prologue-player-menu" role="dialog" aria-modal="false" aria-labelledby="prologue-player-menu-title" hidden>
@@ -185,11 +194,7 @@ export function createPrologue({
     const backdropContext = backdrop.getContext('2d', { alpha: false });
     const fittedScreen = view.matchMedia('(orientation: portrait), (max-height: 500px) and (pointer: coarse)');
     const caption = element.querySelector('.prologue-caption');
-    const kicker = element.querySelector('#intro-kicker');
     const title = element.querySelector('#intro-line');
-    const source = element.querySelector('#intro-source');
-    const speaker = element.querySelector('#intro-speaker');
-    const skip = element.querySelector('#skip-intro');
     const gate = element.querySelector('.prologue-gate');
     const status = element.querySelector('#intro-status');
     const play = element.querySelector('.prologue-play-film');
@@ -229,6 +234,7 @@ export function createPrologue({
     let frameKind = null;
     let cueIndex = -2;
     let cueLanguage = '';
+    let cueEnding = false;
     let explicitPlaybackIntent = false;
     let gateReason = null;
     let failed = false;
@@ -268,7 +274,7 @@ export function createPrologue({
       chromeTimer = null;
     }
     function canHideChrome() {
-      return !sourceSwitch && !video.paused && !video.ended && !gateReason && !failed && loading.hidden && !menuOpen;
+      return !sourceSwitch && !video.paused && !video.ended && !cueEnding && !gateReason && !failed && loading.hidden && !menuOpen;
     }
     function scheduleChrome() {
       cancelChrome();
@@ -329,6 +335,9 @@ export function createPrologue({
       feedbackTimer = view.setTimeout(() => { feedback.hidden = true; feedbackTimer = null; }, glyph ? 650 : 1000);
     }
     function showPlaybackFeedback(playing) {
+      // A persistent Play button already describes a pause. A second transient
+      // glyph over it would overlap the Explore action, especially on phones.
+      if (!playing) { cancelFeedback(); feedback.hidden = true; return; }
       const text = language() === 'fr' ? playing ? 'Lecture' : 'En pause' : playing ? 'Playing' : 'Paused';
       showFeedback(text, playing ? 'pause' : 'play');
     }
@@ -437,12 +446,13 @@ export function createPrologue({
     }
     function setCaption(index, position) {
       const lang = language();
-      const cue = cues[index];
-      if (index !== cueIndex || lang !== cueLanguage) {
-        cueIndex = index; cueLanguage = lang;
+      const ending = resolveFilmEnding(filmMedia, cues, position, video.ended);
+      const cue = ending ? { id:'relic', kind:'end', title:'RELIC', start:ending.start, end:duration() } : cues[index];
+      if (index !== cueIndex || lang !== cueLanguage || Boolean(ending) !== cueEnding) {
+        cueIndex = index; cueLanguage = lang; cueEnding = Boolean(ending);
         if (cue) element.dataset.chapter = String(cue.id ?? index);
         else delete element.dataset.chapter;
-        if (['quote', 'typing', 'bridge', 'visual', 'end', 'narration'].includes(cue?.kind)) element.dataset.cueKind = cue.kind;
+        if (['quote', 'typing', 'bridge', 'visual', 'end', 'narration', 'subtitle'].includes(cue?.kind)) element.dataset.cueKind = cue.kind;
         else delete element.dataset.cueKind;
         // A timeupdate can enter a black card while a compositor callback is
         // still pending. Switch that pending loop as well, so the card's fade
@@ -452,7 +462,6 @@ export function createPrologue({
           queueFrame();
         }
         element.dataset.framing = cue?.framing === 'wide' ? 'wide' : 'immersive';
-        kicker.textContent = localize(cue?.kicker);
         typedValue = localize(cue?.title);
         title.setAttribute('aria-label', typedValue);
         title.dataset.fullTitle = typedValue;
@@ -460,29 +469,10 @@ export function createPrologue({
         title.hidden = !typedValue;
         if (cue?.kind === 'typing') typing.setCue(cue,typedValue);
         else { typing.clear(); title.textContent = typedValue; }
-        speaker.textContent = localize(cue?.speaker);
-        // Source and rights attribution lives in the app's Sources space.
-        source.textContent = '';
-        kicker.hidden = !kicker.textContent;
-        speaker.hidden = !speaker.textContent;
-        source.hidden = true;
         caption.classList.toggle('has-cue', Boolean(cue));
       }
-      const scene = filmMedia.scenes?.find(item=>position>=item.start && position<item.end);
+      const scene = ending?.scene ?? filmMedia.scenes?.find(item=>position>=item.start && position<item.end);
       if(scene)element.dataset.scene=scene.id;else delete element.dataset.scene;
-      // A location can be identified inside a long picture montage without
-      // changing the narration cue or labelling the preceding images. Offsets
-      // belong to the scene's media clock, so pause and seek preserve the label.
-      const scenePosition = scene ? position - scene.start : 0;
-      const timedLabel = scene?.labelTimeline?.find(item=>scenePosition>=item.at && scenePosition<item.end);
-      const showPictureLabel = !gateReason && !['typing', 'bridge', 'end'].includes(cue?.kind);
-      const pictureLabel = showPictureLabel ? localize(timedLabel?.label ?? scene?.label) : '';
-      const kickerText = showPictureLabel ? pictureLabel || localize(cue?.kicker) : '';
-      if (kicker.textContent !== kickerText) kicker.textContent = kickerText;
-      kicker.hidden = !kickerText;
-      element.classList.toggle('prologue-timed-label', Boolean(timedLabel) && Boolean(pictureLabel));
-      element.classList.toggle('prologue-earth-label', showPictureLabel && scene?.id === 'origins' && Boolean(timedLabel));
-      caption.classList.toggle('prologue-label-only', Boolean(pictureLabel) && !typedValue);
       const composition=scene ?? cue;
       const focusFrames = composition?.focusTimeline ?? [];
       const focusFrame = focusFrames.findLast?.(point => position - composition.start >= point.at) ?? focusFrames.filter(point => position - composition.start >= point.at).at(-1);
@@ -496,18 +486,14 @@ export function createPrologue({
       const clamp = value => Math.max(0, Math.min(1, value));
       const smooth = value => { const x = clamp(value); return x*x*(3-2*x); };
       const staticCaption = Boolean(gateReason) || Boolean(reducedMotion());
-      const labelOpacity = timedLabel && pictureLabel && !staticCaption
-        ? Math.min(smooth((scenePosition - timedLabel.at) / .6), smooth((timedLabel.end - scenePosition) / .6)) : 1;
-      kicker.style.opacity = labelOpacity.toFixed(4);
       // Opening titles, the time bridge and the final brand are film cards,
       // rather than dialogue subtitles. Switching captions off preserves them.
       const titleCard = ['typing', 'bridge', 'end'].includes(cue?.kind);
-      caption.classList.toggle('prologue-caption-hidden', !gateReason && ((cue?.kind === 'visual' && !pictureLabel) || (!captionsVisible && !titleCard)));
+      caption.classList.toggle('prologue-caption-hidden', !ending && (Boolean(gateReason) || cue?.kind === 'visual' || (!captionsVisible && !titleCard)));
       if (cue?.kind === 'typing') typing.render({position,gated:Boolean(gateReason)});
-      const ending = cue?.kind === 'end';
-      const endTime = ending ? position - cue.start : 0;
+      const endTime = ending ? position - ending.start : 0;
       const endProgress = ending ? smooth(endTime / 3) : 0;
-      const staticEnding = ending && Boolean(reducedMotion());
+      const staticEnding = ending && (Boolean(reducedMotion()) || video.paused || video.ended);
       element.style.setProperty('--end-progress', endProgress.toFixed(4));
       element.style.setProperty('--end-picture-opacity', (ending ? staticEnding ? 0 : 1 - smooth(endTime / 1.4) : 1).toFixed(4));
       element.style.setProperty('--end-mark-opacity', (staticEnding ? 1 : ending ? smooth((endTime - .8) / 1.4) : 0).toFixed(4));
@@ -518,13 +504,31 @@ export function createPrologue({
       // most of a brief quotation on an entrance/exit animation.
       const archiveCaption = cue?.kind === 'quote';
       const bridgeCaption = cue?.kind === 'bridge';
-      const fixedPictureLabel = Boolean(pictureLabel) && cue?.kind === 'visual';
-      const entering = !cue || staticCaption || archiveCaption || fixedPictureLabel || cue.kind === 'typing' ? 1 : smooth((position - cue.start) / (bridgeCaption ? .45 : cue.kind === 'narration' ? .18 : .9));
-      const leaving = !cue || staticCaption || archiveCaption || fixedPictureLabel || (cue.id === 'relic' || cue.kind === 'end') ? 1 : smooth((cue.end - position) / (bridgeCaption ? .45 : cue.kind === 'narration' ? .15 : .7));
+      const entering = !cue || ending || staticCaption || archiveCaption || cue.kind === 'typing' ? 1 : smooth((position - cue.start) / (bridgeCaption ? .45 : cue.kind === 'narration' ? .18 : .9));
+      const leaving = !cue || ending || staticCaption || archiveCaption ? 1 : smooth((cue.end - position) / (bridgeCaption ? .45 : cue.kind === 'narration' ? .15 : .7));
       const opacity = entering * leaving;
       caption.style.setProperty('--caption-opacity', opacity.toFixed(4));
       caption.style.setProperty('--caption-lift', `${(bridgeCaption ? 0 : (1-entering)*(cue?.kind==='narration'?3:14) - (1-leaving)*3).toFixed(2)}px`);
       title.style.setProperty('--caption-reveal', `${(archiveCaption || titleCard || cue?.kind==='narration'?0:(1-entering)*100).toFixed(2)}%`);
+
+      // Pause actions live outside the subtitle container, so hiding captions
+      // cannot hide the exit. On the final card they join the persistent brand.
+      // Neither the media `ended` event nor a timer advances into the atlas.
+      element.classList.toggle('prologue-ending', Boolean(ending));
+      const paused = sourceSwitch ? !sourceSwitch.resume : video.paused;
+      element.classList.toggle('prologue-paused', paused && !gateReason);
+      if (ending) {
+        if (gate.parentElement !== caption) caption.append(gate);
+        gate.hidden = false;
+        status.hidden = true;
+        play.hidden = !paused && !video.ended;
+      } else {
+        if (gate.parentElement !== element) element.insertBefore(gate, loading);
+        gate.hidden = !gateReason && !(hasSource && paused);
+        status.hidden = !gateReason || gateReason === 'ready';
+        status.textContent = gateReason ? copy()[gateReason] : '';
+        play.hidden = gateReason === 'unavailable';
+      }
     }
     function render() {
       if (!current()) return;
@@ -536,6 +540,7 @@ export function createPrologue({
       if (index < 0 && cues.at(-1)?.kind === 'end' && position >= Number(cues.at(-1).start) && position <= Number(cues.at(-1).end) + .05) index = cues.length - 1;
       if (gateReason && index < 0 && cues.length) index = 0;
       setCaption(index, position);
+      if (cueEnding && !chromeVisible) setChrome(true, false);
       const length = duration();
       range.disabled = !hasSource || failed || Boolean(sourceSwitch) || video.readyState < 1;
       range.max = String(length);
@@ -551,14 +556,15 @@ export function createPrologue({
       const nextTransport = `${language()}|${paused}|${video.ended}|${video.muted}|${gateReason}|${soundChoice}|${captionsVisible}|${video.playbackRate}|${document.fullscreenElement === element}|${Boolean(sourceSwitch)}`;
       if (transportState !== nextTransport) {
         transportState = nextTransport;
+        element.setAttribute('aria-label', copy().introduction);
         range.setAttribute('aria-label', copy().position);
         preview.hidden = !filmMedia.preview;
         preview.textContent = filmMedia.preview ? copy().preview : '';
         download.setAttribute('aria-label', copy().offline);
         download.title = copy().offline;
-        skip.querySelector('span').textContent = copy().skip;
-        play.setAttribute('aria-label', copy().play);
-        play.title = copy().play;
+        const playLabel = video.ended ? copy().restart : hasSource ? copy().resume : copy().play;
+        play.setAttribute('aria-label', playLabel);
+        play.title = playLabel;
         enter.querySelector('span').textContent = copy().enter;
         pause.innerHTML = icon(paused ? 'play' : 'pause');
         pause.setAttribute('aria-label', video.ended ? copy().restart : paused ? copy().resume : copy().pause);
@@ -842,7 +848,6 @@ export function createPrologue({
     document.addEventListener('pointerdown',event=>{if(menuOpen&&!menu.contains(event.target)&&!settings.contains(event.target))setMenu(false);},{signal});
     document.addEventListener('fullscreenchange', render, { signal });
     document.addEventListener('keydown', keyboardControls, { signal, capture: true });
-    skip.addEventListener('click', finish, { signal });
     enter.addEventListener('click', finish, { signal });
     play.addEventListener('click', () => { soundChoice = true; playFilm(); }, { signal });
     pause.addEventListener('click', () => togglePlayback(), { signal });

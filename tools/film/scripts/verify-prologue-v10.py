@@ -31,13 +31,15 @@ def correlate(reference, actual, padding):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__); parser.add_argument('--work',type=Path,required=True)
+    parser.add_argument('--edition',type=int,choices=[10,11],default=10)
     args = parser.parse_args(); work = args.work.resolve()
     spec = importlib.util.spec_from_file_location('v10_build',ROOT/'tools/film/scripts/build-prologue-v10.py')
     build = importlib.util.module_from_spec(spec); spec.loader.exec_module(build)
     exe = build.utility().ffmpeg_path(None)
-    plan = load(ROOT/'tools/film/scripts/prologue-edit-v10.json'); narration = load(work/'narration/manifest.json')
+    plan = load(ROOT/f'tools/film/scripts/prologue-edit-v{args.edition}.json'); narration = load(work/'narration/manifest.json')
     audio_report = load(work/'audio-report.json'); assert audio_report['complete']
-    protected = [(111.5,113,'V2 reading pause'),(293,301,'flag music only'),(153,161,'Gagarin music only')]
+    index = {s['id']:s for s in plan['shots']}
+    protected = [(111.5,113,'V2 reading pause'),(index['moon-flag']['start'],index['moon-flag']['end'],'flag music only'),(153,161,'Gagarin music only')]
     for start,end,name in protected:
         for row in narration['lines']:
             assert not (row['at'] < end and row['end'] > start),(name,row['id'])
@@ -45,7 +47,7 @@ def main():
             assert not (row['at'] < end and row['at']+row['length'] > start),(name,row['id'])
     measurements = []
     for language in ['en','fr']:
-        directory = work/'v10-0-hd50'/f'audio-{language}'
+        directory = work/f'v{args.edition}-0-hd50'/f'audio-{language}'
         output = work/f'verified-delivery-{language}.f32'; receipt = output.with_suffix('.json')
         signature = audio_report['languages'][language]['masterSha256']
         if not (output.is_file() and receipt.is_file() and load(receipt).get('masterSha256') == signature):

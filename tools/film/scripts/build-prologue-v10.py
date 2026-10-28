@@ -1,4 +1,4 @@
-"""Render the V10 documentary from checked V9 HLS, credited assets and stock narration.
+"""Render documentary editions from checked V9 HLS, credited assets and stock narration.
 
 Outputs use the operating system local application cache, outside Documents.
 Use --stage picture while narration is rendering, then --stage audio (or all).
@@ -20,6 +20,7 @@ import av
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[3]
+EDITION, RELEASE = 10, 'v10-0-hd50'
 FPS, RATE, WIDTH, HEIGHT, SCALE, TICKS = 50, 48000, 1920, 1080, 12800, 256
 DEFAULT_WORK = (Path(os.environ['LOCALAPPDATA'])/'Codex/task-work/relic-film-production/v10'
                 if os.name == 'nt' and os.environ.get('LOCALAPPDATA')
@@ -61,7 +62,7 @@ def encode(exe, inputs, target, duration, filters, template, complex_filter=Fals
     primaries, trc, matrix = context.color_primaries, context.color_trc, context.colorspace
     tail = (f'fps={FPS},tpad=stop_mode=clone:stop_duration=0.1,trim=end_frame={round(duration*FPS)},'
             f'setpts=N/({FPS}*TB),format=yuv420p,setsar=1,'
-            f'setparams=range=limited:color_primaries={primaries}:color_trc={trc}:colorspace={matrix}')
+            f'setparams=range=limited:field_mode=prog:chroma_location=left:color_primaries={primaries}:color_trc={trc}:colorspace={matrix}')
     graph = filters + (',' if filters else '') + tail
     if complex_filter:
         filtering = ['-filter_complex_threads', 1, '-filter_complex', graph+'[picture]', '-map', '[picture]']
@@ -100,7 +101,7 @@ def picture(plan, work, exe, helper):
     predecessors = {s['start']: original_plan['shots'][i-1] if i else None for i, s in enumerate(original_plan['shots'])}
     folder = work/'picture'; folder.mkdir(exist_ok=True)
     prepared = []
-    asset_hashes = {x['file']: x['sha256'] for x in load(ROOT/'tools/film/scripts/prologue-sources-v10.json')['assets']}
+    asset_hashes = {x['file']: x['sha256'] for x in load(ROOT/f'tools/film/scripts/prologue-sources-v{EDITION}.json')['assets']}
     previous = None
     for shot in plan['shots']:
         item = {'shot': shot, 'copy': False, 'repair': False}
@@ -123,13 +124,26 @@ def picture(plan, work, exe, helper):
 
     def render(item):
         s = item['shot']
+        if s['source'] == 'rendered-v10':
+            cached = (work/s['file']).resolve()
+            receipt = load(cached.with_suffix('.json'))
+            if sha(cached) != receipt['sha256']:
+                raise ValueError('Checked V10 derivative changed: '+s['id'])
+            with av.open(str(cached)) as c:
+                stream = c.streams.video[0]
+                if stream.codec_context.extradata != template.codec_context.extradata:
+                    raise ValueError('Retained V10 codec parameters differ')
+                item['packets'] = [p for p in c.demux(stream) if p.dts is not None and p.size]
+            if len(item['packets']) != round(s['duration']*FPS):
+                raise ValueError('Retained V10 frame count differs')
+            return item
         if item['copy'] and not item['repair']:
             return item
         duration = 2 if item['repair'] else s['duration']
         target = folder/(s['id']+('-repair' if item['repair'] else '')+'.mp4')
         receipt = target.with_suffix('.json')
         signature = {'shot': s, 'repair': item['repair'], 'incoming': item.get('incoming'),
-                     'sourceReceipt': source_hash, 'renderer': 11, 'template': hashlib.sha256(template.codec_context.extradata).hexdigest()}
+                     'sourceReceipt': source_hash, 'renderer': 12, 'template': hashlib.sha256(template.codec_context.extradata).hexdigest()}
         if s['source'] == 'asset':
             expected = asset_hashes[s['file']]
             source = work/s['file']
@@ -155,8 +169,11 @@ def picture(plan, work, exe, helper):
         elif s['source'] == 'v9-0':
             inputs = ['-ss', s['sourceStart'], '-i', master]
             filters = f'trim=duration={s["sourceDuration"]},setpts=(PTS-STARTPTS)*{duration}/{s["sourceDuration"]},{fit},fade=t=in:st=0:d=0.16'
+        elif s['source'] == 'black':
+            inputs = ['-f', 'lavfi', '-i', f'color=c=black:s={WIDTH}x{HEIGHT}:r={FPS}']
+            filters = ''
         elif s['source'] == 'bridge':
-            inputs = ['-ss', 503, '-i', master, '-ss', 548, '-i', master]
+            inputs = ['-ss', 457, '-i', master, '-ss', 548, '-i', master]
             filters = ('[0:v]trim=duration=4,setpts=PTS-STARTPTS,fps=50,format=yuv420p[a];'
                        '[1:v]trim=duration=4,setpts=PTS-STARTPTS,fps=50,format=yuv420p[b];'
                        '[a][b]xfade=transition=fade:duration=2:offset=2')
@@ -170,7 +187,7 @@ def picture(plan, work, exe, helper):
         else:
             inputs = ['-ss', s['in'], '-i', work/s['file']]
             filters = (f'trim=duration={s["sourceDuration"]},setpts=(PTS-STARTPTS)*{duration}/{s["sourceDuration"]},'
-                       f'{fit},fade=t=in:st=0:d=0.25')
+                       f'{fit}'+(f',fade=t=in:st=0:d={s.get("fadeIn",.25)}' if s.get('fadeIn',.25)>0 else ''))
         item['packets'] = encode(exe, inputs, target, duration, filters, template, s['source'] == 'bridge')
         write(receipt, {'input': signature, 'sha256': sha(target)})
         print(json.dumps({'stage': 'picture-shot', 'id': s['id'], 'duration': duration}), flush=True)
@@ -178,7 +195,7 @@ def picture(plan, work, exe, helper):
 
     with concurrent.futures.ThreadPoolExecutor(2) as pool:
         prepared = list(pool.map(render, prepared))
-    output = work/'picture-master-v10.mp4'
+    output = work/f'picture-master-v{EDITION}.mp4'
     copied = reencoded = 0
     with av.open(str(master)) as original, av.open(str(output), 'w', options={'movflags': '+faststart'}) as dest:
         stream = dest.add_stream_from_template(original.streams.video[0]); stream.time_base = Fraction(1, SCALE)
@@ -193,7 +210,7 @@ def picture(plan, work, exe, helper):
                 if encoded: reencoded += 1
                 else: copied += 1
     helper.DURATION = plan['duration']; helper.FRAME_COUNT = round(plan['duration']*FPS)
-    release = work/'v10-0-hd50'
+    release = work/RELEASE
     helper.package(exe, output, release/'video', 'video')
     report = {'revision': plan['revision'], 'sourceEncodingSha256': source_hash,
               'copiedFrames': copied, 'encodedFrames': reencoded, **helper.validate_video(release/'video/index.m3u8')}
@@ -223,7 +240,7 @@ def audio(plan, work, exe, helper):
     narration = load(work/'narration/manifest.json')
     if not narration.get('allLinesFit'):
         raise ValueError('A narration paragraph exceeds its picture slot')
-    script = load(ROOT/'tools/film/scripts/prologue-narration-v10.json')
+    script = load(ROOT/f'tools/film/scripts/prologue-narration-v{EDITION}.json')
     if len(narration['lines']) != 2*len(script['lines']):
         raise ValueError('Narration manifest is incomplete')
     for row in narration['lines']:
@@ -246,11 +263,15 @@ def audio(plan, work, exe, helper):
 
     # The unchanged opening ends at 88. New music is phase matched to its source
     # clock and crossfaded over two seconds, rather than restarting the score.
-    add_music(86, 70, 288, 2, 3)
-    add_music(371, 171, 187, 3, 3)
-    ending = seconds-86
-    add_music(555, 171, ending+6-555, 3, 6)
-    add_music(ending, 272.0889, 86, 6, 7)
+    closing = index['mars-approach']['start']-3 if EDITION >= 11 else seconds-86
+    add_music(86, 70, min(288, closing+6-86), 2, 6)
+    cursor = 368
+    while cursor < closing:
+        span = min(183, closing+6-cursor)
+        add_music(cursor, 171, span, 6, 6)
+        cursor += span-6
+    source_in = min(200, len(source_music)/RATE-(seconds-closing))
+    add_music(closing, source_in, seconds-closing, 6, 8)
     # Protect the respectful Challenger passage from the heroic score.
     for interval in plan['silenceMusic']:
         a, b = round(interval['start']*RATE), round(interval['end']*RATE)
@@ -272,7 +293,7 @@ def audio(plan, work, exe, helper):
         mix = np.array(music, copy=True); duck = np.ones(total, dtype=np.float32)
         spoken = [r for r in narration['lines'] if r['language'] == language]
 
-        def envelope(start, end, level=.16, attack=.25, release=.65):
+        def envelope(start, end, level=.16, attack=.35, release=1.8):
             a, b = round(start*RATE), round(end*RATE); left = max(0, a-round(attack*RATE)); right = min(total,b+round(release*RATE))
             duck[a:b] = np.minimum(duck[a:b], level)
             if a > left: duck[left:a] = np.minimum(duck[left:a], np.linspace(1, level, a-left))
@@ -291,21 +312,21 @@ def audio(plan, work, exe, helper):
             mix[a:a+len(samples)] += np.array(samples)*.84
         for archive in archives:
             a, first, count = round(archive['at']*RATE), round(archive['sourceStart']*RATE), round(archive['length']*RATE)
-            mix[a:a+count] += fade(original[first:first+count], .015, .045)
+            mix[a:a+count] += fade(original[first:first+count], .06, .18) * archive.get('gain', 1)
         raw = work/f'mix-{language}.f32'; mix.astype('<f4').tofile(raw)
         peak = float(np.max(np.abs(mix))); del mix, duck
         target = work/f'master-{language}.m4a'
         # Two-pass loudness normalization retains the sample clock and dynamics.
         measure = subprocess.run([str(exe),'-hide_banner','-f','f32le','-ar',str(RATE),'-ac','2','-i',str(raw),
-                                  '-af','loudnorm=I=-16:TP=-2:LRA=11:print_format=json','-f','null','-'],capture_output=True,check=True)
+                                  '-af','loudnorm=I=-18:TP=-3:LRA=11:print_format=json','-f','null','-'],capture_output=True,check=True)
         log = measure.stderr.decode(errors='replace'); measured = json.loads(log[log.rfind('{'):log.rfind('}')+1])
-        filt = ('loudnorm=I=-16:TP=-2:LRA=11:linear=true:print_format=json:'
+        filt = ('loudnorm=I=-18:TP=-3:LRA=11:linear=true:print_format=json:'
                 f'measured_I={measured["input_i"]}:measured_TP={measured["input_tp"]}:measured_LRA={measured["input_lra"]}:'
                 f'measured_thresh={measured["input_thresh"]}:offset={measured["target_offset"]}')
         run(exe,'-f','f32le','-ar',RATE,'-ac',2,'-i',raw,'-af',filt,'-ar',RATE,'-ac',2,
             '-c:a','aac','-b:a',192000,'-t',seconds,'-map_metadata',-1,'-movflags','+faststart',target)
         helper.DURATION = seconds; helper.PCM_SAMPLES = total
-        directory = work/'v10-0-hd50'/f'audio-{language}'
+        directory = work/RELEASE/f'audio-{language}'
         helper.package(exe,target,directory,'audio')
         final = helper.validate_audio(directory/'index.m3u8')
         if final['samplePeak'] >= 1 or abs(final['firstAudioPtsSeconds']) > 1e-8:
@@ -319,15 +340,19 @@ def audio(plan, work, exe, helper):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--edition', type=int, choices=[10,11], default=10)
     parser.add_argument('--stage',choices=['all','picture','audio'],default='all')
-    parser.add_argument('--work',type=Path,default=DEFAULT_WORK)
-    args = parser.parse_args(); work = args.work.resolve(); work.mkdir(parents=True,exist_ok=True)
-    plan = load(ROOT/'tools/film/scripts/prologue-edit-v10.json')
+    parser.add_argument('--work',type=Path)
+    args = parser.parse_args()
+    global EDITION, RELEASE
+    EDITION, RELEASE = args.edition, f'v{args.edition}-0-hd50'
+    work = (args.work or DEFAULT_WORK.parent/f'v{EDITION}').resolve(); work.mkdir(parents=True,exist_ok=True)
+    plan = load(ROOT/f'tools/film/scripts/prologue-edit-v{EDITION}.json')
     helper = utility(); exe = helper.ffmpeg_path(None)
     if args.stage in ['all','picture']: picture(plan,work,exe,helper)
     if args.stage in ['all','audio']: audio(plan,work,exe,helper)
     if (work/'picture-report.json').is_file() and (work/'audio-report.json').is_file():
-        release = work/'v10-0-hd50'
+        release = work/RELEASE
         for lang in ['en','fr']:
             text = (ROOT/f'intro/assets/prologue/v9-0-hd50/{lang}.m3u8').read_text(encoding='utf-8')
             (release/f'{lang}.m3u8').write_text(text,encoding='utf-8',newline='\n')

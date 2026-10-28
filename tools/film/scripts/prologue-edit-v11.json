@@ -1,0 +1,764 @@
+{
+  "version": 11,
+  "revision": "11.0-hd50",
+  "duration": 746,
+  "fps": 50,
+  "release": "v11-0-hd50",
+  "sourceRevision": "9.0-hd50",
+  "sourceReceipt": "intro/assets/prologue/encoding-v9-0-source.json",
+  "shots": [
+    {
+      "id": "prologue",
+      "duration": 16,
+      "source": "v9-0",
+      "sourceStart": 0,
+      "sourceDuration": 16,
+      "start": 0,
+      "end": 16
+    },
+    {
+      "id": "origins",
+      "duration": 65,
+      "source": "v9-0",
+      "sourceStart": 16,
+      "sourceDuration": 65,
+      "start": 16,
+      "end": 81
+    },
+    {
+      "id": "dinosaurs",
+      "duration": 7,
+      "source": "v9-0",
+      "sourceStart": 81,
+      "sourceDuration": 7,
+      "start": 81,
+      "end": 88
+    },
+    {
+      "id": "deep-time",
+      "duration": 3,
+      "source": "v9-0",
+      "sourceStart": 88,
+      "sourceDuration": 3,
+      "start": 88,
+      "end": 91
+    },
+    {
+      "id": "humanity",
+      "duration": 8,
+      "source": "v9-0",
+      "sourceStart": 91,
+      "sourceDuration": 8,
+      "start": 91,
+      "end": 99
+    },
+    {
+      "id": "v1",
+      "duration": 6,
+      "source": "v9-0",
+      "sourceStart": 99,
+      "sourceDuration": 6,
+      "start": 99,
+      "end": 105
+    },
+    {
+      "id": "v2",
+      "duration": 8,
+      "source": "v9-0",
+      "sourceStart": 105,
+      "sourceDuration": 8,
+      "start": 105,
+      "end": 113
+    },
+    {
+      "id": "von-braun",
+      "duration": 10,
+      "source": "v9-0",
+      "sourceStart": 113,
+      "sourceDuration": 10,
+      "start": 113,
+      "end": 123
+    },
+    {
+      "id": "sputnik-wide",
+      "duration": 4,
+      "source": "v9-0",
+      "sourceStart": 123,
+      "sourceDuration": 4,
+      "start": 123,
+      "end": 127
+    },
+    {
+      "id": "sputnik",
+      "duration": 8,
+      "source": "v9-0",
+      "sourceStart": 127,
+      "sourceDuration": 8,
+      "start": 127,
+      "end": 135
+    },
+    {
+      "id": "laika",
+      "duration": 12,
+      "source": "v9-0",
+      "sourceStart": 135,
+      "sourceDuration": 12,
+      "start": 135,
+      "end": 147
+    },
+    {
+      "id": "gagarin",
+      "duration": 6,
+      "source": "v9-0",
+      "sourceStart": 147,
+      "sourceDuration": 6,
+      "start": 147,
+      "end": 153
+    },
+    {
+      "id": "gagarin-silent",
+      "duration": 8,
+      "source": "v9-0",
+      "sourceStart": 153,
+      "sourceDuration": 8,
+      "start": 153,
+      "end": 161
+    },
+    {
+      "id": "moon-goal",
+      "duration": 8,
+      "source": "v9-0",
+      "sourceStart": 161,
+      "sourceDuration": 8,
+      "start": 161,
+      "end": 169
+    },
+    {
+      "id": "kennedy",
+      "duration": 20,
+      "source": "v9-0",
+      "sourceStart": 169,
+      "sourceDuration": 20,
+      "start": 169,
+      "end": 189
+    },
+    {
+      "id": "tereshkova",
+      "duration": 14,
+      "source": "rendered-v10",
+      "file": "../v10/picture/tereshkova.mp4",
+      "in": 0,
+      "sourceDuration": 14,
+      "still": true,
+      "eventDate": "1963-06-16",
+      "start": 189,
+      "end": 203,
+      "creditedOriginal": "assets/tereshkova-1963.jpg"
+    },
+    {
+      "id": "leonov",
+      "duration": 14,
+      "source": "rendered-v10",
+      "file": "../v10/picture/leonov.mp4",
+      "in": 3,
+      "sourceDuration": 14,
+      "eventDate": "1965-03-18",
+      "start": 203,
+      "end": 217,
+      "creditedOriginal": "assets/leonov.mp4"
+    },
+    {
+      "id": "apollo8-orbit",
+      "duration": 10,
+      "source": "rendered-v10",
+      "file": "../v10/picture/apollo8-orbit.mp4",
+      "in": 0,
+      "sourceDuration": 10,
+      "eventDate": "1968-12-24",
+      "start": 217,
+      "end": 227,
+      "creditedOriginal": "assets/earthrise.mp4"
+    },
+    {
+      "id": "apollo8-earthrise",
+      "duration": 10,
+      "source": "rendered-v10",
+      "file": "../v10/picture/apollo8-earthrise.mp4",
+      "in": 0,
+      "sourceDuration": 10,
+      "still": true,
+      "eventDate": "1968-12-24",
+      "start": 227,
+      "end": 237,
+      "creditedOriginal": "assets/earthrise-colour.jpg"
+    },
+    {
+      "id": "saturn-v",
+      "duration": 12,
+      "source": "v9-0",
+      "sourceStart": 189,
+      "sourceDuration": 12,
+      "start": 237,
+      "end": 249
+    },
+    {
+      "id": "apollo-engines",
+      "duration": 6,
+      "source": "v9-0",
+      "sourceStart": 201,
+      "sourceDuration": 6,
+      "start": 249,
+      "end": 255
+    },
+    {
+      "id": "apollo-liftoff",
+      "duration": 10,
+      "source": "v9-0",
+      "sourceStart": 207,
+      "sourceDuration": 10,
+      "start": 255,
+      "end": 265
+    },
+    {
+      "id": "eagle-orbit",
+      "duration": 6,
+      "source": "v9-0",
+      "sourceStart": 217,
+      "sourceDuration": 6,
+      "start": 265,
+      "end": 271
+    },
+    {
+      "id": "eagle-descent",
+      "duration": 8,
+      "source": "v9-0",
+      "sourceStart": 223,
+      "sourceDuration": 8,
+      "start": 271,
+      "end": 279
+    },
+    {
+      "id": "moon",
+      "duration": 14,
+      "source": "v9-0",
+      "sourceStart": 231,
+      "sourceDuration": 14,
+      "start": 279,
+      "end": 293
+    },
+    {
+      "id": "moon-flag",
+      "duration": 8,
+      "source": "rendered-v10",
+      "file": "../v10/picture/moon-flag.mp4",
+      "in": 1490,
+      "sourceDuration": 8,
+      "musicOnly": true,
+      "eventDate": "1969-07-21",
+      "start": 293,
+      "end": 301,
+      "creditedOriginal": "assets/apollo11-broll.mp4"
+    },
+    {
+      "id": "eagle-landed",
+      "duration": 14,
+      "source": "rendered-v10",
+      "file": "../v10/picture/eagle-landed.mp4",
+      "in": 1538,
+      "sourceDuration": 14,
+      "start": 301,
+      "end": 315,
+      "creditedOriginal": "assets/apollo11-broll.mp4"
+    },
+    {
+      "id": "voyager2-launch",
+      "duration": 8,
+      "source": "rendered-v10",
+      "file": "../v10/picture/voyager2-launch.mp4",
+      "in": 5,
+      "sourceDuration": 8,
+      "eventDate": "1977-08-20",
+      "start": 315,
+      "end": 323,
+      "creditedOriginal": "assets/voyager2-launch.mp4"
+    },
+    {
+      "id": "voyager1-launch",
+      "duration": 8,
+      "source": "rendered-v10",
+      "file": "../v10/picture/voyager1-launch.mp4",
+      "in": 5,
+      "sourceDuration": 8,
+      "eventDate": "1977-09-05",
+      "start": 323,
+      "end": 331,
+      "creditedOriginal": "assets/voyager1-launch.mp4"
+    },
+    {
+      "id": "voyager-instruments",
+      "duration": 8,
+      "source": "rendered-v10",
+      "file": "../v10/picture/voyager-instruments.mp4",
+      "in": 50,
+      "sourceDuration": 8,
+      "start": 331,
+      "end": 339,
+      "creditedOriginal": "assets/voyager1-launch.mp4"
+    },
+    {
+      "id": "voyager",
+      "duration": 8,
+      "source": "v9-0",
+      "sourceStart": 259,
+      "sourceDuration": 8,
+      "start": 339,
+      "end": 347
+    },
+    {
+      "id": "shuttle-carrier",
+      "duration": 8,
+      "source": "v9-0",
+      "sourceStart": 275,
+      "sourceDuration": 8,
+      "start": 347,
+      "end": 355
+    },
+    {
+      "id": "sts1",
+      "duration": 16,
+      "source": "v9-0",
+      "sourceStart": 283,
+      "sourceDuration": 16,
+      "start": 355,
+      "end": 371
+    },
+    {
+      "id": "challenger-ascent",
+      "source": "asset",
+      "file": "assets/challenger-ascent.ogv",
+      "duration": 10,
+      "in": 73,
+      "sourceDuration": 10,
+      "eventDate": "1986-01-28",
+      "start": 371,
+      "end": 381
+    },
+    {
+      "id": "challenger",
+      "duration": 6,
+      "source": "v9-0",
+      "sourceStart": 299,
+      "sourceDuration": 6,
+      "start": 381,
+      "end": 387
+    },
+    {
+      "id": "remembrance",
+      "duration": 8,
+      "source": "v9-0",
+      "sourceStart": 305,
+      "sourceDuration": 8,
+      "start": 387,
+      "end": 395
+    },
+    {
+      "id": "hubble",
+      "duration": 14,
+      "source": "v9-0",
+      "sourceStart": 313,
+      "sourceDuration": 14,
+      "start": 395,
+      "end": 409
+    },
+    {
+      "id": "iss-capture",
+      "duration": 10,
+      "source": "v9-0",
+      "sourceStart": 327,
+      "sourceDuration": 10,
+      "start": 409,
+      "end": 419
+    },
+    {
+      "id": "iss-unity",
+      "duration": 10,
+      "source": "v9-0",
+      "sourceStart": 337,
+      "sourceDuration": 10,
+      "start": 419,
+      "end": 429
+    },
+    {
+      "id": "cassini-saturn",
+      "source": "asset",
+      "file": "assets/cassini-success-original.mp4",
+      "duration": 12,
+      "in": 10.2,
+      "sourceDuration": 12,
+      "eventDate": "2004-07-01",
+      "start": 429,
+      "end": 441
+    },
+    {
+      "id": "huygens-separation",
+      "source": "asset",
+      "file": "assets/cassini-success-original.mp4",
+      "duration": 10,
+      "in": 34,
+      "sourceDuration": 10,
+      "eventDate": "2004-12-25",
+      "start": 441,
+      "end": 451
+    },
+    {
+      "id": "huygens-descent",
+      "source": "asset",
+      "file": "assets/huygens-experience.mp4",
+      "duration": 16,
+      "in": 6,
+      "sourceDuration": 24,
+      "eventDate": "2005-01-14",
+      "start": 451,
+      "end": 467
+    },
+    {
+      "id": "europe",
+      "duration": 10,
+      "source": "v9-0",
+      "sourceStart": 347,
+      "sourceDuration": 10,
+      "start": 467,
+      "end": 477
+    },
+    {
+      "id": "iss-whole",
+      "duration": 12,
+      "source": "v9-0",
+      "sourceStart": 357,
+      "sourceDuration": 12,
+      "start": 477,
+      "end": 489
+    },
+    {
+      "id": "iss-life",
+      "duration": 6,
+      "source": "v9-0",
+      "sourceStart": 369,
+      "sourceDuration": 6,
+      "start": 489,
+      "end": 495
+    },
+    {
+      "id": "shuttle-retirement",
+      "duration": 16,
+      "source": "v9-0",
+      "sourceStart": 375,
+      "sourceDuration": 16,
+      "start": 495,
+      "end": 511
+    },
+    {
+      "id": "soyuz",
+      "duration": 8,
+      "source": "v9-0",
+      "sourceStart": 391,
+      "sourceDuration": 8,
+      "start": 511,
+      "end": 519
+    },
+    {
+      "id": "heliopause",
+      "duration": 14,
+      "source": "v9-0",
+      "sourceStart": 399,
+      "sourceDuration": 14,
+      "start": 519,
+      "end": 533
+    },
+    {
+      "id": "rosetta-comet",
+      "source": "asset",
+      "file": "assets/rosetta-descent-original.mov",
+      "duration": 8,
+      "in": 9,
+      "sourceDuration": 13,
+      "eventDate": "2014-08-06",
+      "start": 533,
+      "end": 541
+    },
+    {
+      "id": "rosetta-observation",
+      "source": "asset",
+      "file": "assets/rosetta-orbit.mp4",
+      "duration": 8,
+      "in": 14,
+      "sourceDuration": 20,
+      "eventDate": "2014-11-12",
+      "start": 541,
+      "end": 549
+    },
+    {
+      "id": "philae-separation",
+      "source": "asset",
+      "file": "assets/philae-science-original.mov",
+      "duration": 12,
+      "in": 10,
+      "sourceDuration": 17,
+      "eventDate": "2014-11-12",
+      "start": 549,
+      "end": 561
+    },
+    {
+      "id": "philae-bounces",
+      "source": "asset",
+      "file": "assets/philae-bounce-esa-original.mp4",
+      "duration": 14,
+      "in": 4,
+      "sourceDuration": 20,
+      "eventDate": "2014-11-12",
+      "start": 561,
+      "end": 575
+    },
+    {
+      "id": "rosetta-descent",
+      "source": "asset",
+      "file": "assets/rosetta-descent-original.mov",
+      "duration": 24,
+      "in": 22,
+      "sourceDuration": 44,
+      "eventDate": "2016-09-30",
+      "start": 575,
+      "end": 599
+    },
+    {
+      "id": "change4-wide",
+      "duration": 8,
+      "source": "rendered-v10",
+      "file": "../v10/picture/change4-wide.mp4",
+      "in": 0,
+      "sourceDuration": 8,
+      "still": true,
+      "eventDate": "2019-01-03",
+      "start": 599,
+      "end": 607,
+      "creditedOriginal": "assets/change4-lro.jpg"
+    },
+    {
+      "id": "change4-site",
+      "duration": 6,
+      "source": "rendered-v10",
+      "file": "../v10/picture/change4-site.mp4",
+      "in": 0,
+      "sourceDuration": 6,
+      "still": true,
+      "eventDate": "2019-01-03",
+      "start": 607,
+      "end": 613,
+      "creditedOriginal": "assets/change4-lro-detail.png"
+    },
+    {
+      "id": "falcon-launch",
+      "duration": 12,
+      "source": "v9-0",
+      "sourceStart": 469,
+      "sourceDuration": 12,
+      "start": 613,
+      "end": 625
+    },
+    {
+      "id": "falcon-dual-return",
+      "duration": 14,
+      "source": "v9-0",
+      "sourceStart": 481,
+      "sourceDuration": 14,
+      "start": 625,
+      "end": 639
+    },
+    {
+      "id": "falcon-return",
+      "duration": 12,
+      "source": "v9-0",
+      "sourceStart": 495,
+      "sourceDuration": 12,
+      "start": 639,
+      "end": 651
+    },
+    {
+      "id": "mars-approach",
+      "duration": 8,
+      "source": "v9-0",
+      "sourceStart": 437,
+      "sourceDuration": 8,
+      "start": 651,
+      "end": 659
+    },
+    {
+      "id": "perseverance-up",
+      "duration": 6,
+      "source": "v9-0",
+      "sourceStart": 445,
+      "sourceDuration": 6,
+      "start": 659,
+      "end": 665
+    },
+    {
+      "id": "perseverance-down",
+      "duration": 6,
+      "source": "v9-0",
+      "sourceStart": 451,
+      "sourceDuration": 6,
+      "start": 665,
+      "end": 671
+    },
+    {
+      "id": "webb",
+      "duration": 12,
+      "source": "v9-0",
+      "sourceStart": 457,
+      "sourceDuration": 12,
+      "start": 671,
+      "end": 683
+    },
+    {
+      "id": "webb-deployment",
+      "source": "asset",
+      "file": "assets/webb-deployment.webm",
+      "duration": 18,
+      "in": 0,
+      "sourceDuration": 78,
+      "eventDate": "2022-01-08",
+      "start": 683,
+      "end": 701
+    },
+    {
+      "id": "webb-observatory",
+      "source": "asset",
+      "file": "assets/webb-deployment.webm",
+      "duration": 12,
+      "in": 78,
+      "sourceDuration": 12,
+      "eventDate": "2022-01-24",
+      "fadeIn": 0,
+      "start": 701,
+      "end": 713
+    },
+    {
+      "id": "solar-system",
+      "source": "v9-0",
+      "duration": 17,
+      "sourceStart": 548,
+      "sourceDuration": 12.5,
+      "start": 713,
+      "end": 730
+    },
+    {
+      "id": "relic",
+      "source": "black",
+      "duration": 16,
+      "start": 730,
+      "end": 746
+    }
+  ],
+  "archivalAudio": [
+    {
+      "id": "sputnik-original-signal",
+      "shot": "sputnik-wide",
+      "at": 123.1,
+      "sourceStart": 123.1,
+      "length": 1.7,
+      "source": "checked V9.0 bilingual mixed AAC",
+      "historicalVoiceSynthesized": false
+    },
+    {
+      "id": "gagarin-poyekhali-1961",
+      "shot": "gagarin",
+      "at": 150.8,
+      "sourceStart": 150.8,
+      "length": 1.486,
+      "source": "checked V9.0 bilingual mixed AAC",
+      "historicalVoiceSynthesized": false
+    },
+    {
+      "id": "jfk-rice-1962",
+      "shot": "kennedy",
+      "at": 169,
+      "sourceStart": 169,
+      "length": 18.95,
+      "source": "checked V9.0 bilingual mixed AAC",
+      "historicalVoiceSynthesized": false
+    },
+    {
+      "id": "apollo11-countdown-liftoff",
+      "shot": "apollo-engines",
+      "at": 249,
+      "sourceStart": 201,
+      "length": 16,
+      "source": "checked V9.0 bilingual mixed AAC",
+      "historicalVoiceSynthesized": false
+    },
+    {
+      "id": "armstrong-first-step-1969",
+      "shot": "moon",
+      "at": 280,
+      "sourceStart": 232,
+      "length": 9.412646,
+      "source": "checked V9.0 bilingual mixed AAC",
+      "historicalVoiceSynthesized": false
+    },
+    {
+      "id": "challenger-original-broadcast",
+      "shot": "challenger",
+      "at": 381,
+      "sourceStart": 299,
+      "length": 5.36,
+      "source": "checked V9.0 bilingual mixed AAC",
+      "historicalVoiceSynthesized": false
+    },
+    {
+      "id": "perseverance-2021-edl",
+      "shot": "perseverance-up",
+      "at": 659,
+      "sourceStart": 445,
+      "length": 10.2,
+      "source": "checked V9.0 bilingual mixed AAC",
+      "historicalVoiceSynthesized": false,
+      "gain": 0.58
+    }
+  ],
+  "musicOnlyScenes": [
+    "gagarin-silent",
+    "moon-flag",
+    "iss-whole",
+    "iss-life"
+  ],
+  "silenceMusic": [
+    {
+      "start": 380.65,
+      "end": 395.3
+    }
+  ],
+  "displayCaptions": [
+    {
+      "id": "iss-name",
+      "start": 478.1,
+      "end": 483.5,
+      "kind": "subtitle",
+      "title": {
+        "en": "International Space Station",
+        "fr": "International Space Station"
+      }
+    }
+  ],
+  "editorialPolicy": [
+    "All source timecodes refer explicitly to the frozen V9.0 master or to a named credited asset. No mixed revision clocks.",
+    "Voyager precedes Enterprise by the owner’s explicit thematic ordering within 1977.",
+    "Columbia STS-1 succeeds in April 1981; Challenger is lost on 28 January 1986; Columbia is lost on 1 February 2003.",
+    "ISS partners means fifteen partner countries and five agencies, not visitor nationalities.",
+    "Titan is introduced through Cassini at Saturn; one continuous reconstructed Huygens descent is shown once.",
+    "Rosetta footage contains only the comet and spacecraft. Postmission reconstructed Philae bounces illustrate the actual failed anchoring, not the earlier predicted successful harpoon landing.",
+    "No small scene labels or speaker captions. ISS is named in the main subtitle position.",
+    "The final shot starts with a wide view of solar orbits after Webb, after the old Mars close-up has ended. No Mars pullout or repeated Titan, Rosetta, Voyager or Falcon pictures after Webb.",
+    "The final black picture supports the player’s accessible RELIC logo, name and exploration button. It stays until the viewer acts.",
+    "Stock bilingual paragraphs fit their scenes without truncation or post-synthesis time compression."
+  ]
+}

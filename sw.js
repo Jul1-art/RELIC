@@ -1,7 +1,7 @@
 /* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'film-v10-narration-20261028-public';
+const VERSION = 'film-v11-rail-20261028-public';
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
 const APP_PREFIX = `relic-atlas-${encodeURIComponent(SCOPE.pathname)}-`;
@@ -30,13 +30,13 @@ const OFFLINE_CORE = [
   ...CORE,
   'src/atlas/styles.css', 'src/worlds/earth.css', 'src/worlds/terrain.css', 'src/atlas/live.css',
   'src/atlas/premium.css', 'src/ui/theme.css', 'src/atlas/compact.css', 'src/atlas/relic-shell.css', 'src/worlds/relic-worlds.css',
-  'intro/film-bridge.css', 'src/ui/app-settings.css', 'src/ui/navigation.css', 'src/ui/branding.css', 'src/ui/interaction-motion.css', 'assets/jules-avatar.jpg',
+  'intro/film-bridge.css', 'src/ui/app-settings.css', 'src/ui/action-rail.css', 'src/ui/navigation.css', 'src/ui/branding.css', 'src/ui/interaction-motion.css', 'assets/jules-avatar.jpg',
   'src/atlas/app.js', 'src/atlas/atlas-live.js', 'src/core/atlas-services.js', 'src/atlas/orbital-data.js', 'src/ui/theme.js',
   'src/atlas/surface-detail.js', 'src/atlas/nasa-worlds.js', 'src/worlds/earth-view.js', 'src/worlds/earth-imagery.js',
   'src/worlds/earth-terrain.js', 'src/worlds/terrain-globe.js', 'src/worlds/terrain-view.js',
   'src/core/paths.js', 'src/search/coordinateParser.js',
-  'src/core/api-config.js', 'src/ui/api-settings.js', 'src/ui/api-settings.css', 'src/core/google-3d.js', 'src/core/google3d.css', 'src/search/place-search.js', 'src/search/place-search.css',
-  'intro/film-bridge.js', 'src/core/world-bridge.js', 'src/ui/app-settings.js', 'src/ui/navigation.js',
+  'src/core/api-config.js', 'src/core/google-3d.js', 'src/core/google3d.css', 'src/search/place-search.js', 'src/search/place-search.css',
+  'intro/film-bridge.js', 'src/core/world-bridge.js', 'src/ui/app-settings.js', 'src/ui/api-settings.js', 'src/ui/api-settings.css', 'src/ui/action-rail.js', 'src/ui/navigation.js',
   'src/ui/world-ui.js', 'src/ui/world-icons.js', 'src/worlds/world-performance.js',
   'src/ui/planet-dashboard.js', 'src/ui/planet-dashboard.css', 'src/ui/view-loading.js', 'src/ui/view-loading.css',
   'src/ui/app-sources.js', 'src/ui/app-sources.css', 'src/ui/provider-credits.js', 'src/ui/provider-credits.css', 'src/atlas/atlas-presentation.css',

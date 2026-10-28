@@ -1,0 +1,3 @@
+# Keep production-plan checksums stable across Windows and Unix checkouts.
+*.json text eol=lf
+*.py text eol=lf
