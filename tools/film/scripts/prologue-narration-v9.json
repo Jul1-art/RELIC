@@ -172,9 +172,26 @@
       }
     },
     {
+      "id": "carrier-tests",
+      "start": 259.1,
+      "end": 266.9,
+      "text": {
+        "en": "In 1977, NASA carried the Shuttle prototype Enterprise aboard a modified Boeing 747.",
+        "fr": "En 1977, Enterprise, prototype des navettes, vole sur un Boeing 747 modifié."
+      },
+      "subtitles": {
+        "en": [
+          "In 1977, NASA carried the Shuttle prototype Enterprise aboard a modified Boeing 747."
+        ],
+        "fr": [
+          "En 1977, Enterprise, prototype des navettes, vole sur un Boeing 747 modifié."
+        ]
+      }
+    },
+    {
       "id": "two-paths-after-apollo",
-      "start": 259.5,
-      "end": 274.5,
+      "start": 267.5,
+      "end": 282.5,
       "text": {
         "en": "After Apollo, exploration followed two paths. In 1977, the Voyager probes launched towards the outer planets, carrying instruments far beyond the reach of human crews.",
         "fr": "Après Apollo, l’exploration a suivi deux chemins. En 1977, les sondes Voyager sont parties vers les planètes lointaines, emportant des instruments hors de portée des équipages humains."
@@ -189,23 +206,6 @@
           "Après Apollo, l’exploration a suivi deux chemins.",
           "En 1977, les sondes Voyager sont parties vers les planètes lointaines,",
           "emportant des instruments hors de portée des équipages humains."
-        ]
-      }
-    },
-    {
-      "id": "carrier-tests",
-      "start": 275.1,
-      "end": 282.9,
-      "text": {
-        "en": "In 1977, NASA carried the Shuttle prototype Enterprise aboard a modified Boeing 747.",
-        "fr": "En 1977, Enterprise, prototype des navettes, vole sur un Boeing 747 modifié."
-      },
-      "subtitles": {
-        "en": [
-          "In 1977, NASA carried the Shuttle prototype Enterprise aboard a modified Boeing 747."
-        ],
-        "fr": [
-          "En 1977, Enterprise, prototype des navettes, vole sur un Boeing 747 modifié."
         ]
       }
     },
@@ -410,9 +410,30 @@
       }
     },
     {
+      "id": "returning-launchers",
+      "start": 438,
+      "end": 448.5,
+      "text": {
+        "en": "Closer to Earth, SpaceX, founded by Elon Musk in 2002, developed boosters that could land and fly again.",
+        "fr": "Plus près de nous, SpaceX, fondée par Elon Musk en 2002, développait des boosters capables de se poser et de revoler."
+      },
+      "subtitles": {
+        "en": [
+          "Closer to Earth,",
+          "SpaceX, founded by Elon Musk in 2002,",
+          "developed boosters that could land and fly again."
+        ],
+        "fr": [
+          "Plus près de nous,",
+          "SpaceX, fondée par Elon Musk en 2002,",
+          "développait des boosters capables de se poser et de revoler."
+        ]
+      }
+    },
+    {
       "id": "a-question-on-mars",
-      "start": 437.5,
-      "end": 444.5,
+      "start": 475.5,
+      "end": 482.5,
       "text": {
         "en": "In 2021, Perseverance approached Mars to search for signs of ancient life.",
         "fr": "En 2021, Perseverance allait chercher sur Mars les traces d’une vie ancienne."
@@ -428,8 +449,8 @@
     },
     {
       "id": "looking-back-through-time",
-      "start": 457.5,
-      "end": 468.5,
+      "start": 495.5,
+      "end": 506.5,
       "text": {
         "en": "That December, Webb set out to observe the earliest galaxies. Exploration now reached across time as well as space.",
         "fr": "En décembre, Webb est parti observer les premières galaxies. Explorer l’espace permettait aussi de remonter le temps."
@@ -442,27 +463,6 @@
         "fr": [
           "En décembre, Webb est parti observer les premières galaxies.",
           "Explorer l’espace permettait aussi de remonter le temps."
-        ]
-      }
-    },
-    {
-      "id": "returning-launchers",
-      "start": 470,
-      "end": 480.5,
-      "text": {
-        "en": "Closer to Earth, SpaceX, founded by Elon Musk in 2002, developed boosters that could land and fly again.",
-        "fr": "Plus près de nous, SpaceX, fondée par Elon Musk en 2002, développait des boosters capables de se poser et de revoler."
-      },
-      "subtitles": {
-        "en": [
-          "Closer to Earth,",
-          "SpaceX, founded by Elon Musk in 2002,",
-          "developed boosters that could land and fly again."
-        ],
-        "fr": [
-          "Plus près de nous,",
-          "SpaceX, fondée par Elon Musk en 2002,",
-          "développait des boosters capables de se poser et de revoler."
         ]
       }
     },

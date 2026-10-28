@@ -138,6 +138,7 @@ RELIC/
 ├── tests/
 │   ├── test_api_config.mjs
 │   ├── test_earth_surface.py
+│   ├── test_film_chronology.mjs
 │   ├── test_film_parts.py
 │   ├── test_film_recovery.mjs
 │   ├── test_live_sources.py
@@ -279,6 +280,8 @@ Une publication statique reste possible avec `node tools/build_static.mjs`, mais
 The English/French introduction opens paused and loads its video only after **Play**. The export is 1080p50; original HD material is retained where available, while older archives are upscaled and their frame rates resampled. This does not create missing archival detail. The monochrome player includes a full-width timeline, captions, playback speed and volume adjustable in 1% steps or by entering an exact percentage in the player settings. Click or tap the picture to play or pause. Portrait video is centered without cropping. Opening and closing Sources or the offline dialog keeps playback paused.
 
 Use the **EN / FR** control to change the narration and captions during the film. The switch keeps the current position, playback state, speed and volume. Controls fade automatically during playback and reappear on interaction.
+
+The historical sequence follows Enterprise before Voyager in 1977, then the Falcon missions of 2019–2020 before Perseverance and Webb in 2021. The closing legacy montage is identified as an epilogue. See [the chronology plan](tools/film/scripts/prologue-chronology-v9.json) for event dates and archive context.
 
 The historical sequence includes a longer music-only passage with Yuri Gagarin, Enterprise aboard its Boeing 747 carrier in 1977, the final Shuttle landing in 2011, Soyuz transport to the International Space Station, and Rosetta’s final descent in 2016. Dates distinguish the events described from later archive or visualization footage.
 

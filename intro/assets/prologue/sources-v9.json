@@ -215,8 +215,8 @@
   "offlineContext": "Voluntary full download, size/SHA-256 verification, shared video and localized mixed audio. A new edition is not marked available until its own complete files have been verified.",
   "schema": "relic.prologue.sources.v9",
   "version": 9,
-  "revision": "9.0-hd50",
-  "checkedOn": "2026-10-27",
+  "revision": "9.1-hd50",
+  "checkedOn": "2026-10-28",
   "preview": false,
   "sourcesPending": false,
   "narrativeAudioPending": false,
@@ -231,13 +231,13 @@
     "height": 1080,
     "fps": 50,
     "languages": {
-      "en": "v9-0-hd50/en.m3u8",
-      "fr": "v9-0-hd50/fr.m3u8"
+      "en": "v9-1-hd50/en.m3u8",
+      "fr": "v9-1-hd50/fr.m3u8"
     },
     "encodingManifest": "encoding-v9-hd50.json",
-    "sourcePolicy": "Native HD retained where traceable; lower-resolution archives are upscaled and frame rates resampled. No invented photographic detail or optical-flow-generated archival frames.",
-    "encodingManifestSha256": "f3644fc3b561ed7ddeccdaf064a6963d7b71998a46ad95a4f78f2c47458ed373",
-    "totalBytes": 197477110,
+    "sourcePolicy": "Chronological remix of the checked V9 1080p50 delivery. Original encoded picture packets are copied except the incoming two-second GOP at six changed joins, repaired from clean frames of the same delivered shot. No invented picture detail or optical-flow-generated frames. The bilingual mixed audio is reordered at exact sample boundaries and encoded once as AAC.",
+    "encodingManifestSha256": "891ade47dfb62da43bc1e7182c36cca60f9d9ac61383165014c97465bc572b5b",
+    "totalBytes": 195845414,
     "fileCount": 223
   },
   "archiveSubtitleManifestSha256": "b57203f0b03faaee73dca68eb235a119fd4c90ebc086fdf87a855aba6e5d9aa3",
@@ -837,36 +837,36 @@
       }
     },
     "script": "tools/film/scripts/prologue-narration-v9.json",
-    "scriptSha256": "8d65f285cf15d504058fe8aabbca280d2b9c09f2e56dbb8007a49ae8793239b4",
+    "scriptSha256": "c5fd44d650a1c434ea15f6aea88c2eb5e5986303677b37976c6d46dff3e77e20",
     "processing": "One Kokoro call per continuous paragraph, never one per subtitle or shot. The model may use its native maximum-phoneme windows for long text. Natural-speed synthesis, native silence trim, 8 ms/45 ms click fades, 40 ms lead and 80 ms tail, resample to 48 kHz stereo PCM16. No post-synthesis time compression or word truncation. Normalize and duck beneath the film in the final mix.",
     "subtitleTimingMethod": "Approximate clause timing: proportion of eSpeak phoneme counts within a continuous paragraph, snapped to nearby measured quiet regions in the recorded waveform. Not word-exact forced alignment; no subtitle is synthesized separately.",
     "partial": false,
     "selectedLineIds": [
-      "a-destination",
-      "a-new-view",
-      "a-promise-becomes-a-journey",
-      "a-question-on-mars",
-      "a-shared-laboratory",
-      "a-signal-around-earth",
       "a-world-and-a-question",
-      "carrier-tests",
-      "from-machines-to-people",
       "from-war-to-a-race",
-      "keeping-the-outpost-alive",
-      "looking-back-through-time",
-      "retiring-the-shuttle",
-      "returning-launchers",
-      "rivals-build-together",
-      "rosetta-remains",
-      "the-cost-of-flight",
-      "the-first-machines-left-behind",
-      "the-long-journey-continues",
-      "the-machines-that-stay",
-      "touching-a-comet",
+      "a-signal-around-earth",
+      "from-machines-to-people",
+      "a-destination",
+      "a-promise-becomes-a-journey",
       "two-go-down-one-stays",
+      "the-first-machines-left-behind",
+      "carrier-tests",
       "two-paths-after-apollo",
-      "why-relic",
-      "working-closer-to-home"
+      "working-closer-to-home",
+      "the-cost-of-flight",
+      "a-new-view",
+      "rivals-build-together",
+      "a-shared-laboratory",
+      "retiring-the-shuttle",
+      "keeping-the-outpost-alive",
+      "the-long-journey-continues",
+      "touching-a-comet",
+      "rosetta-remains",
+      "returning-launchers",
+      "a-question-on-mars",
+      "looking-back-through-time",
+      "the-machines-that-stay",
+      "why-relic"
     ],
     "lines": [
       {
@@ -956,7 +956,7 @@
         "file": "v9-narration/a-world-and-a-question-fr.wav",
         "start": 88.9,
         "at": 88.9,
-        "end": 95.12133333333334,
+        "end": 95.121333,
         "slotEnd": 98.5,
         "duration": 6.221333333333333,
         "slotSeconds": 9.599999999999994,
@@ -1031,7 +1031,7 @@
         "file": "v9-narration/from-war-to-a-race-en.wav",
         "start": 99.5,
         "at": 99.5,
-        "end": 115.89733333333334,
+        "end": 115.897333,
         "slotEnd": 122.5,
         "duration": 16.397333333333332,
         "slotSeconds": 23.0,
@@ -1213,7 +1213,7 @@
         "file": "v9-narration/a-signal-around-earth-en.wav",
         "start": 125.0,
         "at": 125.0,
-        "end": 132.88533333333334,
+        "end": 132.885333,
         "slotEnd": 134.3,
         "duration": 7.8853333333333335,
         "slotSeconds": 9.300000000000011,
@@ -1255,7 +1255,7 @@
         "file": "v9-narration/a-signal-around-earth-fr.wav",
         "start": 125.0,
         "at": 125.0,
-        "end": 132.20266666666666,
+        "end": 132.202667,
         "slotEnd": 134.3,
         "duration": 7.2026666666666666,
         "slotSeconds": 9.300000000000011,
@@ -1297,7 +1297,7 @@
         "file": "v9-narration/from-machines-to-people-en.wav",
         "start": 135.5,
         "at": 135.5,
-        "end": 148.44133333333332,
+        "end": 148.441333,
         "slotEnd": 150.6,
         "duration": 12.941333333333333,
         "slotSeconds": 15.099999999999994,
@@ -1372,7 +1372,7 @@
         "file": "v9-narration/from-machines-to-people-fr.wav",
         "start": 135.5,
         "at": 135.5,
-        "end": 149.27333333333334,
+        "end": 149.273333,
         "slotEnd": 150.6,
         "duration": 13.773333333333333,
         "slotSeconds": 15.099999999999994,
@@ -1531,7 +1531,7 @@
         "file": "v9-narration/a-promise-becomes-a-journey-en.wav",
         "start": 189.5,
         "at": 189.5,
-        "end": 198.49466666666666,
+        "end": 198.494667,
         "slotEnd": 200.5,
         "duration": 8.994666666666667,
         "slotSeconds": 11.0,
@@ -1590,7 +1590,7 @@
         "file": "v9-narration/a-promise-becomes-a-journey-fr.wav",
         "start": 189.5,
         "at": 189.5,
-        "end": 198.79333333333332,
+        "end": 198.793333,
         "slotEnd": 200.5,
         "duration": 9.293333333333333,
         "slotSeconds": 11.0,
@@ -1649,7 +1649,7 @@
         "file": "v9-narration/two-go-down-one-stays-en.wav",
         "start": 217.5,
         "at": 217.5,
-        "end": 229.37466666666666,
+        "end": 229.374667,
         "slotEnd": 230.5,
         "duration": 11.874666666666666,
         "slotSeconds": 13.0,
@@ -1767,7 +1767,7 @@
         "file": "v9-narration/the-first-machines-left-behind-en.wav",
         "start": 245.5,
         "at": 245.5,
-        "end": 253.25733333333332,
+        "end": 253.257333,
         "slotEnd": 258.5,
         "duration": 7.757333333333333,
         "slotSeconds": 13.0,
@@ -1842,7 +1842,7 @@
         "file": "v9-narration/the-first-machines-left-behind-fr.wav",
         "start": 245.5,
         "at": 245.5,
-        "end": 254.21733333333333,
+        "end": 254.217333,
         "slotEnd": 258.5,
         "duration": 8.717333333333332,
         "slotSeconds": 13.0,
@@ -1906,6 +1906,90 @@
         "subtitlePronunciationAliasesProvided": false
       },
       {
+        "id": "carrier-tests",
+        "language": "en",
+        "locale": "en-us",
+        "voice": "af_heart",
+        "synthetic": true,
+        "text": "In 1977, NASA carried the Shuttle prototype Enterprise aboard a modified Boeing 747.",
+        "spokenText": "In 1977, NASA carried the Shuttle prototype Enterprise aboard a modified Boeing 747.",
+        "source": "media-work/v9-narration/carrier-tests-en.wav",
+        "file": "v9-narration/carrier-tests-en.wav",
+        "start": 259.1,
+        "at": 259.1,
+        "end": 266.857333,
+        "slotEnd": 266.9,
+        "duration": 7.757333333333333,
+        "slotSeconds": 7.7999999999999545,
+        "fits": true,
+        "extraSecondsNeeded": 0,
+        "speed": 1.06,
+        "nativeSampleRate": 24000,
+        "sampleRate": 48000,
+        "channels": 2,
+        "bytes": 1489486,
+        "sha256": "023487e43020fe8dc508559ba5b05b87eef348401f4662baa1373cd672cd5d8d",
+        "role": "voice",
+        "normalizeInMix": true,
+        "synthesisUnit": "continuous paragraph",
+        "captions": [
+          {
+            "text": "In 1977, NASA carried the Shuttle prototype Enterprise aboard a modified Boeing 747.",
+            "start": 259.1,
+            "end": 266.857333,
+            "relativeStart": 0.0,
+            "relativeEnd": 7.757333,
+            "phonemeWeight": 130,
+            "approximate": true
+          }
+        ],
+        "subtitleTimingMethod": "Approximate clause timing: proportion of eSpeak phoneme counts within a continuous paragraph, snapped to nearby measured quiet regions in the recorded waveform. Not word-exact forced alignment; no subtitle is synthesized separately.",
+        "subtitleBoundaryDecisions": [],
+        "subtitlePronunciationAliasesProvided": false
+      },
+      {
+        "id": "carrier-tests",
+        "language": "fr",
+        "locale": "fr-fr",
+        "voice": "ff_siwis",
+        "synthetic": true,
+        "text": "En 1977, Enterprise, prototype des navettes, vole sur un Boeing 747 modifié.",
+        "spokenText": "En 1977, Enterprise, prototype des navettes, vole sur un Boeing 747 modifié.",
+        "source": "media-work/v9-narration/carrier-tests-fr.wav",
+        "file": "v9-narration/carrier-tests-fr.wav",
+        "start": 259.1,
+        "at": 259.1,
+        "end": 266.494667,
+        "slotEnd": 266.9,
+        "duration": 7.394666666666667,
+        "slotSeconds": 7.7999999999999545,
+        "fits": true,
+        "extraSecondsNeeded": 0,
+        "speed": 0.98,
+        "nativeSampleRate": 24000,
+        "sampleRate": 48000,
+        "channels": 2,
+        "bytes": 1419854,
+        "sha256": "eb3d8a9fffe6fd5cc592e235c5ccb64f42bee962484d0393fffec6ac377dcbdf",
+        "role": "voice",
+        "normalizeInMix": true,
+        "synthesisUnit": "continuous paragraph",
+        "captions": [
+          {
+            "text": "En 1977, Enterprise, prototype des navettes, vole sur un Boeing 747 modifié.",
+            "start": 259.1,
+            "end": 266.494667,
+            "relativeStart": 0.0,
+            "relativeEnd": 7.394667,
+            "phonemeWeight": 102,
+            "approximate": true
+          }
+        ],
+        "subtitleTimingMethod": "Approximate clause timing: proportion of eSpeak phoneme counts within a continuous paragraph, snapped to nearby measured quiet regions in the recorded waveform. Not word-exact forced alignment; no subtitle is synthesized separately.",
+        "subtitleBoundaryDecisions": [],
+        "subtitlePronunciationAliasesProvided": false
+      },
+      {
         "id": "two-paths-after-apollo",
         "language": "en",
         "locale": "en-us",
@@ -1915,10 +1999,10 @@
         "spokenText": "After Apollo, exploration followed two paths. In 1977, the Voyager probes launched towards the outer planets, carrying instruments far beyond the reach of human crews.",
         "source": "media-work/v9-narration/two-paths-after-apollo-en.wav",
         "file": "v9-narration/two-paths-after-apollo-en.wav",
-        "start": 259.5,
-        "at": 259.5,
-        "end": 271.396,
-        "slotEnd": 274.5,
+        "start": 267.5,
+        "at": 267.5,
+        "end": 279.396,
+        "slotEnd": 282.5,
         "duration": 11.896,
         "slotSeconds": 15.0,
         "fits": true,
@@ -1935,8 +2019,8 @@
         "captions": [
           {
             "text": "After Apollo, exploration followed two paths.",
-            "start": 259.5,
-            "end": 262.465,
+            "start": 267.5,
+            "end": 270.465,
             "relativeStart": 0.0,
             "relativeEnd": 2.965,
             "phonemeWeight": 47,
@@ -1944,8 +2028,8 @@
           },
           {
             "text": "In 1977, the Voyager probes launched towards the outer planets,",
-            "start": 262.465,
-            "end": 267.99,
+            "start": 270.465,
+            "end": 275.99,
             "relativeStart": 2.965,
             "relativeEnd": 8.49,
             "phonemeWeight": 84,
@@ -1953,8 +2037,8 @@
           },
           {
             "text": "carrying instruments far beyond the reach of human crews.",
-            "start": 267.99,
-            "end": 271.396,
+            "start": 275.99,
+            "end": 279.396,
             "relativeStart": 8.49,
             "relativeEnd": 11.896,
             "phonemeWeight": 56,
@@ -1990,10 +2074,10 @@
         "spokenText": "Après Apollo, l’exploration a suivi deux chemins. En 1977, les sondes Voyager sont parties vers les planètes lointaines, emportant des instruments hors de portée des équipages humains.",
         "source": "media-work/v9-narration/two-paths-after-apollo-fr.wav",
         "file": "v9-narration/two-paths-after-apollo-fr.wav",
-        "start": 259.5,
-        "at": 259.5,
-        "end": 271.204,
-        "slotEnd": 274.5,
+        "start": 267.5,
+        "at": 267.5,
+        "end": 279.204,
+        "slotEnd": 282.5,
         "duration": 11.704,
         "slotSeconds": 15.0,
         "fits": true,
@@ -2010,8 +2094,8 @@
         "captions": [
           {
             "text": "Après Apollo, l’exploration a suivi deux chemins.",
-            "start": 259.5,
-            "end": 262.805,
+            "start": 267.5,
+            "end": 270.805,
             "relativeStart": 0.0,
             "relativeEnd": 3.305,
             "phonemeWeight": 44,
@@ -2019,8 +2103,8 @@
           },
           {
             "text": "En 1977, les sondes Voyager sont parties vers les planètes lointaines,",
-            "start": 262.805,
-            "end": 267.875,
+            "start": 270.805,
+            "end": 275.875,
             "relativeStart": 3.305,
             "relativeEnd": 8.375,
             "phonemeWeight": 71,
@@ -2028,8 +2112,8 @@
           },
           {
             "text": "emportant des instruments hors de portée des équipages humains.",
-            "start": 267.875,
-            "end": 271.204,
+            "start": 275.875,
+            "end": 279.204,
             "relativeStart": 8.375,
             "relativeEnd": 11.704,
             "phonemeWeight": 50,
@@ -2053,90 +2137,6 @@
             "quietSeconds": 0.21
           }
         ],
-        "subtitlePronunciationAliasesProvided": false
-      },
-      {
-        "id": "carrier-tests",
-        "language": "en",
-        "locale": "en-us",
-        "voice": "af_heart",
-        "synthetic": true,
-        "text": "In 1977, NASA carried the Shuttle prototype Enterprise aboard a modified Boeing 747.",
-        "spokenText": "In 1977, NASA carried the Shuttle prototype Enterprise aboard a modified Boeing 747.",
-        "source": "media-work/v9-narration/carrier-tests-en.wav",
-        "file": "v9-narration/carrier-tests-en.wav",
-        "start": 275.1,
-        "at": 275.1,
-        "end": 282.8573333333334,
-        "slotEnd": 282.9,
-        "duration": 7.757333333333333,
-        "slotSeconds": 7.7999999999999545,
-        "fits": true,
-        "extraSecondsNeeded": 0,
-        "speed": 1.06,
-        "nativeSampleRate": 24000,
-        "sampleRate": 48000,
-        "channels": 2,
-        "bytes": 1489486,
-        "sha256": "023487e43020fe8dc508559ba5b05b87eef348401f4662baa1373cd672cd5d8d",
-        "role": "voice",
-        "normalizeInMix": true,
-        "synthesisUnit": "continuous paragraph",
-        "captions": [
-          {
-            "text": "In 1977, NASA carried the Shuttle prototype Enterprise aboard a modified Boeing 747.",
-            "start": 275.1,
-            "end": 282.857333,
-            "relativeStart": 0.0,
-            "relativeEnd": 7.757333,
-            "phonemeWeight": 130,
-            "approximate": true
-          }
-        ],
-        "subtitleTimingMethod": "Approximate clause timing: proportion of eSpeak phoneme counts within a continuous paragraph, snapped to nearby measured quiet regions in the recorded waveform. Not word-exact forced alignment; no subtitle is synthesized separately.",
-        "subtitleBoundaryDecisions": [],
-        "subtitlePronunciationAliasesProvided": false
-      },
-      {
-        "id": "carrier-tests",
-        "language": "fr",
-        "locale": "fr-fr",
-        "voice": "ff_siwis",
-        "synthetic": true,
-        "text": "En 1977, Enterprise, prototype des navettes, vole sur un Boeing 747 modifié.",
-        "spokenText": "En 1977, Enterprise, prototype des navettes, vole sur un Boeing 747 modifié.",
-        "source": "media-work/v9-narration/carrier-tests-fr.wav",
-        "file": "v9-narration/carrier-tests-fr.wav",
-        "start": 275.1,
-        "at": 275.1,
-        "end": 282.4946666666667,
-        "slotEnd": 282.9,
-        "duration": 7.394666666666667,
-        "slotSeconds": 7.7999999999999545,
-        "fits": true,
-        "extraSecondsNeeded": 0,
-        "speed": 0.98,
-        "nativeSampleRate": 24000,
-        "sampleRate": 48000,
-        "channels": 2,
-        "bytes": 1419854,
-        "sha256": "eb3d8a9fffe6fd5cc592e235c5ccb64f42bee962484d0393fffec6ac377dcbdf",
-        "role": "voice",
-        "normalizeInMix": true,
-        "synthesisUnit": "continuous paragraph",
-        "captions": [
-          {
-            "text": "En 1977, Enterprise, prototype des navettes, vole sur un Boeing 747 modifié.",
-            "start": 275.1,
-            "end": 282.494667,
-            "relativeStart": 0.0,
-            "relativeEnd": 7.394667,
-            "phonemeWeight": 102,
-            "approximate": true
-          }
-        ],
-        "subtitleTimingMethod": "Approximate clause timing: proportion of eSpeak phoneme counts within a continuous paragraph, snapped to nearby measured quiet regions in the recorded waveform. Not word-exact forced alignment; no subtitle is synthesized separately.",
-        "subtitleBoundaryDecisions": [],
         "subtitlePronunciationAliasesProvided": false
       },
       {
@@ -2226,7 +2226,7 @@
         "file": "v9-narration/working-closer-to-home-fr.wav",
         "start": 283.5,
         "at": 283.5,
-        "end": 295.88666666666666,
+        "end": 295.886667,
         "slotEnd": 298.5,
         "duration": 12.386666666666667,
         "slotSeconds": 15.0,
@@ -2301,7 +2301,7 @@
         "file": "v9-narration/the-cost-of-flight-en.wav",
         "start": 305.5,
         "at": 305.5,
-        "end": 309.6093333333333,
+        "end": 309.609333,
         "slotEnd": 312.5,
         "duration": 4.109333333333334,
         "slotSeconds": 7.0,
@@ -2419,7 +2419,7 @@
         "file": "v9-narration/a-new-view-en.wav",
         "start": 313.5,
         "at": 313.5,
-        "end": 322.30266666666665,
+        "end": 322.302667,
         "slotEnd": 326.5,
         "duration": 8.802666666666667,
         "slotSeconds": 13.0,
@@ -2537,7 +2537,7 @@
         "file": "v9-narration/rivals-build-together-en.wav",
         "start": 327.5,
         "at": 327.5,
-        "end": 339.75866666666667,
+        "end": 339.758667,
         "slotEnd": 346.5,
         "duration": 12.258666666666667,
         "slotSeconds": 19.0,
@@ -2687,7 +2687,7 @@
         "file": "v9-narration/a-shared-laboratory-en.wav",
         "start": 347.5,
         "at": 347.5,
-        "end": 355.15066666666667,
+        "end": 355.150667,
         "slotEnd": 356.5,
         "duration": 7.650666666666667,
         "slotSeconds": 9.0,
@@ -2746,7 +2746,7 @@
         "file": "v9-narration/a-shared-laboratory-fr.wav",
         "start": 347.5,
         "at": 347.5,
-        "end": 356.28133333333335,
+        "end": 356.281333,
         "slotEnd": 356.5,
         "duration": 8.781333333333333,
         "slotSeconds": 9.0,
@@ -2805,7 +2805,7 @@
         "file": "v9-narration/retiring-the-shuttle-en.wav",
         "start": 375.25,
         "at": 375.25,
-        "end": 388.66066666666666,
+        "end": 388.660667,
         "slotEnd": 390.6,
         "duration": 13.410666666666666,
         "slotSeconds": 15.350000000000023,
@@ -2880,7 +2880,7 @@
         "file": "v9-narration/retiring-the-shuttle-fr.wav",
         "start": 375.25,
         "at": 375.25,
-        "end": 386.5486666666667,
+        "end": 386.548667,
         "slotEnd": 390.6,
         "duration": 11.298666666666668,
         "slotSeconds": 15.350000000000023,
@@ -2997,7 +2997,7 @@
         "file": "v9-narration/keeping-the-outpost-alive-fr.wav",
         "start": 391.5,
         "at": 391.5,
-        "end": 397.2733333333333,
+        "end": 397.273333,
         "slotEnd": 398.5,
         "duration": 5.773333333333333,
         "slotSeconds": 7.0,
@@ -3039,7 +3039,7 @@
         "file": "v9-narration/the-long-journey-continues-en.wav",
         "start": 399.5,
         "at": 399.5,
-        "end": 406.8946666666667,
+        "end": 406.894667,
         "slotEnd": 412.5,
         "duration": 7.394666666666667,
         "slotSeconds": 13.0,
@@ -3098,7 +3098,7 @@
         "file": "v9-narration/the-long-journey-continues-fr.wav",
         "start": 399.5,
         "at": 399.5,
-        "end": 406.36133333333333,
+        "end": 406.361333,
         "slotEnd": 412.5,
         "duration": 6.8613333333333335,
         "slotSeconds": 13.0,
@@ -3157,7 +3157,7 @@
         "file": "v9-narration/touching-a-comet-en.wav",
         "start": 413.5,
         "at": 413.5,
-        "end": 420.42533333333336,
+        "end": 420.425333,
         "slotEnd": 420.5,
         "duration": 6.925333333333334,
         "slotSeconds": 7.0,
@@ -3199,7 +3199,7 @@
         "file": "v9-narration/touching-a-comet-fr.wav",
         "start": 413.5,
         "at": 413.5,
-        "end": 419.40133333333335,
+        "end": 419.401333,
         "slotEnd": 420.5,
         "duration": 5.9013333333333335,
         "slotSeconds": 7.0,
@@ -3241,7 +3241,7 @@
         "file": "v9-narration/rosetta-remains-en.wav",
         "start": 429.1,
         "at": 429.1,
-        "end": 435.4066666666667,
+        "end": 435.406667,
         "slotEnd": 436.9,
         "duration": 6.306666666666667,
         "slotSeconds": 7.7999999999999545,
@@ -3300,7 +3300,7 @@
         "file": "v9-narration/rosetta-remains-fr.wav",
         "start": 429.1,
         "at": 429.1,
-        "end": 435.8546666666667,
+        "end": 435.854667,
         "slotEnd": 436.9,
         "duration": 6.754666666666667,
         "slotSeconds": 7.7999999999999545,
@@ -3348,208 +3348,6 @@
         "subtitlePronunciationAliasesProvided": false
       },
       {
-        "id": "a-question-on-mars",
-        "language": "en",
-        "locale": "en-us",
-        "voice": "af_heart",
-        "synthetic": true,
-        "text": "In 2021, Perseverance approached Mars to search for signs of ancient life.",
-        "spokenText": "In 2021, Perseverance approached Mars to search for signs of ancient life.",
-        "source": "media-work/v9-narration/a-question-on-mars-en.wav",
-        "file": "v9-narration/a-question-on-mars-en.wav",
-        "start": 437.5,
-        "at": 437.5,
-        "end": 443.1666666666667,
-        "slotEnd": 444.5,
-        "duration": 5.666666666666667,
-        "slotSeconds": 7.0,
-        "fits": true,
-        "extraSecondsNeeded": 0,
-        "speed": 0.98,
-        "nativeSampleRate": 24000,
-        "sampleRate": 48000,
-        "channels": 2,
-        "bytes": 1088078,
-        "sha256": "5e6b899dfbd6f355781a7eeee93b013f34d2ff75e97a251a66adbbc370661fb4",
-        "role": "voice",
-        "normalizeInMix": true,
-        "synthesisUnit": "continuous paragraph",
-        "captions": [
-          {
-            "text": "In 2021, Perseverance approached Mars to search for signs of ancient life.",
-            "start": 437.5,
-            "end": 443.166667,
-            "relativeStart": 0.0,
-            "relativeEnd": 5.666667,
-            "phonemeWeight": 89,
-            "approximate": true
-          }
-        ],
-        "subtitleTimingMethod": "Approximate clause timing: proportion of eSpeak phoneme counts within a continuous paragraph, snapped to nearby measured quiet regions in the recorded waveform. Not word-exact forced alignment; no subtitle is synthesized separately.",
-        "subtitleBoundaryDecisions": [],
-        "subtitlePronunciationAliasesProvided": false
-      },
-      {
-        "id": "a-question-on-mars",
-        "language": "fr",
-        "locale": "fr-fr",
-        "voice": "ff_siwis",
-        "synthetic": true,
-        "text": "En 2021, Perseverance allait chercher sur Mars les traces d’une vie ancienne.",
-        "spokenText": "En 2021, Perseverance allait chercher sur Mars les traces d’une vie ancienne.",
-        "source": "media-work/v9-narration/a-question-on-mars-fr.wav",
-        "file": "v9-narration/a-question-on-mars-fr.wav",
-        "start": 437.5,
-        "at": 437.5,
-        "end": 442.20666666666665,
-        "slotEnd": 444.5,
-        "duration": 4.706666666666667,
-        "slotSeconds": 7.0,
-        "fits": true,
-        "extraSecondsNeeded": 0,
-        "speed": 0.98,
-        "nativeSampleRate": 24000,
-        "sampleRate": 48000,
-        "channels": 2,
-        "bytes": 903758,
-        "sha256": "090de76fbb6fd4347fb86d9502ceed907b5ec7db953733e97d84c1c80a107989",
-        "role": "voice",
-        "normalizeInMix": true,
-        "synthesisUnit": "continuous paragraph",
-        "captions": [
-          {
-            "text": "En 2021, Perseverance allait chercher sur Mars les traces d’une vie ancienne.",
-            "start": 437.5,
-            "end": 442.206667,
-            "relativeStart": 0.0,
-            "relativeEnd": 4.706667,
-            "phonemeWeight": 66,
-            "approximate": true
-          }
-        ],
-        "subtitleTimingMethod": "Approximate clause timing: proportion of eSpeak phoneme counts within a continuous paragraph, snapped to nearby measured quiet regions in the recorded waveform. Not word-exact forced alignment; no subtitle is synthesized separately.",
-        "subtitleBoundaryDecisions": [],
-        "subtitlePronunciationAliasesProvided": false
-      },
-      {
-        "id": "looking-back-through-time",
-        "language": "en",
-        "locale": "en-us",
-        "voice": "af_heart",
-        "synthetic": true,
-        "text": "That December, Webb set out to observe the earliest galaxies. Exploration now reached across time as well as space.",
-        "spokenText": "That December, Webb set out to observe the earliest galaxies. Exploration now reached across time as well as space.",
-        "source": "media-work/v9-narration/looking-back-through-time-en.wav",
-        "file": "v9-narration/looking-back-through-time-en.wav",
-        "start": 457.5,
-        "at": 457.5,
-        "end": 465.108,
-        "slotEnd": 468.5,
-        "duration": 7.608,
-        "slotSeconds": 11.0,
-        "fits": true,
-        "extraSecondsNeeded": 0,
-        "speed": 0.98,
-        "nativeSampleRate": 24000,
-        "sampleRate": 48000,
-        "channels": 2,
-        "bytes": 1460814,
-        "sha256": "ff604b5973b8347011094361f54eadb575dcc6c36f517bff4bbc02da54359d3c",
-        "role": "voice",
-        "normalizeInMix": true,
-        "synthesisUnit": "continuous paragraph",
-        "captions": [
-          {
-            "text": "That December, Webb set out to observe the earliest galaxies.",
-            "start": 457.5,
-            "end": 461.435,
-            "relativeStart": 0.0,
-            "relativeEnd": 3.935,
-            "phonemeWeight": 53,
-            "approximate": true
-          },
-          {
-            "text": "Exploration now reached across time as well as space.",
-            "start": 461.435,
-            "end": 465.108,
-            "relativeStart": 3.935,
-            "relativeEnd": 7.608,
-            "phonemeWeight": 52,
-            "approximate": true
-          }
-        ],
-        "subtitleTimingMethod": "Approximate clause timing: proportion of eSpeak phoneme counts within a continuous paragraph, snapped to nearby measured quiet regions in the recorded waveform. Not word-exact forced alignment; no subtitle is synthesized separately.",
-        "subtitleBoundaryDecisions": [
-          {
-            "afterClause": 1,
-            "expected": 3.7902,
-            "boundary": 3.935,
-            "snappedToQuietRegion": true,
-            "quietSeconds": 0.57
-          }
-        ],
-        "subtitlePronunciationAliasesProvided": false
-      },
-      {
-        "id": "looking-back-through-time",
-        "language": "fr",
-        "locale": "fr-fr",
-        "voice": "ff_siwis",
-        "synthetic": true,
-        "text": "En décembre, Webb est parti observer les premières galaxies. Explorer l’espace permettait aussi de remonter le temps.",
-        "spokenText": "En décembre, Webb est parti observer les premières galaxies. Explorer l’espace permettait aussi de remonter le temps.",
-        "source": "media-work/v9-narration/looking-back-through-time-fr.wav",
-        "file": "v9-narration/looking-back-through-time-fr.wav",
-        "start": 457.5,
-        "at": 457.5,
-        "end": 464.788,
-        "slotEnd": 468.5,
-        "duration": 7.288,
-        "slotSeconds": 11.0,
-        "fits": true,
-        "extraSecondsNeeded": 0,
-        "speed": 0.98,
-        "nativeSampleRate": 24000,
-        "sampleRate": 48000,
-        "channels": 2,
-        "bytes": 1399374,
-        "sha256": "3ab83510e840e28f71117aa6c084fec7f98dd693f2414441ed06dbe4f171fa2d",
-        "role": "voice",
-        "normalizeInMix": true,
-        "synthesisUnit": "continuous paragraph",
-        "captions": [
-          {
-            "text": "En décembre, Webb est parti observer les premières galaxies.",
-            "start": 457.5,
-            "end": 461.74,
-            "relativeStart": 0.0,
-            "relativeEnd": 4.24,
-            "phonemeWeight": 57,
-            "approximate": true
-          },
-          {
-            "text": "Explorer l’espace permettait aussi de remonter le temps.",
-            "start": 461.74,
-            "end": 464.788,
-            "relativeStart": 4.24,
-            "relativeEnd": 7.288,
-            "phonemeWeight": 46,
-            "approximate": true
-          }
-        ],
-        "subtitleTimingMethod": "Approximate clause timing: proportion of eSpeak phoneme counts within a continuous paragraph, snapped to nearby measured quiet regions in the recorded waveform. Not word-exact forced alignment; no subtitle is synthesized separately.",
-        "subtitleBoundaryDecisions": [
-          {
-            "afterClause": 1,
-            "expected": 3.9617,
-            "boundary": 4.24,
-            "snappedToQuietRegion": true,
-            "quietSeconds": 0.32
-          }
-        ],
-        "subtitlePronunciationAliasesProvided": false
-      },
-      {
         "id": "returning-launchers",
         "language": "en",
         "locale": "en-us",
@@ -3559,10 +3357,10 @@
         "spokenText": "Closer to Earth, SpaceX, founded by Elon Musk in 2002, developed boosters that could land and fly again.",
         "source": "media-work/v9-narration/returning-launchers-en.wav",
         "file": "v9-narration/returning-launchers-en.wav",
-        "start": 470.0,
-        "at": 470.0,
-        "end": 477.6933333333333,
-        "slotEnd": 480.5,
+        "start": 438.0,
+        "at": 438.0,
+        "end": 445.693333,
+        "slotEnd": 448.5,
         "duration": 7.693333333333333,
         "slotSeconds": 10.5,
         "fits": true,
@@ -3579,8 +3377,8 @@
         "captions": [
           {
             "text": "Closer to Earth,",
-            "start": 470.0,
-            "end": 471.025,
+            "start": 438.0,
+            "end": 439.025,
             "relativeStart": 0.0,
             "relativeEnd": 1.025,
             "phonemeWeight": 14,
@@ -3588,8 +3386,8 @@
           },
           {
             "text": "SpaceX, founded by Elon Musk in 2002,",
-            "start": 471.025,
-            "end": 474.715,
+            "start": 439.025,
+            "end": 442.715,
             "relativeStart": 1.025,
             "relativeEnd": 4.715,
             "phonemeWeight": 52,
@@ -3597,8 +3395,8 @@
           },
           {
             "text": "developed boosters that could land and fly again.",
-            "start": 474.715,
-            "end": 477.693333,
+            "start": 442.715,
+            "end": 445.693333,
             "relativeStart": 4.715,
             "relativeEnd": 7.693333,
             "phonemeWeight": 42,
@@ -3634,10 +3432,10 @@
         "spokenText": "Plus près de nous, SpaceX, fondée par Elon Musk en 2002, développait des boosters capables de se poser et de revoler.",
         "source": "media-work/v9-narration/returning-launchers-fr.wav",
         "file": "v9-narration/returning-launchers-fr.wav",
-        "start": 470.0,
-        "at": 470.0,
-        "end": 478.184,
-        "slotEnd": 480.5,
+        "start": 438.0,
+        "at": 438.0,
+        "end": 446.184,
+        "slotEnd": 448.5,
         "duration": 8.184,
         "slotSeconds": 10.5,
         "fits": true,
@@ -3654,8 +3452,8 @@
         "captions": [
           {
             "text": "Plus près de nous,",
-            "start": 470.0,
-            "end": 470.875,
+            "start": 438.0,
+            "end": 438.875,
             "relativeStart": 0.0,
             "relativeEnd": 0.875,
             "phonemeWeight": 12,
@@ -3663,8 +3461,8 @@
           },
           {
             "text": "SpaceX, fondée par Elon Musk en 2002,",
-            "start": 470.875,
-            "end": 474.52,
+            "start": 438.875,
+            "end": 442.52,
             "relativeStart": 0.875,
             "relativeEnd": 4.52,
             "phonemeWeight": 48,
@@ -3672,8 +3470,8 @@
           },
           {
             "text": "développait des boosters capables de se poser et de revoler.",
-            "start": 474.52,
-            "end": 478.184,
+            "start": 442.52,
+            "end": 446.184,
             "relativeStart": 4.52,
             "relativeEnd": 8.184,
             "phonemeWeight": 53,
@@ -3700,6 +3498,208 @@
         "subtitlePronunciationAliasesProvided": false
       },
       {
+        "id": "a-question-on-mars",
+        "language": "en",
+        "locale": "en-us",
+        "voice": "af_heart",
+        "synthetic": true,
+        "text": "In 2021, Perseverance approached Mars to search for signs of ancient life.",
+        "spokenText": "In 2021, Perseverance approached Mars to search for signs of ancient life.",
+        "source": "media-work/v9-narration/a-question-on-mars-en.wav",
+        "file": "v9-narration/a-question-on-mars-en.wav",
+        "start": 475.5,
+        "at": 475.5,
+        "end": 481.166667,
+        "slotEnd": 482.5,
+        "duration": 5.666666666666667,
+        "slotSeconds": 7.0,
+        "fits": true,
+        "extraSecondsNeeded": 0,
+        "speed": 0.98,
+        "nativeSampleRate": 24000,
+        "sampleRate": 48000,
+        "channels": 2,
+        "bytes": 1088078,
+        "sha256": "5e6b899dfbd6f355781a7eeee93b013f34d2ff75e97a251a66adbbc370661fb4",
+        "role": "voice",
+        "normalizeInMix": true,
+        "synthesisUnit": "continuous paragraph",
+        "captions": [
+          {
+            "text": "In 2021, Perseverance approached Mars to search for signs of ancient life.",
+            "start": 475.5,
+            "end": 481.166667,
+            "relativeStart": 0.0,
+            "relativeEnd": 5.666667,
+            "phonemeWeight": 89,
+            "approximate": true
+          }
+        ],
+        "subtitleTimingMethod": "Approximate clause timing: proportion of eSpeak phoneme counts within a continuous paragraph, snapped to nearby measured quiet regions in the recorded waveform. Not word-exact forced alignment; no subtitle is synthesized separately.",
+        "subtitleBoundaryDecisions": [],
+        "subtitlePronunciationAliasesProvided": false
+      },
+      {
+        "id": "a-question-on-mars",
+        "language": "fr",
+        "locale": "fr-fr",
+        "voice": "ff_siwis",
+        "synthetic": true,
+        "text": "En 2021, Perseverance allait chercher sur Mars les traces d’une vie ancienne.",
+        "spokenText": "En 2021, Perseverance allait chercher sur Mars les traces d’une vie ancienne.",
+        "source": "media-work/v9-narration/a-question-on-mars-fr.wav",
+        "file": "v9-narration/a-question-on-mars-fr.wav",
+        "start": 475.5,
+        "at": 475.5,
+        "end": 480.206667,
+        "slotEnd": 482.5,
+        "duration": 4.706666666666667,
+        "slotSeconds": 7.0,
+        "fits": true,
+        "extraSecondsNeeded": 0,
+        "speed": 0.98,
+        "nativeSampleRate": 24000,
+        "sampleRate": 48000,
+        "channels": 2,
+        "bytes": 903758,
+        "sha256": "090de76fbb6fd4347fb86d9502ceed907b5ec7db953733e97d84c1c80a107989",
+        "role": "voice",
+        "normalizeInMix": true,
+        "synthesisUnit": "continuous paragraph",
+        "captions": [
+          {
+            "text": "En 2021, Perseverance allait chercher sur Mars les traces d’une vie ancienne.",
+            "start": 475.5,
+            "end": 480.206667,
+            "relativeStart": 0.0,
+            "relativeEnd": 4.706667,
+            "phonemeWeight": 66,
+            "approximate": true
+          }
+        ],
+        "subtitleTimingMethod": "Approximate clause timing: proportion of eSpeak phoneme counts within a continuous paragraph, snapped to nearby measured quiet regions in the recorded waveform. Not word-exact forced alignment; no subtitle is synthesized separately.",
+        "subtitleBoundaryDecisions": [],
+        "subtitlePronunciationAliasesProvided": false
+      },
+      {
+        "id": "looking-back-through-time",
+        "language": "en",
+        "locale": "en-us",
+        "voice": "af_heart",
+        "synthetic": true,
+        "text": "That December, Webb set out to observe the earliest galaxies. Exploration now reached across time as well as space.",
+        "spokenText": "That December, Webb set out to observe the earliest galaxies. Exploration now reached across time as well as space.",
+        "source": "media-work/v9-narration/looking-back-through-time-en.wav",
+        "file": "v9-narration/looking-back-through-time-en.wav",
+        "start": 495.5,
+        "at": 495.5,
+        "end": 503.108,
+        "slotEnd": 506.5,
+        "duration": 7.608,
+        "slotSeconds": 11.0,
+        "fits": true,
+        "extraSecondsNeeded": 0,
+        "speed": 0.98,
+        "nativeSampleRate": 24000,
+        "sampleRate": 48000,
+        "channels": 2,
+        "bytes": 1460814,
+        "sha256": "ff604b5973b8347011094361f54eadb575dcc6c36f517bff4bbc02da54359d3c",
+        "role": "voice",
+        "normalizeInMix": true,
+        "synthesisUnit": "continuous paragraph",
+        "captions": [
+          {
+            "text": "That December, Webb set out to observe the earliest galaxies.",
+            "start": 495.5,
+            "end": 499.435,
+            "relativeStart": 0.0,
+            "relativeEnd": 3.935,
+            "phonemeWeight": 53,
+            "approximate": true
+          },
+          {
+            "text": "Exploration now reached across time as well as space.",
+            "start": 499.435,
+            "end": 503.108,
+            "relativeStart": 3.935,
+            "relativeEnd": 7.608,
+            "phonemeWeight": 52,
+            "approximate": true
+          }
+        ],
+        "subtitleTimingMethod": "Approximate clause timing: proportion of eSpeak phoneme counts within a continuous paragraph, snapped to nearby measured quiet regions in the recorded waveform. Not word-exact forced alignment; no subtitle is synthesized separately.",
+        "subtitleBoundaryDecisions": [
+          {
+            "afterClause": 1,
+            "expected": 3.7902,
+            "boundary": 3.935,
+            "snappedToQuietRegion": true,
+            "quietSeconds": 0.57
+          }
+        ],
+        "subtitlePronunciationAliasesProvided": false
+      },
+      {
+        "id": "looking-back-through-time",
+        "language": "fr",
+        "locale": "fr-fr",
+        "voice": "ff_siwis",
+        "synthetic": true,
+        "text": "En décembre, Webb est parti observer les premières galaxies. Explorer l’espace permettait aussi de remonter le temps.",
+        "spokenText": "En décembre, Webb est parti observer les premières galaxies. Explorer l’espace permettait aussi de remonter le temps.",
+        "source": "media-work/v9-narration/looking-back-through-time-fr.wav",
+        "file": "v9-narration/looking-back-through-time-fr.wav",
+        "start": 495.5,
+        "at": 495.5,
+        "end": 502.788,
+        "slotEnd": 506.5,
+        "duration": 7.288,
+        "slotSeconds": 11.0,
+        "fits": true,
+        "extraSecondsNeeded": 0,
+        "speed": 0.98,
+        "nativeSampleRate": 24000,
+        "sampleRate": 48000,
+        "channels": 2,
+        "bytes": 1399374,
+        "sha256": "3ab83510e840e28f71117aa6c084fec7f98dd693f2414441ed06dbe4f171fa2d",
+        "role": "voice",
+        "normalizeInMix": true,
+        "synthesisUnit": "continuous paragraph",
+        "captions": [
+          {
+            "text": "En décembre, Webb est parti observer les premières galaxies.",
+            "start": 495.5,
+            "end": 499.74,
+            "relativeStart": 0.0,
+            "relativeEnd": 4.24,
+            "phonemeWeight": 57,
+            "approximate": true
+          },
+          {
+            "text": "Explorer l’espace permettait aussi de remonter le temps.",
+            "start": 499.74,
+            "end": 502.788,
+            "relativeStart": 4.24,
+            "relativeEnd": 7.288,
+            "phonemeWeight": 46,
+            "approximate": true
+          }
+        ],
+        "subtitleTimingMethod": "Approximate clause timing: proportion of eSpeak phoneme counts within a continuous paragraph, snapped to nearby measured quiet regions in the recorded waveform. Not word-exact forced alignment; no subtitle is synthesized separately.",
+        "subtitleBoundaryDecisions": [
+          {
+            "afterClause": 1,
+            "expected": 3.9617,
+            "boundary": 4.24,
+            "snappedToQuietRegion": true,
+            "quietSeconds": 0.32
+          }
+        ],
+        "subtitlePronunciationAliasesProvided": false
+      },
+      {
         "id": "the-machines-that-stay",
         "language": "en",
         "locale": "en-us",
@@ -3711,7 +3711,7 @@
         "file": "v9-narration/the-machines-that-stay-en.wav",
         "start": 507.5,
         "at": 507.5,
-        "end": 520.2706666666667,
+        "end": 520.270667,
         "slotEnd": 531.5,
         "duration": 12.770666666666667,
         "slotSeconds": 24.0,
@@ -3786,7 +3786,7 @@
         "file": "v9-narration/the-machines-that-stay-fr.wav",
         "start": 507.5,
         "at": 507.5,
-        "end": 520.4626666666667,
+        "end": 520.462667,
         "slotEnd": 531.5,
         "duration": 12.962666666666667,
         "slotSeconds": 24.0,
@@ -3861,7 +3861,7 @@
         "file": "v9-narration/why-relic-en.wav",
         "start": 532.5,
         "at": 532.5,
-        "end": 543.7986666666667,
+        "end": 543.798667,
         "slotEnd": 560.5,
         "duration": 11.298666666666668,
         "slotSeconds": 28.0,
@@ -4005,8 +4005,8 @@
   },
   "syntheticNarrationApproved": true,
   "historicalVoicesSynthesized": false,
-  "narrationScriptSha256": "8d65f285cf15d504058fe8aabbca280d2b9c09f2e56dbb8007a49ae8793239b4",
-  "editPlanSha256": "c35aff8ee939792e0b04fc1071e9a24c3961bd5925a2d2cf20fa347791538015",
+  "narrationScriptSha256": "c5fd44d650a1c434ea15f6aea88c2eb5e5986303677b37976c6d46dff3e77e20",
+  "editPlanSha256": "43774768c0abd31ed78c87025a3eb5d8c8c75796ac1d7313cea0ebc2be141505",
   "paragraphTranscript": [
     {
       "id": "a-world-and-a-question",
@@ -4176,9 +4176,26 @@
       }
     },
     {
+      "id": "carrier-tests",
+      "start": 259.1,
+      "end": 266.9,
+      "text": {
+        "en": "In 1977, NASA carried the Shuttle prototype Enterprise aboard a modified Boeing 747.",
+        "fr": "En 1977, Enterprise, prototype des navettes, vole sur un Boeing 747 modifié."
+      },
+      "subtitles": {
+        "en": [
+          "In 1977, NASA carried the Shuttle prototype Enterprise aboard a modified Boeing 747."
+        ],
+        "fr": [
+          "En 1977, Enterprise, prototype des navettes, vole sur un Boeing 747 modifié."
+        ]
+      }
+    },
+    {
       "id": "two-paths-after-apollo",
-      "start": 259.5,
-      "end": 274.5,
+      "start": 267.5,
+      "end": 282.5,
       "text": {
         "en": "After Apollo, exploration followed two paths. In 1977, the Voyager probes launched towards the outer planets, carrying instruments far beyond the reach of human crews.",
         "fr": "Après Apollo, l’exploration a suivi deux chemins. En 1977, les sondes Voyager sont parties vers les planètes lointaines, emportant des instruments hors de portée des équipages humains."
@@ -4193,23 +4210,6 @@
           "Après Apollo, l’exploration a suivi deux chemins.",
           "En 1977, les sondes Voyager sont parties vers les planètes lointaines,",
           "emportant des instruments hors de portée des équipages humains."
-        ]
-      }
-    },
-    {
-      "id": "carrier-tests",
-      "start": 275.1,
-      "end": 282.9,
-      "text": {
-        "en": "In 1977, NASA carried the Shuttle prototype Enterprise aboard a modified Boeing 747.",
-        "fr": "En 1977, Enterprise, prototype des navettes, vole sur un Boeing 747 modifié."
-      },
-      "subtitles": {
-        "en": [
-          "In 1977, NASA carried the Shuttle prototype Enterprise aboard a modified Boeing 747."
-        ],
-        "fr": [
-          "En 1977, Enterprise, prototype des navettes, vole sur un Boeing 747 modifié."
         ]
       }
     },
@@ -4414,9 +4414,30 @@
       }
     },
     {
+      "id": "returning-launchers",
+      "start": 438,
+      "end": 448.5,
+      "text": {
+        "en": "Closer to Earth, SpaceX, founded by Elon Musk in 2002, developed boosters that could land and fly again.",
+        "fr": "Plus près de nous, SpaceX, fondée par Elon Musk en 2002, développait des boosters capables de se poser et de revoler."
+      },
+      "subtitles": {
+        "en": [
+          "Closer to Earth,",
+          "SpaceX, founded by Elon Musk in 2002,",
+          "developed boosters that could land and fly again."
+        ],
+        "fr": [
+          "Plus près de nous,",
+          "SpaceX, fondée par Elon Musk en 2002,",
+          "développait des boosters capables de se poser et de revoler."
+        ]
+      }
+    },
+    {
       "id": "a-question-on-mars",
-      "start": 437.5,
-      "end": 444.5,
+      "start": 475.5,
+      "end": 482.5,
       "text": {
         "en": "In 2021, Perseverance approached Mars to search for signs of ancient life.",
         "fr": "En 2021, Perseverance allait chercher sur Mars les traces d’une vie ancienne."
@@ -4432,8 +4453,8 @@
     },
     {
       "id": "looking-back-through-time",
-      "start": 457.5,
-      "end": 468.5,
+      "start": 495.5,
+      "end": 506.5,
       "text": {
         "en": "That December, Webb set out to observe the earliest galaxies. Exploration now reached across time as well as space.",
         "fr": "En décembre, Webb est parti observer les premières galaxies. Explorer l’espace permettait aussi de remonter le temps."
@@ -4446,27 +4467,6 @@
         "fr": [
           "En décembre, Webb est parti observer les premières galaxies.",
           "Explorer l’espace permettait aussi de remonter le temps."
-        ]
-      }
-    },
-    {
-      "id": "returning-launchers",
-      "start": 470,
-      "end": 480.5,
-      "text": {
-        "en": "Closer to Earth, SpaceX, founded by Elon Musk in 2002, developed boosters that could land and fly again.",
-        "fr": "Plus près de nous, SpaceX, fondée par Elon Musk en 2002, développait des boosters capables de se poser et de revoler."
-      },
-      "subtitles": {
-        "en": [
-          "Closer to Earth,",
-          "SpaceX, founded by Elon Musk in 2002,",
-          "developed boosters that could land and fly again."
-        ],
-        "fr": [
-          "Plus près de nous,",
-          "SpaceX, fondée par Elon Musk en 2002,",
-          "développait des boosters capables de se poser et de revoler."
         ]
       }
     },
@@ -4520,7 +4520,7 @@
     "Enterprise’s atmospheric tests introduce the Shuttle, its scientific work, losses and retirement after ISS assembly.",
     "International cooperation builds the International Space Station, and Soyuz keeps its crews arriving after Shuttle retirement.",
     "Voyager, Philae and Rosetta carry instruments to distant destinations; both Rosetta and Philae remain on comet 67P.",
-    "Mars rovers, Webb and returning launchers lead to the contrast with machines designed to stay, and RELIC’s purpose."
+    "Returning launchers in 2019/2020 precede Perseverance and Webb in 2021. An explicitly identified present-tense epilogue then reflects on the traces left on the Moon and Mars."
   ],
   "editorialChanges": [
     "The war narration names V1 then V2 and transitions to the postwar space programmes; the displayed footage is dated separately.",
@@ -4534,7 +4534,8 @@
     "Soyuz transport is connected to the end of Shuttle flights; the film does not claim Soyuz stopped flying in 2020.",
     "ESA’s existing animation illustrates Rosetta’s controlled descent in 2016. No fictional takeoff is shown.",
     "The ending dissolves the Solar System picture to black, then introduces the centered RELIC symbol, wordmark and a thin rule.",
-    "The player switches English/French at the current playhead and preserves volume, captions, speed and play/pause state. The H control and shortcut are removed."
+    "The player switches English/French at the current playhead and preserves volume, captions, speed and play/pause state. The H control and shortcut are removed.",
+    "Enterprise precedes the Voyager launches; Falcon 2019/2020 precedes Perseverance and Webb 2021. The legacy montage is explicitly identified as an epilogue."
   ],
   "endingTreatment": "The final held Solar System picture fades to black over 1.4 seconds. The centered symbol and RELIC wordmark enter in sequence, followed by a short thin rule. Timing follows the media clock and remains correct after seeking. Reduced-motion preferences use a static black brand card. No new dialogue is added.",
   "historicalAudioWindows": [
@@ -4577,17 +4578,48 @@
     {
       "id": "perseverance-2021-edl",
       "file": "v6-international/perseverance-descent-original-audio-12s.wav",
-      "at": 445,
+      "at": 483,
       "length": 12,
       "role": "archival"
     }
   ],
   "audioTimeline": [
     {
+      "id": "typing-one",
+      "file": "v6-sound/typing-7s-48k.wav",
+      "at": 0.35,
+      "length": 4.5,
+      "role": "effect",
+      "gain": 0.16
+    },
+    {
+      "id": "typing-two",
+      "file": "v6-sound/typing-7s-48k.wav",
+      "at": 7.4,
+      "length": 5.0,
+      "role": "effect",
+      "gain": 0.16
+    },
+    {
+      "id": "big-bang-impact",
+      "file": "v6-sound/impact-48k.wav",
+      "at": 16,
+      "length": 3,
+      "role": "effect",
+      "gain": 0.55
+    },
+    {
+      "id": "war-transition",
+      "file": "v6-sound/transition-whoosh-1_3s.wav",
+      "at": 98.6,
+      "length": 1.3,
+      "gain": 0.1
+    },
+    {
       "id": "sputnik-original-signal",
       "file": "v6-early-history/sputnik-signal-10s.wav",
       "at": 123.1,
-      "length": 10,
+      "length": 10.0,
       "role": "field",
       "gain": 0.5
     },
@@ -4636,16 +4668,9 @@
       "gain": 0.8
     },
     {
-      "id": "perseverance-2021-edl",
-      "file": "v6-international/perseverance-descent-original-audio-12s.wav",
-      "at": 445,
-      "length": 12,
-      "role": "archival"
-    },
-    {
       "id": "falcon-heavy-ground-audio-2019",
       "file": "v6-falcon/falcon-heavy-launch-stp2-normalized-12s.wav",
-      "at": 473,
+      "at": 441,
       "length": 8,
       "role": "field",
       "in": 4
@@ -4653,46 +4678,29 @@
     {
       "id": "falcon9-landing-ground-audio-2020",
       "file": "v6-falcon/falcon9-sentinel6-normalized-12s.wav",
-      "at": 495,
+      "at": 463,
       "length": 12,
       "role": "field"
     },
     {
-      "id": "typing-one",
-      "file": "v6-sound/typing-7s-48k.wav",
-      "at": 0.35,
-      "length": 4.5,
-      "role": "effect",
-      "gain": 0.16
-    },
-    {
-      "id": "typing-two",
-      "file": "v6-sound/typing-7s-48k.wav",
-      "at": 7.4,
-      "length": 5,
-      "role": "effect",
-      "gain": 0.16
-    },
-    {
-      "id": "big-bang-impact",
-      "file": "v6-sound/impact-48k.wav",
-      "at": 16,
-      "length": 3,
-      "role": "effect",
-      "gain": 0.55
-    },
-    {
-      "id": "war-transition",
+      "id": "legacy-transition-part-1",
       "file": "v6-sound/transition-whoosh-1_3s.wav",
-      "at": 98.6,
-      "length": 1.3,
+      "at": 474.6,
+      "length": 0.4,
       "gain": 0.1
     },
     {
-      "id": "legacy-transition",
+      "id": "perseverance-2021-edl",
+      "file": "v6-international/perseverance-descent-original-audio-12s.wav",
+      "at": 483,
+      "length": 12,
+      "role": "archival"
+    },
+    {
+      "id": "legacy-transition-part-2",
       "file": "v6-sound/transition-whoosh-1_3s.wav",
-      "at": 506.6,
-      "length": 1.3,
+      "at": 507,
+      "length": 0.9,
       "gain": 0.1
     }
   ],
@@ -4724,22 +4732,46 @@
     {
       "at": 160.7,
       "in": 136.7,
-      "length": 114.3,
-      "id": "helios-part-1-mapped-1",
+      "length": 98.3,
+      "id": "helios-part-1-mapped-1-part-1",
       "file": "v6-sound/helios-48k-normalized.wav",
       "fadeIn": 0.3,
+      "fadeOut": 0,
+      "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
+      "license": "CC-BY-4.0",
+      "sourcePage": "https://www.scottbuckley.com.au/library/helios/"
+    },
+    {
+      "at": 259,
+      "in": 251.0,
+      "length": 8.0,
+      "id": "helios-insert-shuttle-carrier-part-1",
+      "file": "v6-sound/helios-48k-normalized.wav",
+      "fadeIn": 0,
       "fadeOut": 0.3,
       "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
       "license": "CC-BY-4.0",
       "sourcePage": "https://www.scottbuckley.com.au/library/helios/"
     },
     {
-      "at": 274.7,
+      "at": 266.7,
       "in": 250.7,
-      "length": 8.3,
-      "id": "helios-insert-shuttle-carrier",
+      "length": 0.3,
+      "id": "helios-part-1-mapped-2-part-1",
       "file": "v6-sound/helios-48k-normalized.wav",
       "fadeIn": 0.3,
+      "fadeOut": 0,
+      "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
+      "license": "CC-BY-4.0",
+      "sourcePage": "https://www.scottbuckley.com.au/library/helios/"
+    },
+    {
+      "at": 267,
+      "in": 235.0,
+      "length": 16.0,
+      "id": "helios-part-1-mapped-1-part-2",
+      "file": "v6-sound/helios-48k-normalized.wav",
+      "fadeIn": 0,
       "fadeOut": 0.3,
       "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
       "license": "CC-BY-4.0",
@@ -4748,10 +4780,22 @@
     {
       "at": 282.7,
       "in": 250.7,
-      "length": 92.3,
-      "id": "helios-part-1-mapped-2",
+      "length": 0.3,
+      "id": "helios-insert-shuttle-carrier-part-2",
       "file": "v6-sound/helios-48k-normalized.wav",
       "fadeIn": 0.3,
+      "fadeOut": 0,
+      "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
+      "license": "CC-BY-4.0",
+      "sourcePage": "https://www.scottbuckley.com.au/library/helios/"
+    },
+    {
+      "at": 283,
+      "in": 251.0,
+      "length": 92.0,
+      "id": "helios-part-1-mapped-2-part-2",
+      "file": "v6-sound/helios-48k-normalized.wav",
+      "fadeIn": 0,
       "fadeOut": 0.3,
       "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
       "license": "CC-BY-4.0",
@@ -4808,10 +4852,46 @@
     {
       "at": 436.7,
       "in": 225.7,
-      "length": 132.3,
-      "id": "helios-part-2-mapped-4",
+      "length": 0.3,
+      "id": "helios-part-2-mapped-4-part-1",
       "file": "v6-sound/helios-48k-normalized.wav",
       "fadeIn": 0.3,
+      "fadeOut": 0,
+      "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
+      "license": "CC-BY-4.0",
+      "sourcePage": "https://www.scottbuckley.com.au/library/helios/"
+    },
+    {
+      "at": 437,
+      "in": 258.0,
+      "length": 38,
+      "id": "helios-part-2-mapped-4-part-2",
+      "file": "v6-sound/helios-48k-normalized.wav",
+      "fadeIn": 0,
+      "fadeOut": 0,
+      "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
+      "license": "CC-BY-4.0",
+      "sourcePage": "https://www.scottbuckley.com.au/library/helios/"
+    },
+    {
+      "at": 475,
+      "in": 226.0,
+      "length": 32,
+      "id": "helios-part-2-mapped-4-part-3",
+      "file": "v6-sound/helios-48k-normalized.wav",
+      "fadeIn": 0,
+      "fadeOut": 0,
+      "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
+      "license": "CC-BY-4.0",
+      "sourcePage": "https://www.scottbuckley.com.au/library/helios/"
+    },
+    {
+      "at": 507,
+      "in": 296.0,
+      "length": 62.0,
+      "id": "helios-part-2-mapped-4-part-4",
+      "file": "v6-sound/helios-48k-normalized.wav",
+      "fadeIn": 0,
       "fadeOut": 7,
       "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
       "license": "CC-BY-4.0",
@@ -4832,17 +4912,17 @@
     {
       "id": "iss-life",
       "start": 369,
-      "end": 391
+      "end": 375
     },
     {
       "id": "philae-landing",
       "start": 421,
-      "end": 437
+      "end": 429
     },
     {
       "id": "falcon-dual-return",
-      "start": 481,
-      "end": 495
+      "start": 449,
+      "end": 463
     },
     {
       "id": "gagarin-silent",
@@ -4856,6 +4936,8 @@
       "id": "prologue",
       "duration": 16,
       "transitionOut": 0,
+      "oldIndex": 0,
+      "oldStart": 0,
       "start": 0,
       "end": 16
     },
@@ -4864,6 +4946,8 @@
       "file": "v6-origins/origins-continuous-65s.mp4",
       "duration": 65,
       "transitionOut": 1.25,
+      "oldIndex": 1,
+      "oldStart": 16,
       "start": 16,
       "end": 81
     },
@@ -4874,6 +4958,8 @@
       "in": 1,
       "preserveSpeed": true,
       "transitionOut": 0.75,
+      "oldIndex": 2,
+      "oldStart": 81,
       "start": 81,
       "end": 88
     },
@@ -4882,6 +4968,8 @@
       "file": null,
       "duration": 3,
       "transitionOut": 1,
+      "oldIndex": 3,
+      "oldStart": 88,
       "start": 88,
       "end": 91
     },
@@ -4893,6 +4981,8 @@
       "preserveSpeed": false,
       "sourceLength": 9,
       "transitionType": "fadeblack",
+      "oldIndex": 4,
+      "oldStart": 91,
       "start": 91,
       "end": 99
     },
@@ -4902,6 +4992,8 @@
       "duration": 6,
       "monochrome": true,
       "transitionOut": 0,
+      "oldIndex": 5,
+      "oldStart": 99,
       "start": 99,
       "end": 105
     },
@@ -4912,6 +5004,8 @@
       "monochrome": true,
       "transitionOut": 1,
       "transitionType": "fade",
+      "oldIndex": 6,
+      "oldStart": 105,
       "start": 105,
       "end": 113
     },
@@ -4922,6 +5016,8 @@
       "transitionOut": 0.5,
       "sourceLength": 10,
       "preserveSpeed": false,
+      "oldIndex": 7,
+      "oldStart": 113,
       "start": 113,
       "end": 123
     },
@@ -4931,6 +5027,8 @@
       "duration": 4,
       "monochrome": true,
       "transitionOut": 0,
+      "oldIndex": 8,
+      "oldStart": 123,
       "start": 123,
       "end": 127
     },
@@ -4940,6 +5038,8 @@
       "duration": 8,
       "monochrome": true,
       "transitionOut": 0.5,
+      "oldIndex": 9,
+      "oldStart": 127,
       "start": 127,
       "end": 135
     },
@@ -4952,6 +5052,8 @@
       "monochrome": true,
       "transitionOut": 0.5,
       "sourceLength": 8,
+      "oldIndex": 10,
+      "oldStart": 135,
       "start": 135,
       "end": 147
     },
@@ -4963,6 +5065,8 @@
       "transitionOut": 0.75,
       "preserveSpeed": false,
       "sourceLength": 5,
+      "oldIndex": 11,
+      "oldStart": 147,
       "start": 147,
       "end": 153
     },
@@ -4976,6 +5080,7 @@
       "monochrome": true,
       "musicOnly": true,
       "noNewCaption": true,
+      "changedReason": "Extendedimage-onlyhistoricalpreparation/capsulefootage, excludingESAintrotitle",
       "start": 153,
       "end": 161
     },
@@ -4986,6 +5091,8 @@
       "transitionOut": 0.75,
       "in": 1183,
       "preserveSpeed": true,
+      "oldIndex": 12,
+      "oldStart": 153,
       "start": 161,
       "end": 169
     },
@@ -4996,6 +5103,8 @@
       "monochrome": true,
       "preserveSpeed": true,
       "transitionOut": 0.5,
+      "oldIndex": 13,
+      "oldStart": 161,
       "start": 169,
       "end": 189
     },
@@ -5007,6 +5116,8 @@
       "preserveSpeed": false,
       "transitionOut": 0,
       "sourceLength": 8,
+      "oldIndex": 14,
+      "oldStart": 181,
       "start": 189,
       "end": 201
     },
@@ -5017,6 +5128,8 @@
       "duration": 6,
       "monochrome": true,
       "transitionOut": 0,
+      "oldIndex": 15,
+      "oldStart": 193,
       "start": 201,
       "end": 207
     },
@@ -5027,6 +5140,8 @@
       "duration": 10,
       "monochrome": true,
       "transitionOut": 0.5,
+      "oldIndex": 16,
+      "oldStart": 199,
       "start": 207,
       "end": 217
     },
@@ -5037,6 +5152,8 @@
       "in": 1195,
       "preserveSpeed": true,
       "transitionOut": 0,
+      "oldIndex": 17,
+      "oldStart": 209,
       "start": 217,
       "end": 223
     },
@@ -5047,8 +5164,11 @@
       "transitionOut": 0.5,
       "in": 1258,
       "preserveSpeed": true,
+      "oldIndex": 18,
+      "oldStart": 215,
       "start": 223,
-      "end": 231
+      "end": 231,
+      "changedReason": "Window includes finalsurfaceapproach andtouchdownshadow; original1254windowendedbeforecontact"
     },
     {
       "id": "moon",
@@ -5057,8 +5177,11 @@
       "duration": 14,
       "monochrome": true,
       "transitionOut": 0.5,
+      "oldIndex": 19,
+      "oldStart": 223,
       "sourceLength": 14,
       "preserveSpeed": true,
+      "changedReason": "Actual first step atsource51s within42–56s NASAmonochromearchive, replacinglaterwalking",
       "start": 231,
       "end": 245
     },
@@ -5070,8 +5193,23 @@
       "preserveSpeed": true,
       "transitionOut": 1,
       "sourceLength": 14,
+      "oldIndex": 20,
+      "oldStart": 237,
       "start": 245,
       "end": 259
+    },
+    {
+      "id": "shuttle-carrier",
+      "file": "v9-history/enterprise-flight-test-1977-nara.mp4",
+      "duration": 8,
+      "in": 100,
+      "preserveSpeed": true,
+      "transitionOut": 0.5,
+      "changedReason": "Enterprise atop NASA747 atmospheric tests",
+      "start": 259,
+      "end": 267,
+      "sourceLength": 8.5,
+      "fit": "contain"
     },
     {
       "id": "voyager",
@@ -5081,20 +5219,10 @@
       "preserveSpeed": false,
       "transitionOut": 0.75,
       "sourceLength": 16,
-      "start": 259,
-      "end": 275
-    },
-    {
-      "id": "shuttle-carrier",
-      "file": "v9-history/enterprise-flight-test-1977-nara.mp4",
-      "duration": 8,
-      "in": 100,
-      "preserveSpeed": true,
-      "transitionOut": 0.5,
-      "start": 275,
-      "end": 283,
-      "sourceLength": 8.5,
-      "fit": "contain"
+      "oldIndex": 21,
+      "oldStart": 251,
+      "start": 267,
+      "end": 283
     },
     {
       "id": "sts1",
@@ -5103,6 +5231,8 @@
       "preserveSpeed": false,
       "transitionOut": 0,
       "sourceLength": 14,
+      "oldIndex": 22,
+      "oldStart": 267,
       "start": 283,
       "end": 299
     },
@@ -5112,6 +5242,8 @@
       "duration": 6,
       "preserveSpeed": true,
       "transitionOut": 0,
+      "oldIndex": 23,
+      "oldStart": 283,
       "start": 299,
       "end": 305
     },
@@ -5119,6 +5251,8 @@
       "id": "remembrance",
       "duration": 8,
       "transitionOut": 1.5,
+      "oldIndex": 24,
+      "oldStart": 289,
       "start": 305,
       "end": 313
     },
@@ -5129,6 +5263,8 @@
       "transitionOut": 1,
       "sourceLength": 10,
       "preserveSpeed": false,
+      "oldIndex": 25,
+      "oldStart": 297,
       "start": 313,
       "end": 327
     },
@@ -5137,6 +5273,8 @@
       "file": "v6-international/iss1998-zarya-capture-12s.mp4",
       "duration": 10,
       "transitionOut": 0,
+      "oldIndex": 26,
+      "oldStart": 311,
       "start": 327,
       "end": 337
     },
@@ -5145,6 +5283,8 @@
       "file": "v6-international/iss1998-unity-zarya-overview-12s.mp4",
       "duration": 10,
       "transitionOut": 0.75,
+      "oldIndex": 27,
+      "oldStart": 321,
       "start": 337,
       "end": 347
     },
@@ -5153,6 +5293,8 @@
       "file": "v6-international/columbus-installation-10s.mp4",
       "duration": 10,
       "transitionOut": 0.75,
+      "oldIndex": 28,
+      "oldStart": 331,
       "start": 347,
       "end": 357
     },
@@ -5163,6 +5305,8 @@
       "in": 114,
       "preserveSpeed": true,
       "transitionOut": 0.75,
+      "oldIndex": 29,
+      "oldStart": 341,
       "start": 357,
       "end": 369
     },
@@ -5171,6 +5315,8 @@
       "file": "v5-spaceflight/iss-interior-12s.mp4",
       "duration": 6,
       "transitionOut": 0.75,
+      "oldIndex": 30,
+      "oldStart": 353,
       "start": 369,
       "end": 375
     },
@@ -5181,6 +5327,7 @@
       "in": 8,
       "preserveSpeed": true,
       "transitionOut": 0.5,
+      "changedReason": "Finalflight andprogramme retirement context",
       "start": 375,
       "end": 391,
       "sourceLength": 16.5,
@@ -5193,7 +5340,10 @@
       "in": 208.5,
       "preserveSpeed": true,
       "transitionOut": 1,
+      "oldIndex": 31,
+      "oldStart": 359,
       "sourceLength": 9,
+      "changedReason": "Actual2011crewlaunch after Shuttle retirement",
       "start": 391,
       "end": 399
     },
@@ -5205,6 +5355,8 @@
       "preserveSpeed": false,
       "transitionOut": 1,
       "sourceLength": 13.38,
+      "oldIndex": 32,
+      "oldStart": 367,
       "start": 399,
       "end": 413
     },
@@ -5215,6 +5367,8 @@
       "in": 287.5,
       "sourceLength": 4.5,
       "transitionOut": 0,
+      "oldIndex": 33,
+      "oldStart": 381,
       "start": 413,
       "end": 421
     },
@@ -5225,6 +5379,8 @@
       "in": 365.8,
       "sourceLength": 4.5,
       "transitionOut": 1,
+      "oldIndex": 34,
+      "oldStart": 389,
       "start": 421,
       "end": 429
     },
@@ -5235,9 +5391,43 @@
       "in": 43,
       "preserveSpeed": true,
       "transitionOut": 1,
+      "changedReason": "Rosetta controlledimpact30Sep2016—not takeoff",
       "start": 429,
       "end": 437,
       "sourceLength": 9
+    },
+    {
+      "id": "falcon-launch",
+      "file": "v6-falcon/falcon-heavy-launch-stp2-12s.mp4",
+      "duration": 12,
+      "preserveSpeed": true,
+      "transitionOut": 0.5,
+      "oldIndex": 39,
+      "oldStart": 429,
+      "start": 437,
+      "end": 449
+    },
+    {
+      "id": "falcon-dual-return",
+      "file": "v6-falcon/falcon-heavy-dual-landing-stp2-14s.mp4",
+      "duration": 14,
+      "preserveSpeed": true,
+      "transitionOut": 0.75,
+      "oldIndex": 40,
+      "oldStart": 441,
+      "start": 449,
+      "end": 463
+    },
+    {
+      "id": "falcon-return",
+      "file": "v6-falcon/falcon9-sentinel6-landing-12s.mp4",
+      "duration": 12,
+      "preserveSpeed": true,
+      "transitionOut": 1,
+      "oldIndex": 41,
+      "oldStart": 455,
+      "start": 463,
+      "end": 475
     },
     {
       "id": "mars-approach",
@@ -5247,8 +5437,10 @@
       "in": 85,
       "preserveSpeed": true,
       "crop": "crop=752:600:282:0",
-      "start": 437,
-      "end": 445
+      "oldIndex": 35,
+      "oldStart": 397,
+      "start": 475,
+      "end": 483
     },
     {
       "id": "perseverance-up",
@@ -5258,8 +5450,10 @@
       "preserveSpeed": true,
       "crop": "crop=460:358:94:4",
       "transitionOut": 0,
-      "start": 445,
-      "end": 451
+      "oldIndex": 36,
+      "oldStart": 405,
+      "start": 483,
+      "end": 489
     },
     {
       "id": "perseverance-down",
@@ -5269,8 +5463,10 @@
       "preserveSpeed": true,
       "crop": "crop=460:344:94:372",
       "transitionOut": 1,
-      "start": 451,
-      "end": 457
+      "oldIndex": 37,
+      "oldStart": 411,
+      "start": 489,
+      "end": 495
     },
     {
       "id": "webb",
@@ -5279,33 +5475,8 @@
       "transitionOut": 1,
       "sourceLength": 10,
       "preserveSpeed": false,
-      "start": 457,
-      "end": 469
-    },
-    {
-      "id": "falcon-launch",
-      "file": "v6-falcon/falcon-heavy-launch-stp2-12s.mp4",
-      "duration": 12,
-      "preserveSpeed": true,
-      "transitionOut": 0.5,
-      "start": 469,
-      "end": 481
-    },
-    {
-      "id": "falcon-dual-return",
-      "file": "v6-falcon/falcon-heavy-dual-landing-stp2-14s.mp4",
-      "duration": 14,
-      "preserveSpeed": true,
-      "transitionOut": 0.75,
-      "start": 481,
-      "end": 495
-    },
-    {
-      "id": "falcon-return",
-      "file": "v6-falcon/falcon9-sentinel6-landing-12s.mp4",
-      "duration": 12,
-      "preserveSpeed": true,
-      "transitionOut": 1,
+      "oldIndex": 38,
+      "oldStart": 417,
       "start": 495,
       "end": 507
     },
@@ -5315,6 +5486,8 @@
       "in": 13,
       "duration": 8,
       "transitionOut": 1,
+      "oldIndex": 42,
+      "oldStart": 467,
       "start": 507,
       "end": 515
     },
@@ -5324,6 +5497,8 @@
       "in": 26,
       "duration": 8,
       "transitionOut": 0.75,
+      "oldIndex": 43,
+      "oldStart": 475,
       "start": 515,
       "end": 523
     },
@@ -5332,6 +5507,8 @@
       "file": "v6-finale/curiosity-rover-close-9_75s.mp4",
       "duration": 9,
       "transitionOut": 0.75,
+      "oldIndex": 44,
+      "oldStart": 483,
       "start": 523,
       "end": 532
     },
@@ -5340,6 +5517,8 @@
       "file": "v6-origins/curiosity-site-to-mars-reversed-12s.mp4",
       "duration": 12,
       "transitionOut": 0.75,
+      "oldIndex": 45,
+      "oldStart": 492,
       "start": 532,
       "end": 544
     },
@@ -5349,6 +5528,8 @@
       "in": 3,
       "duration": 17,
       "transitionOut": 0,
+      "oldIndex": 46,
+      "oldStart": 504,
       "start": 544,
       "end": 561
     },
@@ -5359,6 +5540,8 @@
       "duration": 8,
       "preserveSpeed": true,
       "transitionOut": 0,
+      "oldIndex": 47,
+      "oldStart": 521,
       "start": 561,
       "end": 569
     }
@@ -5392,7 +5575,9 @@
       },
       "date": "1962",
       "source": "https://www.nasa.gov/people/wernher-von-braun/",
-      "context": "The selectedNASAfilmshowsvonBraun1962; VOexplainshispostwarcareer."
+      "context": "Postwar career and arrival in the United States in 1945, illustrated with a genuine 1962 archive portrait. The illustration date does not reorder the narrated historical event.",
+      "eventDate": "1945-09",
+      "archiveYear": 1962
     },
     "sputnik-wide": {
       "id": "sputnik-wide",
@@ -5532,7 +5717,8 @@
       },
       "date": "1977",
       "source": "https://science.nasa.gov/mission/voyager/",
-      "context": "Launchyearoftwoprobes; artistanimationillustrateshardware."
+      "context": "Voyager 2 launches, followed by Voyager 1 on 5 September 1977",
+      "eventDate": "1977-08-20"
     },
     "shuttle-carrier": {
       "id": "shuttle-carrier",
@@ -5542,7 +5728,8 @@
       },
       "date": "1977",
       "source": "https://www.nasa.gov/history/space-shuttle-enterprise-makes-its-public-debut/",
-      "context": "ApproachandLandingTests; EnterpriseneverorbitedEarth."
+      "context": "The selected 1977 carrier footage illustrates the atmospheric test campaign. Enterprise's first free flight followed on 12 August 1977; it was not an orbital flight.",
+      "eventDate": "1977-02-18"
     },
     "sts1": {
       "id": "sts1",
@@ -5687,7 +5874,8 @@
       },
       "date": "2021-02-18",
       "source": "https://science.nasa.gov/mission/mars-2020-perseverance/",
-      "context": "Realdescentcamera."
+      "context": "Perseverance lands on Mars",
+      "eventDate": "2021-02-18"
     },
     "perseverance-up": {
       "id": "perseverance-up",
@@ -5717,7 +5905,8 @@
       },
       "date": "2021-12-25",
       "source": "https://science.nasa.gov/mission/webb/",
-      "context": "Ariane5launch/separation; ESAcontribution."
+      "context": "James Webb Space Telescope launches on Ariane 5",
+      "eventDate": "2021-12-25"
     },
     "falcon-launch": {
       "id": "falcon-launch",
@@ -5727,7 +5916,8 @@
       },
       "date": "2019-06",
       "source": "https://www.nasa.gov/news-release/nasa-technology-missions-launch-on-spacex-falcon-heavy/",
-      "context": "Flashbacktoreusablelaunchdevelopments; founderElonMusk2002preserved."
+      "context": "The paired booster-return shot belongs to this same mission; this is not the first Falcon booster landing.",
+      "eventDate": "2019-06-25"
     },
     "falcon-dual-return": {
       "id": "falcon-dual-return",
@@ -5747,7 +5937,8 @@
       },
       "date": "2020-11",
       "source": "https://science.nasa.gov/mission/sentinel-6/",
-      "context": "Landing21November2020."
+      "context": "Falcon 9 launches Sentinel-6 Michael Freilich and returns its first stage",
+      "eventDate": "2020-11-21"
     },
     "lunar-orbiter": {
       "id": "lunar-orbiter",
@@ -5757,7 +5948,9 @@
       },
       "date": "2018",
       "source": "https://svs.gsfc.nasa.gov/4717/",
-      "context": "Visualizationpublished2018,basedonLROimagerynotApollo17camera."
+      "context": "Visualizationpublished2018,basedonLROimagerynotApollo17camera.",
+      "historicalRole": "epilogue",
+      "dateContext": "Archive/publication or mission-origin date; the narration is a present-tense legacy reflection, not another dated milestone."
     },
     "mars": {
       "id": "mars",
@@ -5767,7 +5960,9 @@
       },
       "date": "2012",
       "source": "https://science.nasa.gov/mission/msl-curiosity/",
-      "context": "Curiositylanded6August2012UTC."
+      "context": "Curiositylanded6August2012UTC.",
+      "historicalRole": "epilogue",
+      "dateContext": "Archive/publication or mission-origin date; the narration is a present-tense legacy reflection, not another dated milestone."
     },
     "hardware": {
       "id": "hardware",
@@ -5777,7 +5972,9 @@
       },
       "date": "2012",
       "source": "https://science.nasa.gov/mission/msl-curiosity/",
-      "context": "Keepactivehardwarecontextnotdiscardedclaim."
+      "context": "Keepactivehardwarecontextnotdiscardedclaim.",
+      "historicalRole": "epilogue",
+      "dateContext": "Archive/publication or mission-origin date; the narration is a present-tense legacy reflection, not another dated milestone."
     }
   },
   "currentAdditionalSources": [
@@ -8065,7 +8262,7 @@
     }
   },
   "catalogContext": "The inherited catalogue documents licensed source research, including material used in previous edits. Only editTimeline and its file references identify pictures delivered in this V9 edition. currentAdditionalSources includes new footage and primary date references; an event reference is not itself a claim that its page supplied the displayed footage.",
-  "spaceXContext": "Elon Musk is identified as the founder of SpaceX in 2002. The 2019 and 2020 Falcon archive shots illustrate reusable launchers; the montage is thematic and does not claim these were the first recoveries or occurred after Webb’s 2021 launch.",
+  "spaceXContext": "The 2019 STP-2 Falcon Heavy and 2020 Sentinel-6 Falcon 9 archive shots precede Perseverance and Webb in 2021. SpaceX’s founding in 2002 is biographical context; these shots do not claim to show the first booster recoveries.",
   "historicalContext": [
     "Civilian rocketry predates the Second World War. V1 was a cruise missile; V2 was a ballistic rocket. The selected V2 archive shows captured hardware tested at White Sands in 1946, while narration dates wartime deployment to 1944.",
     "The moving von Braun archive was filmed in 1962 and illustrates a postwar career described by the narration.",
@@ -8080,7 +8277,141 @@
     "Soyuz carried every arriving ISS crew between the final Shuttle flight and Crew Dragon’s first crewed launch in 2020. Soyuz continued to fly after 2020.",
     "Voyager probes launched in 1977. Voyager 1 crossed the heliopause on 25 August 2012; it has not left the Oort cloud or all solar gravitational influence.",
     "Philae first touched comet 67P/Churyumov–Gerasimenko on 12 November 2014 as part of ESA’s Rosetta mission. Rosetta ended its mission in a controlled descent on 30 September 2016. Both remain on the comet. This was an ESA-led mission, not a NASA landing, and Rosetta is not the comet’s name.",
-    "The 2019 and 2020 Falcon footage illustrates reusable launchers in a thematic section, not a strict continuation after Webb’s 2021 launch.",
+    "Falcon Heavy STP-2 on 25 June 2019 and Falcon 9 / Sentinel-6 on 21 November 2020 precede Perseverance on 18 February 2021 and Webb on 25 December 2021.",
     "The ending joins existing mission and visualization videos; it is not a physically continuous camera recording from a rover to the entire Solar System."
-  ]
+  ],
+  "chronology": {
+    "schema": "relic-film-chronology",
+    "version": 1,
+    "revision": "9.1-hd50",
+    "sourceRevision": "9.0-hd50",
+    "duration": 569,
+    "policy": "Order the historical events described by the film, rather than the filming or publication dates of illustrative archive material. Keep the existing events and bilingual narration; the closing legacy passage is an explicitly identified epilogue.",
+    "blocks": [
+      {
+        "id": "origins-to-apollo",
+        "sourceStart": 0,
+        "sourceEnd": 259,
+        "start": 0,
+        "end": 259
+      },
+      {
+        "id": "enterprise-1977",
+        "sourceStart": 275,
+        "sourceEnd": 283,
+        "start": 259,
+        "end": 267
+      },
+      {
+        "id": "voyager-1977",
+        "sourceStart": 259,
+        "sourceEnd": 275,
+        "start": 267,
+        "end": 283
+      },
+      {
+        "id": "shuttle-to-rosetta",
+        "sourceStart": 283,
+        "sourceEnd": 437,
+        "start": 283,
+        "end": 437
+      },
+      {
+        "id": "reusable-launchers-2019-2020",
+        "sourceStart": 469,
+        "sourceEnd": 507,
+        "start": 437,
+        "end": 475
+      },
+      {
+        "id": "perseverance-and-webb-2021",
+        "sourceStart": 437,
+        "sourceEnd": 469,
+        "start": 475,
+        "end": 507
+      },
+      {
+        "id": "legacy-epilogue",
+        "sourceStart": 507,
+        "sourceEnd": 569,
+        "start": 507,
+        "end": 569
+      }
+    ],
+    "events": [
+      {
+        "shot": "shuttle-carrier",
+        "date": "1977-02-18",
+        "event": "Beginning of Enterprise captive flight tests on the Shuttle Carrier Aircraft",
+        "context": "The selected 1977 carrier footage illustrates the atmospheric test campaign. Enterprise's first free flight followed on 12 August 1977; it was not an orbital flight.",
+        "source": "https://www.nasa.gov/wp-content/uploads/2023/04/1977.pdf"
+      },
+      {
+        "shot": "voyager",
+        "date": "1977-08-20",
+        "event": "Voyager 2 launches, followed by Voyager 1 on 5 September 1977",
+        "source": "https://science.nasa.gov/specials/apps/voyager-vital-signs/table/"
+      },
+      {
+        "shot": "falcon-launch",
+        "date": "2019-06-25",
+        "event": "Falcon Heavy launches the STP-2 mission",
+        "context": "The paired booster-return shot belongs to this same mission; this is not the first Falcon booster landing.",
+        "source": "https://www.nasa.gov/news-release/nasa-technology-missions-launch-on-spacex-falcon-heavy/"
+      },
+      {
+        "shot": "falcon-return",
+        "date": "2020-11-21",
+        "event": "Falcon 9 launches Sentinel-6 Michael Freilich and returns its first stage",
+        "source": "https://science.nasa.gov/blogs/sentinel-6/2020/11/21/sentinel-6-michael-freilich-satellite-launches/"
+      },
+      {
+        "shot": "mars-approach",
+        "date": "2021-02-18",
+        "event": "Perseverance lands on Mars",
+        "source": "https://www.jpl.nasa.gov/news/touchdown-nasas-mars-perseverance-rover-safely-lands-on-red-planet/"
+      },
+      {
+        "shot": "webb",
+        "date": "2021-12-25",
+        "event": "James Webb Space Telescope launches on Ariane 5",
+        "source": "https://science.nasa.gov/mission/webb/launch/"
+      }
+    ],
+    "archiveContext": {
+      "von-braun": {
+        "eventDate": "1945-09",
+        "archiveYear": 1962,
+        "context": "The narration describes von Braun's arrival in the United States after the war, in September 1945. The moving 1962 portrait illustrates that career; its archive date does not move the postwar account after Sputnik. Preserve the V2 reading pause and the von Braun clause at his first appearance.",
+        "source": "https://science.nasa.gov/earth/earth-observatory/wernher-von-braun/"
+      }
+    },
+    "epilogue": {
+      "start": 507,
+      "end": 569,
+      "firstShot": "lunar-orbiter",
+      "label": {
+        "en": "Epilogue — Traces of exploration",
+        "fr": "Épilogue — Les traces de l’exploration"
+      },
+      "context": "This present-tense legacy passage describes Apollo traces still on the Moon, Curiosity continuing to work and machines left behind. The dates of its archive images and visualizations are provenance, not new milestones following Webb's 2021 launch.",
+      "archiveExamples": [
+        {
+          "shot": "lunar-orbiter",
+          "published": "2018-03-23",
+          "context": "LRO-data visualization of the Apollo 17 landing site, not Apollo-era camera footage",
+          "source": "https://svs.gsfc.nasa.gov/4717/"
+        },
+        {
+          "shots": [
+            "mars",
+            "hardware"
+          ],
+          "missionLandingDate": "2012-08-06",
+          "context": "Curiosity imagery supports the existing statement that the rover continues to work; this passage does not retell its landing.",
+          "source": "https://www.jpl.nasa.gov/missions/mars-science-laboratory-curiosity-rover-msl/"
+        }
+      ]
+    }
+  }
 }

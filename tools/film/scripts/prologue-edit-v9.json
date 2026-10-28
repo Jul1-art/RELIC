@@ -1,6 +1,6 @@
 {
   "version": 9,
-  "revision": "9.0-hd50",
+  "revision": "9.1-hd50",
   "masteringByLanguage": {
     "fr": {
       "integrated": -16,
@@ -279,6 +279,19 @@
       "end": 259
     },
     {
+      "id": "shuttle-carrier",
+      "file": "v9-history/enterprise-flight-test-1977-nara.mp4",
+      "duration": 8,
+      "in": 100,
+      "preserveSpeed": true,
+      "transitionOut": 0.5,
+      "changedReason": "Enterprise atop NASA747 atmospheric tests",
+      "start": 259,
+      "end": 267,
+      "sourceLength": 8.5,
+      "fit": "contain"
+    },
+    {
       "id": "voyager",
       "file": "v7-deep-space/voyager-cme-original.mp4",
       "duration": 16,
@@ -288,21 +301,8 @@
       "sourceLength": 16,
       "oldIndex": 21,
       "oldStart": 251,
-      "start": 259,
-      "end": 275
-    },
-    {
-      "id": "shuttle-carrier",
-      "file": "v9-history/enterprise-flight-test-1977-nara.mp4",
-      "duration": 8,
-      "in": 100,
-      "preserveSpeed": true,
-      "transitionOut": 0.5,
-      "changedReason": "Enterprise atop NASA747 atmospheric tests",
-      "start": 275,
-      "end": 283,
-      "sourceLength": 8.5,
-      "fit": "contain"
+      "start": 267,
+      "end": 283
     },
     {
       "id": "sts1",
@@ -477,6 +477,39 @@
       "sourceLength": 9
     },
     {
+      "id": "falcon-launch",
+      "file": "v6-falcon/falcon-heavy-launch-stp2-12s.mp4",
+      "duration": 12,
+      "preserveSpeed": true,
+      "transitionOut": 0.5,
+      "oldIndex": 39,
+      "oldStart": 429,
+      "start": 437,
+      "end": 449
+    },
+    {
+      "id": "falcon-dual-return",
+      "file": "v6-falcon/falcon-heavy-dual-landing-stp2-14s.mp4",
+      "duration": 14,
+      "preserveSpeed": true,
+      "transitionOut": 0.75,
+      "oldIndex": 40,
+      "oldStart": 441,
+      "start": 449,
+      "end": 463
+    },
+    {
+      "id": "falcon-return",
+      "file": "v6-falcon/falcon9-sentinel6-landing-12s.mp4",
+      "duration": 12,
+      "preserveSpeed": true,
+      "transitionOut": 1,
+      "oldIndex": 41,
+      "oldStart": 455,
+      "start": 463,
+      "end": 475
+    },
+    {
       "id": "mars-approach",
       "file": "v6-international/perseverance-descent-original.mp4",
       "duration": 8,
@@ -486,8 +519,8 @@
       "crop": "crop=752:600:282:0",
       "oldIndex": 35,
       "oldStart": 397,
-      "start": 437,
-      "end": 445
+      "start": 475,
+      "end": 483
     },
     {
       "id": "perseverance-up",
@@ -499,8 +532,8 @@
       "transitionOut": 0,
       "oldIndex": 36,
       "oldStart": 405,
-      "start": 445,
-      "end": 451
+      "start": 483,
+      "end": 489
     },
     {
       "id": "perseverance-down",
@@ -512,8 +545,8 @@
       "transitionOut": 1,
       "oldIndex": 37,
       "oldStart": 411,
-      "start": 451,
-      "end": 457
+      "start": 489,
+      "end": 495
     },
     {
       "id": "webb",
@@ -524,39 +557,6 @@
       "preserveSpeed": false,
       "oldIndex": 38,
       "oldStart": 417,
-      "start": 457,
-      "end": 469
-    },
-    {
-      "id": "falcon-launch",
-      "file": "v6-falcon/falcon-heavy-launch-stp2-12s.mp4",
-      "duration": 12,
-      "preserveSpeed": true,
-      "transitionOut": 0.5,
-      "oldIndex": 39,
-      "oldStart": 429,
-      "start": 469,
-      "end": 481
-    },
-    {
-      "id": "falcon-dual-return",
-      "file": "v6-falcon/falcon-heavy-dual-landing-stp2-14s.mp4",
-      "duration": 14,
-      "preserveSpeed": true,
-      "transitionOut": 0.75,
-      "oldIndex": 40,
-      "oldStart": 441,
-      "start": 481,
-      "end": 495
-    },
-    {
-      "id": "falcon-return",
-      "file": "v6-falcon/falcon9-sentinel6-landing-12s.mp4",
-      "duration": 12,
-      "preserveSpeed": true,
-      "transitionOut": 1,
-      "oldIndex": 41,
-      "oldStart": 455,
       "start": 495,
       "end": 507
     },
@@ -634,30 +634,35 @@
     },
     {
       "id": "iss-whole",
-      "start": 341,
-      "end": 353
+      "start": 357,
+      "end": 369
     },
     {
       "id": "iss-life",
-      "start": 353,
-      "end": 359
+      "start": 369,
+      "end": 375
     },
     {
       "id": "philae-landing",
-      "start": 389,
-      "end": 397
+      "start": 421,
+      "end": 429
     },
     {
       "id": "falcon-dual-return",
-      "start": 441,
-      "end": 455
+      "start": 449,
+      "end": 463
+    },
+    {
+      "id": "gagarin-silent",
+      "start": 153,
+      "end": 161
     }
   ],
   "musicDuckDb": 14,
   "silenceMusic": [
     {
-      "start": 282.65,
-      "end": 297.3
+      "start": 298.65,
+      "end": 313.3
     }
   ],
   "narration": "Connected continuous bilingual paragraphs with longer complete music-only scenes; historical voices preserved.",
@@ -674,8 +679,10 @@
     "Curiosity imagery grouped in final legacy passage; Perseverance introduced separately.",
     "The LRO-data Apollo17 flyover moved to the equipment-legacy conclusion.",
     "NewHorizons launch2006 omitted instead of mislabelling it as Pluto2015.",
-    "Fewer transition sound effects; connected paragraph audio crosses cuts."
+    "Fewer transition sound effects; connected paragraph audio crosses cuts.",
+    "Enterprise precedes the Voyager launches; Falcon 2019/2020 precedes Perseverance and Webb 2021. The legacy montage is explicitly identified as an epilogue."
   ],
   "audioPlan": "tools/film/scripts/prologue-audio-v9.json",
-  "scope": "Picture edit only. Localized narration, genuine archive speech, effects and music use the separately versioned audio plan."
+  "scope": "Picture edit only. Localized narration, genuine archive speech, effects and music use the separately versioned audio plan.",
+  "chronologicalEdit": "tools/film/scripts/prologue-chronology-v9.json"
 }

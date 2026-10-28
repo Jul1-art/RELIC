@@ -8,7 +8,7 @@ const output = join(root, 'dist');
 const rootExtensions = new Set(['.html', '.css', '.js', '.json', '.webmanifest', '.svg', '.ico', '.png']);
 const assetDirectories = ['assets', 'vendor', 'intro', 'src', 'pages'];
 
-const hdRelease = 'intro/assets/prologue/v9-0-hd50/';
+const hdRelease = 'intro/assets/prologue/v9-1-hd50/';
 let hasHdRelease = false;
 try { await access(join(root,'intro/assets/prologue/encoding-v9-hd50.json')); hasHdRelease=true; }
 catch { /* Older source snapshots still use their verified MP4 transport parts. */ }

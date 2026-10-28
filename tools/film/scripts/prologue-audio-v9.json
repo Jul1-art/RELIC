@@ -1,6 +1,6 @@
 {
   "version": 9,
-  "revision": "9.0-hd50",
+  "revision": "9.1-hd50",
   "masteringByLanguage": {
     "fr": {
       "integrated": -16,
@@ -16,7 +16,7 @@
       "id": "sputnik-original-signal",
       "file": "v6-early-history/sputnik-signal-10s.wav",
       "at": 123.1,
-      "length": 10,
+      "length": 10.0,
       "role": "field",
       "gain": 0.5
     },
@@ -65,16 +65,9 @@
       "gain": 0.8
     },
     {
-      "id": "perseverance-2021-edl",
-      "file": "v6-international/perseverance-descent-original-audio-12s.wav",
-      "at": 445,
-      "length": 12,
-      "role": "archival"
-    },
-    {
       "id": "falcon-heavy-ground-audio-2019",
       "file": "v6-falcon/falcon-heavy-launch-stp2-normalized-12s.wav",
-      "at": 473,
+      "at": 441,
       "length": 8,
       "role": "field",
       "in": 4
@@ -82,9 +75,16 @@
     {
       "id": "falcon9-landing-ground-audio-2020",
       "file": "v6-falcon/falcon9-sentinel6-normalized-12s.wav",
-      "at": 495,
+      "at": 463,
       "length": 12,
       "role": "field"
+    },
+    {
+      "id": "perseverance-2021-edl",
+      "file": "v6-international/perseverance-descent-original-audio-12s.wav",
+      "at": 483,
+      "length": 12,
+      "role": "archival"
     }
   ],
   "effects": [
@@ -100,7 +100,7 @@
       "id": "typing-two",
       "file": "v6-sound/typing-7s-48k.wav",
       "at": 7.4,
-      "length": 5,
+      "length": 5.0,
       "role": "effect",
       "gain": 0.16
     },
@@ -120,10 +120,17 @@
       "gain": 0.1
     },
     {
-      "id": "legacy-transition",
+      "id": "legacy-transition-part-1",
       "file": "v6-sound/transition-whoosh-1_3s.wav",
-      "at": 506.6,
-      "length": 1.3,
+      "at": 474.6,
+      "length": 0.4,
+      "gain": 0.1
+    },
+    {
+      "id": "legacy-transition-part-2",
+      "file": "v6-sound/transition-whoosh-1_3s.wav",
+      "at": 507,
+      "length": 0.9,
       "gain": 0.1
     }
   ],
@@ -155,22 +162,46 @@
     {
       "at": 160.7,
       "in": 136.7,
-      "length": 114.3,
-      "id": "helios-part-1-mapped-1",
+      "length": 98.3,
+      "id": "helios-part-1-mapped-1-part-1",
       "file": "v6-sound/helios-48k-normalized.wav",
       "fadeIn": 0.3,
+      "fadeOut": 0,
+      "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
+      "license": "CC-BY-4.0",
+      "sourcePage": "https://www.scottbuckley.com.au/library/helios/"
+    },
+    {
+      "at": 259,
+      "in": 251.0,
+      "length": 8.0,
+      "id": "helios-insert-shuttle-carrier-part-1",
+      "file": "v6-sound/helios-48k-normalized.wav",
+      "fadeIn": 0,
       "fadeOut": 0.3,
       "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
       "license": "CC-BY-4.0",
       "sourcePage": "https://www.scottbuckley.com.au/library/helios/"
     },
     {
-      "at": 274.7,
+      "at": 266.7,
       "in": 250.7,
-      "length": 8.3,
-      "id": "helios-insert-shuttle-carrier",
+      "length": 0.3,
+      "id": "helios-part-1-mapped-2-part-1",
       "file": "v6-sound/helios-48k-normalized.wav",
       "fadeIn": 0.3,
+      "fadeOut": 0,
+      "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
+      "license": "CC-BY-4.0",
+      "sourcePage": "https://www.scottbuckley.com.au/library/helios/"
+    },
+    {
+      "at": 267,
+      "in": 235.0,
+      "length": 16.0,
+      "id": "helios-part-1-mapped-1-part-2",
+      "file": "v6-sound/helios-48k-normalized.wav",
+      "fadeIn": 0,
       "fadeOut": 0.3,
       "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
       "license": "CC-BY-4.0",
@@ -179,10 +210,22 @@
     {
       "at": 282.7,
       "in": 250.7,
-      "length": 92.3,
-      "id": "helios-part-1-mapped-2",
+      "length": 0.3,
+      "id": "helios-insert-shuttle-carrier-part-2",
       "file": "v6-sound/helios-48k-normalized.wav",
       "fadeIn": 0.3,
+      "fadeOut": 0,
+      "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
+      "license": "CC-BY-4.0",
+      "sourcePage": "https://www.scottbuckley.com.au/library/helios/"
+    },
+    {
+      "at": 283,
+      "in": 251.0,
+      "length": 92.0,
+      "id": "helios-part-1-mapped-2-part-2",
+      "file": "v6-sound/helios-48k-normalized.wav",
+      "fadeIn": 0,
       "fadeOut": 0.3,
       "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
       "license": "CC-BY-4.0",
@@ -239,10 +282,46 @@
     {
       "at": 436.7,
       "in": 225.7,
-      "length": 132.3,
-      "id": "helios-part-2-mapped-4",
+      "length": 0.3,
+      "id": "helios-part-2-mapped-4-part-1",
       "file": "v6-sound/helios-48k-normalized.wav",
       "fadeIn": 0.3,
+      "fadeOut": 0,
+      "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
+      "license": "CC-BY-4.0",
+      "sourcePage": "https://www.scottbuckley.com.au/library/helios/"
+    },
+    {
+      "at": 437,
+      "in": 258.0,
+      "length": 38,
+      "id": "helios-part-2-mapped-4-part-2",
+      "file": "v6-sound/helios-48k-normalized.wav",
+      "fadeIn": 0,
+      "fadeOut": 0,
+      "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
+      "license": "CC-BY-4.0",
+      "sourcePage": "https://www.scottbuckley.com.au/library/helios/"
+    },
+    {
+      "at": 475,
+      "in": 226.0,
+      "length": 32,
+      "id": "helios-part-2-mapped-4-part-3",
+      "file": "v6-sound/helios-48k-normalized.wav",
+      "fadeIn": 0,
+      "fadeOut": 0,
+      "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
+      "license": "CC-BY-4.0",
+      "sourcePage": "https://www.scottbuckley.com.au/library/helios/"
+    },
+    {
+      "at": 507,
+      "in": 296.0,
+      "length": 62.0,
+      "id": "helios-part-2-mapped-4-part-4",
+      "file": "v6-sound/helios-48k-normalized.wav",
+      "fadeIn": 0,
       "fadeOut": 7,
       "credit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
       "license": "CC-BY-4.0",
@@ -263,17 +342,17 @@
     {
       "id": "iss-life",
       "start": 369,
-      "end": 391
+      "end": 375
     },
     {
       "id": "philae-landing",
       "start": 421,
-      "end": 437
+      "end": 429
     },
     {
       "id": "falcon-dual-return",
-      "start": 481,
-      "end": 495
+      "start": 449,
+      "end": 463
     },
     {
       "id": "gagarin-silent",
@@ -306,5 +385,6 @@
   ],
   "narrationScript": "prologue-narration-v9.json",
   "narrationManifestSha256": "72ca591b778f04444a8284570766538bb62dd509d28174a61075630105025ad7",
-  "note": "Audio-only reproduction plan; picture shots are in prologue-edit-v9.json. Music uses short crossfaded handles at inserted scenes without changing playback speed."
+  "note": "Delivery 9.1 is a sample-accurate permutation of the checked bilingual V9 mix. These source-layer timings document its chronology; the delivered score is cut with the complete audiovisual blocks, without resynthesizing narration.",
+  "chronologicalEdit": "tools/film/scripts/prologue-chronology-v9.json"
 }

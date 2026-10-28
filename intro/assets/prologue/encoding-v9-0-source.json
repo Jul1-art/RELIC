@@ -1,0 +1,2822 @@
+{
+  "version": 9,
+  "revision": "9.0-hd50",
+  "duration": 569.0,
+  "fps": 50,
+  "videoCodec": "H.264",
+  "audioCodec": "AAC",
+  "crossfadeSeconds": 0.75,
+  "visualRenderer": "original-source-hd50-pieces-1",
+  "pictureFrames": 28450,
+  "width": 1920,
+  "height": 1080,
+  "hls": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 50,
+    "type": "VOD fMP4, shared video with localized mixed audio",
+    "segmentSeconds": 8,
+    "audioBitrate": 192000,
+    "files": [
+      {
+        "path": "v9-0-hd50/audio-en/index.m3u8",
+        "bytes": 2587,
+        "sha256": "0e6bb44902857b7aaced619484f6248bf1ede53550b896306b05971c2b6f6671"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/init.mp4",
+        "bytes": 764,
+        "sha256": "8fc437d511fe12572ff5eda76caedec23e023739fc726665cd9204a144f6076e"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-000.m4s",
+        "bytes": 119196,
+        "sha256": "4cfa71fdb7766b1814c2ae86ec9454b2ebc4a39b22c0bdcedbddd5d34ea5e2a5"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-001.m4s",
+        "bytes": 109461,
+        "sha256": "4e5ed4bf351ce296213aa9afd782cfb0adc429de3dd0900da5cb10f6e1f3cc99"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-002.m4s",
+        "bytes": 195660,
+        "sha256": "5b42ea70a3098f08cf101bb284912f4b5aa4f433b2b75e99ae4de91ecb30f928"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-003.m4s",
+        "bytes": 194584,
+        "sha256": "d6453ee4b908cd021243c6b60f13d7c8f9374c51d477ce8f274dae1485649519"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-004.m4s",
+        "bytes": 194248,
+        "sha256": "2c7abc78e8707021aff0d48522773814b040b805054b92344f93ba3e2f77d56b"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-005.m4s",
+        "bytes": 194156,
+        "sha256": "0b18686669605bf6646941bc6094ad43e6fb59f8586a2f0b163e1b96ec6999f2"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-006.m4s",
+        "bytes": 194250,
+        "sha256": "9854c6acf8d91b37f395cd25ac096e1ec5fdb088b4703796247d01ea09a85db0"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-007.m4s",
+        "bytes": 194282,
+        "sha256": "d6c33e4abdbdf7166e336c0e9d22a63376e136ac5a2bf45ffd615934861cc905"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-008.m4s",
+        "bytes": 194318,
+        "sha256": "81d03bcc36fbc8b68b5c28be8e0dcd9a261b8df6e6b3f22cfeaee7013670f4e3"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-009.m4s",
+        "bytes": 194324,
+        "sha256": "53b3ae89cd3da0df117502ac0e176deb8bed9b4850aee6433275e0a360a6a7c1"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-010.m4s",
+        "bytes": 194863,
+        "sha256": "4118a46521a161d752d6b7436ecbe0713d56c91f68b09cda8a094d212f6bc5b7"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-011.m4s",
+        "bytes": 202018,
+        "sha256": "5b033c31db67033f67bfb70218632bf7895cd5b2f9db611eb4d3d349edc0da03"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-012.m4s",
+        "bytes": 199931,
+        "sha256": "006ab245d7b2fbffd94318c824ad65ef9cf8716aaf672ef0825fa3959864405c"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-013.m4s",
+        "bytes": 204133,
+        "sha256": "94f0b0ee4c1ff23d7863866d7235decaac76888d25bd8232b2127eafcb69f64d"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-014.m4s",
+        "bytes": 202667,
+        "sha256": "0ef88d94c6fc374f9c61ee3e25339ff4f6a63f73d65b3cc08215054a4acdd839"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-015.m4s",
+        "bytes": 199574,
+        "sha256": "1a634f3a13df27bc14991cf2461f766bc8e7efa874ca9be65364b8421fac26a4"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-016.m4s",
+        "bytes": 201267,
+        "sha256": "199e75dedf84112877056239faa9b7ba0617c9d8001906a9ce68d652adcfe6cc"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-017.m4s",
+        "bytes": 204397,
+        "sha256": "5b4591206e7eb914d85f3dcaf275f7c5d7cc1495aa2b17d56ab12664086eba58"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-018.m4s",
+        "bytes": 202351,
+        "sha256": "0645211a15f8e3005dbbc529be8d33617b8bd173deded906d9b0a50993e8118a"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-019.m4s",
+        "bytes": 196067,
+        "sha256": "03a81e935e7ecb42332796b0cc68c7b72c75aaa45f926a55a5c0b1844f0879dc"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-020.m4s",
+        "bytes": 203613,
+        "sha256": "f1c9f8e28ef062ca412be41435dd1a999a1d0ac0b682a57b649dc786118613d1"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-021.m4s",
+        "bytes": 194581,
+        "sha256": "452b30c9483baa7bc38fa1b6f6ab87ab83b44d5b419394cce46512ab6c008ada"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-022.m4s",
+        "bytes": 195184,
+        "sha256": "80b718ee080ea8a824bf6272b78f59ac549672994c0a3892f9b462b79990901f"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-023.m4s",
+        "bytes": 199497,
+        "sha256": "23a8613fe9e81867d7f7901156c96e2e82d9ce2c72c4b71dd5aac97cee4a26a4"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-024.m4s",
+        "bytes": 204152,
+        "sha256": "4e1a1791c78fd82c92b568264e8fad4196f5afb0838f0f29287b47f8e7cbf7f4"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-025.m4s",
+        "bytes": 196765,
+        "sha256": "6045ee8909ed5e8cb8c91931ecaaa3b0606e87e67482df5d8f4734f13cdb3e95"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-026.m4s",
+        "bytes": 194612,
+        "sha256": "6c3b8cd9a80d3e67ac2aca6041544d4bcd63cebd2e5e00873473dc78bb805196"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-027.m4s",
+        "bytes": 205233,
+        "sha256": "dee42b5a50525dfa2647c2c35a1eb4db6b3564f7e79ea7258b2fb9a8f7417a38"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-028.m4s",
+        "bytes": 200425,
+        "sha256": "df94b45b221ac6c224e4bba9a2d6c39e28732cb01ed5ed732cd40b01340728c8"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-029.m4s",
+        "bytes": 198606,
+        "sha256": "2234b3f7cf794f0469f6724f932eab899ab508755004f1b8fcd51b186cc19733"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-030.m4s",
+        "bytes": 198405,
+        "sha256": "11fec3f43d70bc4ee91e24b73add621bdf7d6293098592c70cfaafa995cd2897"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-031.m4s",
+        "bytes": 202633,
+        "sha256": "45fd629fddc24b0ab28ab88c53c666023a6e01d268f001945b28c373cf642a5f"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-032.m4s",
+        "bytes": 201108,
+        "sha256": "137221290a6af4e8b20e2dddd3478dc8de696e168204c3cdd0ae60c9ab3100c9"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-033.m4s",
+        "bytes": 207567,
+        "sha256": "1740b4c3b4983f8808e5959616e8e22f6051282ba43f2b7f15fce39f65124aa2"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-034.m4s",
+        "bytes": 200629,
+        "sha256": "7c1b33a5194a10b97afe181fdafb5a0bf6ba54af2840beaa4651df07cf5d8e91"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-035.m4s",
+        "bytes": 200533,
+        "sha256": "aa13d0222b122fd5313a1b69c62b7ec424c66cfe912d787185cc9559dcde1675"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-036.m4s",
+        "bytes": 204438,
+        "sha256": "b7f8d3d2864864e0305618a7c422ad567ae430c0fbd513966ae19d21f230bac3"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-037.m4s",
+        "bytes": 187729,
+        "sha256": "d62a8adf4d4b32c0886097606f5f00b0071c7f28ccae2719374b877519731a1a"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-038.m4s",
+        "bytes": 109844,
+        "sha256": "1c2928843ef2794e448f9c24022039071220fc83f43cabda627848c09645dca0"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-039.m4s",
+        "bytes": 171974,
+        "sha256": "6e394e3d0432f2c88fa1b6efc46d79c83029aa694464866ccf9f3ddac726bdfe"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-040.m4s",
+        "bytes": 196787,
+        "sha256": "3d185aebebc232003189ad6ee1061709c1d9d76ad641ecd9a0f38371f0d9ce21"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-041.m4s",
+        "bytes": 200946,
+        "sha256": "990056ac3e2c8ccdfd5571a2dbcc9a4480592a73d1b07e37b7cc4ef8c994dfc8"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-042.m4s",
+        "bytes": 197678,
+        "sha256": "03005b91cd4e4a7ec079076f33b9034a41304d52b81f0b02767f004331ab2bb4"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-043.m4s",
+        "bytes": 199051,
+        "sha256": "bbd517754541d1808e312dc59c0b7ac1a5acfaa974da0e7d6567e3064d569de0"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-044.m4s",
+        "bytes": 198155,
+        "sha256": "03a68b75fbf5a3fe22baa584571d5275468c1f664dfe85c62b108d8eb85637fb"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-045.m4s",
+        "bytes": 195357,
+        "sha256": "28a6797317736f1464d0b4677ae0ba553ca61fc0fa690158f7f31d4cfeeacafd"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-046.m4s",
+        "bytes": 195195,
+        "sha256": "5bd5630395abbb7738f65a7da9c148b46d644f3f4e418a90472c5c2702841419"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-047.m4s",
+        "bytes": 201681,
+        "sha256": "3ef4a8d2f365482d04be5575c78008bd7077e7d1f08ae3f8e2e6ebd1ff45ceeb"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-048.m4s",
+        "bytes": 194764,
+        "sha256": "d41a6ea96b70181f1bd5f2e175b93b9869e393066490be73caa45d2f5e55d411"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-049.m4s",
+        "bytes": 198138,
+        "sha256": "036821de77494d4478202723021da01bc4c3420f30054741501db58b2a58e90e"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-050.m4s",
+        "bytes": 197506,
+        "sha256": "e3d04719ec55988e9213646e6543e7f1561181a8d202fe9b7ecfcdd0dbab0414"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-051.m4s",
+        "bytes": 195974,
+        "sha256": "6bc4b024eadb30137a93725cee23bf59450f64ad24eea9e9838018a4d7e59eb1"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-052.m4s",
+        "bytes": 202385,
+        "sha256": "f29bed6c91f18572d38c4cb78eadf22d1b4aa81ae579f331146de3f64444d942"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-053.m4s",
+        "bytes": 201154,
+        "sha256": "a70de5c5e0317062673bbe20d40f2af12ed37a2d8800f23ee4c9259c74d9a084"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-054.m4s",
+        "bytes": 202424,
+        "sha256": "bef1b85f96bc881e352aec4764ac073cf4148f244432c4512b8c2f5fe327246e"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-055.m4s",
+        "bytes": 205830,
+        "sha256": "fc6956e22103f606e675af91e80fef3c6d1c075442f750f34643400d402de27f"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-056.m4s",
+        "bytes": 198383,
+        "sha256": "999a7a329779ffba2f77b567ec9466f2c874215ed56889300d528f342ce05aba"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-057.m4s",
+        "bytes": 201100,
+        "sha256": "b69b40dec19eba241ee46930442cfa0cdf92d0259569b807c7462812625e5e3b"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-058.m4s",
+        "bytes": 198146,
+        "sha256": "4be72c0d1379e00c1c1fa547fb355584874a0be0bf4a570210c0be3588c0600d"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-059.m4s",
+        "bytes": 199550,
+        "sha256": "22dc500f17e49eac97399f00255f2fd835f53142b725b61486ed3d5d5b0bd2d7"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-060.m4s",
+        "bytes": 195395,
+        "sha256": "29e606fdb9a1866e0866604355c6e3558c7b81ca5a1187a4b51f337c8c46f952"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-061.m4s",
+        "bytes": 195739,
+        "sha256": "921989c40e7024d55cb9c7a8801dbde5bb8b9d436f3b92c288a0fa58e1d0b731"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-062.m4s",
+        "bytes": 195211,
+        "sha256": "d74dd7f4bef8e7dd7bc44abbfbda88127fdab1df5d33b38b0e5d0dd42520a3d3"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-063.m4s",
+        "bytes": 198871,
+        "sha256": "288b70f935a907ed3eb2a02de8f09a0087e2f9f35c6e32d795ed4f3a1a68a9e5"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-064.m4s",
+        "bytes": 201420,
+        "sha256": "2fa60d775c42ec8a589c58c53a8823a75860dfdea78d3a5c7ad77bc28c60f987"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-065.m4s",
+        "bytes": 195380,
+        "sha256": "9a98c9e13b2fd41fe7c7c7c3d216362218f35c3713aab188ba839ca05497a394"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-066.m4s",
+        "bytes": 198149,
+        "sha256": "e5d00391b6b01d22bbf73576ed1ec6abcb626eedddd6f7596d8414518c4f0faa"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-067.m4s",
+        "bytes": 200412,
+        "sha256": "ef11e94dc6f01c4f15e4b76018caf7b08b65221224f02e83e8b6d74737183a9e"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-068.m4s",
+        "bytes": 195360,
+        "sha256": "9919fa0fa508a93afc7d2faf2252869661b0841e57a161e16ef5aeef4ede2ea4"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-069.m4s",
+        "bytes": 195142,
+        "sha256": "71fa434abbdf75979d39c8e3c03cb6f180eadc508453cddaa72a97dbfeb47f01"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-070.m4s",
+        "bytes": 194028,
+        "sha256": "ee0f334686f5cd5aa0f50c7c1c85266c6794d8ec1bf6db3a2d5d58998d70d845"
+      },
+      {
+        "path": "v9-0-hd50/audio-en/segment-071.m4s",
+        "bytes": 21348,
+        "sha256": "0e0fa2c942a932852eba010008f6c0cc8815f708d5ef821bc6bb99ac9d60c523"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/index.m3u8",
+        "bytes": 2587,
+        "sha256": "0e6bb44902857b7aaced619484f6248bf1ede53550b896306b05971c2b6f6671"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/init.mp4",
+        "bytes": 764,
+        "sha256": "a67be5121dde0327b1dd994947812fc5c5e22d8e54ab2f78f7a28c95bc77590f"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-000.m4s",
+        "bytes": 118828,
+        "sha256": "1859aa994d4f4137e62c2125fc9c71e723ab3bdd906f7e9eb6bd1c787f5365b6"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-001.m4s",
+        "bytes": 109801,
+        "sha256": "4a1179d50083295d3f026d179aab1cb1fcdaefc642f2ab1018c82ad798d99a1c"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-002.m4s",
+        "bytes": 195996,
+        "sha256": "e132fdb93a29ce081f58bacb1bffe8aaeb9af7256862a0ac1e230c443f26c201"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-003.m4s",
+        "bytes": 194095,
+        "sha256": "1bee0f7bc9f659eb2f30bd187fce4031a84796d29ad059b38c8afe5b4da3477c"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-004.m4s",
+        "bytes": 194216,
+        "sha256": "89f67ba4fad0ff24c53b7b1106d5ae25215d4268ae05f21903ba66011cf5aa74"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-005.m4s",
+        "bytes": 194138,
+        "sha256": "551262e6f6662b408765a0ba016e4993023d2a0b957dd5a652a2c7698696102b"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-006.m4s",
+        "bytes": 194194,
+        "sha256": "babdd0f9dfafa4c030dfc811da938b2830ec563e1ce8ad0f94e9b40972b586a5"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-007.m4s",
+        "bytes": 194352,
+        "sha256": "4a01a5b395664830c24e02334f10cc866e4c508fde655cb2e055680292154029"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-008.m4s",
+        "bytes": 194365,
+        "sha256": "885e631268b5ba9a8df5a0ee50e95fd81fedc688cc2c98d191f3807c3201bf7f"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-009.m4s",
+        "bytes": 194385,
+        "sha256": "c464125ca6a0b1b2087b768a8004127919ad91a25c10e475da3616db488c374c"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-010.m4s",
+        "bytes": 194467,
+        "sha256": "9cc6ccc3c55c22d715065303ea9e71db778de72b722488f317db5634ca0614a9"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-011.m4s",
+        "bytes": 202238,
+        "sha256": "cccc9992c7eb1b290174efbc081899edf5efab5eccca1829555215f8b9932df1"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-012.m4s",
+        "bytes": 197072,
+        "sha256": "9b9d35b997fcf5a31ad324e6c947cb23ccafd75ca86d87e7d4921bc86f653e56"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-013.m4s",
+        "bytes": 202548,
+        "sha256": "23fa4581e3e6009b7bfff5565c874c9d1829281bc675c3237c0356059abb4ca3"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-014.m4s",
+        "bytes": 197224,
+        "sha256": "a7cc67e51815eeb2ace857f5a5909c13aac084a7c230d6f99fb2e7d1632642a6"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-015.m4s",
+        "bytes": 197882,
+        "sha256": "67bb640b0d94c8c1e8f9832a11d1469846accfe3c190c74a3765799d1929a9a2"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-016.m4s",
+        "bytes": 197168,
+        "sha256": "4b540cf11b5b76424c1cb092dbe3d31a334c4c2c41b9235924f02461b40a8f01"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-017.m4s",
+        "bytes": 198181,
+        "sha256": "0f85cb10b9f62a38c5ce1cef5b702c7715c8a05b3a3194905b8af85f64b4fbee"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-018.m4s",
+        "bytes": 198909,
+        "sha256": "bd82338330b7aabab2d87819f88b54f66080b157b3e6b1bbee0af158a5e5df53"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-019.m4s",
+        "bytes": 196236,
+        "sha256": "17c1c58af5d97369fa652e8379c3226cb8fcebb3f7e65c882e132fd1f383350c"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-020.m4s",
+        "bytes": 199067,
+        "sha256": "d5f794fd009ac2a60118a341f46a9e51f4c71f630dc7edd32a5162a8d5aa6232"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-021.m4s",
+        "bytes": 194309,
+        "sha256": "8f1bc4831b89576572cc503b494d7b143108b567086f812bef966394343d555b"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-022.m4s",
+        "bytes": 195092,
+        "sha256": "7f55038c1613c8cda4d0b0043d356b45fdcd1eb15f0820a9447bf109e2003665"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-023.m4s",
+        "bytes": 196872,
+        "sha256": "eb3271a07981a156f5cacbddaedf71746025bd738d962cd12bb10e56c2e270b9"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-024.m4s",
+        "bytes": 199646,
+        "sha256": "4c723c746745fd338417f3ce52adae0957957d1566ec560553fe3b4c51fb24a0"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-025.m4s",
+        "bytes": 197093,
+        "sha256": "a779b1e8087c47395157cf935f5676cfb42669da1a614227fd9eda775d042fc4"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-026.m4s",
+        "bytes": 194579,
+        "sha256": "c4de7978b66e52908ff3a3c894921030547855576451186b1948365cd6f2dc8a"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-027.m4s",
+        "bytes": 199558,
+        "sha256": "fc1dfdde15724320e25fa93e90c96cf0421932085d85e02aa1cce1154f55e7cb"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-028.m4s",
+        "bytes": 202358,
+        "sha256": "be9c46afd4011ed8c4b39d148da0722d393ad1138ced9b6870b1cee7c0bb201b"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-029.m4s",
+        "bytes": 198954,
+        "sha256": "812595d2179d6d99c4d76b5b7a6a05990d0fe3ee9ad22fd102d0550f7042122a"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-030.m4s",
+        "bytes": 196674,
+        "sha256": "8d1e284128162339d957c2ac59c3bbaacfd7d3f4241f6712a3b8a539cf4c0c88"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-031.m4s",
+        "bytes": 200223,
+        "sha256": "0b1efb9ae22ef4630e4e1c5535b53b89927a3ebf4df4bfc316b56caf67352896"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-032.m4s",
+        "bytes": 198732,
+        "sha256": "d9f6ac941b815228a463cddc4e2c9fb33365d5553d17606460cd1c58ee3c396d"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-033.m4s",
+        "bytes": 196221,
+        "sha256": "3b0e65e21d368e15fd828578e522c02dca28a3e1ca47aa5d135438d7a9f26f65"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-034.m4s",
+        "bytes": 198399,
+        "sha256": "2ba8f9fc5cc72bb96b4ff47ee7560213282304a700a2b62341143663000d4008"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-035.m4s",
+        "bytes": 200648,
+        "sha256": "7a1dd25374889a6a577a8e4a194051a703a108fbb8c33995277d0b9321e7d319"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-036.m4s",
+        "bytes": 200499,
+        "sha256": "7ef7e3daaab3b548a7bce59232ca2d7feb56248b5f8ba45f6d66153fe0c29824"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-037.m4s",
+        "bytes": 187381,
+        "sha256": "b963aa3fed3d2356bf94b53bb2fadb5447099fc1e0b8096d2465ed60005748e6"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-038.m4s",
+        "bytes": 114620,
+        "sha256": "ea7903abcc75dc89740cde36d110883ed900fca8a7a27e6f9a673da97561f301"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-039.m4s",
+        "bytes": 168195,
+        "sha256": "a9beed7ad9e5878166cd0a3756eda2317f52f4009029ef208c536df9eba6f26f"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-040.m4s",
+        "bytes": 194701,
+        "sha256": "88b94d608a6a2ae1ce328f1cdab9604b073f78387ac2e19700574e205f2797f9"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-041.m4s",
+        "bytes": 198434,
+        "sha256": "f9fc7410ffa7e320b66c60bb05d3ee126c5d976fd58d1390930645fa7ad60bb8"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-042.m4s",
+        "bytes": 199000,
+        "sha256": "6ddb7cc50f537a6fa534600f65983c07469e395c68516a2c8510fafce89374c5"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-043.m4s",
+        "bytes": 196997,
+        "sha256": "cb0086e6930ccb6a8abd890e06d10766cd2a1c232c8669157e801b694775bc3a"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-044.m4s",
+        "bytes": 198413,
+        "sha256": "f4fee530dd2b6dd5cf84dd1c1dfeb309896a0376e3532ff5aec3efb8eeded93b"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-045.m4s",
+        "bytes": 195127,
+        "sha256": "76de9c921d7e61d057038628f9a771dfc9a7803d1db59124c50e570befd76416"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-046.m4s",
+        "bytes": 195270,
+        "sha256": "8cabab7cd4020024016cf53bce082c558760ca63ba43bf9dae202efccd884ba1"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-047.m4s",
+        "bytes": 197984,
+        "sha256": "397a7c57bf33750b65b0af1a06f681610fde0fb780e2f49225f88a1a88298d25"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-048.m4s",
+        "bytes": 195755,
+        "sha256": "11ab333c6cd4187f26a72844e2101f00c282ec031585d9a160cfac8166d10192"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-049.m4s",
+        "bytes": 197767,
+        "sha256": "2575706fdcc914d20d538a201dae8e491aab07b77b13f8e222542762a471c194"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-050.m4s",
+        "bytes": 196813,
+        "sha256": "1b5f18545a750f58bfef847d645bf1cacff0e89af6172a1ebe07c1b9d81efc4a"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-051.m4s",
+        "bytes": 196197,
+        "sha256": "9dcf2d953deb7a4edc12092a805cf1f0aba8a39b5da2518ba755f19b6492828d"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-052.m4s",
+        "bytes": 199342,
+        "sha256": "a78e89094945499e05cf620236fb3bab20f9bed4acc0b7e91317e031bdb2d2a9"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-053.m4s",
+        "bytes": 198954,
+        "sha256": "7b2f3c12a09ffc87ca9043695330fdf27d353ded2330e3eb93cebb4567da87d3"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-054.m4s",
+        "bytes": 200052,
+        "sha256": "2ef62bf85e4bc2f8a3a476e8c055fc74be11a7706dfeb0c7d803970f4c5876e2"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-055.m4s",
+        "bytes": 203580,
+        "sha256": "175b3a1f2a79a70899dddbe1d30ba2c4031a87b6bc8db1d189bd2c4b9bad4555"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-056.m4s",
+        "bytes": 198738,
+        "sha256": "641a501e4ad7b1fc9654969dbac2517b319eba2fb65a8513dee7b46aabbcf3ec"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-057.m4s",
+        "bytes": 198567,
+        "sha256": "4ffdebaba4e3c590faec4c5edadd7c2b5c71d720f35a1530fed82a9f7955bc64"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-058.m4s",
+        "bytes": 198771,
+        "sha256": "ed9ab7fad4f3f8b81472ce6a0efeaf4ef84bd2d7bb68342a4aedd05c5efbbae1"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-059.m4s",
+        "bytes": 196381,
+        "sha256": "19598590ff83d2cd0c9d7395b829e4b5a3329b406129cbcc73875ce243634531"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-060.m4s",
+        "bytes": 195500,
+        "sha256": "b6f56ddef23088c61d24b758af14339c1d3d643dabb20eed66c540022b2410a3"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-061.m4s",
+        "bytes": 195184,
+        "sha256": "be23e435e0b776917b28577912ef8f09a27e09c2ee6e24ea2404ef48cd1b1da8"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-062.m4s",
+        "bytes": 195186,
+        "sha256": "35d52559c1a205b1523d0fe61983a5259995fa93c6fdcd2a7995f9459b0290d6"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-063.m4s",
+        "bytes": 195672,
+        "sha256": "cc83d1f230c41ff6c76134819f350debec8bf967dcc36fda5b8d34e52ded96be"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-064.m4s",
+        "bytes": 198427,
+        "sha256": "3af53a38c3503e18a0d8051752ac438087101a0addc13b23c002305ab79d09ae"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-065.m4s",
+        "bytes": 195343,
+        "sha256": "028e506a3148ae25c85240340f08e84ac5373fb0cee29a0774651a642875676d"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-066.m4s",
+        "bytes": 195948,
+        "sha256": "022aec963a862cbcb7713fe983aba2f7bd75af0a52ac87cb3fa1cf5b63298875"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-067.m4s",
+        "bytes": 197771,
+        "sha256": "4dcf5b39fd874bf0ef3540fff198a74f7c998189e461299aba35df81984bc4ac"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-068.m4s",
+        "bytes": 194709,
+        "sha256": "9689cad26d027476f877ed5fc298a743acfc234dce84b96ce5b8feb00c43ab02"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-069.m4s",
+        "bytes": 195513,
+        "sha256": "9ece3be003a6a413db33dc9197b1470b4baa002f852afebe05911173abf2ac32"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-070.m4s",
+        "bytes": 193904,
+        "sha256": "ee8f9fa27e4ff0e2a5fa1d81d4c2edea4ba8de8ce6ea3976a01feded2889c5e9"
+      },
+      {
+        "path": "v9-0-hd50/audio-fr/segment-071.m4s",
+        "bytes": 21467,
+        "sha256": "3a2d456c07b0bc9bfaf392f4daa3fb97675a4ecc270000a7a0dab9c231d5c950"
+      },
+      {
+        "path": "v9-0-hd50/en.m3u8",
+        "bytes": 339,
+        "sha256": "b26e9a8191ae4e3e2ad6984220cf62b2c4929f24cec71e255d0c99be918f0d66"
+      },
+      {
+        "path": "v9-0-hd50/fr.m3u8",
+        "bytes": 341,
+        "sha256": "eec1907b4c542c4636595acd6c8833ab45a1e821f98e3738e7d36dbc030c5de0"
+      },
+      {
+        "path": "v9-0-hd50/video/index.m3u8",
+        "bytes": 2581,
+        "sha256": "7c2051d9573ec82592bfc8211b5a12de6468410e3c4849c71f74b9c116d4dbef"
+      },
+      {
+        "path": "v9-0-hd50/video/init.mp4",
+        "bytes": 851,
+        "sha256": "8601285908c99f5827ea653f1159ae910d3dbcb860fc03afdd09e9024a1b892a"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-000.m4s",
+        "bytes": 35892,
+        "sha256": "f8d7b5f1de64e3fc457fe51fc5170e6d3d5ae4b78f87129801c4907d194850e0"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-001.m4s",
+        "bytes": 34387,
+        "sha256": "8d9fc6722262d6cf85641b642e223a684d775fb7c9e19be1333071d2690598ae"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-002.m4s",
+        "bytes": 2748668,
+        "sha256": "36f71bd8d82c4d5de1f59503b0435313953a1acd38217a7c0331df8275e4f09a"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-003.m4s",
+        "bytes": 2391423,
+        "sha256": "bbdd812c75a8ea2d0352c1be2d2fb24c655d01d25f219ac95582f28ff85ffcae"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-004.m4s",
+        "bytes": 1807729,
+        "sha256": "5961b51073566080140fe0d50c0ee14e07f1498f28c5f7a7a331aef4a42953b3"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-005.m4s",
+        "bytes": 2187170,
+        "sha256": "a7c3008f5986739de02a247ee06c6dc76bf9a82e6d12dca492b1c3bbe9a01e02"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-006.m4s",
+        "bytes": 2529812,
+        "sha256": "3131446af311eda0b17448ba0ea0655cbedabf86e1ec4b1040c001fa26eb8d20"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-007.m4s",
+        "bytes": 2824610,
+        "sha256": "0d7b4d076de0f96ce40677a3ffaabd740a74b949e6a12c36cb253a36963c0dbd"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-008.m4s",
+        "bytes": 2950310,
+        "sha256": "7fee4bcc6d47126a8da8b23529d0b15a532503e15a0aa4b0d3ebf28190bf93c9"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-009.m4s",
+        "bytes": 2884451,
+        "sha256": "9bf06e5746182ffa1f23fbefd7751e8da6fc1b0199cfe57e0cfa23dc32ada716"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-010.m4s",
+        "bytes": 2770419,
+        "sha256": "c20620262ffe35649f949e83695641e99fea118120d4b20871e3aed429828ac6"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-011.m4s",
+        "bytes": 1168972,
+        "sha256": "e74e08b5dc06cdafb107f5a2d100084ddc35e658454f18d90638c297d16971c1"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-012.m4s",
+        "bytes": 2043504,
+        "sha256": "0c4f8b57ef35130a9e61b7e4336541375b5ddcba2dcf58f6faff7f233f70cd19"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-013.m4s",
+        "bytes": 1926175,
+        "sha256": "a5f67374d80b55b2174137fd0f1be505970cc86ce063ea36fb4e42594b41d2ed"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-014.m4s",
+        "bytes": 3193648,
+        "sha256": "38c7aaa02c3aa17f461a51e13ffe887ad7f4307fbf58e9b90f0c6c288f5c7c06"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-015.m4s",
+        "bytes": 2358297,
+        "sha256": "2bb7fd1087fc4e80e839194615f71f0e2b3daf34c4cafb2f5f4b664626150e00"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-016.m4s",
+        "bytes": 1203240,
+        "sha256": "f71de6baab9cb0606e7a32dd5dbf1d769e291fd8a5f72e4260d309274bbd0d4b"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-017.m4s",
+        "bytes": 418473,
+        "sha256": "c701336bf2b5d172b0a10cebcad3ba13f968391431f025b340982c5abc8b39ce"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-018.m4s",
+        "bytes": 1964531,
+        "sha256": "e238417eb9eff263ac8918ba51848bfc1f61b0a2c73e459b2df8df32892ea0af"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-019.m4s",
+        "bytes": 3122654,
+        "sha256": "72b398e83b5bad3344f2c5ae4e852726d2b37be535d247ccc3f518660a78b32e"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-020.m4s",
+        "bytes": 1937094,
+        "sha256": "a9abc2f29ae0be13f396adc5ab08f8af04cc6a650eb08b583c8ce03b62839ecf"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-021.m4s",
+        "bytes": 3227837,
+        "sha256": "88c9868d8abb50c2730182b78ff0c0ad1a52bfe5f874d11b9a5a0bf5835b65b1"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-022.m4s",
+        "bytes": 2955538,
+        "sha256": "5273d999b20244567cc15e80b083972aaa24e966990b3d868fd4131230262823"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-023.m4s",
+        "bytes": 2468688,
+        "sha256": "6dd3eb3c6b1baacc2bdec9c552e9e3ce857aaba8177d5236dac6f8e2f7653c93"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-024.m4s",
+        "bytes": 1381856,
+        "sha256": "48599a61b8d4ebb89dbbc2a8e80eefcf9c8f86761f6a9455bacccbabc452408a"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-025.m4s",
+        "bytes": 3157800,
+        "sha256": "94ae1978d83e029ca1b78df628e7625cb18b0691aaa7ba504c036f74904b7c24"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-026.m4s",
+        "bytes": 2829920,
+        "sha256": "06dc9fefb30191b69e545370569831c0aa51bbad8b6966ebbdc2ebde9677cf93"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-027.m4s",
+        "bytes": 2090812,
+        "sha256": "df3d3bf7c12d6c79a6da73281bd1cfda0923c59ef9d1f69bb9b1336d1ee616d8"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-028.m4s",
+        "bytes": 1894071,
+        "sha256": "cee0c8773aa0516e0e1218af90da8fd35faadcb0b352edf62ba63ff31f4e4ee4"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-029.m4s",
+        "bytes": 959750,
+        "sha256": "009946a12cf1a813bf611a29fbd9b568853b62a2d735ddbb9ad64e9a7247ea49"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-030.m4s",
+        "bytes": 2164766,
+        "sha256": "1f156f2521fbecf163f918a7859692e97233b48c009dfea30b8fe9d382b5a29b"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-031.m4s",
+        "bytes": 2980621,
+        "sha256": "d89bbf94654de0d60be8f8315ab0f1a98a01f8fba687356ed833ce13a8e4ff08"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-032.m4s",
+        "bytes": 2721576,
+        "sha256": "ddaa518d4e32823a69297c9bdae0d36c132daaef17ef1439525467d189c31f11"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-033.m4s",
+        "bytes": 3296567,
+        "sha256": "3e46e87e392104dde70adf96e98629ab45705773deef0a57ac3686f710256261"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-034.m4s",
+        "bytes": 3024745,
+        "sha256": "6b398598d706d3a651fe2bc110a7d070cde142089e9d05d96eba8264f69be3f6"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-035.m4s",
+        "bytes": 3248843,
+        "sha256": "99b33bd4903c44370216c18d2d07f7f6bda69a29e6eb2de17370e6173513577e"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-036.m4s",
+        "bytes": 2523436,
+        "sha256": "8ce9b44f8b19b3605e8bf3fbc49802fb402c2867771cb157b0a880ea69132181"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-037.m4s",
+        "bytes": 1979488,
+        "sha256": "33830d0ecc8dafca2a42d9bdf0accaa88e10f3d3d082f40a37fa34dd82b91b7d"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-038.m4s",
+        "bytes": 35891,
+        "sha256": "5419f653a81723660187e1112b389a662de4b6efec49a0d1f3f381402eb0b562"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-039.m4s",
+        "bytes": 2068866,
+        "sha256": "2d125e735f9e70828627cb724d2c6d3cf4ce5afb221ca55a61070556f3f8a5b3"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-040.m4s",
+        "bytes": 2337662,
+        "sha256": "13b3eb56df5809d808a0991aed06ae86d8629475d438557c96f96e80afda1aca"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-041.m4s",
+        "bytes": 2490245,
+        "sha256": "359f30f25da260852a160a27ab9db7c3309a5572b6a4727808df63f49284a41f"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-042.m4s",
+        "bytes": 1545052,
+        "sha256": "10d504c11569e4b9e0dd815d0b24afaed7ae3b1a1b5452583ed2e40474c7dac9"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-043.m4s",
+        "bytes": 2805444,
+        "sha256": "774936d909ad91a517eed689e61c5fe28d093f7b597c0966b3982ce8787afc16"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-044.m4s",
+        "bytes": 2947921,
+        "sha256": "b0d5b9356b1d90a3bbca794bccfbcbead3b8cbe5b5008366456c135809096400"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-045.m4s",
+        "bytes": 3035373,
+        "sha256": "88ff5500460857c02a94871533d0e5c2c0328c2f8e4823cd384a2d73900ade7f"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-046.m4s",
+        "bytes": 3037868,
+        "sha256": "94fc3af77063814243e21f1cb9adb9fb173a2f05036475731b226a9e8d3f6274"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-047.m4s",
+        "bytes": 1630039,
+        "sha256": "62e6f0f01c36681add48eaf13f0700596d03fdfebb2a94e3db6f08ce3408a091"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-048.m4s",
+        "bytes": 2578859,
+        "sha256": "9cf3965394e88e62f329a93198b04cc881ce53018d40baaf47f9bc5f82dc3082"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-049.m4s",
+        "bytes": 3006571,
+        "sha256": "d901f272e77e74395f6a61f2ae269c49abc2a79b851e4ddb44fa0ca85163c822"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-050.m4s",
+        "bytes": 1834744,
+        "sha256": "3c7527c74fce3f0ef25037d603df5cb20e00559fda297fa99e08ecb2894d65c7"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-051.m4s",
+        "bytes": 2632578,
+        "sha256": "84cf84ce33fdd4d30069602973c5c4a1d80b829c6f545dafaa53e80c6e672ad3"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-052.m4s",
+        "bytes": 2280571,
+        "sha256": "4f9b579fb7e19ec27f48e277073038234e1777b066cc2c726d659061f4d2964c"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-053.m4s",
+        "bytes": 3171440,
+        "sha256": "08f577f66529e299b1697e5392c2acc060968cee3f1f37c72cfdeb525b18dc4f"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-054.m4s",
+        "bytes": 2869576,
+        "sha256": "dc19d4431a971dd3a85c041d4ced79d12197b9736681d92c92745c73b6e662d8"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-055.m4s",
+        "bytes": 3171931,
+        "sha256": "b1e34ac2192032e05ab320fe30d0a859dc8ac64e1e695ab82658673337ee2c13"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-056.m4s",
+        "bytes": 3315972,
+        "sha256": "aecfa2bb8be63df8b67f1f135cc7d3a5df33a30eecac9978beb20dd8e2c985a2"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-057.m4s",
+        "bytes": 3190282,
+        "sha256": "91b4730e261714d403a9e23aab7503745f0930ffd1b546ecadd22e3a6fc1f576"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-058.m4s",
+        "bytes": 3276470,
+        "sha256": "08b094be43c534763c766781181df5a976d79a06872226bc13386736a141b863"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-059.m4s",
+        "bytes": 3013241,
+        "sha256": "350d5156e08c670310650efe17a6993c6a3e967afb9726a0425f0e010b7f8212"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-060.m4s",
+        "bytes": 1707045,
+        "sha256": "9417b9c0b9d0d0e5569d07515244548fe31f9efa4da52ea2ffedece24921f6da"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-061.m4s",
+        "bytes": 2035096,
+        "sha256": "c8332240ce08de4c2b81e3e5e663084fba552a8d48d5c3214a53f3f6ca06c351"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-062.m4s",
+        "bytes": 3042731,
+        "sha256": "e1788d23fa53940e7459daf2dc1bab0e38df3f9c9bb312750df4e8da5e283b35"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-063.m4s",
+        "bytes": 3209579,
+        "sha256": "356b8404020ace1ad1e5e3d9a01f8e45b5490ce3a597a26886ebb5e506b2fa23"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-064.m4s",
+        "bytes": 2633620,
+        "sha256": "b018ec02d4ac41d419f607ba226bcdc189550245f01fac8c63f45ca93ea02161"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-065.m4s",
+        "bytes": 2779141,
+        "sha256": "8f104ea723ec22e964e3fff707b9e7774b072379a82b040d2fb5b512acffffdb"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-066.m4s",
+        "bytes": 2805489,
+        "sha256": "7b6fad8bb772966c993fdfcd559ba9ee1037faec45331b3bd7c890143cb49d79"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-067.m4s",
+        "bytes": 2991821,
+        "sha256": "1e16f7255a9efde4ebd23b7746bd9059002db904a99acf18340b4f2003c99e5b"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-068.m4s",
+        "bytes": 3239839,
+        "sha256": "34ea3ef85f5fe6c2a8001aceceb44755bc44c1fcb9fb30afff649362ce84c263"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-069.m4s",
+        "bytes": 2585801,
+        "sha256": "b56b541c571af416886adf9b193765b60069e71f344d9563f652d248626390f9"
+      },
+      {
+        "path": "v9-0-hd50/video/segment-070.m4s",
+        "bytes": 1178949,
+        "sha256": "1d48b7186064082c7901a8ad66077768f3c5d5677e9bcbaaab5f7ce5f2fc1438"
+      }
+    ],
+    "totalBytes": 197477110,
+    "languages": {
+      "en": "./assets/prologue/v9-0-hd50/en.m3u8",
+      "fr": "./assets/prologue/v9-0-hd50/fr.m3u8"
+    }
+  },
+  "poster": {
+    "path": "poster-v9-hd50.jpg",
+    "bytes": 204196,
+    "sha256": "946c04b2f495e04daa4efa7045f9c77aa9f08a345de2755a783fba4ccbc68d13"
+  },
+  "languages": {
+    "en": {
+      "audioSources": [
+        {
+          "id": "helios-part-1-mapped-0",
+          "role": "music",
+          "start": 16.0,
+          "duration": 137.0,
+          "sourceIn": 0.0,
+          "source": "v6-sound/helios-48k-normalized.wav",
+          "sha256": "6876a4d871adfa088f0ba078edfd1f64aaf803670658f508baa647e96e1d03ce",
+          "gain": 1,
+          "normalized": false
+        },
+        {
+          "id": "helios-insert-gagarin-silent",
+          "role": "music",
+          "start": 152.7,
+          "duration": 8.3,
+          "sourceIn": 136.7,
+          "source": "v6-sound/helios-48k-normalized.wav",
+          "sha256": "6876a4d871adfa088f0ba078edfd1f64aaf803670658f508baa647e96e1d03ce",
+          "gain": 1,
+          "normalized": false
+        },
+        {
+          "id": "helios-part-1-mapped-1",
+          "role": "music",
+          "start": 160.7,
+          "duration": 114.3,
+          "sourceIn": 136.7,
+          "source": "v6-sound/helios-48k-normalized.wav",
+          "sha256": "6876a4d871adfa088f0ba078edfd1f64aaf803670658f508baa647e96e1d03ce",
+          "gain": 1,
+          "normalized": false
+        },
+        {
+          "id": "helios-insert-shuttle-carrier",
+          "role": "music",
+          "start": 274.7,
+          "duration": 8.3,
+          "sourceIn": 250.7,
+          "source": "v6-sound/helios-48k-normalized.wav",
+          "sha256": "6876a4d871adfa088f0ba078edfd1f64aaf803670658f508baa647e96e1d03ce",
+          "gain": 1,
+          "normalized": false
+        },
+        {
+          "id": "helios-part-1-mapped-2",
+          "role": "music",
+          "start": 282.7,
+          "duration": 92.3,
+          "sourceIn": 250.7,
+          "source": "v6-sound/helios-48k-normalized.wav",
+          "sha256": "6876a4d871adfa088f0ba078edfd1f64aaf803670658f508baa647e96e1d03ce",
+          "gain": 1,
+          "normalized": false
+        },
+        {
+          "id": "helios-insert-shuttle-retirement",
+          "role": "music",
+          "start": 374.7,
+          "duration": 16.3,
+          "sourceIn": 341.778917,
+          "source": "v6-sound/helios-48k-normalized.wav",
+          "sha256": "6876a4d871adfa088f0ba078edfd1f64aaf803670658f508baa647e96e1d03ce",
+          "gain": 1,
+          "normalized": false
+        },
+        {
+          "id": "helios-part-1-mapped-3",
+          "role": "music",
+          "start": 390.7,
+          "duration": 15.3,
+          "sourceIn": 342.7,
+          "source": "v6-sound/helios-48k-normalized.wav",
+          "sha256": "6876a4d871adfa088f0ba078edfd1f64aaf803670658f508baa647e96e1d03ce",
+          "gain": 1,
+          "normalized": false
+        },
+        {
+          "id": "helios-part-2-mapped-3",
+          "role": "music",
+          "start": 404.0,
+          "duration": 25.0,
+          "sourceIn": 201.0,
+          "source": "v6-sound/helios-48k-normalized.wav",
+          "sha256": "6876a4d871adfa088f0ba078edfd1f64aaf803670658f508baa647e96e1d03ce",
+          "gain": 1,
+          "normalized": false
+        },
+        {
+          "id": "helios-insert-rosetta-impact",
+          "role": "music",
+          "start": 428.7,
+          "duration": 8.3,
+          "sourceIn": 225.7,
+          "source": "v6-sound/helios-48k-normalized.wav",
+          "sha256": "6876a4d871adfa088f0ba078edfd1f64aaf803670658f508baa647e96e1d03ce",
+          "gain": 1,
+          "normalized": false
+        },
+        {
+          "id": "helios-part-2-mapped-4",
+          "role": "music",
+          "start": 436.7,
+          "duration": 132.3,
+          "sourceIn": 225.7,
+          "source": "v6-sound/helios-48k-normalized.wav",
+          "sha256": "6876a4d871adfa088f0ba078edfd1f64aaf803670658f508baa647e96e1d03ce",
+          "gain": 1,
+          "normalized": false
+        },
+        {
+          "id": "sputnik-original-signal",
+          "role": "field",
+          "start": 123.1,
+          "duration": 10.0,
+          "sourceIn": 0,
+          "source": "v6-early-history/sputnik-signal-10s.wav",
+          "sha256": "c27ff641c826cd881014c1058178d1e479fbc9edb723830c2dcfbe46ec6bd676",
+          "gain": 0.5,
+          "normalized": false,
+          "duckedUnderNarrationDb": 18.4
+        },
+        {
+          "id": "gagarin-poyekhali-1961",
+          "role": "archival",
+          "start": 150.8,
+          "duration": 1.486,
+          "sourceIn": 0,
+          "source": "v6-early-history/gagarin-poyekhali-normalized.wav",
+          "sha256": "b37d838dd868354092917e7f9307eb9c2a2ff9f844becef59a26ce9fc81612d9",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "jfk-rice-1962",
+          "role": "archival",
+          "start": 169.0,
+          "duration": 18.95,
+          "sourceIn": 0,
+          "source": "v5-audio/jfk-rice-complete-20_75-normalized.wav",
+          "sha256": "9f0a6b337aeaab83499c9fac25466a6d5a0e60f572003f2cd40929de19b5dc22",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "apollo11-countdown-liftoff",
+          "role": "archival",
+          "start": 201.0,
+          "duration": 16.0,
+          "sourceIn": 0,
+          "source": "v5-audio/apollo11-countdown-liftoff-16s.wav",
+          "sha256": "4c149e0c88657a062efec54190077ce8eb827b1aee75747cec62f2eec971aa4f",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "armstrong-first-step-1969",
+          "role": "archival",
+          "start": 232.0,
+          "duration": 9.412646,
+          "sourceIn": 0,
+          "source": "v5-audio/armstrong-small-step-normalized.wav",
+          "sha256": "42b2537d94a79320aaa799bb11eea345cdfe37efcde0a1336805012e0c14aa4e",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "sts1-original-launch-1981",
+          "role": "field",
+          "start": 288.5,
+          "duration": 3.7,
+          "sourceIn": 5.5,
+          "source": "v6-international/sts1-first-shuttle-launch-original-audio-14s.wav",
+          "sha256": "bf630758d06f80947062de94a01ce78e3808ad86d06c4b6a25140b57390384e6",
+          "gain": 1,
+          "normalized": false,
+          "duckedUnderNarrationDb": 18.4
+        },
+        {
+          "id": "challenger-original-broadcast",
+          "role": "archival",
+          "start": 299.0,
+          "duration": 5.36,
+          "sourceIn": 0,
+          "source": "v6-international/challenger-loss-original-audio-6s.wav",
+          "sha256": "133e890963a23946f5360154d2114417ff2e71d629877c74e6b2b2c2aa02f27a",
+          "gain": 0.8,
+          "normalized": true
+        },
+        {
+          "id": "perseverance-2021-edl",
+          "role": "archival",
+          "start": 445.0,
+          "duration": 12.0,
+          "sourceIn": 0,
+          "source": "v6-international/perseverance-descent-original-audio-12s.wav",
+          "sha256": "e91f595e3b4f8a5c7cf18b8fb51d23b6f46a8477fd3aedfdbe50bc05f9275693",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "falcon-heavy-ground-audio-2019",
+          "role": "field",
+          "start": 473.0,
+          "duration": 8.0,
+          "sourceIn": 4,
+          "source": "v6-falcon/falcon-heavy-launch-stp2-normalized-12s.wav",
+          "sha256": "3235214ef836aa3a2d8495cd6775fbf95f01bb91b1e763243ab5b3c713743e26",
+          "gain": 1,
+          "normalized": false,
+          "duckedUnderNarrationDb": 18.4
+        },
+        {
+          "id": "falcon9-landing-ground-audio-2020",
+          "role": "field",
+          "start": 495.0,
+          "duration": 12.0,
+          "sourceIn": 0,
+          "source": "v6-falcon/falcon9-sentinel6-normalized-12s.wav",
+          "sha256": "365b476d8e734436ba1e99d87bacc0676c0c79024a29bc69c559904f05877da8",
+          "gain": 1,
+          "normalized": false,
+          "duckedUnderNarrationDb": 18.4
+        },
+        {
+          "id": "typing-one",
+          "role": "effect",
+          "start": 0.35,
+          "duration": 4.5,
+          "sourceIn": 0,
+          "source": "v6-sound/typing-7s-48k.wav",
+          "sha256": "0521486bf21a11c4c7f3c8a8aa7019d213ccdb8b93658f771bb550fadfb3a71e",
+          "gain": 0.16,
+          "normalized": false
+        },
+        {
+          "id": "typing-two",
+          "role": "effect",
+          "start": 7.4,
+          "duration": 5.0,
+          "sourceIn": 0,
+          "source": "v6-sound/typing-7s-48k.wav",
+          "sha256": "0521486bf21a11c4c7f3c8a8aa7019d213ccdb8b93658f771bb550fadfb3a71e",
+          "gain": 0.16,
+          "normalized": false
+        },
+        {
+          "id": "big-bang-impact",
+          "role": "effect",
+          "start": 16.0,
+          "duration": 3.0,
+          "sourceIn": 0,
+          "source": "v6-sound/impact-48k.wav",
+          "sha256": "57c5b725427515420ec4041b51aa8d74f6236a3652e216f747fc8a357143e5f4",
+          "gain": 0.55,
+          "normalized": false
+        },
+        {
+          "id": "war-transition",
+          "role": "effect",
+          "start": 98.6,
+          "duration": 1.3,
+          "sourceIn": 0,
+          "source": "v6-sound/transition-whoosh-1_3s.wav",
+          "sha256": "edb51587d15c1916c9c52f0e9c8f4cc595569d263396fc774ad5e9fe172b9b9d",
+          "gain": 0.1,
+          "normalized": false
+        },
+        {
+          "id": "legacy-transition",
+          "role": "effect",
+          "start": 506.6,
+          "duration": 1.3,
+          "sourceIn": 0,
+          "source": "v6-sound/transition-whoosh-1_3s.wav",
+          "sha256": "edb51587d15c1916c9c52f0e9c8f4cc595569d263396fc774ad5e9fe172b9b9d",
+          "gain": 0.1,
+          "normalized": false
+        },
+        {
+          "id": "a-world-and-a-question-en",
+          "role": "voice",
+          "start": 88.9,
+          "duration": 5.496,
+          "sourceIn": 0,
+          "source": "v9-narration/a-world-and-a-question-en.wav",
+          "sha256": "bad109d7b1e1fae533811bea39624af34190cb88dc5f25f5b3d37ce9699adbdc",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "from-war-to-a-race-en",
+          "role": "voice",
+          "start": 99.5,
+          "duration": 16.397333333333332,
+          "sourceIn": 0,
+          "source": "v9-narration/from-war-to-a-race-en.wav",
+          "sha256": "86fc9375931124557daf57372be1adb3a00293b8e4fed15c236b76dd1068f6cd",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "a-signal-around-earth-en",
+          "role": "voice",
+          "start": 125.0,
+          "duration": 7.8853333333333335,
+          "sourceIn": 0,
+          "source": "v9-narration/a-signal-around-earth-en.wav",
+          "sha256": "a34c48db2e1c904a87f41808ab8b76d701d16ae65f0f1e1d99cf3f779429b35c",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "from-machines-to-people-en",
+          "role": "voice",
+          "start": 135.5,
+          "duration": 12.941333333333333,
+          "sourceIn": 0,
+          "source": "v9-narration/from-machines-to-people-en.wav",
+          "sha256": "973690910d974c254ecf17b4bc489c303d1e6d40aaf01fb4d157d88910caab78",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "a-destination-en",
+          "role": "voice",
+          "start": 161.5,
+          "duration": 6.264,
+          "sourceIn": 0,
+          "source": "v9-narration/a-destination-en.wav",
+          "sha256": "1862bbe73b15b0c4d6d1ebfffb3f1ae51795198d0efcdfd0ab996bbda2390167",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "a-promise-becomes-a-journey-en",
+          "role": "voice",
+          "start": 189.5,
+          "duration": 8.994666666666667,
+          "sourceIn": 0,
+          "source": "v9-narration/a-promise-becomes-a-journey-en.wav",
+          "sha256": "eb5f2b47b1a4494636b969035cf5862e3d8d954884e7cf077fa42c0ea4707026",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "two-go-down-one-stays-en",
+          "role": "voice",
+          "start": 217.5,
+          "duration": 11.874666666666666,
+          "sourceIn": 0,
+          "source": "v9-narration/two-go-down-one-stays-en.wav",
+          "sha256": "b0583d34139ceb95de175387065e69697deeb6536d0ce8271479f3c998520283",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "the-first-machines-left-behind-en",
+          "role": "voice",
+          "start": 245.5,
+          "duration": 7.757333333333333,
+          "sourceIn": 0,
+          "source": "v9-narration/the-first-machines-left-behind-en.wav",
+          "sha256": "59b25c3a830a9d0e6afee641a008eb8ab65f84ce89306064e7ad62187a56b2ed",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "two-paths-after-apollo-en",
+          "role": "voice",
+          "start": 259.5,
+          "duration": 11.896,
+          "sourceIn": 0,
+          "source": "v9-narration/two-paths-after-apollo-en.wav",
+          "sha256": "594b7c53329f5e90fda858babcc9be26c61662fd312eb87896d5df45b87ddb4b",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "carrier-tests-en",
+          "role": "voice",
+          "start": 275.1,
+          "duration": 7.757333333333333,
+          "sourceIn": 0,
+          "source": "v9-narration/carrier-tests-en.wav",
+          "sha256": "023487e43020fe8dc508559ba5b05b87eef348401f4662baa1373cd672cd5d8d",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "working-closer-to-home-en",
+          "role": "voice",
+          "start": 283.5,
+          "duration": 11.064,
+          "sourceIn": 0,
+          "source": "v9-narration/working-closer-to-home-en.wav",
+          "sha256": "ae5bf20dd423fee029224246b95b39189ab2671377cc31517598154a7d30413e",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "the-cost-of-flight-en",
+          "role": "voice",
+          "start": 305.5,
+          "duration": 4.109333333333334,
+          "sourceIn": 0,
+          "source": "v9-narration/the-cost-of-flight-en.wav",
+          "sha256": "a75ab4e2e3751c53a4e0fa8824c34fa8b19ef503ac2a7960a55e4bfade0c4ec3",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "a-new-view-en",
+          "role": "voice",
+          "start": 313.5,
+          "duration": 8.802666666666667,
+          "sourceIn": 0,
+          "source": "v9-narration/a-new-view-en.wav",
+          "sha256": "80402f557a2f18d2593c4486c7b497b1d18796e25de44337057f5b7be3c00c8f",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "rivals-build-together-en",
+          "role": "voice",
+          "start": 327.5,
+          "duration": 12.258666666666667,
+          "sourceIn": 0,
+          "source": "v9-narration/rivals-build-together-en.wav",
+          "sha256": "0a4c0b100979668da0c80bafcfd9cba902ef948a8c99362955b3b64c98325ab6",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "a-shared-laboratory-en",
+          "role": "voice",
+          "start": 347.5,
+          "duration": 7.650666666666667,
+          "sourceIn": 0,
+          "source": "v9-narration/a-shared-laboratory-en.wav",
+          "sha256": "d1b3fed846650de02d9b8f93a3a945cbff70a36c7dece20eae08c136ef170bb2",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "retiring-the-shuttle-en",
+          "role": "voice",
+          "start": 375.25,
+          "duration": 13.410666666666666,
+          "sourceIn": 0,
+          "source": "v9-narration/retiring-the-shuttle-en.wav",
+          "sha256": "82e4b07ee70c4754e3716130190f3bde53acd25d45925b2d00c2f5e675b6657c",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "keeping-the-outpost-alive-en",
+          "role": "voice",
+          "start": 391.5,
+          "duration": 6.584,
+          "sourceIn": 0,
+          "source": "v9-narration/keeping-the-outpost-alive-en.wav",
+          "sha256": "af17abc104f2f8c0c2ccb9bbf1015a1477f07c50b4f97e51ffd50e586f893985",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "the-long-journey-continues-en",
+          "role": "voice",
+          "start": 399.5,
+          "duration": 7.394666666666667,
+          "sourceIn": 0,
+          "source": "v9-narration/the-long-journey-continues-en.wav",
+          "sha256": "24b826c9440ad555620f70df03c0318371ae6cfb2f72699d5deaa5a0abdd288c",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "touching-a-comet-en",
+          "role": "voice",
+          "start": 413.5,
+          "duration": 6.925333333333334,
+          "sourceIn": 0,
+          "source": "v9-narration/touching-a-comet-en.wav",
+          "sha256": "1e7f19b52e8ccacf48b67e9226d66bdce5c583cbeb4baf2a54692a83bd8ae7b8",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "rosetta-remains-en",
+          "role": "voice",
+          "start": 429.1,
+          "duration": 6.306666666666667,
+          "sourceIn": 0,
+          "source": "v9-narration/rosetta-remains-en.wav",
+          "sha256": "b7f61e0c052cd0a3a8af1bf5a4c932ff292a22a05e3eed3781cc0384afb2994a",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "a-question-on-mars-en",
+          "role": "voice",
+          "start": 437.5,
+          "duration": 5.666666666666667,
+          "sourceIn": 0,
+          "source": "v9-narration/a-question-on-mars-en.wav",
+          "sha256": "5e6b899dfbd6f355781a7eeee93b013f34d2ff75e97a251a66adbbc370661fb4",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "looking-back-through-time-en",
+          "role": "voice",
+          "start": 457.5,
+          "duration": 7.608,
+          "sourceIn": 0,
+          "source": "v9-narration/looking-back-through-time-en.wav",
+          "sha256": "ff604b5973b8347011094361f54eadb575dcc6c36f517bff4bbc02da54359d3c",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "returning-launchers-en",
+          "role": "voice",
+          "start": 470.0,
+          "duration": 7.693333333333333,
+          "sourceIn": 0,
+          "source": "v9-narration/returning-launchers-en.wav",
+          "sha256": "1d299a3f1fd0efca4bd999684d154d459d991b3c782e260e31bbcb28680d057b",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "the-machines-that-stay-en",
+          "role": "voice",
+          "start": 507.5,
+          "duration": 12.770666666666667,
+          "sourceIn": 0,
+          "source": "v9-narration/the-machines-that-stay-en.wav",
+          "sha256": "35f578eb63fdd923f2369d8dc04ecec5764e68f8979cf8eed8fc60aef2bb090a",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "why-relic-en",
+          "role": "voice",
+          "start": 532.5,
+          "duration": 11.298666666666668,
+          "sourceIn": 0,
+          "source": "v9-narration/why-relic-en.wav",
+          "sha256": "9eac90c033dca24f64cea40bb0e00b58210f1fbb79912848549b327cc265db12",
+          "gain": 1,
+          "normalized": true
+        }
+      ],
+      "sampleRate": 48000,
+      "channels": 2,
+      "bitrate": 192000,
+      "duration": 569.0,
+      "mastering": {
+        "target": {
+          "integrated": -16,
+          "truePeak": -1.5,
+          "lra": 11
+        },
+        "premixPeakLinear": 0.8381844162940979,
+        "firstPass": {
+          "input_i": "-18.84",
+          "input_tp": "-1.53",
+          "input_lra": "7.90",
+          "input_thresh": "-29.38",
+          "output_i": "-14.49",
+          "output_tp": "-1.50",
+          "output_lra": "5.50",
+          "output_thresh": "-24.83",
+          "normalization_type": "dynamic",
+          "target_offset": "-1.51"
+        },
+        "secondPass": {
+          "input_i": "-18.84",
+          "input_tp": "-1.53",
+          "input_lra": "7.90",
+          "input_thresh": "-29.38",
+          "output_i": "-16.06",
+          "output_tp": "-1.50",
+          "output_lra": "6.20",
+          "output_thresh": "-26.56",
+          "normalization_type": "dynamic",
+          "target_offset": "0.06"
+        }
+      },
+      "masterSha256": "78370836dc38c826e0a09b8ace3704b38794f1d6adcfbaded32d9f0d93bf71cf"
+    },
+    "fr": {
+      "audioSources": [
+        {
+          "id": "helios-part-1-mapped-0",
+          "role": "music",
+          "start": 16.0,
+          "duration": 137.0,
+          "sourceIn": 0.0,
+          "source": "v6-sound/helios-48k-normalized.wav",
+          "sha256": "6876a4d871adfa088f0ba078edfd1f64aaf803670658f508baa647e96e1d03ce",
+          "gain": 1,
+          "normalized": false
+        },
+        {
+          "id": "helios-insert-gagarin-silent",
+          "role": "music",
+          "start": 152.7,
+          "duration": 8.3,
+          "sourceIn": 136.7,
+          "source": "v6-sound/helios-48k-normalized.wav",
+          "sha256": "6876a4d871adfa088f0ba078edfd1f64aaf803670658f508baa647e96e1d03ce",
+          "gain": 1,
+          "normalized": false
+        },
+        {
+          "id": "helios-part-1-mapped-1",
+          "role": "music",
+          "start": 160.7,
+          "duration": 114.3,
+          "sourceIn": 136.7,
+          "source": "v6-sound/helios-48k-normalized.wav",
+          "sha256": "6876a4d871adfa088f0ba078edfd1f64aaf803670658f508baa647e96e1d03ce",
+          "gain": 1,
+          "normalized": false
+        },
+        {
+          "id": "helios-insert-shuttle-carrier",
+          "role": "music",
+          "start": 274.7,
+          "duration": 8.3,
+          "sourceIn": 250.7,
+          "source": "v6-sound/helios-48k-normalized.wav",
+          "sha256": "6876a4d871adfa088f0ba078edfd1f64aaf803670658f508baa647e96e1d03ce",
+          "gain": 1,
+          "normalized": false
+        },
+        {
+          "id": "helios-part-1-mapped-2",
+          "role": "music",
+          "start": 282.7,
+          "duration": 92.3,
+          "sourceIn": 250.7,
+          "source": "v6-sound/helios-48k-normalized.wav",
+          "sha256": "6876a4d871adfa088f0ba078edfd1f64aaf803670658f508baa647e96e1d03ce",
+          "gain": 1,
+          "normalized": false
+        },
+        {
+          "id": "helios-insert-shuttle-retirement",
+          "role": "music",
+          "start": 374.7,
+          "duration": 16.3,
+          "sourceIn": 341.778917,
+          "source": "v6-sound/helios-48k-normalized.wav",
+          "sha256": "6876a4d871adfa088f0ba078edfd1f64aaf803670658f508baa647e96e1d03ce",
+          "gain": 1,
+          "normalized": false
+        },
+        {
+          "id": "helios-part-1-mapped-3",
+          "role": "music",
+          "start": 390.7,
+          "duration": 15.3,
+          "sourceIn": 342.7,
+          "source": "v6-sound/helios-48k-normalized.wav",
+          "sha256": "6876a4d871adfa088f0ba078edfd1f64aaf803670658f508baa647e96e1d03ce",
+          "gain": 1,
+          "normalized": false
+        },
+        {
+          "id": "helios-part-2-mapped-3",
+          "role": "music",
+          "start": 404.0,
+          "duration": 25.0,
+          "sourceIn": 201.0,
+          "source": "v6-sound/helios-48k-normalized.wav",
+          "sha256": "6876a4d871adfa088f0ba078edfd1f64aaf803670658f508baa647e96e1d03ce",
+          "gain": 1,
+          "normalized": false
+        },
+        {
+          "id": "helios-insert-rosetta-impact",
+          "role": "music",
+          "start": 428.7,
+          "duration": 8.3,
+          "sourceIn": 225.7,
+          "source": "v6-sound/helios-48k-normalized.wav",
+          "sha256": "6876a4d871adfa088f0ba078edfd1f64aaf803670658f508baa647e96e1d03ce",
+          "gain": 1,
+          "normalized": false
+        },
+        {
+          "id": "helios-part-2-mapped-4",
+          "role": "music",
+          "start": 436.7,
+          "duration": 132.3,
+          "sourceIn": 225.7,
+          "source": "v6-sound/helios-48k-normalized.wav",
+          "sha256": "6876a4d871adfa088f0ba078edfd1f64aaf803670658f508baa647e96e1d03ce",
+          "gain": 1,
+          "normalized": false
+        },
+        {
+          "id": "sputnik-original-signal",
+          "role": "field",
+          "start": 123.1,
+          "duration": 10.0,
+          "sourceIn": 0,
+          "source": "v6-early-history/sputnik-signal-10s.wav",
+          "sha256": "c27ff641c826cd881014c1058178d1e479fbc9edb723830c2dcfbe46ec6bd676",
+          "gain": 0.5,
+          "normalized": false,
+          "duckedUnderNarrationDb": 18.4
+        },
+        {
+          "id": "gagarin-poyekhali-1961",
+          "role": "archival",
+          "start": 150.8,
+          "duration": 1.486,
+          "sourceIn": 0,
+          "source": "v6-early-history/gagarin-poyekhali-normalized.wav",
+          "sha256": "b37d838dd868354092917e7f9307eb9c2a2ff9f844becef59a26ce9fc81612d9",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "jfk-rice-1962",
+          "role": "archival",
+          "start": 169.0,
+          "duration": 18.95,
+          "sourceIn": 0,
+          "source": "v5-audio/jfk-rice-complete-20_75-normalized.wav",
+          "sha256": "9f0a6b337aeaab83499c9fac25466a6d5a0e60f572003f2cd40929de19b5dc22",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "apollo11-countdown-liftoff",
+          "role": "archival",
+          "start": 201.0,
+          "duration": 16.0,
+          "sourceIn": 0,
+          "source": "v5-audio/apollo11-countdown-liftoff-16s.wav",
+          "sha256": "4c149e0c88657a062efec54190077ce8eb827b1aee75747cec62f2eec971aa4f",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "armstrong-first-step-1969",
+          "role": "archival",
+          "start": 232.0,
+          "duration": 9.412646,
+          "sourceIn": 0,
+          "source": "v5-audio/armstrong-small-step-normalized.wav",
+          "sha256": "42b2537d94a79320aaa799bb11eea345cdfe37efcde0a1336805012e0c14aa4e",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "sts1-original-launch-1981",
+          "role": "field",
+          "start": 288.5,
+          "duration": 3.7,
+          "sourceIn": 5.5,
+          "source": "v6-international/sts1-first-shuttle-launch-original-audio-14s.wav",
+          "sha256": "bf630758d06f80947062de94a01ce78e3808ad86d06c4b6a25140b57390384e6",
+          "gain": 1,
+          "normalized": false,
+          "duckedUnderNarrationDb": 18.4
+        },
+        {
+          "id": "challenger-original-broadcast",
+          "role": "archival",
+          "start": 299.0,
+          "duration": 5.36,
+          "sourceIn": 0,
+          "source": "v6-international/challenger-loss-original-audio-6s.wav",
+          "sha256": "133e890963a23946f5360154d2114417ff2e71d629877c74e6b2b2c2aa02f27a",
+          "gain": 0.8,
+          "normalized": true
+        },
+        {
+          "id": "perseverance-2021-edl",
+          "role": "archival",
+          "start": 445.0,
+          "duration": 12.0,
+          "sourceIn": 0,
+          "source": "v6-international/perseverance-descent-original-audio-12s.wav",
+          "sha256": "e91f595e3b4f8a5c7cf18b8fb51d23b6f46a8477fd3aedfdbe50bc05f9275693",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "falcon-heavy-ground-audio-2019",
+          "role": "field",
+          "start": 473.0,
+          "duration": 8.0,
+          "sourceIn": 4,
+          "source": "v6-falcon/falcon-heavy-launch-stp2-normalized-12s.wav",
+          "sha256": "3235214ef836aa3a2d8495cd6775fbf95f01bb91b1e763243ab5b3c713743e26",
+          "gain": 1,
+          "normalized": false,
+          "duckedUnderNarrationDb": 18.4
+        },
+        {
+          "id": "falcon9-landing-ground-audio-2020",
+          "role": "field",
+          "start": 495.0,
+          "duration": 12.0,
+          "sourceIn": 0,
+          "source": "v6-falcon/falcon9-sentinel6-normalized-12s.wav",
+          "sha256": "365b476d8e734436ba1e99d87bacc0676c0c79024a29bc69c559904f05877da8",
+          "gain": 1,
+          "normalized": false,
+          "duckedUnderNarrationDb": 18.4
+        },
+        {
+          "id": "typing-one",
+          "role": "effect",
+          "start": 0.35,
+          "duration": 4.5,
+          "sourceIn": 0,
+          "source": "v6-sound/typing-7s-48k.wav",
+          "sha256": "0521486bf21a11c4c7f3c8a8aa7019d213ccdb8b93658f771bb550fadfb3a71e",
+          "gain": 0.16,
+          "normalized": false
+        },
+        {
+          "id": "typing-two",
+          "role": "effect",
+          "start": 7.4,
+          "duration": 5.0,
+          "sourceIn": 0,
+          "source": "v6-sound/typing-7s-48k.wav",
+          "sha256": "0521486bf21a11c4c7f3c8a8aa7019d213ccdb8b93658f771bb550fadfb3a71e",
+          "gain": 0.16,
+          "normalized": false
+        },
+        {
+          "id": "big-bang-impact",
+          "role": "effect",
+          "start": 16.0,
+          "duration": 3.0,
+          "sourceIn": 0,
+          "source": "v6-sound/impact-48k.wav",
+          "sha256": "57c5b725427515420ec4041b51aa8d74f6236a3652e216f747fc8a357143e5f4",
+          "gain": 0.55,
+          "normalized": false
+        },
+        {
+          "id": "war-transition",
+          "role": "effect",
+          "start": 98.6,
+          "duration": 1.3,
+          "sourceIn": 0,
+          "source": "v6-sound/transition-whoosh-1_3s.wav",
+          "sha256": "edb51587d15c1916c9c52f0e9c8f4cc595569d263396fc774ad5e9fe172b9b9d",
+          "gain": 0.1,
+          "normalized": false
+        },
+        {
+          "id": "legacy-transition",
+          "role": "effect",
+          "start": 506.6,
+          "duration": 1.3,
+          "sourceIn": 0,
+          "source": "v6-sound/transition-whoosh-1_3s.wav",
+          "sha256": "edb51587d15c1916c9c52f0e9c8f4cc595569d263396fc774ad5e9fe172b9b9d",
+          "gain": 0.1,
+          "normalized": false
+        },
+        {
+          "id": "a-world-and-a-question-fr",
+          "role": "voice",
+          "start": 88.9,
+          "duration": 6.221333333333333,
+          "sourceIn": 0,
+          "source": "v9-narration/a-world-and-a-question-fr.wav",
+          "sha256": "9ccf1c4ef68cda5621f40f4cb554ad123ea998e45374da06d273d4b4aa7b1923",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "from-war-to-a-race-fr",
+          "role": "voice",
+          "start": 99.5,
+          "duration": 16.056,
+          "sourceIn": 0,
+          "source": "v9-narration/from-war-to-a-race-fr.wav",
+          "sha256": "a269c674ac354beb26bc348460fdfcc4c786d837a663c12380cc394e7023602c",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "a-signal-around-earth-fr",
+          "role": "voice",
+          "start": 125.0,
+          "duration": 7.2026666666666666,
+          "sourceIn": 0,
+          "source": "v9-narration/a-signal-around-earth-fr.wav",
+          "sha256": "71be7b004f7b9d5ee5193142b52104590d4dd82fc1ff7ff6ede088716d539c11",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "from-machines-to-people-fr",
+          "role": "voice",
+          "start": 135.5,
+          "duration": 13.773333333333333,
+          "sourceIn": 0,
+          "source": "v9-narration/from-machines-to-people-fr.wav",
+          "sha256": "d00b06d0c2dbe415738de444cba481a766573ca899a22541c1f2b4f6da994571",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "a-destination-fr",
+          "role": "voice",
+          "start": 161.5,
+          "duration": 6.328,
+          "sourceIn": 0,
+          "source": "v9-narration/a-destination-fr.wav",
+          "sha256": "8500b06249ad3aa16f2cc7ab714af293b8f2cf064c9823452d5c6d56d9737fef",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "a-promise-becomes-a-journey-fr",
+          "role": "voice",
+          "start": 189.5,
+          "duration": 9.293333333333333,
+          "sourceIn": 0,
+          "source": "v9-narration/a-promise-becomes-a-journey-fr.wav",
+          "sha256": "5404528c1d5470f307230f7888a05c5114c3a73cdbdd1dbc09b6b5ae40d9bd38",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "two-go-down-one-stays-fr",
+          "role": "voice",
+          "start": 217.5,
+          "duration": 12.472,
+          "sourceIn": 0,
+          "source": "v9-narration/two-go-down-one-stays-fr.wav",
+          "sha256": "d9d20e59c5533d8241b41cf48dacd2f9ffb812e8818786e20d0c53e593e5f901",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "the-first-machines-left-behind-fr",
+          "role": "voice",
+          "start": 245.5,
+          "duration": 8.717333333333332,
+          "sourceIn": 0,
+          "source": "v9-narration/the-first-machines-left-behind-fr.wav",
+          "sha256": "8e7259d694f2880ab0bad02251b2a214226feffd46a22de3a3a92bc3a8f41321",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "two-paths-after-apollo-fr",
+          "role": "voice",
+          "start": 259.5,
+          "duration": 11.704,
+          "sourceIn": 0,
+          "source": "v9-narration/two-paths-after-apollo-fr.wav",
+          "sha256": "40cb5361727d522ff6a31dffb07eca87d75066d12a49a68c7a9d091ffdccfbfc",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "carrier-tests-fr",
+          "role": "voice",
+          "start": 275.1,
+          "duration": 7.394666666666667,
+          "sourceIn": 0,
+          "source": "v9-narration/carrier-tests-fr.wav",
+          "sha256": "eb3d8a9fffe6fd5cc592e235c5ccb64f42bee962484d0393fffec6ac377dcbdf",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "working-closer-to-home-fr",
+          "role": "voice",
+          "start": 283.5,
+          "duration": 12.386666666666667,
+          "sourceIn": 0,
+          "source": "v9-narration/working-closer-to-home-fr.wav",
+          "sha256": "9b9308cd530e810eac0dfe58228aed6f13738ba78ec8a72d209cf892ebaa773a",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "the-cost-of-flight-fr",
+          "role": "voice",
+          "start": 305.5,
+          "duration": 4.344,
+          "sourceIn": 0,
+          "source": "v9-narration/the-cost-of-flight-fr.wav",
+          "sha256": "0100e6346f612a843d50a703215cab9c47a2ca8934941b4b6e2925c070324f9d",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "a-new-view-fr",
+          "role": "voice",
+          "start": 313.5,
+          "duration": 9.144,
+          "sourceIn": 0,
+          "source": "v9-narration/a-new-view-fr.wav",
+          "sha256": "a9a08607337f3155e29e8f58f2b0e7d6b8c2f301a8ced33f5ade2c2842f9f864",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "rivals-build-together-fr",
+          "role": "voice",
+          "start": 327.5,
+          "duration": 14.648,
+          "sourceIn": 0,
+          "source": "v9-narration/rivals-build-together-fr.wav",
+          "sha256": "90ccc17877c43a2ec4b28a5e0502e0835ccb05a36a68bc46eef194a6cea1fef9",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "a-shared-laboratory-fr",
+          "role": "voice",
+          "start": 347.5,
+          "duration": 8.781333333333333,
+          "sourceIn": 0,
+          "source": "v9-narration/a-shared-laboratory-fr.wav",
+          "sha256": "5dc13802deeb2553d8e39e73b1a06f29fae57ec19694d373f819a3b85abd3600",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "retiring-the-shuttle-fr",
+          "role": "voice",
+          "start": 375.25,
+          "duration": 11.298666666666668,
+          "sourceIn": 0,
+          "source": "v9-narration/retiring-the-shuttle-fr.wav",
+          "sha256": "47726c9d36c5d0ae9c161fce0321f18853ea9c7f9a1d28388beb66b3eddd6ef3",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "keeping-the-outpost-alive-fr",
+          "role": "voice",
+          "start": 391.5,
+          "duration": 5.773333333333333,
+          "sourceIn": 0,
+          "source": "v9-narration/keeping-the-outpost-alive-fr.wav",
+          "sha256": "3ec9a07fd2fc5c37618798d5f2efc75819b856b4b477fa9effea2dac1d169517",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "the-long-journey-continues-fr",
+          "role": "voice",
+          "start": 399.5,
+          "duration": 6.8613333333333335,
+          "sourceIn": 0,
+          "source": "v9-narration/the-long-journey-continues-fr.wav",
+          "sha256": "2399fd01b2527102ef41d3d2cbde094708c7267c68453e382111c047de3f2154",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "touching-a-comet-fr",
+          "role": "voice",
+          "start": 413.5,
+          "duration": 5.9013333333333335,
+          "sourceIn": 0,
+          "source": "v9-narration/touching-a-comet-fr.wav",
+          "sha256": "6e7f7cb3708570644c888c9cbf087ac4450c5dd922862fe32c6f8db7b4ddca93",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "rosetta-remains-fr",
+          "role": "voice",
+          "start": 429.1,
+          "duration": 6.754666666666667,
+          "sourceIn": 0,
+          "source": "v9-narration/rosetta-remains-fr.wav",
+          "sha256": "eecfe96b17a83b5457699c5d437861860efd5320ad3e07c8ca248a048b018463",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "a-question-on-mars-fr",
+          "role": "voice",
+          "start": 437.5,
+          "duration": 4.706666666666667,
+          "sourceIn": 0,
+          "source": "v9-narration/a-question-on-mars-fr.wav",
+          "sha256": "090de76fbb6fd4347fb86d9502ceed907b5ec7db953733e97d84c1c80a107989",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "looking-back-through-time-fr",
+          "role": "voice",
+          "start": 457.5,
+          "duration": 7.288,
+          "sourceIn": 0,
+          "source": "v9-narration/looking-back-through-time-fr.wav",
+          "sha256": "3ab83510e840e28f71117aa6c084fec7f98dd693f2414441ed06dbe4f171fa2d",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "returning-launchers-fr",
+          "role": "voice",
+          "start": 470.0,
+          "duration": 8.184,
+          "sourceIn": 0,
+          "source": "v9-narration/returning-launchers-fr.wav",
+          "sha256": "9d618217801a29fcb2913105cae01d8e675dc6b5381928a8567b3b21938b9c78",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "the-machines-that-stay-fr",
+          "role": "voice",
+          "start": 507.5,
+          "duration": 12.962666666666667,
+          "sourceIn": 0,
+          "source": "v9-narration/the-machines-that-stay-fr.wav",
+          "sha256": "a1dff26a58245a5dbfdf7ea4d753aa4f85ed495ad567d69d6796c879a6fa469e",
+          "gain": 1,
+          "normalized": true
+        },
+        {
+          "id": "why-relic-fr",
+          "role": "voice",
+          "start": 532.5,
+          "duration": 12.152,
+          "sourceIn": 0,
+          "source": "v9-narration/why-relic-fr.wav",
+          "sha256": "2936a76b110ff32b3fc1362ae957fbb5fdf8641500341ea6dd83a98a7de0edfa",
+          "gain": 1,
+          "normalized": true
+        }
+      ],
+      "sampleRate": 48000,
+      "channels": 2,
+      "bitrate": 192000,
+      "duration": 569.0,
+      "mastering": {
+        "target": {
+          "integrated": -16,
+          "truePeak": -3.2,
+          "lra": 11
+        },
+        "premixPeakLinear": 0.7395532727241516,
+        "firstPass": {
+          "input_i": "-18.83",
+          "input_tp": "-2.62",
+          "input_lra": "7.90",
+          "input_thresh": "-29.33",
+          "output_i": "-14.74",
+          "output_tp": "-3.20",
+          "output_lra": "5.10",
+          "output_thresh": "-25.01",
+          "normalization_type": "dynamic",
+          "target_offset": "-1.26"
+        },
+        "secondPass": {
+          "input_i": "-18.83",
+          "input_tp": "-2.62",
+          "input_lra": "7.90",
+          "input_thresh": "-29.33",
+          "output_i": "-15.94",
+          "output_tp": "-3.20",
+          "output_lra": "6.00",
+          "output_thresh": "-26.40",
+          "normalization_type": "dynamic",
+          "target_offset": "-0.06"
+        }
+      },
+      "masterSha256": "4b90f1cf121324479c9b80869008651363b456efdbe694bf2fb5023f1c726c0d"
+    }
+  },
+  "narration": {
+    "synthetic": true,
+    "voices": {
+      "en": {
+        "voice": "af_heart",
+        "locale": "en-us"
+      },
+      "fr": {
+        "voice": "ff_siwis",
+        "locale": "fr-fr"
+      }
+    },
+    "script": "tools/film/scripts/prologue-narration-v9.json"
+  },
+  "musicCredit": "'Helios' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
+  "editPlanSha256": "c35aff8ee939792e0b04fc1071e9a24c3961bd5925a2d2cf20fa347791538015",
+  "narrationManifestSha256": "72ca591b778f04444a8284570766538bb62dd509d28174a61075630105025ad7",
+  "quality": {
+    "delivery": "1920x1080 progressive 50 frames per second",
+    "sourcePolicy": "Rebuilt from retained original source clips, never enlarged from the low-bitrate fallback. Native1080/4K sources and60fps originals are used where retained and traceable; lower-resolution archival footage is upscaled with Lanczos; source frame rates are resampled by selecting/repeating frames. No optical-flow-generated frames or invented archival detail.",
+    "native1080OrHigherFiles": [
+      "v6-origins/nightlights-nodates-original.mp4",
+      "v6-origins/origins-continuous-65s.mp4",
+      "v6-origins/solar-system-eic-original.mp4",
+      "v7-deep-space/philae-dlr-original.webm",
+      "v7-deep-space/voyager-heliosphere-pullout-original.mp4",
+      "v7-early-life/dinosaur-trex-original.mp4",
+      "v9-history/enterprise-flight-test-1977-nara.mp4",
+      "v9-history/rosetta-descent-2016.mov"
+    ],
+    "sourceAudit": [
+      {
+        "file": "archive/apollo11-launch-original.mp4",
+        "width": 1280,
+        "height": 594,
+        "fps": "4094000/170583",
+        "duration": 170.597007,
+        "sha256": "d836bb23299793833c2a92b9d30a75ce8060726001783e6bf9546bc83dbffffd"
+      },
+      {
+        "file": "archive/apollo11-moonwalk-original.mp4",
+        "width": 1280,
+        "height": 720,
+        "fps": "30/1",
+        "duration": 120.171,
+        "sha256": "9a7e992383f3b0c7460ea6b3ceb3bca369bda5ce9dd9a27dda51a4bf0f10970a"
+      },
+      {
+        "file": "archive/curiosity-panorama-2012-original.mov",
+        "width": 1280,
+        "height": 720,
+        "fps": "30/1",
+        "duration": 70.333333,
+        "sha256": "559f4c3357badd3d11a9d5074ac26e43b0ee577b474bac3b166601734a7639f7"
+      },
+      {
+        "file": "archive/gagarin-anniversary-esa-original.mp4",
+        "width": 640,
+        "height": 352,
+        "fps": "25/1",
+        "duration": 278.2,
+        "sha256": "e322a27b2bd820a6150f7b39ddc54d43ee19e8fb617f5f1ee004f2641882b486"
+      },
+      {
+        "file": "archive/gagarin-helmet-archive-5s.mp4",
+        "width": 640,
+        "height": 352,
+        "fps": "25/1",
+        "duration": 5.0,
+        "sha256": "eed785eedd3835f4a52ac8d3b3c3949e9183fa57bf009636d6bc005c932f0f7d"
+      },
+      {
+        "file": "archive/sputnik1-flight-spare-museum-6s.mp4",
+        "width": 768,
+        "height": 432,
+        "fps": "25/1",
+        "duration": 5.96,
+        "sha256": "628d95ac3d4be1b4e689d9a71e4151e347b5998d9a9e6813955e36dec8985911"
+      },
+      {
+        "file": "v5-audio/jfk-rice-complete-20_75.mp4",
+        "width": 640,
+        "height": 480,
+        "fps": "24000/1001",
+        "duration": 20.77075,
+        "sha256": "17a98df3adba350fe7108711b1a9cc86d7fa40afbf4f5fbf5e33eb78c567cfbd"
+      },
+      {
+        "file": "v5-origins/sputnik/sputnik1-spare-closeup-13s.mp4",
+        "width": 1280,
+        "height": 720,
+        "fps": "25/1",
+        "duration": 13.0,
+        "sha256": "5a7a8c180c35828a52599232e4412bc940cef00104d8cd94b5e38b7d7042ae99"
+      },
+      {
+        "file": "v5-spaceflight/hubble-deployment-10s.mp4",
+        "width": 1280,
+        "height": 720,
+        "fps": "24/1",
+        "duration": 10.0,
+        "sha256": "87492091a04d0c2d3b4d506964ccdd8ff6a2adc168f08cfa5ae40cb53021d78a"
+      },
+      {
+        "file": "v5-spaceflight/iss-interior-12s.mp4",
+        "width": 1280,
+        "height": 720,
+        "fps": "24/1",
+        "duration": 12.0,
+        "sha256": "90dbaa7f9609dd0a69a65136fbe75006eba063f66ab0182098dc9d63f4d14db0"
+      },
+      {
+        "file": "v5-spaceflight/webb-separation-10s.mp4",
+        "width": 1280,
+        "height": 720,
+        "fps": "24/1",
+        "duration": 10.0,
+        "sha256": "6e056e2b8df623ce416b58c42eb229b1c46783d2d58e3cbe35fd1b1ab574346e"
+      },
+      {
+        "file": "v6-early-history/v1-launch-1944-10s.mp4",
+        "width": 1280,
+        "height": 720,
+        "fps": "24/1",
+        "duration": 10.0,
+        "sha256": "dbbd8f578f1ba5d14bfaf35dc1594812387bad912e433111a5ebb89871388140"
+      },
+      {
+        "file": "v6-early-history/v2-captured-rocket-white-sands-1946-12s.mp4",
+        "width": 1280,
+        "height": 720,
+        "fps": "24/1",
+        "duration": 12.0,
+        "sha256": "b756024fa716cae3311d69bf56994726acee29a942024827f6e99a9e2d7a6c82"
+      },
+      {
+        "file": "v6-early-history/von-braun-nasa-1962-native720p-10s.mp4",
+        "width": 1280,
+        "height": 720,
+        "fps": "24/1",
+        "duration": 10.0,
+        "sha256": "2d9a0277aecb34387ff9edd18ebc13c9c403e71a482bbae7d94ed4e78cfa87df"
+      },
+      {
+        "file": "v6-falcon/falcon-heavy-dual-landing-stp2-14s.mp4",
+        "width": 1280,
+        "height": 720,
+        "fps": "24/1",
+        "duration": 14.0,
+        "sha256": "e929aa15baa3c2eef45b765590e2e6424de1e354ca65c5faaed29682cf56bc04"
+      },
+      {
+        "file": "v6-falcon/falcon-heavy-launch-stp2-12s.mp4",
+        "width": 1280,
+        "height": 720,
+        "fps": "24/1",
+        "duration": 12.0,
+        "sha256": "c4a399fb2dcc11e63125a0c54f61f934d540146f224db40a908d0091262367ad"
+      },
+      {
+        "file": "v6-falcon/falcon9-sentinel6-landing-original.webm",
+        "width": 1280,
+        "height": 720,
+        "fps": "19001/317",
+        "duration": 29.997,
+        "sha256": "d823bfe5459690e92f7938a3443a390dd757bdf49175f304421c91d18dfcc34b"
+      },
+      {
+        "file": "v6-finale/curiosity-rover-close-9_75s.mp4",
+        "width": 1280,
+        "height": 720,
+        "fps": "24/1",
+        "duration": 9.75,
+        "sha256": "7688e1856936a3442650de79cd378e0c7e2f9afc51c8be8eb6e8ab8eb89d3819"
+      },
+      {
+        "file": "v6-international/challenger-loss-6s.mp4",
+        "width": 1280,
+        "height": 720,
+        "fps": "24/1",
+        "duration": 6.0,
+        "sha256": "deb39516385dbd7c1ee5e3ca33c101cfe546ea5fb65044c22131c54816640065"
+      },
+      {
+        "file": "v6-international/columbus-installation-10s.mp4",
+        "width": 1280,
+        "height": 720,
+        "fps": "24/1",
+        "duration": 10.0,
+        "sha256": "dc101e406f35ba0d00b21e42cc5b40bfde08386956cec9627bedd9c7af15ebaa"
+      },
+      {
+        "file": "v6-international/iss1998-unity-zarya-overview-12s.mp4",
+        "width": 1280,
+        "height": 720,
+        "fps": "24/1",
+        "duration": 12.0,
+        "sha256": "71835b6958ecc786141a87fbe37d35ee21dde62a7dffdcdacff9e64de5b1f60e"
+      },
+      {
+        "file": "v6-international/iss1998-zarya-capture-12s.mp4",
+        "width": 1280,
+        "height": 720,
+        "fps": "24/1",
+        "duration": 12.0,
+        "sha256": "260133c360368dae0fbc17b82befa478b8c17fa75cc342c6944726d2f542c134"
+      },
+      {
+        "file": "v6-international/perseverance-descent-12s.mp4",
+        "width": 1280,
+        "height": 720,
+        "fps": "24/1",
+        "duration": 12.0,
+        "sha256": "a8fd16baf04eeb2784fd853c02f8712f6c91f92a3ad98b17a113271731a4337a"
+      },
+      {
+        "file": "v6-international/perseverance-descent-original.mp4",
+        "width": 1280,
+        "height": 720,
+        "fps": "30/1",
+        "duration": 205.035,
+        "sha256": "3db42b2bca35ac01cbd842c3ebce5f5e5399c5b82558a32421bdff4dd00b47b1"
+      },
+      {
+        "file": "v6-international/sts1-first-shuttle-launch-14s.mp4",
+        "width": 1280,
+        "height": 720,
+        "fps": "24/1",
+        "duration": 14.041667,
+        "sha256": "a68934cc573b6a502be1423ff39a28e69d09352bbebd1dc3bb14e7ad6e94b639"
+      },
+      {
+        "file": "v6-origins/apollo17-flyover-original.mp4",
+        "width": 1280,
+        "height": 720,
+        "fps": "30/1",
+        "duration": 42.0,
+        "sha256": "5764b4fa97b6163076c385816bb3bac7da00411aa18bab804be1bd8dfb05d1d0"
+      },
+      {
+        "file": "v6-origins/curiosity-site-to-mars-reversed-12s.mp4",
+        "width": 1280,
+        "height": 720,
+        "fps": "24/1",
+        "duration": 12.0,
+        "sha256": "4ce51e58779d906fdbdfca5933432a649d8f53a0d66f0d043f37d3efdb6246b7"
+      },
+      {
+        "file": "v6-origins/nightlights-nodates-original.mp4",
+        "width": 1920,
+        "height": 1080,
+        "fps": "60/1",
+        "duration": 59.85,
+        "sha256": "2296f6f44cf72959794e4a5f212fd98fb70b3ea5f447cb3b7549c43898d79aaa"
+      },
+      {
+        "file": "v6-origins/origins-continuous-65s.mp4",
+        "width": 1920,
+        "height": 1080,
+        "fps": "50/1",
+        "duration": 65.0,
+        "sha256": "845a7aa7c5f4b9d3f90d97b3d2e447bb8d6115d449edaaddfe631491130a5209"
+      },
+      {
+        "file": "v6-origins/solar-system-eic-original.mp4",
+        "width": 3840,
+        "height": 1080,
+        "fps": "60/1",
+        "duration": 20.016667,
+        "sha256": "2c705a7819d57e60baf5942d2537a64ebc9f8b55f593fedd3604720f05177872"
+      },
+      {
+        "file": "v7-deep-space/iss-sts119-original.ogv",
+        "width": 1280,
+        "height": 720,
+        "fps": "60000/1001",
+        "duration": 337.304,
+        "sha256": "b481c48b4249d91992a5bf968815d77ccb87ec89f1edea347760f0f4c8927bd8"
+      },
+      {
+        "file": "v7-deep-space/philae-dlr-original.webm",
+        "width": 1920,
+        "height": 1080,
+        "fps": "25/1",
+        "duration": 602.051,
+        "sha256": "3f337e567b8bd98d7d8b5d85a6e44036988bcc313293f37b228c70ceea3a82a7"
+      },
+      {
+        "file": "v7-deep-space/voyager-cme-original.mp4",
+        "width": 1280,
+        "height": 720,
+        "fps": "30/1",
+        "duration": 17.166667,
+        "sha256": "e54b72fc9c1d60a3e0b4b86cd78190dcac682e539c94c86ae2aab73c35479cb3"
+      },
+      {
+        "file": "v7-deep-space/voyager-heliosphere-pullout-original.mp4",
+        "width": 3840,
+        "height": 2160,
+        "fps": "24000/1001",
+        "duration": 13.388375,
+        "sha256": "6ddc0db1bc1b78ceed2ee7269ff12278766e7be2ee0b92e6adb821ea13e76cec"
+      },
+      {
+        "file": "v7-early-life/dinosaur-trex-original.mp4",
+        "width": 1920,
+        "height": 1080,
+        "fps": "30/1",
+        "duration": 10.133333,
+        "sha256": "04ff86c9c5b3754b32daa668f4e907ab06c16386add17de236e341fa09599b14"
+      },
+      {
+        "file": "v7-race-apollo/apollo11-broll-original.mp4",
+        "width": 1280,
+        "height": 594,
+        "fps": "30/1",
+        "duration": 2403.776,
+        "sha256": "ddd241f5a2a01fa2467992f2b2d8050d79107fb9b951cfdce146d798e6128f79"
+      },
+      {
+        "file": "v7-race-apollo/laika-vintage-space-original.mp4",
+        "width": 854,
+        "height": 480,
+        "fps": "2997/100",
+        "duration": 378.04,
+        "sha256": "f46732cc9a3918e57a2cd3da900b9f2ae2d9d6b7a173f349878b8689a8f16ef6"
+      },
+      {
+        "file": "v9-history/enterprise-flight-test-1977-nara.mp4",
+        "width": 1920,
+        "height": 1080,
+        "fps": "24/1",
+        "duration": 1267.416667,
+        "sha256": "56797e764afb63ba26261ed9f247923ad09ce1150941830531f7172997614f4a"
+      },
+      {
+        "file": "v9-history/rosetta-descent-2016.mov",
+        "width": 1920,
+        "height": 1080,
+        "fps": "25/1",
+        "duration": 72.92,
+        "sha256": "9f38cef6a64b4533c4d78aa9731e1a9f7a102bc1aba937294590188c3cf8c768"
+      },
+      {
+        "file": "v9-history/soyuz-tma22-nasa-hd-original.mov",
+        "width": 1280,
+        "height": 720,
+        "fps": "30000/1001",
+        "duration": 1157.421859,
+        "sha256": "1f5ac90b791643b7f5042639b1ca37b398aa55ac7384cfe3a20db4c027aa4ab9"
+      },
+      {
+        "file": "v9-history/sts135-final-landing-2011.mp4",
+        "width": 800,
+        "height": 450,
+        "fps": "24000/1001",
+        "duration": 154.195708,
+        "sha256": "01281e20ebe0ae2856a427364c193c4941e9a6dba813eea518a026c83612a611"
+      }
+    ],
+    "nativeSourceUpgrades": [
+      {
+        "shot": "humanity",
+        "replacedDerivative": "v6-origins/humanity-nightlights-9s.mp4",
+        "originalSource": "v6-origins/nightlights-nodates-original.mp4",
+        "sourceIn": 7.0,
+        "sourceLength": 9,
+        "crop": null
+      },
+      {
+        "shot": "falcon-return",
+        "replacedDerivative": "v6-falcon/falcon9-sentinel6-landing-12s.mp4",
+        "originalSource": "v6-falcon/falcon9-sentinel6-landing-original.webm",
+        "sourceIn": 7.0,
+        "sourceLength": 12,
+        "crop": null
+      },
+      {
+        "shot": "solar-system",
+        "replacedDerivative": "v6-origins/solar-system-pullout-crop-20s.mp4",
+        "originalSource": "v6-origins/solar-system-eic-original.mp4",
+        "sourceIn": 3,
+        "sourceLength": 17.0,
+        "crop": "crop=1920:1080:960:0"
+      },
+      {
+        "shot": "relic",
+        "replacedDerivative": "v6-origins/solar-system-pullout-crop-20s.mp4",
+        "originalSource": "v6-origins/solar-system-eic-original.mp4",
+        "sourceIn": 19,
+        "sourceLength": 1.0,
+        "crop": "crop=1920:1080:960:0"
+      },
+      {
+        "shot": "origins",
+        "replacedDerivative": "v6-origins/origins-continuous-65s.mp4",
+        "originalSources": [
+          {
+            "id": "big-bang",
+            "file": "cosmos/big-bang-1080-original.mov",
+            "in": 0,
+            "sourceLength": 13,
+            "frames": 650,
+            "crop": null,
+            "width": 1920,
+            "height": 1080,
+            "fps": "30000/1001",
+            "sha256": "1d1e9b54c4ee243798570e3b18dbe73cb2aacc2ef7119e62b8d39e14b180abec",
+            "outputDuration": 13.0
+          },
+          {
+            "id": "disk",
+            "file": "cosmos/Shot_09_Protoplanetary_Disk_4k.webm",
+            "in": 0,
+            "sourceLength": 19,
+            "frames": 950,
+            "crop": "crop=3840:2160:960:0",
+            "width": 5760,
+            "height": 2160,
+            "fps": "60/1",
+            "sha256": "a8daa4832e171e88a80568695bf166b22f05cf68452b563f309c517e77bc062e",
+            "outputDuration": 19.0
+          },
+          {
+            "id": "early-earth",
+            "file": "cosmos/early-earth-original.mov",
+            "in": 9,
+            "sourceLength": 10,
+            "frames": 500,
+            "crop": null,
+            "width": 1280,
+            "height": 720,
+            "fps": "2997/100",
+            "sha256": "fdc041899a2e7fb482f707251faa71b3d524e4e179b36ceff719cfa42741ba65",
+            "outputDuration": 10.0
+          },
+          {
+            "id": "bombardment",
+            "file": "cosmos/Shot_21_Protoplanet_Bombardment_4k.webm",
+            "in": 0.125,
+            "sourceLength": 7.75,
+            "frames": 388,
+            "crop": "crop=3840:2160:960:0",
+            "width": 5760,
+            "height": 2160,
+            "fps": "60/1",
+            "sha256": "f0827a14a2d79d30f68e8171c8870d296515f3a564542a8c6cc766bf2781b733",
+            "outputDuration": 7.76
+          },
+          {
+            "id": "lava",
+            "file": "cosmos/Shot_21pt2_Protoplanets_Surface_4k.webm",
+            "in": 0.125,
+            "sourceLength": 7.75,
+            "frames": 387,
+            "crop": "crop=3840:2160:960:0",
+            "width": 5760,
+            "height": 2160,
+            "fps": "60/1",
+            "sha256": "05c720d92b045a396117214f5289a8d88553f4dc26e494d4a4a90efd17a002b4",
+            "outputDuration": 7.74
+          },
+          {
+            "id": "oceans",
+            "file": "cosmos/earth-oceans-original.mp4",
+            "in": 3,
+            "sourceLength": 13,
+            "frames": 650,
+            "crop": "crop=1792:1008:64:0",
+            "width": 1920,
+            "height": 1080,
+            "fps": "30/1",
+            "sha256": "b47714f9783b9769490df772c1fa6179b0394ee5de0f015fc963db7345d20172",
+            "outputDuration": 13.0
+          }
+        ],
+        "nativeMasterSha256": "845a7aa7c5f4b9d3f90d97b3d2e447bb8d6115d449edaaddfe631491130a5209"
+      }
+    ],
+    "runtimeFallback": "HLS-only HD delivery; full-resolution review MP4s remain local because they exceed the static host per-file limit."
+  },
+  "narrationScriptSha256": "8d65f285cf15d504058fe8aabbca280d2b9c09f2e56dbb8007a49ae8793239b4"
+}

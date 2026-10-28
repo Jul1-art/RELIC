@@ -1,0 +1,131 @@
+{
+  "schema": "relic-film-chronology",
+  "version": 1,
+  "revision": "9.1-hd50",
+  "sourceRevision": "9.0-hd50",
+  "duration": 569,
+  "policy": "Order the historical events described by the film, rather than the filming or publication dates of illustrative archive material. Keep the existing events and bilingual narration; the closing legacy passage is an explicitly identified epilogue.",
+  "blocks": [
+    {
+      "id": "origins-to-apollo",
+      "sourceStart": 0,
+      "sourceEnd": 259,
+      "start": 0,
+      "end": 259
+    },
+    {
+      "id": "enterprise-1977",
+      "sourceStart": 275,
+      "sourceEnd": 283,
+      "start": 259,
+      "end": 267
+    },
+    {
+      "id": "voyager-1977",
+      "sourceStart": 259,
+      "sourceEnd": 275,
+      "start": 267,
+      "end": 283
+    },
+    {
+      "id": "shuttle-to-rosetta",
+      "sourceStart": 283,
+      "sourceEnd": 437,
+      "start": 283,
+      "end": 437
+    },
+    {
+      "id": "reusable-launchers-2019-2020",
+      "sourceStart": 469,
+      "sourceEnd": 507,
+      "start": 437,
+      "end": 475
+    },
+    {
+      "id": "perseverance-and-webb-2021",
+      "sourceStart": 437,
+      "sourceEnd": 469,
+      "start": 475,
+      "end": 507
+    },
+    {
+      "id": "legacy-epilogue",
+      "sourceStart": 507,
+      "sourceEnd": 569,
+      "start": 507,
+      "end": 569
+    }
+  ],
+  "events": [
+    {
+      "shot": "shuttle-carrier",
+      "date": "1977-02-18",
+      "event": "Beginning of Enterprise captive flight tests on the Shuttle Carrier Aircraft",
+      "context": "The selected 1977 carrier footage illustrates the atmospheric test campaign. Enterprise's first free flight followed on 12 August 1977; it was not an orbital flight.",
+      "source": "https://www.nasa.gov/wp-content/uploads/2023/04/1977.pdf"
+    },
+    {
+      "shot": "voyager",
+      "date": "1977-08-20",
+      "event": "Voyager 2 launches, followed by Voyager 1 on 5 September 1977",
+      "source": "https://science.nasa.gov/specials/apps/voyager-vital-signs/table/"
+    },
+    {
+      "shot": "falcon-launch",
+      "date": "2019-06-25",
+      "event": "Falcon Heavy launches the STP-2 mission",
+      "context": "The paired booster-return shot belongs to this same mission; this is not the first Falcon booster landing.",
+      "source": "https://www.nasa.gov/news-release/nasa-technology-missions-launch-on-spacex-falcon-heavy/"
+    },
+    {
+      "shot": "falcon-return",
+      "date": "2020-11-21",
+      "event": "Falcon 9 launches Sentinel-6 Michael Freilich and returns its first stage",
+      "source": "https://science.nasa.gov/blogs/sentinel-6/2020/11/21/sentinel-6-michael-freilich-satellite-launches/"
+    },
+    {
+      "shot": "mars-approach",
+      "date": "2021-02-18",
+      "event": "Perseverance lands on Mars",
+      "source": "https://www.jpl.nasa.gov/news/touchdown-nasas-mars-perseverance-rover-safely-lands-on-red-planet/"
+    },
+    {
+      "shot": "webb",
+      "date": "2021-12-25",
+      "event": "James Webb Space Telescope launches on Ariane 5",
+      "source": "https://science.nasa.gov/mission/webb/launch/"
+    }
+  ],
+  "archiveContext": {
+    "von-braun": {
+      "eventDate": "1945-09",
+      "archiveYear": 1962,
+      "context": "The narration describes von Braun's arrival in the United States after the war, in September 1945. The moving 1962 portrait illustrates that career; its archive date does not move the postwar account after Sputnik. Preserve the V2 reading pause and the von Braun clause at his first appearance.",
+      "source": "https://science.nasa.gov/earth/earth-observatory/wernher-von-braun/"
+    }
+  },
+  "epilogue": {
+    "start": 507,
+    "end": 569,
+    "firstShot": "lunar-orbiter",
+    "label": {
+      "en": "Epilogue — Traces of exploration",
+      "fr": "Épilogue — Les traces de l’exploration"
+    },
+    "context": "This present-tense legacy passage describes Apollo traces still on the Moon, Curiosity continuing to work and machines left behind. The dates of its archive images and visualizations are provenance, not new milestones following Webb's 2021 launch.",
+    "archiveExamples": [
+      {
+        "shot": "lunar-orbiter",
+        "published": "2018-03-23",
+        "context": "LRO-data visualization of the Apollo 17 landing site, not Apollo-era camera footage",
+        "source": "https://svs.gsfc.nasa.gov/4717/"
+      },
+      {
+        "shots": ["mars", "hardware"],
+        "missionLandingDate": "2012-08-06",
+        "context": "Curiosity imagery supports the existing statement that the rover continues to work; this passage does not retell its landing.",
+        "source": "https://www.jpl.nasa.gov/missions/mars-science-laboratory-curiosity-rover-msl/"
+      }
+    ]
+  }
+}

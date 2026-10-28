@@ -1,0 +1,5 @@
+# Preserve the exact bytes checked by the offline film manifest on Windows.
+*.json text eol=lf
+*.m3u8 text eol=lf
+*.m4s binary
+*.mp4 binary

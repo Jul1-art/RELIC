@@ -1,0 +1,4 @@
+# Optional production tools; the application server does not need these.
+av>=19,<20
+imageio-ffmpeg>=0.6,<0.7
+numpy>=1.26,<3
