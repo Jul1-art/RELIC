@@ -23,3 +23,7 @@ html[data-relic-film=active] .solar-scale-note{visibility:hidden}
 @media(max-width:700px) and (min-height:551px){
  body.atlas-page.has-action-rail .planet-dashboard .pd-inspector{inset:auto 10px calc(80px + env(safe-area-inset-bottom)) 10px!important;height:min(44dvh,400px)!important;max-height:44dvh!important}
 }
+
+.comet-observation{margin:18px 0 22px}.comet-observation img{display:block;width:100%;height:auto;border-radius:10px;background:#050505}.comet-observation figcaption{margin-top:8px;color:var(--rail-muted,#aaa);font-size:11px;line-height:1.6}.comet-observation small{display:block;margin-top:8px;color:var(--rail-muted,#999);font-size:8px;line-height:1.5}.pd-world-disc[data-world="67p"]{background:radial-gradient(ellipse at 30% 26%,#bcb5a7,#5e5a52 58%,#161616)!important;border-radius:44% 38% 46% 33%!important}
+
+.solar-inspector[hidden]{display:none!important}

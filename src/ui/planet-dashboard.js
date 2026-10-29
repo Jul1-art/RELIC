@@ -4,10 +4,10 @@ import { parseCoordinateQuery } from '../search/coordinateParser.js';
 import { searchPlaces } from '../search/place-search.js';
 import { navigateTo } from './navigation.js';
 
-const BODIES = ['overview','sun','mercury','venus','earth','moon','mars','jupiter','saturn','uranus','neptune'];
+const BODIES = ['overview','sun','mercury','venus','earth','moon','mars','jupiter','saturn','uranus','neptune','67p'];
 const NAMES = {
-  en:{overview:'Solar system',sun:'Sun',mercury:'Mercury',venus:'Venus',earth:'Earth',moon:'Moon',mars:'Mars',jupiter:'Jupiter',saturn:'Saturn',uranus:'Uranus',neptune:'Neptune'},
-  fr:{overview:'Système solaire',sun:'Soleil',mercury:'Mercure',venus:'Vénus',earth:'Terre',moon:'Lune',mars:'Mars',jupiter:'Jupiter',saturn:'Saturne',uranus:'Uranus',neptune:'Neptune'},
+  en:{overview:'Solar system',sun:'Sun',mercury:'Mercury',venus:'Venus',earth:'Earth',moon:'Moon',mars:'Mars',jupiter:'Jupiter',saturn:'Saturn',uranus:'Uranus',neptune:'Neptune','67p':'67P · Rosetta'},
+  fr:{overview:'Système solaire',sun:'Soleil',mercury:'Mercure',venus:'Vénus',earth:'Terre',moon:'Lune',mars:'Mars',jupiter:'Jupiter',saturn:'Saturne',uranus:'Uranus',neptune:'Neptune','67p':'67P · Rosetta'},
 };
 let instance;
 const language = () => getLanguage() === 'fr' ? 'fr' : 'en';

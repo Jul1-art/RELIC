@@ -1,0 +1,74 @@
+{
+  "schema": "relic.comet-provenance.v1",
+  "checkedOn": "2026-10-29",
+  "shape": {
+    "file": "assets/comets/67p/shape-shap5-24k.obj",
+    "source": "https://naif.jpl.nasa.gov/pub/naif/ROSETTA/kernels/dsk/ROS_CG_K024_OSPCLPS_N_V2.OBJ",
+    "sourceDocumentation": "https://naif.jpl.nasa.gov/pub/naif/ROSETTA/kernels/dsk/ROS_CG_K006_OSPCLPS_N_V2.BDS",
+    "dataset": "RO-C-MULTI-5-67P-SHAPE-V2.0 / SPC SHAP5",
+    "frame": "67P/C-G_CK / CHEOPS_REF_FRAME_V1",
+    "units": "km",
+    "credit": "ESA/Rosetta/OSIRIS, LAM/PSI; NASA PDS / ESA PSA; NAIF OBJ conversion",
+    "processing": "Unmodified scientific mesh, normals calculated at runtime. Global topography is reduced to about 24,000 facets; no photographed surface texture is claimed.",
+    "license": "Scientific archive data; original archive credit and citation retained.",
+    "sha256": "37b86933c970f1c4180f8d6eda817e8cffbae61a0126baf41d68f826bcc63d39"
+  },
+  "landings": {
+    "philae": {
+      "site": "Abydos",
+      "frame": "67P/C-G_CK",
+      "positionKm": [
+        2.4473,
+        -0.0627,
+        -0.3486
+      ],
+      "source": "https://naif.jpl.nasa.gov/pub/naif/ROSETTA/kernels/spk/SPICE_PHILAE_CFF_SONC_V2_0.BSP",
+      "status": "Final location from SONC-FD, distributed by ESA SPICE Service 2017-09-06. The kernel does not supply a numerical uncertainty.",
+      "sourceRole": "Operational final position; no source accuracy inferred from decimal places.",
+      "longitudeDeg": 358.5323991042566,
+      "latitudeDeg": -8.104205672184966,
+      "angularConvention": "Planetocentric latitude and east-positive longitude, calculated from the source Cartesian coordinates."
+    },
+    "rosetta": {
+      "site": "Sais",
+      "frame": "67P/C-G_CK",
+      "positionKm": [
+        1.68483811,
+        0.363154163,
+        1.06380705
+      ],
+      "source": "https://naif.jpl.nasa.gov/pub/naif/ROSETTA/kernels/spk/ROS_ORBITER_EXTENSION_V2.BSP",
+      "status": "Fixed location from the last state of RORB_DV_257_02_______00344.BSP, ESA SPICE Service 2017-03-29. No post-impact image or surveyed wreck attitude exists.",
+      "sourceRole": "Reconstructed impact location, not confirmation of the present shape or attitude of the wreck.",
+      "longitudeDeg": 12.163584690923358,
+      "latitudeDeg": 31.683931461747196,
+      "angularConvention": "Planetocentric latitude and east-positive longitude, calculated from the source Cartesian coordinates."
+    }
+  },
+  "orientationPolicy": "The comet is shown in a fixed body-frame reference pose. Its heliocentric position is date-dependent. Its post-mission spin phase and the current attitudes of the hardware are not claimed to be known.",
+  "displayPolicy": "Hardware schematics and markers are enlarged. Exact source landing coordinates are retained; the reduced global mesh does not resolve the local landing terrain.",
+  "images": [
+    {
+      "id": "philae",
+      "file": "assets/comets/67p/philae-observed.jpg",
+      "url": "https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2016/09/philae_found/16114811-1-eng-GB/Philae_found_pillars.jpg",
+      "sourcePage": "https://www.esa.int/ESA_Multimedia/Images/2016/09/Philae_found",
+      "credit": "ESA/Rosetta/MPS for OSIRIS Team MPS/UPD/LAM/IAA/SSO/INTA/UPM/DASP/IDA",
+      "license": "ESA Standard Licence",
+      "licenseUrl": "https://www.esa.int/ESA_Multimedia/Terms_and_conditions_of_use_of_images_and_videos_available_on_the_esa_website",
+      "sha256": "a385e9363e1abf7b10ce59efc817152dbecf6a34c2820d82c653ac94c5ac787d",
+      "context": "Actual OSIRIS discovery image of Philae, acquired 2 September 2016."
+    },
+    {
+      "id": "rosetta",
+      "file": "assets/comets/67p/rosetta-observed.jpg",
+      "url": "https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2017/09/rosetta_s_last_images_in_context/17176227-1-eng-GB/Rosetta_s_last_images_in_context_pillars.jpg",
+      "sourcePage": "https://www.esa.int/ESA_Multimedia/Images/2017/09/Rosetta_s_last_images_in_context",
+      "credit": "ESA/Rosetta/MPS for OSIRIS Team MPS/UPD/LAM/IAA/SSO/INTA/UPM/DASP/IDA",
+      "license": "ESA Standard Licence",
+      "licenseUrl": "https://www.esa.int/ESA_Multimedia/Terms_and_conditions_of_use_of_images_and_videos_available_on_the_esa_website",
+      "sha256": "29e91f5a9940cbbde1125c7d3b88a81d45d8c81bec1a2b54e31de76cb6d3ed0b",
+      "context": "Actual OSIRIS images of Rosetta's descent site; the wreck itself has never been imaged after impact."
+    }
+  ]
+}

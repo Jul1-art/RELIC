@@ -1,7 +1,7 @@
 /* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'solar-natural-20261029-public';
+const VERSION = 'solar-lighting-67p-20261029-public';
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
 const APP_PREFIX = `relic-atlas-${encodeURIComponent(SCOPE.pathname)}-`;
@@ -14,7 +14,7 @@ const MAX_ASSET_BYTES = 16 * 1024 * 1024;
 const FETCH_CONCURRENCY = 3;
 const EXCLUDED_PATH = /\/(?:api|auth|_auth|oauth|login|logout|signin|signout|\.netlify)(?:\/|$)/i;
 const PRIVATE_QUERY = /^(?:access[_-]?token|api[_-]?key|token|key|authorization|auth|signature|secret|password)$/i;
-const STATIC = /\.(?:html|css|js|mjs|json|webmanifest|jpe?g|png|svg|webp|avif|woff2?|wasm)$/i;
+const STATIC = /\.(?:html|css|js|mjs|json|obj|webmanifest|jpe?g|png|svg|webp|avif|woff2?|wasm)$/i;
 
 // First install warms only navigation documents and install identity. The
 // already-open page continues loading its own resources normally, without a
@@ -29,6 +29,9 @@ const CORE = [
 const OFFLINE_CORE = [
   ...CORE,
   'src/ui/api-settings.js', 'src/ui/api-settings.css',
+  'src/atlas/comet-67p.js','src/atlas/comet-ephemeris.js','src/atlas/comet-inspector.js','src/atlas/comet-67p.css',
+  'assets/comets/67p/ephemeris.json','assets/comets/67p/provenance.json','assets/comets/67p/shape-shap5-24k.obj','assets/comets/67p/philae-observed.jpg','assets/comets/67p/rosetta-observed.jpg',
+  'src/atlas/moon-visibility.js','src/atlas/orbital-navigation.js','src/atlas/orbit-directions.js','src/atlas/solar-illumination.js','src/atlas/body-orientation-data.js',
   'src/atlas/natural-system.js','src/atlas/natural-system.css','src/atlas/moon-data.js','src/atlas/small-body-belts.js','src/atlas/zoom-focus.js','src/atlas/solar-inspector.js','src/atlas/solar-exploration.css',
   'assets/data/natural-satellites.json','assets/moons/texture-catalog.json','assets/moons/moon-lroc-2k.webp',
   'assets/moons/dione.webp','assets/moons/rhea.webp','assets/moons/iapetus.webp','assets/moons/tethys.webp','assets/moons/mimas.webp','assets/moons/oberon.webp','assets/moons/titania.webp','assets/moons/ariel.webp','assets/moons/umbriel.webp','assets/moons/miranda.webp',

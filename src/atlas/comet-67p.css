@@ -1,0 +1,5 @@
+.comet-label-layer{position:absolute;inset:0;z-index:7;pointer-events:none;overflow:hidden}
+.comet-site-label{position:absolute;left:0;top:0;pointer-events:auto;min-height:32px;padding:6px 9px;border:1px solid #dfbd7155;border-radius:8px;background:#171511d9;color:#f4e6c8;font:11px/18px system-ui;white-space:nowrap;cursor:pointer}
+.comet-site-label:hover,.comet-site-label:focus-visible{border-color:#edcc82;background:#262015}
+.comet-site-label[hidden]{display:none!important}
+html[data-relic-film=active] .comet-label-layer{visibility:hidden}

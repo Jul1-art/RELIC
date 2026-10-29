@@ -92,6 +92,17 @@ export async function openSources(trigger) {
     ? 'Textures des principales lunes : NASA/VTAD (modèles 3D officiels), et NASA/LROC pour la Lune. Les autres corps utilisent des formes illustratives, avec les dimensions inconnues explicitement indiquées.'
     : 'Major-moon textures: NASA/VTAD official 3D models, and NASA/LROC for the Moon. Other bodies use illustrative shapes, with unmeasured dimensions explicitly identified.');
   sourceLink(content, 'NASA · 3D resources', 'https://science.nasa.gov/resources/3d-resources/');
+  heading(content, french() ? '67P, Philae et Rosetta' : '67P, Philae and Rosetta');
+  paragraph(content, french()
+    ? 'La trajectoire héliocentrique de 67P utilise les états JPL Horizons de 2025 à 2033, interpolés avec leurs vitesses. Le noyau utilise le maillage mesuré OSIRIS SHAP5. Les sites finaux de Philae et Rosetta sont placés avec les coordonnées des noyaux ESA SPICE, dans le même repère Cheops. Les appareils sont des schémas agrandis ; leur attitude actuelle et la phase de rotation actuelle de la comète ne sont pas connues.'
+    : '67P’s heliocentric trajectory uses JPL Horizons states from 2025 to 2033, interpolated with their velocities. The nucleus uses the measured OSIRIS SHAP5 mesh. Philae and Rosetta’s final sites use ESA SPICE kernel coordinates in the same Cheops frame. Hardware models are enlarged schematics; present hardware attitudes and the comet’s present spin phase are unknown.');
+  sourceLink(content, '67P · provenance et crédits / provenance and credits', new URL('../../assets/comets/67p/provenance.json', import.meta.url).href);
+  sourceLink(content, 'NASA/JPL Horizons', 'https://ssd.jpl.nasa.gov/horizons/');
+  sourceLink(content, 'ESA / NAIF · Rosetta scientific archive', 'https://naif.jpl.nasa.gov/pub/naif/ROSETTA/');
+  paragraph(content, french()
+    ? 'L’éclairage suit la direction du Soleil à la date actuelle. Les huit planètes utilisent les orientations cartographiques IAU du noyau NAIF PCK. Les textures sont des images d’archives ; elles ne donnent pas la météo actuelle. Les chevrons indiquent le sens orbital, sans accélérer les positions physiques. Une faible lumière nocturne facilite la lecture ; les éclipses et ombres portées des anneaux ne sont pas simulées.'
+    : 'Illumination follows the Sun’s direction at the current date. The eight planets use IAU cartographic orientations from the NAIF PCK kernel. Textures are archival imagery, not current weather. Chevrons show orbital direction without speeding up physical positions. Faint night-side fill aids readability; eclipses and cast ring shadows are not simulated.');
+  sourceLink(content, 'NASA/NAIF · IAU planetary orientation', 'https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc');
   heading(content, french() ? 'Atlas et données' : 'Atlas and data');
   const sources = document.createElement('div'); sources.className = 'relic-sources-links'; content.append(sources);
   for (const [label, url] of [
