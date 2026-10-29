@@ -25,6 +25,7 @@ import requests
 
 from .live_sources import horizons, noaa_swpc
 from .live_sources.cache import LiveCache
+from .live_sources.planetary_ephemeris import PlanetaryEphemeris
 from .earth_surface import correct_runways
 from .place_search import search_places
 from .planetary_patches import JEZERO, TYCHO, blend_patch, tycho_image_tile
@@ -42,6 +43,7 @@ TYCHO_IMAGE_TILES.mkdir(exist_ok=True)
 EARTH_TILES = CACHE / "height-tiles-earth-v4"
 EARTH_TILES.mkdir(exist_ok=True)
 LIVE = LiveCache(CACHE / "live-v1")
+PLANETARY_EPHEMERIS = PlanetaryEphemeris(LIVE)
 SIZE = 65
 MOLA128 = "https://pds-geosciences.wustl.edu/mgs/urn-nasa-pds-mgs_mola_topography_derived/meg128"
 SRTM = "https://step.esa.int/auxdata/dem/SRTMGL1"
@@ -420,6 +422,15 @@ class Handler(SimpleHTTPRequestHandler):
             return
         if route == "/api/cesium-token":
             return self.send_error(410, "Configure your own browser token in API settings")
+        if route == "/api/ephemeris/planets":
+            raw = json.dumps(PLANETARY_EPHEMERIS.snapshot(), ensure_ascii=False).encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.send_header("Content-Length", str(len(raw)))
+            self.send_header("Cache-Control", "private, max-age=60")
+            self.end_headers()
+            self.wfile.write(raw)
+            return
         if route == "/api/live/atlas":
             with ThreadPoolExecutor(max_workers=2) as executor:
                 wind_task = executor.submit(LIVE.get, "noaa-wind", 120, noaa_swpc.fetch)

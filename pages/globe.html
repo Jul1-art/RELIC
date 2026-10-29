@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Detailed planetary globe — RELIC</title>
+  <link rel="stylesheet" href="../vendor/cesium/Widgets/widgets.css">
+  <link rel="stylesheet" href="../src/worlds/embedded-globe.css?v=15">
+  <script>window.CESIUM_BASE_URL=new URL('../vendor/cesium/',document.baseURI).href;</script>
+</head>
+<body>
+  <main id="globe" aria-label="Detailed 3D planetary globe"></main>
+  <footer id="credits"><span id="source-credit"></span><div id="cesium-credit"></div></footer>
+  <div id="failure" role="status" hidden></div>
+  <script type="module" src="../src/worlds/embedded-globe.js?v=15"></script>
+</body>
+</html>

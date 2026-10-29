@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import math
+import csv
+import io
 import os
 import re
 import threading
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 import requests
 
@@ -20,6 +22,53 @@ TARGETS = {
 }
 REQUEST_LOCK = threading.Lock()
 NUMBER = r"[+-]?\d+(?:\.\d+)?(?:E[+-]?\d+)?"
+
+
+def fetch_window(body: str, at: datetime | None = None) -> dict:
+    """Five UTC states around now for interpolation without browser NASA calls.
+
+    Uses the same process-wide lock as existing requests, as JPL requires one
+    API request at a time. A public project issue URL is a product contact; no
+    browser token or personal e-mail address is needed.
+    """
+    if body not in TARGETS:
+        raise ValueError("Unknown planet")
+    contact = os.environ.get("NASA_ATLAS_CONTACT", "https://github.com/Jul1-art/RELIC/issues").strip()
+    if not re.fullmatch(r"(?:[^@\s]+@[^@\s]+\.[^@\s]+|https://\S+)", contact):
+        raise ValueError("Invalid product contact")
+    at = (at or datetime.now(timezone.utc)).astimezone(timezone.utc).replace(second=0, microsecond=0)
+    params = {"format": "json", "COMMAND": f"'{TARGETS[body]}'", "OBJ_DATA": "NO",
+              "MAKE_EPHEM": "YES", "EPHEM_TYPE": "VECTORS", "CENTER": "'500@10'",
+              "OUT_UNITS": "'KM-D'", "TIME_TYPE": "UT", "REF_PLANE": "ECLIPTIC",
+              "REF_SYSTEM": "ICRF", "VEC_CORR": "NONE", "CSV_FORMAT": "YES", "VEC_TABLE": "2",
+              "START_TIME": "'" + (at - timedelta(hours=1)).strftime("%Y-%m-%d %H:%M") + "'",
+              "STOP_TIME": "'" + (at + timedelta(hours=1)).strftime("%Y-%m-%d %H:%M") + "'",
+              "STEP_SIZE": "'30 m'"}
+    with REQUEST_LOCK:
+        response = requests.get(GET_URL, params=params, headers={"User-Agent": f"RELIC-Atlas/3.0 (contact: {contact})"}, timeout=15)
+        response.raise_for_status()
+        payload = response.json()
+    if payload.get("signature", {}).get("version") not in ("1.2", "1.3"):
+        raise ValueError("Review changed Horizons API version")
+    result = payload.get("result", "")
+    match = re.search(r"\$\$SOE\s*\n(.*?)\n\$\$EOE", result, re.S)
+    if not match:
+        raise ValueError("Horizons returned no UTC state window")
+    states = []
+    for row in csv.reader(io.StringIO(match.group(1))):
+        values = [float(row[0]), *[float(value) for value in row[2:8]]]
+        if len(values) != 7 or not all(math.isfinite(value) for value in values):
+            raise ValueError("Invalid Horizons state window")
+        if states and values[0] <= states[-1][0]:
+            raise ValueError("Unordered Horizons state window")
+        states.append(values)
+    if len(states) < 2:
+        raise ValueError("Incomplete Horizons state window")
+    solution = re.search(r"Target body name:\s*(.+)", result)
+    return {"body": body, "target": TARGETS[body], "states": states,
+            "solution": solution.group(1).strip() if solution else "NASA/JPL Horizons",
+            "timeScale": "UTC", "center": "500@10", "correction": "geometric / NONE",
+            "sourceUrl": DOCUMENTATION}
 
 
 def _parse(payload: dict, body: str, at: datetime, endpoint: str) -> dict:

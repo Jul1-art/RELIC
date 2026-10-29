@@ -29,15 +29,15 @@ export function createSimulationControls({host,clock,getLanguage,onChange=()=>{}
     const state=clock.state,key=[getLanguage(),Math.floor(state.time/1000),state.rate,state.running,state.inspection,state.atEnd].join(':');
     if(!force&&key===lastKey)return;lastKey=key;
     heading.textContent=fr()?'Temps et mouvement':'Time and motion';
-    const rates=fr()?['1 seconde / s','1 heure / s','1 jour / s','1 semaine / s','1 mois / s']:['1 second / s','1 hour / s','1 day / s','1 week / s','1 month / s'];
+    const rates=fr()?['Temps réel · 1×','1 heure / s · 3 600×','1 jour / s · 86 400×','1 semaine / s · 604 800×','1 mois / s · 2 592 000×']:['Real time · 1×','1 hour / s · 3,600×','1 day / s · 86,400×','1 week / s · 604,800×','1 month / s · 2,592,000×'];
     [...speed.options].forEach((option,index)=>option.textContent=rates[index]);speed.value=String(state.rate);speed.disabled=state.inspection;
     speed.setAttribute('aria-label',fr()?'Vitesse de la simulation':'Simulation speed');
     const label=state.inspection?(fr()?'Vue figée':'View held still'):state.running?(fr()?'Mettre en pause':'Pause animation'):(fr()?'Reprendre l’animation':'Resume animation');
     const glyph=state.inspection?'lock':state.running?'pause':'play';
     toggle.innerHTML=icon(glyph);toggle.disabled=state.inspection;toggle.setAttribute('aria-label',label);toggle.title=label;
     railIcon.innerHTML=icon(glyph);railLabel.textContent=label;railToggle.disabled=state.inspection;railToggle.setAttribute('aria-label',label);railToggle.title=label;
-    const date=clock.date;stamp.dateTime=date.toISOString();stamp.textContent=date.toLocaleString(fr()?'fr-FR':'en-GB',{dateStyle:'medium',timeStyle:'medium'});
-    status.textContent=state.inspection?(fr()?'Position et rotation figées pendant l’exploration.':'Position and rotation stay fixed while exploring.'):state.atEnd?(fr()?'Fin de la plage disponible. Revenez à maintenant.':'End of the available date range. Return to now.'):state.running?(fr()?'Simulation en cours':'Simulation running'):(fr()?'Simulation en pause':'Simulation paused');
+    const date=clock.date;stamp.dateTime=date.toISOString();stamp.textContent=date.toLocaleString(fr()?'fr-FR':'en-GB',{dateStyle:'medium',timeStyle:'medium',timeZone:'UTC'})+' UTC';
+    status.textContent=state.inspection?(fr()?'Position et rotation figées pendant l’exploration.':'Position and rotation stay fixed while exploring.'):state.atEnd?(fr()?'Fin de la plage disponible. Revenez à maintenant.':'End of the available date range. Return to now.'):state.running?(state.live?(fr()?'Temps réel · vitesse physique réelle. Le mouvement orbital est très lent à cette échelle.':'Real time · actual physical speed. Orbital motion is very slow at this scale.'):(fr()?'Simulation accélérée · date affichée ci-dessus.':'Accelerated simulation · date shown above.')):(fr()?'Simulation en pause':'Simulation paused');
     now.textContent=fr()?'Maintenant · temps réel':'Now · real time';now.disabled=state.inspection;
     overview.textContent=fr()?'Animer le Système solaire':'Animate the solar system';overview.hidden=!state.inspection;
     document.body.dataset.simulationDate=date.toISOString();document.body.dataset.simulationRate=String(state.rate);document.body.dataset.simulationState=state.inspection?'inspection':state.running?'playing':'paused';

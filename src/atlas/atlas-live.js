@@ -63,7 +63,7 @@ function storedWind() {
 function saveWind(value) { try { localStorage.setItem(WIND_STORAGE, JSON.stringify(value)); } catch {} }
 function broadcast() { for (const render of subscribers) render(); }
 function initialData() { return { positions:approximatePositions(), solarWind:storedWind() }; }
-function validPosition(value) { return value && ['current','stale','estimated'].includes(value.state) && Number.isFinite(value.distanceFromSunKm) && value.distanceFromSunKm>0 && Number.isFinite(value.speedKmS) && value.speedKmS>0; }
+function validPosition(value) { return value && ['current','stale','estimated','ephemeris'].includes(value.state) && Number.isFinite(value.distanceFromSunKm) && value.distanceFromSunKm>0 && Number.isFinite(value.speedKmS) && value.speedKmS>0; }
 
 export async function refreshAtlasData({ force = false } = {}) {
   if (request) return request;
@@ -98,7 +98,7 @@ export async function refreshAtlasData({ force = false } = {}) {
   return request;
 }
 
-export function startLiveData(element,getBody,onPositions=()=>{},{getModelDate}={}) {
+export function startLiveData(element,getBody,onPositions=()=>{},{getModelDate,getModelPosition}={}) {
   if (!element) return;
   const title = document.createElement('div'); title.className = 'live-title';
   const titleText = document.createElement('strong'); title.append(titleText);
@@ -126,7 +126,7 @@ export function startLiveData(element,getBody,onPositions=()=>{},{getModelDate}=
   function render() {
     if (disposed) return;
     const t = LABELS[language]; titleText.textContent = t.title; body.replaceChildren();
-    const id=getBody(),position=getModelDate?approximatePositions(getModelDate())[id]:sharedData.positions?.[id];
+    const id=getBody(),position=getModelPosition?getModelPosition(id,getModelDate?.()||new Date()):getModelDate?approximatePositions(getModelDate())[id]:sharedData.positions?.[id];
     if (validPosition(position)) {
       const estimated = position.state === 'estimated';
       const formatter = new Intl.NumberFormat(language === 'fr' ? 'fr-FR' : 'en-GB', { maximumFractionDigits:0 });

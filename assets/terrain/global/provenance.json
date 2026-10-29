@@ -1,0 +1,36 @@
+{
+  "moon": {
+    "file": "moon-8ppd.u16.gz",
+    "width": 2880,
+    "height": 1440,
+    "west": -180,
+    "scale": 0.5,
+    "offset": -10000,
+    "referenceRadiusMeters": 1737400,
+    "spacingDegrees": 0.125,
+    "credit": "NASA/GSFC \u00b7 LRO LOLA \u00b7 reduced to 8 pixels/degree",
+    "sourceUrl": "https://svs.gsfc.nasa.gov/4720/",
+    "nativeEquatorialSpacingMeters": 3790,
+    "inputUrl": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/ldem_16_uint.tif",
+    "inputSha256": "45a2b32d56e81ed30db07fead8abc842b249b6511219d9ca2c53f81bc2dc5d62",
+    "outputSha256": "b29a04dc207edb638ee653d9a5a2deecabee1002dbe2a05c098525f4d73512c3",
+    "format": "gzip-compressed little-endian uint16, north-to-south pixel centres; longitude wraps"
+  },
+  "mars": {
+    "file": "mars-8ppd.u16.gz",
+    "width": 2880,
+    "height": 1440,
+    "west": 0,
+    "scale": 1,
+    "offset": -32768,
+    "referenceRadiusMeters": 3396000,
+    "spacingDegrees": 0.125,
+    "credit": "NASA/MGS \u00b7 MOLA radial shape \u00b7 reduced to 8 pixels/degree",
+    "sourceUrl": "https://pds-geosciences.wustl.edu/missions/mgs/megdr.html",
+    "nativeEquatorialSpacingMeters": 7409,
+    "inputUrl": "https://pds-geosciences.wustl.edu/mgs/urn-nasa-pds-mgs_mola_topography_derived/meg016/megr90n000eb.img",
+    "inputSha256": "976cb28c7a6561d1c3f7b4281e035e0c1dd02d387375e4a4aba5010b7064a8d0",
+    "outputSha256": "fe8e2b53a4dd8b35d33cedf247ba0bb4cc39df904cfb0cda007a428f37307f0f",
+    "format": "gzip-compressed little-endian uint16, north-to-south pixel centres; longitude wraps"
+  }
+}

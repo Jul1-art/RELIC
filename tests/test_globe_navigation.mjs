@@ -68,3 +68,72 @@ test('double-click navigation points at the clicked location and keeps the fligh
   const expected=new THREE.Vector3(surface.x,surface.y,surface.z).normalize();
   assert.ok(request.position.clone().normalize().distanceTo(expected)<1e-12);f.nav.dispose();
 });
+
+test('tilt uses a surface pivot and exposes an oblique horizon without moving the selected world',()=>{
+  const f=fixture(),initial=f.point(new THREE.Vector2());
+  assert.equal(f.nav.tilt(65),true);const tilted=f.point(new THREE.Vector2());
+  assert.ok(new THREE.Vector3(initial.x,initial.y,initial.z).distanceTo(new THREE.Vector3(tilted.x,tilted.y,tilted.z))<1e-10);
+  assert.ok(f.camera.position.y<-.5);assert.ok(Math.abs(f.nav.getViewState().tiltDeg-65)<1e-10);
+  assert.deepEqual(f.controls.target.toArray(),[0,0,0]);assert.deepEqual(f.mesh.position.toArray(),[0,0,0]);
+  assert.equal(f.nav.tilt(1000),true);assert.equal(f.nav.getViewState().tiltDeg,85);
+  f.nav.dispose();
+});
+
+test('heading rotation retains the same surface pivot and physical camera clearance',()=>{
+  const f=fixture();f.nav.tilt(55);const before=f.point(new THREE.Vector2()),altitude=f.camera.position.length()-1;
+  f.nav.turn(90);const after=f.point(new THREE.Vector2());
+  assert.ok(new THREE.Vector3(before.x,before.y,before.z).distanceTo(new THREE.Vector3(after.x,after.y,after.z))<1e-11);
+  assert.ok(Math.abs(f.nav.getViewState().headingDeg-90)<1e-10);assert.ok(Math.abs((f.camera.position.length()-1)-altitude)<1e-10);
+  f.nav.dispose();
+});
+
+test('tilted zoom respects one metre clearance and an idle oblique view has no camera or orientation drift',()=>{
+  const f=fixture();f.nav.tilt(80);
+  for(let i=0;i<120;i++)f.nav.zoom(.3);
+  assert.ok(f.camera.position.length()-1>=minimumGlobeAltitude(f.focus)-1e-13);
+  const position=f.camera.position.clone(),orientation=f.camera.quaternion.clone(),point=f.point(new THREE.Vector2());
+  for(let i=0;i<1000;i++){f.controls.update();f.nav.enforce();}
+  assert.equal(f.camera.position.distanceTo(position),0);assert.equal(f.camera.quaternion.angleTo(orientation),0);
+  assert.ok(f.point(new THREE.Vector2()));assert.ok(Number.isFinite(point.z));f.nav.dispose();
+});
+
+test('navigation pad moves the surface pivot, nadir preserves it and whole-globe reset frames safely',()=>{
+  const f=fixture();f.nav.zoom(.05);f.nav.tilt(60);const first=f.nav.getSurfaceCoordinates();
+  assert.equal(f.nav.move('up'),true);const moved=f.nav.getSurfaceCoordinates();assert.notEqual(moved.latitude,first.latitude);
+  assert.equal(f.nav.topDown(),true);const top=f.nav.getSurfaceCoordinates();
+  assert.ok(Math.abs(top.latitude-moved.latitude)<1e-10);assert.ok(Math.abs(top.longitude-moved.longitude)<1e-10);assert.equal(f.nav.getViewState().tiltDeg,0);
+  assert.equal(f.nav.resetView(),true);assert.ok(Math.abs(f.camera.position.length()-3.1)<1e-12);f.nav.dispose();
+});
+
+test('right drag changes both tilt and heading and releases the underlying controls cleanly',()=>{
+  const f=fixture();f.handlers.get('pointerdown')(f.event(480,320,{button:2}));
+  f.handlers.get('pointermove')(f.event(550,420,{button:2}));
+  const state=f.nav.getViewState();assert.ok(state.tiltDeg>10);assert.ok(state.headingDeg>300);assert.equal(f.controls.enabled,false);
+  f.handlers.get('pointerup')(f.event(550,420,{button:2}));assert.equal(f.controls.enabled,true);f.nav.dispose();
+});
+
+test('two-finger vertical motion tilts, twist turns, and pinch zooms without losing the globe',()=>{
+  const f=fixture(),touch=(x,y,id)=>f.event(x,y,{pointerType:'touch',pointerId:id});
+  f.handlers.get('pointerdown')(touch(450,320,1));f.handlers.get('pointerdown')(touch(510,320,2));
+  f.handlers.get('pointermove')(touch(420,390,1));f.handlers.get('pointermove')(touch(550,420,2));
+  const state=f.nav.getViewState();assert.ok(state.tiltDeg>5);assert.notEqual(state.headingDeg,0);assert.ok(f.camera.position.length()<3);
+  assert.ok(f.point(new THREE.Vector2()));f.handlers.get('pointerup')(touch(550,420,2));f.handlers.get('pointerup')(touch(420,390,1));assert.equal(f.controls.enabled,true);f.nav.dispose();
+});
+
+
+test('the vendored OrbitControls cannot introduce idle drift in a tilted surface view',async()=>{
+  const {readFile}=await import('node:fs/promises');
+  const controlsSource=(await readFile(new URL('../vendor/OrbitControls.js',import.meta.url),'utf8')).replace("from 'three'",`from '${new URL('../vendor/three.module.js',import.meta.url).href}'`);
+  const {OrbitControls}=await import(`data:text/javascript;base64,${Buffer.from(controlsSource).toString('base64')}`);
+  const camera=new THREE.PerspectiveCamera(40,1.5,.000001,10000);camera.position.set(0,0,3);camera.lookAt(0,0,0);
+  const doc={addEventListener(){},removeEventListener(){}},domElement={style:{},getRootNode:()=>doc,addEventListener(){},removeEventListener(){},getBoundingClientRect:()=>({left:0,top:0,width:960,height:640})};
+  const controls=new OrbitControls(camera,domElement);controls.enableDamping=false;controls.enableZoom=false;controls.maxDistance=1000;
+  const mesh=new THREE.Mesh(new THREE.SphereGeometry(1),new THREE.MeshBasicMaterial());mesh.updateMatrixWorld(true);
+  const focus={id:'earth',mesh,center:new THREE.Vector3(),radius:1,radiusKm:6371};
+  const nav=createGlobeNavigation({THREE,camera,controls,domElement,getFocus:()=>focus});nav.tilt(82);
+  for(let i=0;i<120;i++)nav.zoom(.4);
+  const position=camera.position.toArray(),quaternion=camera.quaternion.toArray();
+  for(let i=0;i<1000;i++){controls.update();nav.enforce();}
+  assert.deepEqual(camera.position.toArray(),position);assert.deepEqual(camera.quaternion.toArray(),quaternion);
+  assert.ok(camera.position.length()-1>=minimumGlobeAltitude(focus)-1e-12);nav.dispose();controls.dispose();
+});

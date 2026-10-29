@@ -31,7 +31,7 @@ export function createSolarInspector({host,getLanguage,getBody,getSystems,onSele
     }
     root.append(actions);
     const scale=document.createElement('p');scale.className='solar-model-note';
-    scale.textContent=fr()?'Vue solaire condensée. Dans chaque système de lunes, distances et inclinaisons utilisent les éléments moyens JPL. Les petits corps sont agrandis pour rester repérables.':'The solar overview uses condensed distances. Each moon system uses JPL mean orbital distances and inclinations. Small bodies are enlarged so they remain visible.';
+    scale.textContent=fr()?'Distances solaires proportionnelles ; corps agrandis pour rester repérables. Chaque système de lunes utilise sa propre échelle locale et les éléments orbitaux moyens JPL.':'Proportional solar distances; bodies enlarged for visibility. Each moon system uses its own local scale and JPL mean orbital elements.';
     root.append(scale);
     if(detail.modelNote){const p=document.createElement('p');p.className='solar-model-note';p.textContent=detail.modelNote;root.append(p);}
     const source=document.createElement('a');source.className='solar-source';source.href='https://ssd.jpl.nasa.gov/sats/elem/';source.target='_blank';source.rel='noopener noreferrer';source.textContent=fr()?'Éléments orbitaux · NASA/JPL':'Orbital elements · NASA/JPL';root.append(source);

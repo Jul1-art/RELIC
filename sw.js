@@ -1,7 +1,7 @@
 /* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'solar-simulation-20261029-public';
+const VERSION = 'solar-live-globes-20261029-v15-2-public';
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
 const APP_PREFIX = `relic-atlas-${encodeURIComponent(SCOPE.pathname)}-`;
@@ -14,7 +14,7 @@ const MAX_ASSET_BYTES = 16 * 1024 * 1024;
 const FETCH_CONCURRENCY = 3;
 const EXCLUDED_PATH = /\/(?:api|auth|_auth|oauth|login|logout|signin|signout|\.netlify)(?:\/|$)/i;
 const PRIVATE_QUERY = /^(?:access[_-]?token|api[_-]?key|token|key|authorization|auth|signature|secret|password)$/i;
-const STATIC = /\.(?:html|css|js|mjs|json|obj|webmanifest|jpe?g|png|svg|webp|avif|woff2?|wasm)$/i;
+const STATIC = /\.(?:html|css|js|mjs|json|obj|gz|webmanifest|jpe?g|png|svg|webp|avif|woff2?|wasm)$/i;
 
 // First install warms only navigation documents and install identity. The
 // already-open page continues loading its own resources normally, without a
@@ -29,6 +29,10 @@ const CORE = [
 const OFFLINE_CORE = [
   ...CORE,
   'src/ui/api-settings.js', 'src/ui/api-settings.css',
+  'pages/globe.html','src/atlas/detailed-globe.js','src/atlas/detailed-globe.css','src/atlas/globe-controls.js','src/atlas/globe-controls.css',
+  'src/worlds/embedded-globe.js','src/worlds/embedded-globe.css','src/worlds/global-terrain.js',
+  'src/atlas/solar-scale.js','src/atlas/planetary-ephemeris.js','assets/ephemeris/planets-horizons.json',
+  'assets/terrain/global/provenance.json','assets/terrain/global/moon-8ppd.u16.gz','assets/terrain/global/mars-8ppd.u16.gz',
   'src/atlas/simulation-clock.js','src/atlas/simulation-controls.js','src/atlas/simulation-controls.css','src/atlas/globe-navigation.js','src/atlas/surface-imagery.js','src/atlas/surface-tile-cache.js',
   'src/atlas/comet-67p.js','src/atlas/comet-ephemeris.js','src/atlas/comet-inspector.js','src/atlas/comet-67p.css',
   'assets/comets/67p/ephemeris.json','assets/comets/67p/provenance.json','assets/comets/67p/shape-shap5-24k.obj','assets/comets/67p/philae-observed.jpg','assets/comets/67p/rosetta-observed.jpg',

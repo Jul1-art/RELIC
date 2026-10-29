@@ -27,3 +27,10 @@ html[data-relic-film=active] .solar-scale-note{visibility:hidden}
 .comet-observation{margin:18px 0 22px}.comet-observation img{display:block;width:100%;height:auto;border-radius:10px;background:#050505}.comet-observation figcaption{margin-top:8px;color:var(--rail-muted,#aaa);font-size:11px;line-height:1.6}.comet-observation small{display:block;margin-top:8px;color:var(--rail-muted,#999);font-size:8px;line-height:1.5}.pd-world-disc[data-world="67p"]{background:radial-gradient(ellipse at 30% 26%,#bcb5a7,#5e5a52 58%,#161616)!important;border-radius:44% 38% 46% 33%!important}
 
 .solar-inspector[hidden]{display:none!important}
+
+/* A readable distance scale at the requested lower-right corner. Attribution
+   keeps its own reserved strip; the phone inspector and rail stay above it. */
+html body.atlas-page .solar-scale-note{left:auto!important;right:calc(16px + var(--globe-panel-width,0px));display:flex;flex-direction:column;align-items:flex-end;gap:4px;max-width:min(340px,calc(100% - 110px));padding:9px 11px;border-radius:9px;background:#080b12bf;color:#bec9d6;font-size:10px;line-height:1.45;text-align:right;font-variant-numeric:tabular-nums;pointer-events:auto}
+.solar-scale-description{max-width:100%}.solar-scale-value{color:#e8f1ff}.solar-scale-ruler{display:block;height:5px;border:1px solid #b6d3f0;border-top:0;min-width:1px}.solar-scale-note [hidden]{display:none!important}
+html[data-theme=day] body.atlas-page .solar-scale-note{background:#ffffffe0;color:#49586b}html[data-theme=day] .solar-scale-value{color:#243449}html[data-theme=day] .solar-scale-ruler{border-color:#354d69}
+@media(max-width:700px){html body.atlas-page .solar-scale-note{right:10px;max-width:calc(100% - 24px);padding:5px 8px;font-size:9px}}

@@ -1,0 +1,20 @@
+.globe-controls{padding:15px 0 16px;margin:10px 0 15px;border-top:1px solid var(--rail-line,#ffffff20);border-bottom:1px solid var(--rail-line,#ffffff20);color:inherit}
+.globe-controls[hidden]{display:none!important}
+.globe-source-status{margin:-5px 0 12px;font:10px/1.5 system-ui;color:var(--rail-muted,#aaa)}.globe-source-status[hidden]{display:none!important}
+.globe-controls h3{margin:0 0 13px;font:500 12px/1.5 system-ui;color:inherit}
+.globe-tilt-label{display:flex;justify-content:space-between;gap:10px;margin:0;font:11px/1.6 system-ui;color:var(--rail-muted,#aaa)}
+.globe-tilt-label output{font-variant-numeric:tabular-nums;color:inherit}
+.globe-controls input[type=range]{display:block;box-sizing:border-box;width:100%;height:34px;margin:0 0 7px;padding:0;accent-color:#5eaeff;cursor:pointer;background:transparent}
+.globe-navigation-row{display:flex;justify-content:space-between;align-items:center;gap:14px}
+.globe-navigation-pad{display:grid;grid-template:repeat(3,40px)/repeat(3,40px);gap:3px}
+.globe-navigation-aux{display:grid;grid-template:repeat(2,40px)/repeat(2,40px);gap:7px}
+.globe-controls button{display:grid;place-items:center;box-sizing:border-box;min-width:40px;width:40px;min-height:40px;height:40px;padding:9px;border:1px solid var(--rail-line,#ffffff20);border-radius:10px;background:var(--rail-hover,#ffffff05);color:inherit;font:11px/1.5 system-ui;cursor:pointer;touch-action:manipulation}
+.globe-controls button:hover{background:var(--rail-hover,#ffffff12);border-color:#5eaeff90}
+.globe-controls button:focus-visible,.globe-controls input:focus-visible{outline:2px solid #5eaeff;outline-offset:2px}
+.globe-controls button svg{display:block;width:19px;height:19px}
+.globe-controls .globe-move-up{grid-area:1/2}.globe-controls .globe-move-left{grid-area:2/1}.globe-controls .globe-move-right{grid-area:2/3}.globe-controls .globe-move-down{grid-area:3/2}.globe-controls .globe-nadir{grid-area:2/2}
+.globe-controls .globe-reset-view{display:flex;justify-content:center;gap:8px;width:100%;height:37px;min-height:37px;margin-top:12px;padding:8px 12px}
+.globe-controls-help{margin-top:11px;font:10px/1.65 system-ui;color:var(--rail-muted,#aaa)}
+.globe-controls-help summary{cursor:pointer;min-height:24px;padding:3px 0}
+.globe-controls-help p{margin:6px 0 0}
+@media(pointer:coarse){.globe-controls button{min-height:44px;height:44px;min-width:44px;width:44px}.globe-navigation-pad{grid-template:repeat(3,44px)/repeat(3,44px)}.globe-navigation-aux{grid-template:repeat(2,44px)/repeat(2,44px)}.globe-navigation-row{gap:10px}.globe-controls input[type=range]{height:44px}}
