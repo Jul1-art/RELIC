@@ -217,10 +217,10 @@ export function createSmallBodyBelts({THREE,scene,auToWorld=au=>au*12,quality='a
       }
     }
   }
-  function update(deltaSeconds=0,focus=selected) {
+  function update(deltaSeconds=0,focus=selected,{advance=true}={}) {
     selected=focus||'overview';
     const dt=Math.max(0,Math.min(1,Number(deltaSeconds)||0));
-    elapsedDays+=dt/86400;
+    if(advance)elapsedDays+=dt/86400;
     // Real orbital motion is negligible over a browsing session. Recompute only
     // after a real day or an explicit setEpochDays, rather than rotate a rigid ring.
     if(Math.abs(elapsedDays-lastPositionDay)>=1)setEpochDays(elapsedDays);

@@ -133,9 +133,10 @@ export function createSolarIllumination({THREE, getHeliocentricPosition, nightFl
 
   function update(date = new Date()) {
     const time = Number(date);
-    if (!Number.isFinite(time) || Math.abs(time - lastUpdate) < 100) return;
+    if(!Number.isFinite(time))return;
     // Surface-detail tiles can appear after their parent was registered.
     for (const [object, id] of roots) register(id, object);
+    if(Math.abs(time-lastUpdate)<100)return;
     for (const [id, uniform] of parents) {
       const direction = sunDirectionScene(getHeliocentricPosition(id, date));
       if (direction) uniform.value.set(direction.x, direction.y, direction.z);

@@ -1,5 +1,5 @@
 /** One selected world, its measured dimensions and its complete satellite list. */
-export function createSolarInspector({host,getLanguage,getBody,getSystems,onSelect,onFrame,onSurface}) {
+export function createSolarInspector({host,getLanguage,getBody,getSystems,onSelect,onFrame,onSurface,onLocation,sitesByBody={}}) {
   const root=document.createElement('section');root.className='solar-inspector';host.append(root);
   const fr=()=>getLanguage()==='fr';
   const number=(value,digits=1)=>Number(value).toLocaleString(fr()?'fr-FR':'en-GB',{maximumFractionDigits:digits});
@@ -24,6 +24,10 @@ export function createSolarInspector({host,getLanguage,getBody,getSystems,onSele
     const rows=systems?.getSatellites(parent)||[];
     if(rows.length){
       actions.append(button(fr()?'Lunes proches':'Inner moons',()=>onFrame(parent,true)),button(fr()?'Toutes les orbites':'All satellite orbits',()=>onFrame(parent,false)));
+    }
+    for(const site of sitesByBody[id]||[]){
+      const label=site.id==='jezero'?'Jezero · HiRISE':site.id==='apollo11'?'Apollo 11 · LROC':site.name;
+      actions.append(button(label,()=>onLocation?.(id,site.lat,site.lon,site.local?2:250)));
     }
     root.append(actions);
     const scale=document.createElement('p');scale.className='solar-model-note';

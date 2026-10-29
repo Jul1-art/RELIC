@@ -6,7 +6,7 @@ export function initializeProviderCredits({ viewport = document.querySelector('.
   const document = viewport.ownerDocument;
   if (!document.querySelector('link[href*="provider-credits.css"]')) {
     const stylesheet = document.createElement('link');
-    stylesheet.rel = 'stylesheet'; stylesheet.href = new URL('./provider-credits.css', import.meta.url).href;
+    stylesheet.rel = 'stylesheet'; stylesheet.href = new URL('./provider-credits.css?v=14', import.meta.url).href;
     document.head.append(stylesheet);
   }
   let dock = viewport.querySelector(':scope > .provider-credit-dock');
@@ -26,8 +26,12 @@ export function initializeProviderCredits({ viewport = document.querySelector('.
     dock.hidden = ![...dock.children].some(element => !element.hidden && (element.textContent.trim() || element.querySelector('img,svg')));
     const height = dock.hidden ? 0 : Math.ceil(dock.getBoundingClientRect().height);
     const value = `${height}px`;
-    if (viewport.style.getPropertyValue('--provider-credits-height') !== value) {
+    // Navigation lives outside the renderer viewport. Give it the same reserved
+    // footer height so neither a side panel nor the phone rail covers credits.
+    if (viewport.style.getPropertyValue('--provider-credits-height') !== value
+      || document.body.style.getPropertyValue('--provider-credits-height') !== value) {
       viewport.style.setProperty('--provider-credits-height',value);
+      document.body.style.setProperty('--provider-credits-height',value);
       window.dispatchEvent(new Event('resize'));
     }
   }

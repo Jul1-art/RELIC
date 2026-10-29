@@ -57,7 +57,7 @@ test('three independent CSPICE reference matrices retain the correct date, axis 
   }
 });
 
-test('illumination survives texture recompiles and attaches to delayed surface-detail tiles', () => {
+test('illumination survives texture recompiles and lights delayed tiles while inspection time is frozen', () => {
   const group=new THREE.Group(), mesh=new THREE.Mesh(new THREE.SphereGeometry(1),new THREE.MeshStandardMaterial());
   group.add(mesh);
   const lighting=createSolarIllumination({THREE,getHeliocentricPosition:()=>({x:1,y:0,z:0})});
@@ -70,7 +70,7 @@ test('illumination survives texture recompiles and attaches to delayed surface-d
   assert.equal((shader.fragmentShader.match(/uniform vec3 relicSunDirection;/g)||[]).length,1);
   assert(Math.abs(mesh.quaternion.length()-1)<1e-12);
   const tile=new THREE.Mesh(new THREE.SphereGeometry(1),new THREE.MeshStandardMaterial());mesh.add(tile);
-  lighting.update(new Date(+date+200));
+  lighting.update(date);
   const tileShader={uniforms:{},fragmentShader:THREE.ShaderLib.standard.fragmentShader};tile.material.onBeforeCompile(tileShader,null);
   assert.equal(tileShader.uniforms.relicSunDirection.value.x,-1);
   lighting.dispose();assert.equal(mesh.material.onBeforeCompile,previousCompile);

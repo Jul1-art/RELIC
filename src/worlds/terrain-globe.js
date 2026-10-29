@@ -4,12 +4,12 @@ Cesium.Ion.defaultAccessToken = ''; // RELIC uses only a user-supplied token for
 import { EARTH_SITES, PLANET_SITES } from '../atlas/nasa-worlds.js';
 import { createMeasuredTerrain } from './earth-terrain.js';
 import { createDetailedEarthImagery, ESRI_IMAGERY_URL } from './earth-imagery.js';
-import { createGoogle3D, askForCesiumToken } from '../core/google-3d.js';
+import { createGoogle3D } from '../core/google-3d.js';
 import { createPlaceSearch } from '../search/place-search.js?v=5';
 import { startLiveData, getLanguage, onLanguageChange } from '../atlas/atlas-live.js?v=3';
 import { configureWorldPerformance, cameraDuration, flyToLocation, createOverviewFraming, TOP_DOWN_PITCH } from './world-performance.js';
 import { createViewLoading } from '../ui/view-loading.js';
-import { initializeProviderCredits } from '../ui/provider-credits.js';
+import { initializeProviderCredits } from '../ui/provider-credits.js?v=14';
 import { backendFeatureAvailable, markBackendFeatureUnavailable } from '../core/atlas-services.js';
 
 const $ = selector => document.querySelector(selector);
@@ -417,10 +417,7 @@ function setUpControls() {
     overviewFraming?.stop();
     if (!google3D) return;
     if (google3D.active) { google3D.disable(); return; }
-    let token;
-    if (!google3D.hasToken() || google3D.status === 'error') token = await askForCesiumToken();
-    if (token === '') return;
-    await google3D.enable(token);
+    await google3D.enable();
   });
   $('#reset-button').addEventListener('click', () => resetView());
   const keys = { ArrowUp:'up', ArrowDown:'down', ArrowLeft:'left', ArrowRight:'right', w:'up', s:'down', a:'left', d:'right' };
@@ -455,7 +452,7 @@ function initialLocation() {
   const lat = Number(query.get('lat'));
   const lon = Number(query.get('lon'));
   if (query.has('lat') && query.has('lon') && Number.isFinite(lat) && Number.isFinite(lon)
-    && lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180) return { lat, lon };
+    && lat>=-90&&lat<=90&&lon>=-180&&lon<=180){const range=Number(query.get('range'));return {lat,lon,...(Number.isFinite(range)&&range>=100&&range<=55000000?{range}:{})};}
   const site = query.get('site');
   const item = (body === 'earth' ? EARTH_SITES : PLANET_SITES[body]).find(candidate => candidate.id === site);
   return item || null;

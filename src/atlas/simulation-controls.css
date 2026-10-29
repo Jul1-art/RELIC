@@ -1,0 +1,12 @@
+.solar-simulation{display:grid;gap:11px;margin-top:16px;padding-top:15px;border-top:1px solid var(--rail-line,#ffffff20)}
+.solar-simulation h3{margin:0;color:var(--rail-muted,#aaa);font:500 11px/1.5 system-ui;letter-spacing:.03em}
+.solar-simulation-row{display:flex;align-items:center;gap:8px}
+.relic-action-panel .solar-simulation-row button{display:grid!important;place-items:center;flex:0 0 44px;width:44px!important;height:44px!important;padding:10px!important;border:1px solid var(--rail-line,#ffffff20)!important;border-radius:10px!important}
+.solar-simulation-row svg{width:20px;height:20px}
+.solar-simulation select{box-sizing:border-box;flex:1;min-width:0;height:44px;padding:0 10px;border:1px solid var(--rail-line,#ffffff20);border-radius:10px;background:var(--rail-panel,#151517);color:inherit;font:12px system-ui}
+.simulation-date{font:500 12px/1.6 system-ui;color:var(--rail-ink,#eee);font-variant-numeric:tabular-nums}
+.simulation-status{margin:0;color:var(--rail-muted,#aaa);font:11px/1.6 system-ui}
+.solar-simulation button:disabled,#rail-simulation-toggle:disabled{opacity:.45;cursor:default}
+.relic-action-panel .solar-simulation [hidden]{display:none!important}
+
+#relic-action-panel #simulation-play{display:grid!important;flex:0 0 44px!important;width:44px!important;min-width:44px!important;height:44px!important}

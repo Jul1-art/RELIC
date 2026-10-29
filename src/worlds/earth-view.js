@@ -3,12 +3,12 @@ Cesium.Ion.defaultAccessToken = ''; // RELIC uses only a user-supplied token for
 import { EARTH_SITES, NASA_IMAGERY } from '../atlas/nasa-worlds.js';
 import { createMeasuredTerrain } from './earth-terrain.js';
 import { createDetailedEarthImagery, ESRI_IMAGERY_URL } from './earth-imagery.js';
-import { createGoogle3D, askForCesiumToken } from '../core/google-3d.js';
+import { createGoogle3D } from '../core/google-3d.js';
 import { createPlaceSearch } from '../search/place-search.js?v=5';
 import { startLiveData, getLanguage, onLanguageChange } from '../atlas/atlas-live.js?v=3';
 import { configureWorldPerformance, cameraDuration, flyToLocation, createOverviewFraming } from './world-performance.js';
 import { createViewLoading } from '../ui/view-loading.js';
-import { initializeProviderCredits } from '../ui/provider-credits.js';
+import { initializeProviderCredits } from '../ui/provider-credits.js?v=14';
 
 const $ = selector => document.querySelector(selector);
 const viewLoading = createViewLoading({ element:$('#earth-loading'), errorElement:$('#earth-error'), getLanguage });
@@ -208,10 +208,7 @@ $('#google3d-toggle').addEventListener('click', async () => {
   overviewFraming?.stop();
   if (!google3D) return;
   if (google3D.active) { google3D.disable(); return; }
-  let token;
-  if (!google3D.hasToken() || google3D.status === 'error') token = await askForCesiumToken();
-  if (token === '') return;
-  await google3D.enable(token);
+  await google3D.enable();
 });
 start();
 startLiveData($('#earth-live-data'), () => 'earth');
