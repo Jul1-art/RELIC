@@ -152,7 +152,7 @@ export function initializeActionRail() {
   new MutationObserver(()=>{
     if (dashboard.dataset.dashboardBody !== currentBody) {
       currentBody = dashboard.dataset.dashboardBody;
-      setInformation(false); show(''); render();
+      show(''); render();
     }
   }).observe(dashboard,{attributes:true,attributeFilter:['data-dashboard-body']});
   window.addEventListener('relic-film-state',()=>{

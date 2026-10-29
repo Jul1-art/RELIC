@@ -28,6 +28,8 @@
   <link rel="stylesheet" href="./src/ui/view-loading.css?v=polish-4">
   <link rel="stylesheet" href="./src/ui/provider-credits.css?v=polish-4">
   <link rel="stylesheet" href="./src/atlas/atlas-presentation.css?v=polish-4">
+  <link rel="stylesheet" href="./src/atlas/solar-exploration.css?v=12">
+  <link rel="stylesheet" href="./src/atlas/natural-system.css?v=12">
   <script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/controls/OrbitControls.js":"./vendor/OrbitControls.js"}}</script>
   <link rel="stylesheet" href="./src/ui/branding.css?v=brand-7">
   <link rel="stylesheet" href="./intro/prologue-ending-v9.css?v=9">
@@ -43,6 +45,7 @@
       <img class="relic-mark relic-official-logo" src="./assets/relic-logo-v1.png" alt="" width="64" height="56">
       <span class="identity-copy"><strong>RELIC</strong><small>Beyond the journey</small></span>
     </a>
+    <div class="view-controls solar-view-controls"><button id="solar-inner-view" type="button"><span>Inner planets</span></button><button id="solar-whole-view" type="button"><span>Full solar system</span></button></div>
     <span class="topbar-hint">GLISSER POUR TOURNER <span>·</span> PINCER OU DÉFILER POUR ZOOMER</span>
     <div class="header-actions">
       <button id="relic-replay" class="relic-icon-button" type="button" aria-label="Watch the film" title="Watch the film"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="4"/><path d="m10 9 5 3-5 3Z"/></svg></button>
@@ -83,7 +86,7 @@
   <section id="intro" class="intro" aria-label="RELIC — the story of exploration"></section>
   <script type="module" src="./src/ui/theme.js?v=polish-4"></script>
   <script type="module" src="./intro/film-bridge.js?v=story-9"></script>
-  <script type="module" src="./src/atlas/app.js?v=polish-4"></script>
+  <script type="module" src="./src/atlas/app.js?v=solar-12"></script>
   <script type="module" src="./src/ui/action-rail.js?v=11"></script>
 </body>
 </html>

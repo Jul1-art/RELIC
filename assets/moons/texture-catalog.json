@@ -1,0 +1,282 @@
+{
+  "version": 1,
+  "retrievedOn": "2026-10-29",
+  "textures": [
+    {
+      "name": "io",
+      "file": "assets/moons/io.webp",
+      "sourcePage": "https://science.nasa.gov/resource/io-3d-model/",
+      "modelSource": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/i/Io_1_3643.glb",
+      "credit": "NASA / Visualization Technology Applications and Development (VTAD)",
+      "context": "Diffuse map extracted from the official NASA 3D model, downsampled to at most 2048 × 1024 pixels and encoded as WebP quality 88. No generated surface detail.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "sha256": "bbebfb4cff58902e51a083e78f12b97e42abc6955591ce442b0fb06bdcab2bc8",
+      "bytes": 247188,
+      "originalImageSha256": "1669219b509c470cda85cfdb7a06d8ef54724927c57e8ade50b9bb769c0e0631",
+      "dimensions": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "name": "europa",
+      "file": "assets/moons/europa.webp",
+      "sourcePage": "https://science.nasa.gov/resource/europa-3d-model/",
+      "modelSource": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/e/Europa_1_3138.glb",
+      "credit": "NASA / Visualization Technology Applications and Development (VTAD)",
+      "context": "Diffuse map extracted from the official NASA 3D model, downsampled to at most 2048 × 1024 pixels and encoded as WebP quality 88. No generated surface detail.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "sha256": "09b17e20d6452cafed8253d2a96e24f484e9a69dafb79e2876cc52038475931b",
+      "bytes": 330124,
+      "originalImageSha256": "cb13910e8f25b6163d395c52f61737b34d29655df5bc04b76e494f6f12f159dd",
+      "dimensions": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "name": "ganymede",
+      "file": "assets/moons/ganymede.webp",
+      "sourcePage": "https://science.nasa.gov/resource/ganymede-3d-model/",
+      "modelSource": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/g/Ganymede_1_5268.glb",
+      "credit": "NASA / Visualization Technology Applications and Development (VTAD)",
+      "context": "Diffuse map extracted from the official NASA 3D model, downsampled to at most 2048 × 1024 pixels and encoded as WebP quality 88. No generated surface detail.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "sha256": "a199f3d39ed86ab18b2369128064e98781c568b40ac8bcd5a69a270335c59d65",
+      "bytes": 357396,
+      "originalImageSha256": "58bf1a542191a68dea7f933ebfa97a83995fe4f3fa134727ead9e1d6173b2421",
+      "dimensions": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "name": "callisto",
+      "file": "assets/moons/callisto.webp",
+      "sourcePage": "https://science.nasa.gov/resource/callisto-3d-model/",
+      "modelSource": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/c/Callisto_1_4821.glb",
+      "credit": "NASA / Visualization Technology Applications and Development (VTAD)",
+      "context": "Diffuse map extracted from the official NASA 3D model, downsampled to at most 2048 × 1024 pixels and encoded as WebP quality 88. No generated surface detail.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "sha256": "1f646b2fd8a3c2a5146d1640b4731b985126fc9bb3750fb809b8d2c89a992db7",
+      "bytes": 460934,
+      "originalImageSha256": "02843cfb31f1faf917c7d1090d6c73aa013fb073736393784adfa5061ba49971",
+      "dimensions": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "name": "titan",
+      "file": "assets/moons/titan.webp",
+      "sourcePage": "https://science.nasa.gov/resource/titan-3d-model/",
+      "modelSource": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/t/Titan_1_5150.glb",
+      "credit": "NASA / Visualization Technology Applications and Development (VTAD)",
+      "context": "Diffuse map extracted from the official NASA 3D model, downsampled to at most 2048 × 1024 pixels and encoded as WebP quality 88. No generated surface detail.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "sha256": "fd7e78c38e1fa848e07ed9998146a8dab55bc25c306e6c506f8a0d4ec7655a2d",
+      "bytes": 7566,
+      "originalImageSha256": "3376c25d24a21639a2672736baeb300cf4a545eb525a5484d5a9227496e78eea",
+      "dimensions": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "name": "triton",
+      "file": "assets/moons/triton.webp",
+      "sourcePage": "https://science.nasa.gov/resource/triton-3d-model/",
+      "modelSource": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/t/Triton_1_2707.glb",
+      "credit": "NASA / Visualization Technology Applications and Development (VTAD)",
+      "context": "Diffuse map extracted from the official NASA 3D model, downsampled to at most 2048 × 1024 pixels and encoded as WebP quality 88. No generated surface detail.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "sha256": "007dbf12eee0f8bf3b5376c9e0af181c7850f96f64931bcca87a49fac69a968c",
+      "bytes": 144898,
+      "originalImageSha256": "e6a871283e919c259fe7e5a0e573e1b339cc5df8d98444f5dcefe90dfb52fc30",
+      "dimensions": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "name": "enceladus",
+      "file": "assets/moons/enceladus.webp",
+      "sourcePage": "https://science.nasa.gov/resource/enceladus-3d-model/",
+      "modelSource": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/e/Enceladus_1_504.glb",
+      "credit": "NASA / Visualization Technology Applications and Development (VTAD)",
+      "context": "Diffuse map extracted from the official NASA 3D model, downsampled to at most 2048 × 1024 pixels and encoded as WebP quality 88. No generated surface detail.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "sha256": "44414e0a9081a18ee6e8aa33a537cb4c951b7a3ee6c012382a68ee74cb3c8f6f",
+      "bytes": 811870,
+      "originalImageSha256": "25bb3d09061da506b2df97c92cb2281644207d298b323807da934a26597d362f",
+      "dimensions": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "name": "dione",
+      "file": "assets/moons/dione.webp",
+      "sourcePage": "https://science.nasa.gov/resource/dione-3d-model/",
+      "modelSource": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/d/Dione_1_1123.glb",
+      "credit": "NASA / Visualization Technology Applications and Development (VTAD)",
+      "context": "Diffuse map extracted from the official NASA 3D model, downsampled to at most 2048 × 1024 pixels and encoded as WebP quality 88. No generated surface detail.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "sha256": "5370028a58503a04841c0b30fdc6ff8e74c5bb8c7e2935b8d8b4490111b37832",
+      "bytes": 727282,
+      "dimensions": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "name": "rhea",
+      "file": "assets/moons/rhea.webp",
+      "sourcePage": "https://science.nasa.gov/resource/rhea-3d-model/",
+      "modelSource": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/r/Rhea_1_1529.glb",
+      "credit": "NASA / Visualization Technology Applications and Development (VTAD)",
+      "context": "Diffuse map extracted from the official NASA 3D model, downsampled to at most 2048 × 1024 pixels and encoded as WebP quality 88. No generated surface detail.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "sha256": "a9f66530bd9330c6fb6390726db92e61b46e4d8d0a8d40d5bd97ba02fc5ab4a4",
+      "bytes": 897832,
+      "dimensions": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "name": "iapetus",
+      "file": "assets/moons/iapetus.webp",
+      "sourcePage": "https://science.nasa.gov/resource/iapetus-3d-model/",
+      "modelSource": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/i/Iapetus_1_1471.glb",
+      "credit": "NASA / Visualization Technology Applications and Development (VTAD)",
+      "context": "Diffuse map extracted from the official NASA 3D model, downsampled to at most 2048 × 1024 pixels and encoded as WebP quality 88. No generated surface detail.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "sha256": "b58b53e3a0f3a5eb483357cb900a40a12eb5021322e69dc846f6be50ff6d5c23",
+      "bytes": 434818,
+      "dimensions": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "name": "tethys",
+      "file": "assets/moons/tethys.webp",
+      "sourcePage": "https://science.nasa.gov/resource/tethys-3d-model/",
+      "modelSource": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/t/Tethys_1_1077-1.glb",
+      "credit": "NASA / Visualization Technology Applications and Development (VTAD)",
+      "context": "Diffuse map extracted from the official NASA 3D model, downsampled to at most 2048 × 1024 pixels and encoded as WebP quality 88. No generated surface detail.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "sha256": "d36e2fface198d14be0cec0e5848c8b09d931e79ac7a9adceecbfaa60f3274de",
+      "bytes": 808772,
+      "dimensions": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "name": "mimas",
+      "file": "assets/moons/mimas.webp",
+      "sourcePage": "https://science.nasa.gov/resource/mimas-3d-model/",
+      "modelSource": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/m/Mimas_1_1000.glb",
+      "credit": "NASA / Visualization Technology Applications and Development (VTAD)",
+      "context": "Diffuse map extracted from the official NASA 3D model, downsampled to at most 2048 × 1024 pixels and encoded as WebP quality 88. No generated surface detail.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "sha256": "9b20ea5a638a79f0b69fbc43cc79532bf60095f57cf165081344b0a62b1599ee",
+      "bytes": 154956,
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "oberon",
+      "file": "assets/moons/oberon.webp",
+      "sourcePage": "https://science.nasa.gov/resource/oberon-3d-model/",
+      "modelSource": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/o/Oberon_1_1523.glb",
+      "credit": "NASA / Visualization Technology Applications and Development (VTAD)",
+      "context": "Diffuse map extracted from the official NASA 3D model, downsampled to at most 2048 × 1024 pixels and encoded as WebP quality 88. No generated surface detail.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "sha256": "acf2398c0223319dc5bb3e55a7acc16960377fa308531532b527f64965ae96cc",
+      "bytes": 49558,
+      "dimensions": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "name": "titania",
+      "file": "assets/moons/titania.webp",
+      "sourcePage": "https://science.nasa.gov/resource/titania-3d-model/",
+      "modelSource": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/t/Titania_1_1577.glb",
+      "credit": "NASA / Visualization Technology Applications and Development (VTAD)",
+      "context": "Diffuse map extracted from the official NASA 3D model, downsampled to at most 2048 × 1024 pixels and encoded as WebP quality 88. No generated surface detail.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "sha256": "79fda07e8b86342077bb7cc684622284c5b1d41ecf2b5990ee9b7101d9a2a93a",
+      "bytes": 99432,
+      "dimensions": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "name": "ariel",
+      "file": "assets/moons/ariel.webp",
+      "sourcePage": "https://science.nasa.gov/resource/ariel-3d-model/",
+      "modelSource": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/a/Ariel_1_1158.glb",
+      "credit": "NASA / Visualization Technology Applications and Development (VTAD)",
+      "context": "Diffuse map extracted from the official NASA 3D model, downsampled to at most 2048 × 1024 pixels and encoded as WebP quality 88. No generated surface detail.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "sha256": "0ca42f18e33e98657682ec169cc4c3c209626c59e754cb42fd1def9b177e822d",
+      "bytes": 104036,
+      "dimensions": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "name": "umbriel",
+      "file": "assets/moons/umbriel.webp",
+      "sourcePage": "https://science.nasa.gov/resource/umbriel-3d-model/",
+      "modelSource": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/u/Umbriel_1_1169.glb",
+      "credit": "NASA / Visualization Technology Applications and Development (VTAD)",
+      "context": "Diffuse map extracted from the official NASA 3D model, downsampled to at most 2048 × 1024 pixels and encoded as WebP quality 88. No generated surface detail.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "sha256": "3f90a8a26233aaf72dfdfc177a4120fc764c853b780681d026c108ed0042a968",
+      "bytes": 14088,
+      "dimensions": [
+        1024,
+        512
+      ]
+    },
+    {
+      "name": "miranda",
+      "file": "assets/moons/miranda.webp",
+      "sourcePage": "https://science.nasa.gov/resource/miranda-3d-model/",
+      "modelSource": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/m/Miranda_1_472.glb",
+      "credit": "NASA / Visualization Technology Applications and Development (VTAD)",
+      "context": "Diffuse map extracted from the official NASA 3D model, downsampled to at most 2048 × 1024 pixels and encoded as WebP quality 88. No generated surface detail.",
+      "rightsUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "sha256": "e7a8fead4b71528a950985faadb99879a193af0449ef0b1f711627ad59b62f14",
+      "bytes": 43036,
+      "dimensions": [
+        1024,
+        512
+      ]
+    },
+    {
+      "name": "moon",
+      "file": "assets/moons/moon-lroc-2k.webp",
+      "sourcePage": "https://wms.lroc.asu.edu/lroc",
+      "sourceFile": "assets/moon-wac-8k.webp",
+      "credit": "NASA / GSFC / Arizona State University · LROC",
+      "context": "Approved LROC map from the repository, downsampled to 2048 × 1024 and encoded as WebP quality 88.",
+      "sha256": "6d81c470f6ba92a41cf45027f218ad6a542734927d9d3afe552d227100b247bb",
+      "bytes": 354164,
+      "dimensions": [
+        2048,
+        1024
+      ]
+    }
+  ]
+}

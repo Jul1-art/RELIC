@@ -37,6 +37,23 @@ export function approximatePosition(body, date = new Date()) {
     speedKmS:Math.sqrt(GM * (2 / distanceFromSunKm - 1 / (a * AU))), positionKm:{ x:x*AU,y:y*AU,z:z*AU }, source:'NASA/JPL · approximate orbital model', sourceUrl:MODEL_SOURCE };
 }
 
+/** Mean Kepler orbit in ecliptic kilometres, matching approximatePosition's model. */
+export function approximateOrbit(body, date = new Date(), segments = 360) {
+  const time=Number(date),year=new Date(time).getUTCFullYear();
+  if(!ELEMENTS[body] || !Number.isFinite(time) || year<1800 || year>2050)return [];
+  const T=((time/86400000+2440587.5)-2451545)/36525;
+  const [a,e,I,,p,node]=ELEMENTS[body].map(([value,rate])=>value+rate*T);
+  const w=(p-node)*RAD,n=node*RAD,inc=I*RAD;
+  const result=[];const count=Math.max(32,Math.min(1440,Math.round(segments)));
+  for(let index=0;index<=count;index++){
+    const E=index/count*Math.PI*2,xp=a*(Math.cos(E)-e),yp=a*Math.sqrt(1-e*e)*Math.sin(E);
+    result.push({x:((Math.cos(w)*Math.cos(n)-Math.sin(w)*Math.sin(n)*Math.cos(inc))*xp+(-Math.sin(w)*Math.cos(n)-Math.cos(w)*Math.sin(n)*Math.cos(inc))*yp)*AU,
+      y:((Math.cos(w)*Math.sin(n)+Math.sin(w)*Math.cos(n)*Math.cos(inc))*xp+(-Math.sin(w)*Math.sin(n)+Math.cos(w)*Math.cos(n)*Math.cos(inc))*yp)*AU,
+      z:(Math.sin(w)*Math.sin(inc)*xp+Math.cos(w)*Math.sin(inc)*yp)*AU});
+  }
+  return result;
+}
+
 export function approximatePositions(date = new Date()) {
   return Object.fromEntries(Object.keys(ELEMENTS).map(body => [body,approximatePosition(body,date)]).filter(([,value]) => value));
 }

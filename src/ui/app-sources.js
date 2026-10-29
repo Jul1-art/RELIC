@@ -82,6 +82,16 @@ export async function openSources(trigger) {
     const identity = document.createElement('div'); identity.className = 'relic-creator-identity'; heading(identity,name); paragraph(identity,role);
     card.append(avatar,identity); people.append(card);
   }
+  heading(content, french() ? 'Lunes et ceintures' : 'Moons and small-body belts');
+  paragraph(content, french()
+    ? 'Le catalogue comprend 456 satellites des huit planètes : 455 orbites moyennes JPL et un petit satellite de Saturne sans éléments publiés. Les positions des lunes sont indicatives. Les ceintures principale et de Kuiper sont des populations statistiques ; elles ne donnent pas les positions mesurées des objets individuels.'
+    : 'The catalogue covers 456 moons of the eight planets: 455 JPL mean orbits and one Saturnian moonlet without published elements. Moon positions are illustrative. The main and Kuiper belts are statistical populations; they do not give measured positions of individual objects.');
+  sourceLink(content, 'NASA/JPL · satellite mean elements', 'https://ssd.jpl.nasa.gov/sats/elem/');
+  sourceLink(content, 'NASA/JPL · discovery catalogue', 'https://ssd.jpl.nasa.gov/sats/discovery.html');
+  paragraph(content, french()
+    ? 'Textures des principales lunes : NASA/VTAD (modèles 3D officiels), et NASA/LROC pour la Lune. Les autres corps utilisent des formes illustratives, avec les dimensions inconnues explicitement indiquées.'
+    : 'Major-moon textures: NASA/VTAD official 3D models, and NASA/LROC for the Moon. Other bodies use illustrative shapes, with unmeasured dimensions explicitly identified.');
+  sourceLink(content, 'NASA · 3D resources', 'https://science.nasa.gov/resources/3d-resources/');
   heading(content, french() ? 'Atlas et données' : 'Atlas and data');
   const sources = document.createElement('div'); sources.className = 'relic-sources-links'; content.append(sources);
   for (const [label, url] of [
@@ -95,8 +105,8 @@ export async function openSources(trigger) {
     ['Three.js · MIT','https://threejs.org/'],['CesiumJS · Apache 2.0','https://cesium.com/platform/cesiumjs/'],
   ]) sourceLink(sources,label,url);
   paragraph(content,french()
-    ? 'Les tailles et les distances sont adaptées pour faciliter la lecture. Le mouvement bleu des orbites indique le sens de parcours avec une vitesse illustrative, distincte de la vitesse réelle des planètes.'
-    : 'Sizes and distances are adapted for readability. Blue orbital motion shows the direction of travel at an illustrative speed, distinct from the planets’ real speeds.','relic-sources-note');
+    ? 'Les tailles et les distances sont adaptées pour faciliter la lecture de la vue solaire. Les systèmes locaux utilisent une échelle proportionnelle des distances ; les très petites lunes sont agrandies pour rester sélectionnables.'
+    : 'Sizes and distances are adapted for readability in the solar overview. Local moon systems use proportional distances; very small moons are enlarged to remain selectable.','relic-sources-note');
   heading(content, french() ? 'Le film' : 'The film');
   const minutes = Math.floor(PROLOGUE_MEDIA.duration / 60);
   const seconds = Math.round(PROLOGUE_MEDIA.duration % 60);

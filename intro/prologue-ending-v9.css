@@ -1,5 +1,6 @@
 /* A quiet final card: the film closes before the viewer enters the atlas. */
 .intro.prologue.prologue-outro .prologue-header,.intro.prologue.prologue-outro .prologue-controls,.intro.prologue.prologue-outro .prologue-reveal{display:none!important;visibility:hidden!important;pointer-events:none!important}
+.intro.prologue.prologue-outro{cursor:default}
 .intro.prologue[data-cue-kind=end]{background:#000}
 .intro.prologue[data-cue-kind=end] .prologue-film,.intro.prologue[data-cue-kind=end] .prologue-language-frame{opacity:var(--end-picture-opacity,0);filter:none;transform:none;transition:none}
 .intro.prologue[data-cue-kind=end] .prologue-backdrop{display:none!important}

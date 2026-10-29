@@ -1,0 +1,25 @@
+.solar-inspector{padding:0 0 18px;color:inherit}
+.solar-body-description{font-size:12px;line-height:1.65;color:var(--rail-muted,#aaaeb6);margin:8px 0 18px}
+.solar-facts{display:grid;gap:10px;margin:0 0 18px}
+.solar-facts>div{display:flex;justify-content:space-between;gap:18px;font-size:11px;line-height:1.6}
+.solar-facts dt{color:var(--rail-muted,#999ea6)}.solar-facts dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
+.solar-system-actions{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.solar-system-actions button,.solar-show-more{min-height:38px;border:1px solid var(--rail-line,#ffffff24);border-radius:10px;background:var(--rail-hover,#ffffff06);padding:8px 11px;color:inherit;font:inherit;font-size:11px;cursor:pointer}
+.solar-model-note,.solar-source{font-size:10px;line-height:1.7;color:var(--rail-muted,#969ba4)}
+.solar-source{display:inline-block;text-underline-offset:3px;margin-bottom:10px}
+.solar-moon-catalogue{border-top:1px solid var(--rail-line,#ffffff1a);padding-top:16px;margin-top:14px}
+.solar-moon-catalogue h3{font-size:12px;font-weight:500;margin:0 0 14px}
+.solar-moon-catalogue input{box-sizing:border-box;width:100%;min-height:40px;border:1px solid var(--rail-line,#ffffff26);background:var(--rail-hover,#ffffff08);color:inherit;border-radius:10px;padding:9px 12px;font:inherit;font-size:12px}
+.solar-moon-count{font-size:10px;color:var(--rail-muted,#999ea6);margin:12px 0 4px}
+.solar-moon-list{list-style:none;margin:0;padding:0;max-height:340px;overflow:auto;overscroll-behavior:contain}
+.solar-moon-entry{display:flex!important;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;min-height:43px;border:0;border-bottom:1px solid var(--rail-line,#ffffff10);background:transparent;color:inherit;font:inherit;font-size:12px;cursor:pointer;padding:8px 2px!important}
+.solar-moon-entry:hover{background:var(--rail-hover,#ffffff09)}.solar-moon-meta{font-size:9px;color:var(--rail-muted,#969ba4);white-space:nowrap}
+.solar-show-more{margin-top:10px;width:100%}.solar-inspector [hidden]{display:none!important}
+.solar-scale-note{position:absolute;left:94px;bottom:32px;z-index:4;margin:0;color:#a4aabb9e;font:10px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;letter-spacing:.02em;pointer-events:none}
+.solar-view-controls{display:flex;flex-direction:column;gap:5px}
+html[data-relic-film=active] .solar-scale-note{visibility:hidden}
+@media(max-width:650px){.solar-scale-note{left:14px;bottom:85px;font-size:9px}.solar-moon-catalogue input{font-size:16px}.solar-moon-list{max-height:240px}}
+
+@media(max-width:700px) and (min-height:551px){
+ body.atlas-page.has-action-rail .planet-dashboard .pd-inspector{inset:auto 10px calc(80px + env(safe-area-inset-bottom)) 10px!important;height:min(44dvh,400px)!important;max-height:44dvh!important}
+}

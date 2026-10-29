@@ -1,0 +1,4 @@
+.natural-label-layer{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+.natural-moon-label{position:absolute;top:0;left:0;border:0;border-radius:6px;background:#090d13a3;color:#c3ced9;padding:4px 6px;font:10px/1.3 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;cursor:pointer;pointer-events:auto;white-space:nowrap}
+.natural-moon-label[hidden]{display:none!important}.natural-moon-label:hover{color:#fff;background:#172635}
+html[data-relic-film=active] .natural-label-layer{visibility:hidden}
