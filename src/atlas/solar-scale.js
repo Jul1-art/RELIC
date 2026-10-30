@@ -32,7 +32,7 @@ export function createScaleReadout({host,camera,getContext,getLanguage}) {
   function update(){
     const context=getContext();if(!context)return;
     const fr=getLanguage()==='fr',overview=context.id==='overview';
-    const ruler=scaleRuler({distance:context.distance,fov:camera.fov,viewportHeight:context.viewportHeight,kmPerWorldUnit:overview?AU_KM/WORLD_UNITS_PER_AU:context.radiusKm/context.radius,kmPerPixel:context.kmPerPixel});
+    const ruler=context.hideRuler?null:scaleRuler({distance:context.distance,fov:camera.fov,viewportHeight:context.viewportHeight,kmPerWorldUnit:overview?AU_KM/WORLD_UNITS_PER_AU:context.radiusKm/context.radius,kmPerPixel:context.kmPerPixel});
     let description=overview?(fr?'Distances proportionnelles · planètes agrandies':'Proportional distances · enlarged planets'):(fr?'Échelle au centre de la vue':'Scale at the centre of the view');
     if(context.special)description=context.special;
     const text=ruler?`${new Intl.NumberFormat(fr?'fr-FR':'en-GB',{maximumSignificantDigits:3}).format(ruler.value)} ${fr&&ruler.unit==='AU'?'UA':ruler.unit}`:'';

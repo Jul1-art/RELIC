@@ -2,6 +2,7 @@ import { approximatePosition } from './orbital-data.js';
 import { backendJSON } from '../core/atlas-services.js';
 
 export const PLANET_IDS=Object.freeze(['mercury','venus','earth','mars','jupiter','saturn','uranus','neptune']);
+export const EPHEMERIS_BODY_IDS=Object.freeze([...PLANET_IDS,'moon']);
 export const HORIZONS_SOURCE='https://ssd.jpl.nasa.gov/horizons/';
 const DAY_MS=86400000,DAY_SECONDS=86400,UNIX_JD=2440587.5,SOLAR_GM=132712440041.9394;
 
@@ -69,7 +70,7 @@ export function createPlanetaryEphemeris({fetcher=(...args)=>globalThis.fetch(..
     if(disposed||liveRequest)return liveRequest;
     liveRequest=Promise.resolve().then(requestLive).then(payload=>{
       if(!correctFrame(payload))return;
-      for(const id of PLANET_IDS){
+      for(const id of EPHEMERIS_BODY_IDS){
         const entry=payload.bodies?.[id],rows=entry?.states;
         if(Array.isArray(rows)&&rows.length>=2&&rows.every((row,index)=>Array.isArray(row)&&row.length===7&&row.every(Number.isFinite)&&(!index||row[0]>rows[index-1][0])))live.set(id,entry);
       }
@@ -88,7 +89,7 @@ export function createPlanetaryEphemeris({fetcher=(...args)=>globalThis.fetch(..
     if(autoRefresh&&!disposed){void refreshLive();timer=setInterval(()=>{if(!globalThis.document?.hidden)void refreshLive();},60000);}
   })();
   function getState(id,date=new Date()){
-    if(!PLANET_IDS.includes(id))return null;
+    if(!EPHEMERIS_BODY_IDS.includes(id))return null;
     const fresh=interpolatePlanetState(live.get(id),date);
     if(fresh)return {...fresh,body:id,delivery:'server',retrievedAt:live.get(id).fetchedAt};
     const bundled=interpolatePlanetState(catalogue?.bodies[id],date);

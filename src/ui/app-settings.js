@@ -4,13 +4,13 @@ import { worldIcon } from './world-icons.js';
 const STORAGE_KEY = 'relic.preferences.v1';
 const root = document.documentElement;
 const defaults = Object.freeze({ language:'en', theme:'night', accent:'mono', motion:'system', quality:'adaptive' });
-const choices = Object.freeze({ language:['en','fr'], theme:['night','day'], accent:['mono','nasa'], motion:['system','full','reduced'], quality:['adaptive','high'] });
+const choices = Object.freeze({ language:['en','fr'], theme:['night'], accent:['mono'], motion:['system','full','reduced'], quality:['adaptive','high'] });
 const sections = ['general','display','experience'];
 const COPY = {
   en:{
     settings:'Settings', subtitle:'Viewing preferences', general:'General', display:'Display', experience:'Experience',
-    generalTitle:'Language & appearance', generalHint:'',
-    displayTitle:'Colour & rendering', displayHint:'',
+    generalTitle:'Language', generalHint:'',
+    displayTitle:'Rendering', displayHint:'',
     experienceTitle:'Motion', experienceHint:'Transitions and camera journeys.',
     language:'Language', languageHint:'Menus and the introduction.', theme:'Appearance', themeHint:'A consistent theme across your views.',
     accent:'Accent colour', accentHint:'Monochrome by default. Blue when you want it.', quality:'3D quality', qualityHint:'Applies to the atlas and planetary views.',
@@ -25,8 +25,8 @@ const COPY = {
   },
   fr:{
     settings:'Réglages', subtitle:'Préférences d’affichage', general:'Général', display:'Affichage', experience:'Interaction',
-    generalTitle:'Langue et apparence', generalHint:'',
-    displayTitle:'Couleur et rendu', displayHint:'',
+    generalTitle:'Langue', generalHint:'',
+    displayTitle:'Rendu', displayHint:'',
     experienceTitle:'Animations', experienceHint:'Transitions et mouvements de caméra.',
     language:'Langue', languageHint:'Les menus et l’introduction.', theme:'Apparence', themeHint:'Un thème commun à toutes vos vues.',
     accent:'Couleur d’accent', accentHint:'Monochrome par défaut. Bleu, si vous le souhaitez.', quality:'Qualité 3D', qualityHint:'Pour l’atlas et les vues des planètes.',
@@ -44,10 +44,8 @@ const COPY = {
 function initialPreferences() {
   let saved = {};
   try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {}; } catch { /* The session still works without device storage. */ }
-  let theme = root.dataset.theme === 'day' ? 'day' : 'night';
-  try { theme = localStorage.getItem('nasa-atlas-theme') === 'day' ? 'day' : theme; } catch {}
-  const result = { ...defaults, theme, language:getLanguage() };
-  for (const key of ['theme','accent','motion','quality']) if (choices[key].includes(saved[key])) result[key] = saved[key];
+  const result = { ...defaults, language:getLanguage() };
+  for (const key of ['motion','quality']) if (choices[key].includes(saved[key])) result[key] = saved[key];
   return result;
 }
 
@@ -62,12 +60,12 @@ const copy = () => COPY[getLanguage() === 'fr' ? 'fr' : 'en'];
 const motionQuery = globalThis.matchMedia?.('(prefers-reduced-motion: reduce)');
 
 function applyPreferences() {
-  root.dataset.theme = preferences.theme;
-  root.dataset.accent = preferences.accent;
+  root.dataset.theme = 'night';
+  root.dataset.accent = 'mono';
   root.dataset.motion = preferences.motion === 'system' ? (motionQuery?.matches ? 'reduced' : 'full') : preferences.motion;
   root.dataset.quality = preferences.quality;
   const color = document.querySelector('meta[name="theme-color"]');
-  if (color) color.content = preferences.theme === 'day' ? '#f5f5f3' : '#050505';
+  if (color) color.content = '#000000';
 }
 
 function persist() {
@@ -85,6 +83,7 @@ export function getPreferences() { return { ...preferences }; }
 export function setPreferences(patch = {}) {
   const next = { ...preferences };
   for (const key of Object.keys(choices)) if (choices[key].includes(patch[key])) next[key] = patch[key];
+  next.theme = 'night'; next.accent = 'mono';
   preferences = next;
   if (getLanguage() !== next.language) setLanguage(next.language);
   applyPreferences();
@@ -130,8 +129,8 @@ function buildDialog() {
   dialog.innerHTML = `<header class="relic-settings-header"><div><p class="relic-settings-eyebrow"><img class="relic-dialog-logo" src="${new URL('../../assets/relic-logo-v1.png', import.meta.url).href}" alt="" width="26" height="23">RELIC <span aria-hidden="true">/</span> <span data-settings-copy="settings"></span></p><h2 id="relic-settings-title" data-settings-copy="settings"></h2><p id="relic-settings-subtitle" class="relic-settings-intro" data-settings-copy="subtitle"></p></div><button class="relic-settings-close" type="button" data-settings-close>${worldIcon('xmark')}</button></header>
     <nav class="relic-settings-tabs" role="tablist" aria-label="Settings sections">${sections.map((section, index) => `<button type="button" role="tab" id="settings-tab-${section}" data-settings-tab="${section}" aria-controls="settings-panel-${section}" aria-selected="${index === 0}" tabindex="${index === 0 ? '0' : '-1'}">${worldIcon(['globe','sliders','compass'][index])}<span data-settings-copy="${section}"></span></button>`).join('')}</nav>
     <div class="relic-settings-content">
-      <section class="relic-settings-section" id="settings-panel-general" data-settings-panel="general" role="tabpanel" aria-labelledby="settings-tab-general">${sectionHeading('general')}${field('language', [['en'],['fr']])}${field('theme', [['night','moon'],['day','sun']])}</section>
-      <section class="relic-settings-section" id="settings-panel-display" data-settings-panel="display" role="tabpanel" aria-labelledby="settings-tab-display" hidden>${sectionHeading('display')}${field('accent', [['mono'],['nasa']])}${field('quality', [['adaptive','globe','adaptiveHint'],['high','cube','highHint']])}<button class="relic-settings-provider" type="button" data-settings-provider hidden><span>${worldIcon('layer-group')}</span><span><strong data-settings-copy="providers"></strong><small data-settings-copy="providersHint"></small></span>${worldIcon('arrow-up-right-from-square')}</button></section>
+      <section class="relic-settings-section" id="settings-panel-general" data-settings-panel="general" role="tabpanel" aria-labelledby="settings-tab-general">${sectionHeading('general')}${field('language', [['en'],['fr']])}</section>
+      <section class="relic-settings-section" id="settings-panel-display" data-settings-panel="display" role="tabpanel" aria-labelledby="settings-tab-display" hidden>${sectionHeading('display')}${field('quality', [['adaptive','globe','adaptiveHint'],['high','cube','highHint']])}<button class="relic-settings-provider" type="button" data-settings-provider hidden><span>${worldIcon('layer-group')}</span><span><strong data-settings-copy="providers"></strong><small data-settings-copy="providersHint"></small></span>${worldIcon('arrow-up-right-from-square')}</button></section>
       <section class="relic-settings-section" id="settings-panel-experience" data-settings-panel="experience" role="tabpanel" aria-labelledby="settings-tab-experience" hidden>${sectionHeading('experience')}${field('motion', [['system','sliders','systemHint'],['full','play','fullHint'],['reduced','pause','reducedHint']])}</section>
     </div>
     <footer class="relic-settings-footer"><p class="relic-settings-status" role="status" aria-live="polite"></p><div class="relic-settings-footer-actions"><button type="button" class="relic-settings-reset" data-settings-reset>${worldIcon('rotate')}<span data-settings-copy="reset"></span></button><button type="button" class="relic-settings-done" data-settings-close data-settings-copy="done"></button></div></footer>`;
@@ -160,7 +159,8 @@ function buildDialog() {
   });
   dialog.addEventListener('close', () => {
     if (dialog.dataset.restoreFocus !== 'false') {
-      const target = trigger?.isConnected && trigger.getClientRects().length && !trigger.closest('[inert],[hidden]') ? trigger : document.querySelector('[data-app-settings]:not([hidden]),#relic-settings');
+      const visible = node => node?.isConnected && node.getClientRects().length && !node.closest('[inert],[hidden]');
+      const target = visible(trigger) ? trigger : [...document.querySelectorAll('#rail-more,[data-app-settings],#relic-settings')].find(visible);
       target?.focus({ preventScroll:true });
     }
     delete dialog.dataset.restoreFocus;

@@ -105,11 +105,69 @@ test('navigation pad moves the surface pivot, nadir preserves it and whole-globe
   assert.equal(f.nav.resetView(),true);assert.ok(Math.abs(f.camera.position.length()-3.1)<1e-12);f.nav.dispose();
 });
 
-test('right drag changes both tilt and heading and releases the underlying controls cleanly',()=>{
-  const f=fixture();f.handlers.get('pointerdown')(f.event(480,320,{button:2}));
+test('right drag looks around from a fixed observer position and releases the underlying controls cleanly',()=>{
+  const f=fixture(),position=f.camera.position.clone(),orientation=f.camera.quaternion.clone();f.handlers.get('pointerdown')(f.event(480,320,{button:2}));
   f.handlers.get('pointermove')(f.event(550,420,{button:2}));
-  const state=f.nav.getViewState();assert.ok(state.tiltDeg>10);assert.ok(state.headingDeg>300);assert.equal(f.controls.enabled,false);
+  const state=f.nav.getViewState();assert.equal(state.freeLook,true);assert.ok(state.tiltDeg>10);assert.notEqual(state.headingDeg,0);assert.equal(f.controls.enabled,false);
+  assert.deepEqual(f.camera.position.toArray(),position.toArray());assert.ok(f.camera.quaternion.angleTo(orientation)>.1);
   f.handlers.get('pointerup')(f.event(550,420,{button:2}));assert.equal(f.controls.enabled,true);f.nav.dispose();
+});
+
+test('free look can point above the horizon and into the sky without leaving the selected world',()=>{
+  const f=fixture({id:'moon',radius:1,radiusKm:1737.4}),position=f.camera.position.clone();
+  assert.equal(f.nav.lookAround(0,120),true);const state=f.nav.getViewState();
+  assert.deepEqual(f.camera.position.toArray(),position.toArray());assert.deepEqual(f.mesh.position.toArray(),[0,0,0]);
+  assert.equal(state.freeLook,true);assert.equal(state.lookingAtSurface,false);assert.ok(state.elevationDeg>29.99);
+  assert.equal(f.point(new THREE.Vector2()),null);assert.ok(Number.isFinite(state.rangeWorld));
+  const point=f.nav.getSurfaceCoordinates();assert.equal(point.id,'moon');assert.ok(Number.isFinite(point.latitude)&&Number.isFinite(point.longitude));
+  f.nav.dispose();
+});
+
+test('right or Shift dragging can start on empty sky',()=>{
+  for(const modifiers of [{button:2},{shiftKey:true}]){
+    const f=fixture(),position=f.camera.position.clone(),orientation=f.camera.quaternion.clone();
+    assert.equal(f.point(new THREE.Vector2(.94,.94)),null);
+    f.handlers.get('pointerdown')(f.event(931,19,modifiers));assert.equal(f.controls.enabled,false);
+    f.handlers.get('pointermove')(f.event(821,89,modifiers));
+    assert.equal(f.nav.getViewState().freeLook,true);assert.deepEqual(f.camera.position.toArray(),position.toArray());
+    assert.ok(f.camera.quaternion.angleTo(orientation)>.1);
+    f.handlers.get('pointerup')(f.event(821,89,modifiers));assert.equal(f.controls.enabled,true);f.nav.dispose();
+  }
+});
+
+test('a surface drag after free look keeps the grabbed geography under the pointer',()=>{
+  const f=fixture();f.nav.lookAround(5,3);const before=f.point(new THREE.Vector2());assert.ok(before);
+  f.handlers.get('pointerdown')(f.event(480,320));f.handlers.get('pointermove')(f.event(510,340));
+  const after=f.point(new THREE.Vector2(510/960*2-1,-340/640*2+1));assert.ok(after);
+  assert.ok(new THREE.Vector3(before.x,before.y,before.z).distanceTo(new THREE.Vector3(after.x,after.y,after.z))<1e-10);
+  assert.equal(f.nav.getViewState().freeLook,true);assert.ok(Math.abs(f.camera.position.length()-3)<1e-12);
+  f.handlers.get('pointerup')(f.event(510,340));f.nav.dispose();
+});
+
+test('matched two-finger vertical motion changes the sightline while preserving the observer location',()=>{
+  const f=fixture(),position=f.camera.position.clone(),orientation=f.camera.quaternion.clone(),touch=(x,y,id)=>f.event(x,y,{pointerType:'touch',pointerId:id});
+  f.handlers.get('pointerdown')(touch(450,320,1));f.handlers.get('pointerdown')(touch(510,320,2));
+  f.handlers.get('pointermove')(touch(450,390,1));f.handlers.get('pointermove')(touch(510,390,2));
+  assert.equal(f.nav.getViewState().freeLook,true);assert.ok(f.camera.position.distanceTo(position)<1e-12);assert.ok(f.camera.quaternion.angleTo(orientation)>.1);
+  f.handlers.get('pointerup')(touch(510,390,2));f.handlers.get('pointerup')(touch(450,390,1));f.nav.dispose();
+});
+
+test('explicit nadir and reset clear free look, while invalid rotations cannot corrupt the pose',()=>{
+  const f=fixture();f.nav.lookAround(35,120,10);const orientation=f.camera.quaternion.toArray(),position=f.camera.position.toArray();
+  assert.equal(f.nav.lookAround(NaN,0),false);assert.deepEqual(f.camera.position.toArray(),position);assert.deepEqual(f.camera.quaternion.toArray(),orientation);
+  f.nav.topDown();assert.notEqual(f.nav.getViewState().freeLook,true);assert.ok(f.point(new THREE.Vector2()));
+  f.nav.lookAround(80,150);f.nav.resetView();assert.notEqual(f.nav.getViewState().freeLook,true);assert.ok(f.point(new THREE.Vector2()));
+  f.nav.lookAround(20,130);f.focus.id='mars';f.controls.update();f.nav.enforce();assert.equal(f.nav.getViewState().id,'mars');assert.notEqual(f.nav.getViewState().freeLook,true);
+  f.nav.dispose();
+});
+
+test('Ctrl or middle drag keeps the optional surface-pivot orbit gesture',()=>{
+  for(const modifiers of [{ctrlKey:true},{button:1}]){
+    const f=fixture(),position=f.camera.position.clone();f.handlers.get('pointerdown')(f.event(480,320,modifiers));
+    f.handlers.get('pointermove')(f.event(540,420,modifiers));
+    assert.notEqual(f.nav.getViewState().freeLook,true);assert.ok(f.nav.getViewState().tiltDeg>10);assert.ok(f.camera.position.distanceTo(position)>.1);
+    f.handlers.get('pointerup')(f.event(540,420,modifiers));f.nav.dispose();
+  }
 });
 
 test('two-finger vertical motion tilts, twist turns, and pinch zooms without losing the globe',()=>{
@@ -135,5 +193,9 @@ test('the vendored OrbitControls cannot introduce idle drift in a tilted surface
   const position=camera.position.toArray(),quaternion=camera.quaternion.toArray();
   for(let i=0;i<1000;i++){controls.update();nav.enforce();}
   assert.deepEqual(camera.position.toArray(),position);assert.deepEqual(camera.quaternion.toArray(),quaternion);
-  assert.ok(camera.position.length()-1>=minimumGlobeAltitude(focus)-1e-12);nav.dispose();controls.dispose();
+  assert.ok(camera.position.length()-1>=minimumGlobeAltitude(focus)-1e-12);
+  nav.lookAround(23,130,17);const freePosition=camera.position.toArray(),freeQuaternion=camera.quaternion.toArray(),freeUp=camera.up.toArray();
+  for(let i=0;i<1000;i++){controls.update();nav.enforce();}
+  assert.deepEqual(camera.position.toArray(),freePosition);assert.deepEqual(camera.quaternion.toArray(),freeQuaternion);assert.deepEqual(camera.up.toArray(),freeUp);
+  nav.dispose();controls.dispose();
 });

@@ -58,7 +58,7 @@ class EphemerisTests(unittest.TestCase):
         service = PlanetaryEphemeris(cache)
         with patch.object(horizons, "fetch_window", side_effect=lambda body: {"body": body, **CATALOGUE["bodies"][body]}) as fetch:
             service._refresh()
-        self.assertEqual(fetch.call_count, 8)
+        self.assertEqual(fetch.call_count, len(horizons.TARGETS))
         self.assertEqual([call.args[0] for call in fetch.call_args_list], list(horizons.TARGETS))
         self.assertTrue(all(call.args[1] == 600 for call in cache.get.call_args_list))
         self.assertEqual(set(service.bodies), set(horizons.TARGETS))

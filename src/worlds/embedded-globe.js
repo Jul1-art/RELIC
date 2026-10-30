@@ -4,6 +4,8 @@ import {SURFACE_SOURCES} from '../atlas/surface-imagery.js';
 import {bodyOrientationBasis,sunDirectionScene} from '../atlas/solar-illumination.js';
 import {approximatePosition} from '../atlas/orbital-data.js';
 import {loadGlobalHeightGrid,createGlobalTerrainProvider} from './global-terrain.js';
+import {createCelestialScene,celestialRayDistance,getBodyIdFromPick} from './celestial-scene.js';
+import {wheelZoomFactor} from '../atlas/orbital-navigation.js';
 
 Cesium.Ion.defaultAccessToken='';
 const CHANNEL='relic-detailed-globe-v15';
@@ -15,8 +17,9 @@ const ellipsoid=body==='earth'?Cesium.Ellipsoid.WGS84:body==='moon'?Cesium.Ellip
 Cesium.Ellipsoid.default=ellipsoid;
 const radius=ellipsoid.maximumRadius,DEG=Math.PI/180;
 const credits=document.querySelector('#credits'),sourceCredit=document.querySelector('#source-credit');
-let viewer,tileset,buildings,disposed=false,ready=false,paused=false,focus={id:body},sourceMode='imagery',sourceLabel='',ionStatus='loading';
+let viewer,tileset,buildings,celestial,disposed=false,ready=false,paused=false,focus={id:body},sourceMode='imagery',sourceLabel='',ionStatus='loading';
 let lastState=0,lastFrame=null,globalGrid=null,geography={lat:18,lon:0},lastHeading=0;
+let defaultFov=Math.PI/3;
 const adaptiveImagery=[];
 const post=(type,payload={})=>{if(parent!==window)parent.postMessage({channel:CHANNEL,type,...payload},location.origin);};
 const finite=value=>typeof value==='number'&&Number.isFinite(value);
@@ -31,14 +34,21 @@ function updateCredits(){
 }
 const creditObserver=new ResizeObserver(()=>{if(disposed)return;document.documentElement.style.setProperty('--credit-height',`${Math.ceil(credits.getBoundingClientRect().height)}px`);if(viewer&&!viewer.isDestroyed())viewer.resize();requestRender();state(true);});creditObserver.observe(credits);
 
+// Depth picks can also hit another world. Navigation pivots must stay on the
+// inspected globe; 1.5% includes measured terrain and buildings on all three.
+function selectedGroundPoint(point){
+  return point&&[point.x,point.y,point.z].every(Number.isFinite)&&Cesium.Cartesian3.magnitude(point)<=radius*1.015?point:null;
+}
 function pickTarget(position){
   if(!viewer)return null;
   const point=position||new Cesium.Cartesian2(viewer.canvas.clientWidth/2,viewer.canvas.clientHeight/2),scene=viewer.scene;
   let hit;
-  if(scene.pickPositionSupported&&(!scene.globe.show||buildings))try{hit=scene.pickPosition(point);}catch{}
-  if(!hit&&scene.globe.show)try{hit=scene.globe.pick(viewer.camera.getPickRay(point),scene);}catch{}
-  if(!hit)hit=viewer.camera.pickEllipsoid(point,ellipsoid);
-  return hit&&[hit.x,hit.y,hit.z].every(Number.isFinite)?hit:null;
+  if(scene.pickPositionSupported&&(!scene.globe.show||buildings))try{
+    if(!getBodyIdFromPick(scene.pick(point)))hit=selectedGroundPoint(scene.pickPosition(point));
+  }catch{}
+  if(!hit&&scene.globe.show)try{hit=selectedGroundPoint(scene.globe.pick(viewer.camera.getPickRay(point),scene));}catch{}
+  if(!hit)hit=selectedGroundPoint(viewer.camera.pickEllipsoid(point,ellipsoid));
+  return hit;
 }
 function cameraFrame(){
   const target=pickTarget();if(!target)return lastFrame;
@@ -69,11 +79,21 @@ function goTo(lat,lon,range,heading=0,tilt=0){
   applyFrame({target,range:clamp(range,20,radius*12),heading:heading*DEG,pitch:(clamp(tilt,0,85)-90)*DEG});
 }
 function resetView(){
+  viewer.camera.frustum.fov=defaultFov;
   const halfFov=Math.max(.08,Math.min(viewer.camera.frustum.fovy||Math.PI/3,viewer.camera.frustum.fov||Math.PI/3)/2);
   const range=radius*1.12/Math.sin(halfFov)-radius;
   goTo(geography.lat,geography.lon,range);
 }
-function zoom(factor){const frame=cameraFrame();if(frame&&finite(factor)&&factor>0)applyFrame({...frame,range:frame.range*clamp(factor,.1,10)});}
+function zoom(factor){
+  if(!finite(factor)||factor<=0)return;
+  const hit=pickTarget(),distance=hit?Cesium.Cartesian3.distance(hit,viewer.camera.positionWC):Infinity;
+  if(distance>radius*25){viewer.camera.frustum.fov=clamp(viewer.camera.frustum.fov*factor,.25*DEG,Math.PI/2);requestRender();state(true);return;}
+  const frame=cameraFrame();if(frame)applyFrame({...frame,range:frame.range*clamp(factor,.1,10)});
+}
+function lookAround(yaw=0,pitch=0){
+  if(!finite(yaw)||!finite(pitch)||disposed)return;
+  viewer.camera.cancelFlight();viewer.camera.lookRight(yaw*DEG);viewer.camera.lookUp(pitch*DEG);requestRender();state(true);
+}
 function orient(tiltDelta=0,headingDelta=0,absoluteTilt){
   const frame=cameraFrame();if(!frame)return;
   applyFrame({...frame,heading:frame.heading+headingDelta*DEG,pitch:((finite(absoluteTilt)?absoluteTilt:90+frame.pitch/DEG+tiltDelta)-90)*DEG});
@@ -100,17 +120,25 @@ function state(force=false){
   for(const entry of adaptiveImagery){const show=altitudeRatio<entry.maximumAltitudeRatio;if(entry.layer.show!==show){entry.layer.show=show;requestRender();}}
   if(![latitude,longitude,cameraPoint.height,frame.range].every(Number.isFinite))return;
   geography={lat:latitude,lon:longitude};
+  const centerPixel=new Cesium.Cartesian2(viewer.canvas.clientWidth/2,viewer.canvas.clientHeight/2),ray=viewer.camera.getPickRay(centerPixel);
+  let viewRange=Infinity,scaleReference='sky';
+  let ground;
+  try{ground=selectedGroundPoint(viewer.scene.globe.show?viewer.scene.globe.pick(ray,viewer.scene):viewer.scene.pickPosition(centerPixel));}catch{}
+  if(ground){viewRange=Cesium.Cartesian3.distance(ground,viewer.camera.positionWC);scaleReference=body;}
+  for(const row of focus.context||[]){const range=celestialRayDistance(ray.origin,ray.direction,row);if(range&&range<viewRange){viewRange=range;scaleReference=row.id;}}
+  const metersPerPixel=Number.isFinite(viewRange)?2*viewRange*Math.tan((viewer.camera.frustum.fovy||Math.PI/3)/2)/Math.max(1,viewer.canvas.clientHeight):null;
   post('state',{state:{id:body,latitude,longitude,altitudeKm:Math.max(0,cameraPoint.height-groundUnderCamera)/1000,rangeMeters:frame.range,
     tiltDeg:clamp(90+frame.pitch/DEG,0,85),headingDeg:((frame.heading/DEG)%360+360)%360,
-    metersPerPixel:2*frame.range*Math.tan((viewer.camera.frustum.fovy||Math.PI/3)/2)/Math.max(1,viewer.canvas.clientHeight),
-    sourceMode,sourceLabel,ionStatus,creditHeight:Math.ceil(credits.getBoundingClientRect().height),globalResolutionMeters:globalGrid?.nativeEquatorialSpacingMeters||null}});
+    metersPerPixel,scaleReference,
+    sourceMode,sourceLabel,ionStatus,creditHeight:Math.ceil(credits.getBoundingClientRect().height),globalResolutionMeters:globalGrid?.nativeEquatorialSpacingMeters||null,
+    contextBodies:(focus.context||[]).map(row=>row.id),cameraPosition:{x:viewer.camera.positionWC.x,y:viewer.camera.positionWC.y,z:viewer.camera.positionWC.z},cameraDirection:{x:viewer.camera.directionWC.x,y:viewer.camera.directionWC.y,z:viewer.camera.directionWC.z}}});
 }
 function setLighting(value){
   const date=Number.isFinite(Date.parse(value.date))?new Date(value.date):new Date();viewer.clock.currentTime=Cesium.JulianDate.fromDate(date);viewer.clock.shouldAnimate=false;
   let local=value.sunDirection;
   if(!local||![local.x,local.y,local.z].every(Number.isFinite)){
-    const id=body==='moon'?'earth':body,position=approximatePosition(id,date)?.positionKm;
-    const sun=sunDirectionScene(position),basis=bodyOrientationBasis(body==='moon'?'earth':body,date);
+    const position=approximatePosition(body==='moon'?'earth':body,date)?.positionKm;
+    const sun=sunDirectionScene(position),basis=bodyOrientationBasis(body,date);
     if(sun&&basis){
       const dot=axis=>sun.x*axis.x+sun.y*axis.y+sun.z*axis.z;
       local={x:dot(basis.x),y:-dot(basis.z),z:dot(basis.y)};
@@ -122,6 +150,7 @@ function setLighting(value){
 }
 function setFocus(value){
   if(value?.id!==body)return;focus={...value};setLighting(value);
+  celestial?.setBodies(value.context||[]);
   if(finite(value.lat)&&finite(value.lon))goTo(value.lat,value.lon,finite(value.range)?value.range:radius*.08,finite(value.heading)?value.heading:0,finite(value.tilt)?value.tilt:0);
   else resetView();
   state(true);
@@ -185,6 +214,9 @@ function receive(event){
   if(event.origin!==location.origin||event.source!==parent||event.data?.channel!==CHANNEL||disposed||!viewer)return;
   const {action,value}=event.data;
   if(action==='focus')setFocus(event.data.focus);
+  else if(action==='context'){focus.context=event.data.context||[];celestial?.setBodies(focus.context);state(true);}
+  else if(action==='lookAt'&&typeof value==='string'){celestial?.lookAt(value);state(true);}
+  else if(action==='look'&&value)lookAround(value.yaw,value.pitch);
   else if(action==='pause')suspend(value);
   else if(action==='dispose')dispose();
   else if(action==='zoom')zoom(value);
@@ -195,35 +227,56 @@ function receive(event){
   else if(action==='topDown')orient(0,0,0);
   else if(action==='resetView')resetView();
 }
-function dispose(){if(disposed)return;disposed=true;creditObserver.disconnect();window.removeEventListener('message',receive);if(viewer&&!viewer.isDestroyed())viewer.destroy();}
+function dispose(){if(disposed)return;disposed=true;creditObserver.disconnect();window.removeEventListener('message',receive);celestial?.dispose();if(viewer&&!viewer.isDestroyed())viewer.destroy();}
 async function start(){
   try{
     viewer=new Cesium.Viewer('globe',{ellipsoid,globe:new Cesium.Globe(ellipsoid),mapProjection:new Cesium.GeographicProjection(ellipsoid),
       baseLayer:false,timeline:false,animation:false,baseLayerPicker:false,geocoder:false,homeButton:false,sceneModePicker:false,
       navigationHelpButton:false,fullscreenButton:false,vrButton:false,selectionIndicator:false,infoBox:false,creditContainer:document.querySelector('#cesium-credit'),showRenderLoopErrors:false,msaaSamples:1});
     const scene=viewer.scene,controller=scene.screenSpaceCameraController;
+    defaultFov=viewer.camera.frustum.fov;
     viewer.clock.shouldAnimate=false;scene.requestRenderMode=true;scene.maximumRenderTimeChange=Infinity;
-    scene.backgroundColor=Cesium.Color.fromCssColorString('#020408');scene.highDynamicRange=false;scene.verticalExaggeration=1;
+    scene.backgroundColor=Cesium.Color.BLACK;scene.highDynamicRange=false;scene.verticalExaggeration=1;
+    celestial=createCelestialScene({Cesium,viewer,onSelect:id=>post('select',{id})});
     scene.globe.baseColor=Cesium.Color.fromCssColorString(body==='earth'?'#183444':body==='moon'?'#777573':'#82533e');
     scene.globe.maximumScreenSpaceError=compact?2.5:1.5;scene.globe.tileCacheSize=compact?72:160;scene.globe.depthTestAgainstTerrain=true;
     if(scene.skyBox)scene.skyBox.show=false;if(scene.skyAtmosphere)scene.skyAtmosphere.show=false;if(scene.sun)scene.sun.show=false;if(scene.moon)scene.moon.show=false;
     scene.globe.showGroundAtmosphere=false;scene.fog.enabled=false;
     controller.inertiaSpin=0;controller.inertiaTranslate=0;controller.inertiaZoom=0;
     controller.minimumZoomDistance=10;controller.maximumZoomDistance=radius*12;controller.enableCollisionDetection=true;
-    controller.tiltEventTypes=[Cesium.CameraEventType.RIGHT_DRAG,Cesium.CameraEventType.MIDDLE_DRAG,{eventType:Cesium.CameraEventType.LEFT_DRAG,modifier:Cesium.KeyboardEventModifier.CTRL},{eventType:Cesium.CameraEventType.LEFT_DRAG,modifier:Cesium.KeyboardEventModifier.SHIFT},Cesium.CameraEventType.PINCH];
-    controller.zoomEventTypes=[Cesium.CameraEventType.WHEEL,Cesium.CameraEventType.PINCH];
+    controller.lookEventTypes=[Cesium.CameraEventType.RIGHT_DRAG,{eventType:Cesium.CameraEventType.LEFT_DRAG,modifier:Cesium.KeyboardEventModifier.SHIFT}];
+    controller.tiltEventTypes=[Cesium.CameraEventType.MIDDLE_DRAG,{eventType:Cesium.CameraEventType.LEFT_DRAG,modifier:Cesium.KeyboardEventModifier.CTRL},Cesium.CameraEventType.PINCH];
+    controller.zoomEventTypes=[];
     viewer.resolutionScale=Math.min(devicePixelRatio||1,compact?1.35:1.8);viewer.targetFrameRate=compact?45:60;
     viewer.camera.percentageChanged=.002;
     const interaction=()=>{viewer.camera.cancelFlight();post('interaction');};
-    scene.canvas.addEventListener('pointerdown',interaction,{passive:true});scene.canvas.addEventListener('wheel',interaction,{passive:true});
+    const touchPoints=new Map();let touchLook=null;
+    const touchMetrics=()=>{const points=[...touchPoints.values()].slice(0,2);return points.length===2?{x:(points[0].x+points[1].x)/2,y:(points[0].y+points[1].y)/2,spread:Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y)}:null;};
+    scene.canvas.addEventListener('pointerdown',event=>{
+      if(event.pointerType!=='touch')return;
+      touchPoints.set(event.pointerId,{x:event.clientX,y:event.clientY});
+      if(touchPoints.size===2){touchLook={...touchMetrics(),enabled:controller.enableInputs};controller.enableInputs=false;interaction();}
+    },{capture:true,passive:true});
+    scene.canvas.addEventListener('pointermove',event=>{
+      if(!touchPoints.has(event.pointerId))return;touchPoints.set(event.pointerId,{x:event.clientX,y:event.clientY});
+      const next=touchMetrics();if(!touchLook||!next)return;
+      lookAround(-(next.x-touchLook.x)/Math.max(1,viewer.canvas.clientWidth)*180,(next.y-touchLook.y)/Math.max(1,viewer.canvas.clientHeight)*180);
+      if(next.spread>8&&touchLook.spread>8)zoom(touchLook.spread/next.spread);
+      touchLook={...next,enabled:touchLook.enabled};event.preventDefault();
+    },{capture:true,passive:false});
+    const endTouch=event=>{touchPoints.delete(event.pointerId);if(touchLook&&touchPoints.size<2){controller.enableInputs=touchLook.enabled;touchLook=null;}};
+    scene.canvas.addEventListener('pointerup',endTouch,{capture:true});scene.canvas.addEventListener('pointercancel',endTouch,{capture:true});
+    scene.canvas.addEventListener('pointerdown',interaction,{passive:true});
+    scene.canvas.addEventListener('wheel',event=>{if(paused||!ready)return;event.preventDefault();interaction();zoom(wheelZoomFactor(event.deltaY,event.deltaMode,scene.canvas.clientHeight));},{passive:false});
     scene.canvas.tabIndex=0;
     scene.canvas.addEventListener('keydown',event=>{
       const moves={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',s:'down',a:'left',d:'right'};
-      if(moves[event.key]){if(event.shiftKey&&event.key.startsWith('Arrow'))orient(event.key==='ArrowUp'?5:event.key==='ArrowDown'?-5:0,event.key==='ArrowLeft'?-10:event.key==='ArrowRight'?10:0);else move(moves[event.key]);}
+      if(moves[event.key]){if(event.shiftKey&&event.key.startsWith('Arrow'))lookAround(event.key==='ArrowLeft'?-5:event.key==='ArrowRight'?5:0,event.key==='ArrowUp'?5:event.key==='ArrowDown'?-5:0);else move(moves[event.key]);}
       else if(event.key==='+'||event.key==='=')zoom(.8);else if(event.key==='-')zoom(1.25);else if(['n','Home'].includes(event.key))orient(0,0,0);else if(event.key.toLowerCase()==='q')orient(0,-5);else if(event.key.toLowerCase()==='e')orient(0,5);else if(event.key.toLowerCase()==='r')resetView();else return;
       event.preventDefault();interaction();
     });
     const handler=new Cesium.ScreenSpaceEventHandler(scene.canvas);
+    handler.setInputAction(event=>{if(celestial?.handleClick(event.position,{pixels:compact?22:13}))interaction();},Cesium.ScreenSpaceEventType.LEFT_CLICK);
     handler.setInputAction(event=>{const hit=pickTarget(event.position);if(!hit)return;const cart=ellipsoid.cartesianToCartographic(hit),frame=cameraFrame();goTo(cart.latitude/DEG,cart.longitude/DEG,Math.max(50,(frame?.range||radius*.1)*.3),frame?.heading/DEG||0,frame?90+frame.pitch/DEG:0);interaction();},Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
     scene.renderError.addEventListener(()=>{post('error');dispose();});
     scene.postRender.addEventListener(()=>state());

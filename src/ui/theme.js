@@ -1,26 +1,28 @@
-import { getLanguage, onLanguageChange } from '../atlas/atlas-live.js?v=3';
-import { getPreferences, setPreferences } from './app-settings.js';
+/** RELIC has one appearance: pure black chrome and white controls. */
+const root=document.documentElement;
 
-const root = document.documentElement;
-function render() {
-  const night = root.dataset.theme !== 'day';
-  const english = getLanguage() === 'en';
-  const label = night ? (english ? 'Switch to day mode' : 'Passer en mode jour') : (english ? 'Switch to night mode' : 'Passer en mode nuit');
-  for (const button of document.querySelectorAll('[data-theme-toggle]')) {
-    button.setAttribute('aria-label', label);
-    button.setAttribute('aria-pressed', String(night));
-    button.title = label;
-  }
-  const color = document.querySelector('meta[name="theme-color"]');
-  if (color) color.content = night ? '#050505' : '#f5f5f3';
+function applyMonochromeTheme(){
+  root.dataset.theme='night';
+  root.dataset.accent='mono';
+  root.style.colorScheme='dark';
+  const color=document.querySelector('meta[name="theme-color"]');
+  if(color)color.content='#000000';
+  for(const button of document.querySelectorAll('[data-theme-toggle]'))button.remove();
 }
 
-// Delegation also supports controls moved into the shared world dashboard.
-document.addEventListener('click', event => {
-  const button = event.target.closest?.('[data-theme-toggle]');
-  if (!button || button.disabled || button.closest('[inert]')) return;
-  setPreferences({ theme:getPreferences().theme === 'night' ? 'day' : 'night' });
+// Migrate only appearance preferences. API credentials and saved films remain
+// separate browser records and are never read or changed here.
+try{
+  localStorage.setItem('nasa-atlas-theme','night');
+  const saved=JSON.parse(localStorage.getItem('relic.preferences.v1')||'null');
+  if(saved&&typeof saved==='object'&&!Array.isArray(saved)){
+    saved.theme='night';saved.accent='mono';
+    localStorage.setItem('relic.preferences.v1',JSON.stringify(saved));
+  }
+}catch{/* The fixed appearance also works without browser storage. */}
+
+applyMonochromeTheme();
+window.addEventListener('relic-preferences-change',applyMonochromeTheme);
+window.addEventListener('storage',event=>{
+  if(event.key==='nasa-atlas-theme'||event.key==='relic.preferences.v1')applyMonochromeTheme();
 });
-onLanguageChange(render);
-window.addEventListener('relic-preferences-change', render);
-render();

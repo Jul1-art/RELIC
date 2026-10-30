@@ -2,11 +2,12 @@ import {loadMoonCatalogue,relativePositionKm,sampleOrbitKm,hasMeanOrbit} from '.
 import {displayedMoonRadius,moonOrbitOpacity} from './moon-visibility.js';
 
 /** Complete planetary moon catalogue, batched orbits and selectable 3D bodies. */
-export async function createNaturalSystems({THREE,scene,planetGroups,planets,getLanguage,onSelect,getSelected,labelHost,camera}){
+export async function createNaturalSystems({THREE,scene,planetGroups,planets,getLanguage,onSelect,getSelected,labelHost,camera,getRelativePosition}){
  const catalogue=await loadMoonCatalogue();
  const textureCatalogue=await fetch(new URL('../../assets/moons/texture-catalog.json',import.meta.url)).then(r=>r.json());
  const textureFiles=new Map(textureCatalogue.textures.map(t=>[t.name,t.file]));const rows=catalogue.satellites.filter(r=>planetGroups.has(r.parent));
  const states=new Map(),systems=new Map(),pickable=[],owned=[],labelNodes=[];
+ const positionFor=(row,date)=>getRelativePosition?.(row,date)||relativePositionKm(row,date);
  const dummy=new THREE.Object3D(),arrowDummy=new THREE.Object3D(),v=new THREE.Vector3(),up=new THREE.Vector3(0,1,0);let orbitMode='auto',focus='overview',lastDate=new Date(),lastUpdate=-Infinity,disposed=false;
  const sphere=new THREE.SphereGeometry(1,64,40),rock=new THREE.IcosahedronGeometry(1,1);owned.push(sphere,rock);
  const arrowGeometry=new THREE.ConeGeometry(.48,1.5,4);owned.push(arrowGeometry);
@@ -66,7 +67,7 @@ export async function createNaturalSystems({THREE,scene,planetGroups,planets,get
    system.group.position.copy(planetGroups.get(system.planet.id).position);
    const active=focus==='overview'||parentFocus===system.planet.id;system.group.visible=active;
    system.compactOrbits.visible=focus==='overview';
-   for(const row of system.records){const state=states.get(row.id);const p=relativePositionKm(row,date);
+   for(const row of system.records){const state=states.get(row.id);const p=positionFor(row,date);
     if(p){const scale=focus==='overview'?state.compact:system.scale;state.offset.set(p.x*scale,p.y*scale,p.z*scale);}
     else state.offset.set(system.planet.size*1.9,0,0);
     state.position.copy(system.group.position).add(state.offset);
@@ -152,6 +153,8 @@ export async function createNaturalSystems({THREE,scene,planetGroups,planets,get
   setOrbitMode(mode='auto'){orbitMode=['auto','inner','all'].includes(mode)?mode:'auto';updateVisualSizes();updateOrbitVisibility();},
   getOrbitMode:()=>orbitMode,
   getDisplayRadius:id=>states.get(id)?.displayRadius||0,
+  getFocusCandidates(){return [...states.values()].filter(state=>state.system.group.visible&&(state.mesh?state.mesh.visible:focus!=='overview')).map(state=>({id:state.row.id,parent:state.row.parent,position:state.position,radius:state.radius,displayRadius:state.displayRadius,visible:true}));},
+  getRelativePositionKm(id,date=lastDate){const state=states.get(id);return state?positionFor(state.row,date):null;},
   getGroups:()=>[...systems.values()].map(system=>({parent:system.planet.id,group:system.group})),
   getGroup:parent=>systems.get(parent)?.group||null,
   pickNearRay,

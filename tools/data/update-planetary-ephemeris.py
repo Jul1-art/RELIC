@@ -24,7 +24,7 @@ CONTACT = "https://github.com/Jul1-art/RELIC/issues"
 TARGETS = {"mercury": ("199", "6 h"), "venus": ("299", "12 h"),
            "earth": ("399", "12 h"), "mars": ("499", "1 d"),
            "jupiter": ("599", "6 h"), "saturn": ("699", "1 d"),
-           "uranus": ("799", "1 d"), "neptune": ("899", "1 d")}
+           "uranus": ("799", "1 d"), "neptune": ("899", "1 d"), "moon": ("301", "6 h")}
 
 
 def request_states(target, *, start=None, stop=None, step=None, times=None):
@@ -73,6 +73,8 @@ def main():
     parser.add_argument("--start", default="2025-01-01")
     parser.add_argument("--stop", default="2033-01-01")
     parser.add_argument("--output", type=Path, default=Path(__file__).resolve().parents[2] / "assets/ephemeris/planets-horizons.json")
+    parser.add_argument("--body", action="append", choices=TARGETS, help="Refresh only the named body (repeatable)")
+    parser.add_argument("--extend", action="store_true", help="Preserve the other bodies in the existing catalogue")
     args = parser.parse_args()
     catalogue = {"version": 1, "source": "NASA/JPL Horizons", "sourceUrl": "https://ssd.jpl.nasa.gov/horizons/",
                  "documentation": "https://ssd-api.jpl.nasa.gov/doc/horizons.html",
@@ -81,13 +83,21 @@ def main():
                  "units": {"position": "km", "velocity": "km/day", "epoch": "JD UTC"},
                  "correction": "geometric / NONE", "interpolation": "cubic Hermite; no extrapolation",
                  "start": args.start + "T00:00:00Z", "stop": args.stop + "T00:00:00Z", "bodies": {}}
-    for body, (target, step) in TARGETS.items():
+    if args.extend:
+        existing = json.loads(args.output.read_text(encoding="utf-8"))
+        if any(existing[key] != catalogue[key] for key in ("frame", "center", "timeScale", "units", "start", "stop")):
+            raise ValueError("Existing ephemeris frame, units or date coverage do not match")
+        catalogue["bodies"] = existing["bodies"]
+    chosen = args.body or list(TARGETS)
+    for body in chosen:
+        target, step = TARGETS[body]
         print(f"Requesting {body}: {step}", flush=True)
         data = request_states(target, start=args.start, stop=args.stop, step=step)
         catalogue["bodies"][body] = {"target": target, "step": step, **data}
         print(f"  {len(data['states'])} states; {data['solution']}", flush=True)
         time.sleep(1)  # One API request at a time, reused for years of local rendering.
-    for body, entry in catalogue["bodies"].items():
+    for body in chosen:
+        entry = catalogue["bodies"][body]
         print(f"Checking independent {body} midpoints", flush=True)
         entry["validationStates"] = midpoint_validation(entry)
         time.sleep(1)

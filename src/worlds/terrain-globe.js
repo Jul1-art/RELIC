@@ -483,7 +483,7 @@ async function start() {
     if (viewer.scene.skyBox) viewer.scene.skyBox.show = false;
     if (viewer.scene.sun) viewer.scene.sun.show = false;
     if (viewer.scene.moon) viewer.scene.moon.show = false;
-    viewer.scene.backgroundColor = Cesium.Color.fromCssColorString('#080f1a');
+    viewer.scene.backgroundColor = Cesium.Color.BLACK;
     viewer.scene.globe.baseColor = Cesium.Color.fromCssColorString(body === 'mars' ? '#80503c' : body === 'moon' ? '#686765' : '#102436');
     viewer.scene.globe.enableLighting = false;
     viewer.scene.globe.depthTestAgainstTerrain = true;

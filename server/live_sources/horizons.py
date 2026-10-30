@@ -19,6 +19,7 @@ DOCUMENTATION = "https://ssd-api.jpl.nasa.gov/doc/horizons.html"
 TARGETS = {
     "mercury": "199", "venus": "299", "earth": "399", "mars": "499",
     "jupiter": "599", "saturn": "699", "uranus": "799", "neptune": "899",
+    "moon": "301",
 }
 REQUEST_LOCK = threading.Lock()
 NUMBER = r"[+-]?\d+(?:\.\d+)?(?:E[+-]?\d+)?"

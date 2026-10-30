@@ -1,4 +1,4 @@
-.detailed-globe-frame{position:absolute;inset:0 var(--globe-panel-width,0px) 0 0;z-index:2;width:calc(100% - var(--globe-panel-width,0px));height:100%;border:0;background:#020408;opacity:0;pointer-events:none;transition:opacity .2s}.detailed-globe-frame.is-ready{opacity:1;pointer-events:auto}.detailed-globe-frame[hidden]{display:none}
+.detailed-globe-frame{position:absolute;inset:0 var(--globe-panel-width,0px) 0 0;z-index:2;width:calc(100% - var(--globe-panel-width,0px));height:100%;border:0;background:#000;opacity:0;pointer-events:none;transition:opacity .2s}.detailed-globe-frame.is-ready{opacity:1;pointer-events:auto}.detailed-globe-frame[hidden]{display:none}
 body.atlas-page[data-detailed-globe=active] :is(#planet-labels,.natural-label-layer){display:none!important}
 html body.atlas-page[data-detailed-globe=active] .solar-scale-note{bottom:calc(var(--provider-credits-height,0px) + var(--detailed-credits-height,30px) + 8px)!important}
 html body.atlas-page[data-detailed-globe=active].has-action-rail :is(.relic-action-rail,#planet-dashboard-inspector){bottom:calc(12px + var(--provider-credits-height,0px) + var(--detailed-credits-height,30px))!important}

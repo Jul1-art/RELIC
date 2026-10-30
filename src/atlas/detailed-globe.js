@@ -4,7 +4,7 @@ const CHANNEL='relic-detailed-globe-v15';
  * terrain queues and credentials in memory when returning to the solar view.
  * No access token ever crosses the parent/frame message channel or URL.
  */
-export function createDetailedGlobe({host,onState=()=>{},onInteraction=()=>{}}){
+export function createDetailedGlobe({host,onState=()=>{},onInteraction=()=>{},onSelect=()=>{}}){
   if(!document.querySelector('link[href*="detailed-globe.css"]')){
     const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('./detailed-globe.css?v=15',import.meta.url).href;document.head.append(link);
   }
@@ -38,11 +38,12 @@ export function createDetailedGlobe({host,onState=()=>{},onInteraction=()=>{}}){
     if(data.type==='ready'){clearTimeout(timer);ready=true;loading=false;frame.classList.add('is-ready');state={...state,...data.state};emit();return;}
     if(data.type==='state'){state={...state,...data.state};emit();return;}
     if(data.type==='interaction'){onInteraction();return;}
+    if(data.type==='select'&&typeof data.id==='string'){onSelect(data.id);return;}
     if(data.type==='error'){teardown();emit({error:'unavailable'});}
   }
   window.addEventListener('message',receive);
   const command=(action,value)=>{if(!ready)return false;send(action,{value});return true;};
-  return {setFocus,hide,
+  return {setFocus,hide,setContext(context){if(current)current.context=context;send('context',{context});},lookAt:id=>command('lookAt',id),lookAround:(yaw,pitch)=>command('look',{yaw,pitch}),
     get active(){return Boolean(frame&&ready);},get loading(){return loading;},
     getViewState:()=>ready?{id:current?.id,...state}:null,
     getSurfaceCoordinates:()=>ready?{id:current?.id,latitude:state.latitude,longitude:state.longitude,altitudeKm:state.altitudeKm}:null,

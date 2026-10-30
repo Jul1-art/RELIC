@@ -10,7 +10,7 @@ import { approximateOrbit } from './orbital-data.js';
 import { createNaturalSystems } from './natural-system.js';
 import { createSmallBodyBelts } from './small-body-belts.js';
 import { createSolarInspector } from './solar-inspector.js';
-import { findZoomFocus } from './zoom-focus.js';
+import { findZoomFocus, pickFocusNearRay } from './zoom-focus.js';
 import { planetPoleScene } from './moon-data.js';
 import { createOrbitDirections } from './orbit-directions.js';
 import { wheelZoomFactor, systemExitDistance, finiteCameraState } from './orbital-navigation.js';
@@ -24,8 +24,8 @@ import { createGlobeNavigation } from './globe-navigation.js';
 import { auToWorld, kmToWorld, createScaleReadout } from './solar-scale.js';
 import { createPlanetaryEphemeris } from './planetary-ephemeris.js';
 import { createDetailedGlobe } from './detailed-globe.js';
-import { createGlobeControls } from './globe-controls.js';
 import { sunDirectionScene } from './solar-illumination.js';
+import { makeCelestialContext } from './celestial-context.js';
 
 const dashboard = initializePlanetDashboard({ view:'atlas' });
 
@@ -36,7 +36,7 @@ const loading = $('#loading');
 const errorScreen = $('#error-screen');
 const viewLoading = createViewLoading({ element:loading, errorElement:errorScreen, getLanguage });
 const viewportSize = () => ({ width:Math.max(1, sceneHost.clientWidth), height:Math.max(1, sceneHost.clientHeight) });
-const sky = new THREE.Color('#050505');
+const sky = new THREE.Color('#000000');
 let filmActive = window.__relicFilmActive === true || document.documentElement.dataset.relicFilm === 'active';
 let rendererSuspended=false;
 const gestureHint = $('#gesture-hint');
@@ -79,9 +79,10 @@ const epochTime=Date.now();
 const simulationClock=createSimulationClock({startTime:epochTime});
 const planetaryEphemeris=createPlanetaryEphemeris({onChange:()=>{
   rebuildPlanetOrbits();updatePositions(simulationDays);livePanel?.render();
+  if(detailedGlobe?.active||detailedGlobe?.loading)detailedGlobe.setContext(makeNativeContext(selected));
   document.body.dataset.planetaryEphemeris=planetaryEphemeris.status.state;
 }});
-let globeNavigation=null,detailedGlobe=null,globeControls=null;
+let globeNavigation=null,detailedGlobe=null;
 let lastZoomInAt=0,lastZoomOutAt=0;
 const zoomPointer=new THREE.Vector2(0,0);
 
@@ -122,6 +123,7 @@ const overviewScale=()=>1;
 let sceneScale = overviewScale();
 camera.position.copy(overviewPosition());
 const controls = new OrbitControls(camera, renderer.domElement);
+const previousNavigationCamera=camera.position.clone();
 controls.enableDamping = true;
 controls.dampingFactor = .065;
 controls.enablePan = false;
@@ -146,9 +148,9 @@ function updateExplorationProjection(){
   const panel=open?dashboard.inspector.getBoundingClientRect():null;
   const phone=width<=700&&height>550;
   document.body.style.setProperty('--globe-panel-width',open&&width>700?`${Math.max(0,width-(panel.left-sceneHost.getBoundingClientRect().left))}px`:'0px');
-  const availableWidth=Math.max(160,width-(phone?28:open?panel.width+100:80));
+  const availableWidth=Math.max(160,width-(phone?28:open?panel.width+64:52));
   const availableHeight=Math.max(160,height-(phone&&open?panel.height+100:24));
-  if(open)camera.setViewOffset(width,height,phone?0:Math.max(0,(panel.width+24-76)/2),phone?(height-availableHeight)/2:0,width,height);
+  if(open)camera.setViewOffset(width,height,phone?0:Math.max(0,(panel.width+24-44)/2),phone?(height-availableHeight)/2:0,width,height);
   else camera.clearViewOffset();
   projectionFrameFactor=Math.max(1,height/availableWidth,height/availableHeight);
   camera.updateProjectionMatrix();
@@ -512,13 +514,16 @@ const simulationControls=createSimulationControls({host:$('.solar-view-controls'
 const cometInspector=createCometInspector({host:$('#details .detail-expanded'),getMission:()=>comet,getLanguage,onSelect:id=>selectBody(id)});
 const scaleReadout=createScaleReadout({host:sceneHost.parentElement,camera,getLanguage,getContext:()=>{
   const detail=bodyData(selected),native=detailedGlobe?.getViewState();
+  const navigation=globeNavigation?.getViewState();
   const radius=detail?.size,radiusKm=detail?.radiusKm;
   let distance=camera.position.distanceTo(controls.target);
   if(selected!=='overview'&&Number.isFinite(radius))distance=globeNavigation?.getViewState()?.rangeWorld||Math.max(radius*.0000001,distance-radius);
   let special;
   if(COMET_IDS.includes(selected))special=getLanguage()==='fr'?'ESA SPICE · noyau et matériel agrandis':'ESA SPICE · enlarged nucleus and hardware';
   else if(selected==='sun')special=getLanguage()==='fr'?'Soleil · taille agrandie':'Sun · enlarged display size';
-  return {id:selected,distance,viewportHeight:viewportSize().height,radius,radiusKm,special,kmPerPixel:native?.metersPerPixel/1000};
+  const skyView=native?native.scaleReference==='sky':globeNavigation?.isFreeLook&&!navigation?.lookingAtSurface;
+  if(skyView)special=getLanguage()==='fr'?'Vue du ciel':'Sky view';
+  return {id:selected,distance,viewportHeight:viewportSize().height,radius,radiusKm,special,hideRuler:skyView,kmPerPixel:native?.metersPerPixel/1000};
 }});
 function updateScaleNote(){scaleReadout.update();}
 let wasDetailedActive=false;
@@ -529,21 +534,28 @@ detailedGlobe=createDetailedGlobe({host:sceneHost,onState:state=>{
   controls.enabled=!state.active&&!rendererSuspended;
   if(state.active&&!wasDetailedActive){surfaceDetail.clear();detailedGlobe.pause(rendererSuspended||filmActive||document.hidden);}
   wasDetailedActive=state.active;
-  globeControls?.refresh();updateScaleNote();
-},onInteraction:()=>{flight=null;hideGestureHint();}});
-globeControls=createGlobeControls({host:inspector.element.parentElement,getNavigation:()=>detailedGlobe.active?detailedGlobe:globeNavigation,getLanguage,isActive:()=>!filmActive&&selected!=='overview'&&selected!=='sun'&&!COMET_IDS.includes(selected)});
-$('#live-data').before(globeControls.element);
+  updateScaleNote();
+},onInteraction:()=>{flight=null;hideGestureHint();},onSelect:id=>selectBody(id)});
+function makeNativeContext(id){
+  const date=simulationClock.date,parent=parentBodyId(id),parentPosition=planetaryEphemeris.getPosition(parent==='moon'?'earth':parent,date);
+  const companions=(naturalSystems?.getSatellites(parent)||[]).filter(row=>Number.isFinite(row.radiusKm)&&row.radiusKm>=5).map(row=>{
+    const relative=naturalSystems.getRelativePositionKm(row.id,date);
+    return {...row,positionKm:parentPosition&&relative?{x:parentPosition.x+relative.x,y:parentPosition.y-relative.z,z:parentPosition.z+relative.y}:null};
+  }).filter(row=>row.positionKm);
+  return makeCelestialContext({selected:id,date,getState:(body,date)=>planetaryEphemeris.getState(body,date),companions,getName:body=>displayBody(bodyData(body)||{id:body,name:body}).name});
+}
 function focusDetailedView(id,{lat,lon,range,direction}={}){
   if(!['earth','moon','mars'].includes(id)){detailedGlobe.hide();return;}
   const mesh=naturalSystems?.getMesh(id)||planetMeshes.get(id)||(id==='moon'?moon:null);
   if(!mesh)return;
+  solarIllumination.applyBodyOrientation(mesh,id,simulationClock.date);
   mesh.updateWorldMatrix(true,false);
   const inverse=new THREE.Matrix4().copy(mesh.matrixWorld).invert();
   const local=direction?.clone().transformDirection(inverse);
   if(!Number.isFinite(lat)&&local){lat=THREE.MathUtils.radToDeg(Math.asin(THREE.MathUtils.clamp(local.y,-1,1)));lon=THREE.MathUtils.radToDeg(Math.atan2(-local.z,local.x));}
-  const sunVector=sunDirectionScene(planetaryEphemeris.getPosition(id==='moon'?'earth':id,simulationClock.date));
+  const sunVector=sunDirectionScene(planetaryEphemeris.getPosition(id,simulationClock.date));
   const bodySun=sunVector?new THREE.Vector3(sunVector.x,sunVector.y,sunVector.z).transformDirection(inverse):null;
-  detailedGlobe.setFocus({id,lat,lon,range:range||bodyData(id).radiusKm*2100,date:simulationClock.date.toISOString(),sunDirection:bodySun?{x:bodySun.x,y:-bodySun.z,z:bodySun.y}:undefined});
+  detailedGlobe.setFocus({id,lat,lon,range:range||bodyData(id).radiusKm*2100,date:simulationClock.date.toISOString(),sunDirection:bodySun?{x:bodySun.x,y:-bodySun.z,z:bodySun.y}:undefined,context:makeNativeContext(id)});
 }
 const belts=createSmallBodyBelts({THREE,scene,auToWorld});
 const systemSunlight=new THREE.DirectionalLight(0xfff0d9,1.7);systemSunlight.visible=false;scene.add(systemSunlight,systemSunlight.target);
@@ -562,8 +574,8 @@ function frameSatelliteSystem(parent,majorOnly){
 function openInformation(){window.dispatchEvent(new CustomEvent('planet-dashboard-panel',{detail:{open:true}}));}
 function applyFocusVisibility(){
   const parent=parentBodyId(selected);
-  for(const planet of planets){const group=planetGroups.get(planet.id);group.visible=selected==='overview'||planet.id===parent;group.scale.setScalar(1);}
-  for(const node of [sun,solarGlow,solarCorona])node.visible=selected==='overview'||selected==='sun';
+  for(const planet of planets){const group=planetGroups.get(planet.id);group.visible=true;group.scale.setScalar(1);}
+  for(const node of [sun,solarGlow,solarCorona])node.visible=true;
   naturalSystems?.setFocus(selected);comet?.setFocus(selected);belts.setFocus?.(selected);
   systemSunlight.visible=selected!=='overview'&&selected!=='sun';sunlight.intensity=systemSunlight.visible?0:200;
   if(systemSunlight.visible){const center=worldPosition(parent);const direction=center.clone().normalize().negate();systemSunlight.position.copy(center).addScaledVector(direction,3000);systemSunlight.target.position.copy(center);}
@@ -624,7 +636,6 @@ function updateDetail(id) {
   close.addEventListener('click', approachSurface);
   actions.appendChild(close);
   inspector.render(id);inspector.element.hidden=COMET_IDS.includes(id);cometInspector.render(id);
-  globeControls?.refresh();
   $('#details').scrollTop=0;dashboard.inspector.scrollTop=0;
   if (id in PLANET_SITES) document.body.dataset.world = id;
   else delete document.body.dataset.world;
@@ -754,6 +765,21 @@ controls.addEventListener('start', () => { flight = null; hideGestureHint(); sur
 controls.addEventListener('change', () => {
   if (selected === 'mars' || selected === 'moon') surfaceSettleUntil = performance.now() + 220;
 });
+document.addEventListener('keydown',event=>{
+  if(filmActive||selected==='overview'||selected==='sun'||COMET_IDS.includes(selected)||event.defaultPrevented||event.ctrlKey||event.metaKey||event.altKey||event.target.closest?.('input,textarea,select,button,[contenteditable=true],dialog,[role=listbox]'))return;
+  const nav=detailedGlobe.active?detailedGlobe:globeNavigation;
+  const moves={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right'};
+  if(event.shiftKey&&moves[event.key])nav.lookAround?.(event.key==='ArrowLeft'?-5:event.key==='ArrowRight'?5:0,event.key==='ArrowUp'?5:event.key==='ArrowDown'?-5:0);
+  else if(moves[event.key])nav.move(moves[event.key]);
+  else if(event.key==='+'||event.key==='=')nav.zoom(.85);
+  else if(event.key==='-')nav.zoom(1/.85);
+  else if(event.key.toLowerCase()==='q')nav.turn(-5);
+  else if(event.key.toLowerCase()==='e')nav.turn(5);
+  else if(event.key==='Home')nav.topDown();
+  else if(event.key.toLowerCase()==='r')nav.resetView();
+  else return;
+  event.preventDefault();hideGestureHint();
+});
 renderer.domElement.addEventListener('wheel',event=>{
   if(filmActive)return;
   const bounds=renderer.domElement.getBoundingClientRect();zoomPointer.set((event.clientX-bounds.left)/bounds.width*2-1,-(event.clientY-bounds.top)/bounds.height*2+1);
@@ -801,6 +827,13 @@ function releaseTouch(event) {
   pinchDistance = 0;
 }
 function visibleObject(object){for(let node=object;node;node=node.parent)if(!node.visible)return false;return true;}
+function focusCandidates(){
+  const rows=planets.map(body=>({id:body.id,position:planetGroups.get(body.id).position,radius:body.size,displayRadius:body.size*planetGroups.get(body.id).scale.x,visible:planetGroups.get(body.id).visible}));
+  rows.push({id:'sun',position:sun.position,radius:4.55,visible:sun.visible});
+  rows.push(...(naturalSystems?.getFocusCandidates()||[]));
+  if(comet){const body=comet.getBody('67p');rows.push({id:'67p',position:comet.worldPosition('67p'),radius:body.size,visible:visibleObject(comet.getMesh('67p'))});}
+  return rows;
+}
 renderer.domElement.addEventListener('pointercancel', releaseTouch);
 renderer.domElement.addEventListener('pointerup', event => {
   if (filmActive) { pointerStart = null; releaseTouch(event); return; }
@@ -811,7 +844,7 @@ renderer.domElement.addEventListener('pointerup', event => {
   pointer.set(((event.clientX - bounds.left) / bounds.width) * 2 - 1, -((event.clientY - bounds.top) / bounds.height) * 2 + 1);
   raycaster.setFromCamera(pointer, camera);
   const hit=raycaster.intersectObjects(pickable,false).find(result=>visibleObject(result.object));
-  const id=hit?(naturalSystems?.resolveIntersection(hit)||hit.object.userData.id):naturalSystems?.pickNearRay(raycaster.ray,{touch:event.pointerType==='touch'});
+  const id=hit?(naturalSystems?.resolveIntersection(hit)||hit.object.userData.id):pickFocusNearRay(focusCandidates(),raycaster.ray.origin,raycaster.ray.direction,{fovDeg:camera.fov,viewportHeight:viewportSize().height,pixels:event.pointerType==='touch'?22:13});
   if(id)selectBody(id);
 });
 renderer.domElement.addEventListener('pointermove', event => {
@@ -820,7 +853,7 @@ renderer.domElement.addEventListener('pointermove', event => {
   const bounds = renderer.domElement.getBoundingClientRect();
   pointer.set(((event.clientX - bounds.left) / bounds.width) * 2 - 1, -((event.clientY - bounds.top) / bounds.height) * 2 + 1);
   raycaster.setFromCamera(pointer, camera);
-  renderer.domElement.style.cursor=raycaster.intersectObjects(pickable,false).some(result=>visibleObject(result.object))||naturalSystems?.pickNearRay(raycaster.ray)?'pointer':'grab';
+  renderer.domElement.style.cursor=raycaster.intersectObjects(pickable,false).some(result=>visibleObject(result.object))||pickFocusNearRay(focusCandidates(),raycaster.ray.origin,raycaster.ray.direction,{fovDeg:camera.fov,viewportHeight:viewportSize().height})?'pointer':'grab';
 });
 renderer.domElement.addEventListener('dblclick', event => {
   if (filmActive) return;
@@ -959,7 +992,7 @@ onLanguageChange(lang => {
   $('.topbar-hint').innerHTML = lang === 'en'
     ? selected === 'overview' ? 'DRAG TO ROTATE <span>·</span> PINCH OR SCROLL TO ZOOM' : 'DRAG TO MOVE <span>·</span> PINCH OR SCROLL TO ZOOM'
     : selected === 'overview' ? 'GLISSER POUR TOURNER <span>·</span> PINCER OU DÉFILER POUR ZOOMER' : 'GLISSER POUR SE DÉPLACER <span>·</span> PINCER OU DÉFILER POUR ZOOMER';
-  updateScaleNote();simulationControls.refresh(true);globeControls?.refresh();
+  updateScaleNote();simulationControls.refresh(true);
   if(selected!=='overview')updateDetail(selected);
   setDetailsCollapsed($('#details').classList.contains('collapsed'));
 });
@@ -990,11 +1023,15 @@ createComet67P({THREE,scene,auToWorld,onSelect:id=>selectBody(id),getLanguage,ca
   if(COMET_IDS.includes(requestedBody))selectBody(requestedBody);
 }).catch(error=>{document.body.dataset.cometCatalogue='failed';console.error('67P data unavailable',error);});
 let previousTime = performance.now();
-createNaturalSystems({THREE,scene,planetGroups,planets,getLanguage,getSelected:()=>selected,onSelect:id=>selectBody(id),labelHost,camera}).then(system=>{
+createNaturalSystems({THREE,scene,planetGroups,planets,getLanguage,getSelected:()=>selected,onSelect:id=>selectBody(id),labelHost,camera,getRelativePosition:(row,date)=>{
+  if(row.id!=='moon')return null;
+  const a=planetaryEphemeris.getPosition('moon',date),b=planetaryEphemeris.getPosition('earth',date);
+  return a&&b?{x:a.x-b.x,y:a.z-b.z,z:b.y-a.y}:null;
+}}).then(system=>{
   naturalSystems=system;pickable.push(...system.pickable);
   for(const {parent,group} of system.getGroups())solarIllumination.register(parent,group);
   const index=pickable.indexOf(moon);if(index>=0)pickable.splice(index,1);moon.visible=false;scene.remove(moon,moonOrbit);
-  system.update(simulationClock.date,0);applyFocusVisibility();updateDetail(selected);
+  system.update(simulationClock.date,0);solarIllumination.registerOrientation('moon',system.getMesh('moon'));applyFocusVisibility();updateDetail(selected);
   document.body.dataset.satelliteCatalogue='ready';document.body.dataset.satelliteCount=String(system.getCounts?.().total??'');
   if(requestedBody&&system.getBody(requestedBody)&&selected==='overview')selectBody(requestedBody);
   window.dispatchEvent(new CustomEvent('relic-satellites-ready',{detail:system.getCounts?.()}));
@@ -1061,7 +1098,7 @@ window.addEventListener('relic-navigation-state', event => { navigationActive = 
 window.addEventListener('pagehide', event => {
   pageInactive = true;
   syncSceneActivity();
-  if(!event.persisted){projectionObserver.disconnect();naturalSystems?.dispose();comet?.dispose();cometOrbitDirections?.dispose();orbitDirections.dispose();simulationControls.dispose();globeControls.dispose();globeNavigation.dispose();detailedGlobe.dispose();planetaryEphemeris.dispose();scaleReadout.dispose();surfaceDetail.dispose();solarIllumination.dispose();belts.dispose();viewLoading.dispose();controls.dispose();renderer.dispose();}
+  if(!event.persisted){projectionObserver.disconnect();naturalSystems?.dispose();comet?.dispose();cometOrbitDirections?.dispose();orbitDirections.dispose();simulationControls.dispose();globeNavigation.dispose();detailedGlobe.dispose();planetaryEphemeris.dispose();scaleReadout.dispose();surfaceDetail.dispose();solarIllumination.dispose();belts.dispose();viewLoading.dispose();controls.dispose();renderer.dispose();}
 });
 window.addEventListener('pageshow', () => { pageInactive = false; navigationActive = false; syncSceneActivity(); });
 function animate(time) {
@@ -1104,7 +1141,7 @@ function animate(time) {
   orbitDirections.update(camera,selected==='overview',modelDate);
   if(selected==='overview'&&time-lastBeltRefresh>250&&Math.abs(simulationDays-lastBeltDay)>.1){belts.setEpochDays((simulationClock.time-Date.UTC(2000,0,1,12))/86400000);lastBeltRefresh=time;lastBeltDay=simulationDays;}
   belts.update(dt,selected,{advance:false});solarIllumination.update(modelDate);
-  if(time-lastClockRefresh>500){simulationControls.refresh();globeControls.refresh();updateScaleNote();if(selected!=='overview')livePanel?.render();lastClockRefresh=time;}
+  if(time-lastClockRefresh>500){simulationControls.refresh();updateScaleNote();if(selected!=='overview')livePanel?.render();lastClockRefresh=time;}
   if(selected!=='overview'&&trackedPosition){
     const current = worldPosition(selected);
     const shift = current.clone().sub(trackedPosition);
@@ -1124,13 +1161,13 @@ function animate(time) {
     const altitudeRatio = Math.max(0, camera.position.distanceTo(controls.target) / radius - 1);
     controls.rotateSpeed = THREE.MathUtils.clamp(altitudeRatio * .12, .00000005, .55);
   } else controls.rotateSpeed = .5;
-  controls.update();
+  if(!globeNavigation.isFreeLook)controls.update();
   if(!flight)globeNavigation.enforce();
   if(!finiteCameraState(camera.position,controls.target)){selectBody('overview');flight=null;controls.target.set(0,0,0);camera.position.copy(overviewPosition());controls.update();}
   stars.position.copy(camera.position);
   if(selected==='overview'&&!flight&&time-lastZoomInAt<900){
     raycaster.setFromCamera(zoomPointer,camera);
-    const id=findZoomFocus(planets.map(p=>({id:p.id,position:planetGroups.get(p.id).position,radius:p.size})),camera.position,raycaster.ray.direction);
+    const id=findZoomFocus(focusCandidates(),camera.position,raycaster.ray.direction,{previousCamera:previousNavigationCamera});
     if(id)selectBody(id,false,{preserveCamera:true});
   }
   if(selected!=='overview'&&!flight&&time-lastZoomOutAt<600){
@@ -1151,6 +1188,7 @@ function animate(time) {
   const surfaceMesh=naturalSystems?.getMesh?.(selected)||(selected==='moon'?moon:planetMeshes.get(selected));
   if (!detailedGlobe.active && !flight && time >= surfaceSettleUntil) surfaceDetail.update(time, selected, surfaceMesh, bodyData(selected)?.size);
   positionLabels();
+  previousNavigationCamera.copy(camera.position);
   if(!detailedGlobe.active)renderer.render(scene, camera);
   viewLoading.ready();
 }
