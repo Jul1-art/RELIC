@@ -5,6 +5,7 @@ import { readFile } from 'node:fs/promises';
 
 const file = new URL('../src/core/api-config.js', import.meta.url);
 const source = await readFile(file, 'utf8');
+const earthSource=await readFile(new URL('../src/worlds/ion-earth.js',import.meta.url),'utf8');
 const fixtureToken = 'exampleHeader.examplePayload.exampleSignature';
 
 async function config(initial = {}, overrides = {}) {
@@ -79,6 +80,7 @@ async function googleView({ rejectProvider = false } = {}) {
   const listeners = new Map();
   const requests = [];
   const context = vm.createContext({
+    setTimeout,clearTimeout,
     localStorage: { getItem: name => values.get(name) ?? null, setItem: (name, value) => values.set(name, value), removeItem: name => values.delete(name) },
     console: { warn: (...args) => warnings.push(args) },
     fetch: () => { throw new Error('Credentials must not be fetched from a shared server.'); },
@@ -90,7 +92,8 @@ async function googleView({ rejectProvider = false } = {}) {
   const settings = new vm.SyntheticModule(['openApiSettings'], function() {
     this.setExport('openApiSettings', async () => fixtureToken);
   }, { context });
-  const tiles = { show: true, destroyed: false, destroy() { this.destroyed = true; }, tileFailed: { addEventListener() {} } };
+  const tileEvent=()=>{const callbacks=new Set();return {addEventListener(callback){callbacks.add(callback);return()=>callbacks.delete(callback);},raise(){for(const callback of [...callbacks])callback();}};};
+  const tiles={show:true,destroyed:false,destroy(){this.destroyed=true;},tileFailed:tileEvent(),tileVisible:tileEvent(),initialTilesLoaded:tileEvent(),loadProgress:tileEvent()};
   const ion = { defaultAccessToken: 'upstream-demo-placeholder' };
   const provider = new vm.SyntheticModule(['Ion', 'IonResource', 'Cesium3DTileset'], function() {
     this.setExport('Ion', ion);
@@ -104,8 +107,16 @@ async function googleView({ rejectProvider = false } = {}) {
   const local = new vm.SourceTextModule(source, { context });
   await local.link(() => { throw new Error('Unexpected API config import'); });
   await local.evaluate();
+  const earth=new vm.SourceTextModule(earthSource,{context});
+  await earth.link(()=>{throw new Error('Earth tiles helper has no runtime dependencies.');});
   const module = new vm.SourceTextModule(await readFile(new URL('../src/core/google-3d.js', import.meta.url), 'utf8'), { context });
-  await module.link(name => name === './api-config.js' ? local : name === '../ui/api-settings.js' ? settings : provider);
+  await module.link(name=>{
+    if(name==='./api-config.js')return local;
+    if(name==='../ui/api-settings.js')return settings;
+    if(name==='../worlds/ion-earth.js')return earth;
+    if(name==='../../vendor/cesium/index.js')return provider;
+    throw new Error('Unexpected import: '+name);
+  });
   await module.evaluate();
   const removed = [];
   const viewer = { scene: { globe: { show: true }, primitives: { add: item => item, remove: item => { removed.push(item); item.destroy(); } }, requestRender() {} } };
@@ -131,10 +142,13 @@ test('Google 3D makes no shared-token request when unconfigured, and strips prov
   assert(!JSON.stringify(warnings).includes('example.invalid'));
 });
 
-test('removing local keys stops the existing keyed 3D view and returns to the keyless globe', async () => {
+test('removing local keys stops the existing keyed 3D view and returns to the keyless globe', async t => {
   const { api, view, viewer, removed, tiles } = await googleView();
+  t.after(()=>view.destroy());
   api.setCesiumToken(fixtureToken);
   assert.equal(await view.enable(), true);
+  assert.equal(view.active,false);assert.equal(viewer.scene.globe.show,true);
+  tiles.tileVisible.raise();tiles.initialTilesLoaded.raise();
   assert.equal(view.active, true);
   assert.equal(viewer.scene.globe.show, false);
   api.clearApiKeys();
@@ -143,4 +157,15 @@ test('removing local keys stops the existing keyed 3D view and returns to the ke
   assert.equal(viewer.scene.globe.show, true);
   assert.equal(removed.length, 1);
   assert.equal(tiles.destroyed, true);
+});
+
+
+test('changing the saved browser token removes old 3D content without requesting the replacement automatically',async t=>{
+  const {api,view,viewer,tiles,requests,removed}=await googleView();t.after(()=>view.destroy());
+  api.setCesiumToken(fixtureToken);await view.enable();
+  tiles.tileVisible.raise();tiles.initialTilesLoaded.raise();assert.equal(view.active,true);
+  api.setCesiumToken('newHeader.newPayload.newSignature');
+  assert.equal(view.active,false);assert.equal(view.status,'off');assert.equal(viewer.scene.globe.show,true);
+  assert.equal(removed.length,1);assert.equal(tiles.destroyed,true);
+  assert.equal(requests.length,1,'A settings change never activates a provider without an explicit request.');
 });

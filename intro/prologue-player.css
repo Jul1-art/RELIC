@@ -1,4 +1,8 @@
 /* Monochrome transport: one full-width timeline and a quiet row of controls. */
+.intro.prologue .prologue-buffer-meter{position:absolute;left:50%;bottom:max(129px,calc(env(safe-area-inset-bottom) + 119px));width:min(180px,calc(100% - 64px));height:2px;transform:translateX(-50%);border-radius:2px;background:linear-gradient(to right,#fff var(--buffer-progress,0%),#ffffff30 var(--buffer-progress,0%));pointer-events:none}
+.intro.prologue.prologue-gated .prologue-buffer-meter{top:calc(50% + 112px);bottom:auto}
+.intro.prologue.prologue-outro .prologue-buffer-meter{display:none!important}
+.intro.prologue.prologue-buffering .prologue-loading{max-width:calc(100% - 48px);width:max-content}
 .intro.prologue .prologue-controls{position:absolute;inset:auto 0 0;width:100%;max-width:none;margin:0;padding:24px max(18px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));transform:none;translate:none;border:0;border-radius:0;background:linear-gradient(180deg,transparent,#000b 36%,#000e);box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
 .intro.prologue .prologue-scrubber{position:relative;height:22px;margin:0 0 3px;padding:0;display:flex;align-items:center}
 .intro.prologue .prologue-scrubber input{width:100%;height:22px;margin:0;padding:0;appearance:none;-webkit-appearance:none;background:transparent;border:0;cursor:pointer;touch-action:pan-y}

@@ -12,7 +12,7 @@ const COPY = {
     fullscreen: 'Full screen (F)', exitFullscreen: 'Exit full screen (F)',
     reduced: 'Play the film, or explore at your own pace.',
     blocked: 'Start the film with sound.',
-    loading: 'Loading the film…',
+    loading: 'Preparing smooth playback…', bufferReady:'Ready to play', bufferRetry:'Reconnecting…', buffered:'s buffered',
     unavailable: 'The film is unavailable. Your journey can still begin.',
     ready:'Press play when you are ready.', volume:'Volume', settings:'Playback settings', speed:'Playback speed', shortcuts:'Keyboard shortcuts (?)', help:'Shortcuts', restart:'Replay film',
   },
@@ -24,7 +24,7 @@ const COPY = {
     fullscreen: 'Plein écran (F)', exitFullscreen: 'Quitter le plein écran (F)',
     reduced: 'Lancez le film, ou explorez à votre rythme.',
     blocked: 'Lancez le film avec le son.',
-    loading: 'Chargement du film…',
+    loading: 'Préparation d’une lecture fluide…', bufferReady:'Prêt à lire', bufferRetry:'Reconnexion…', buffered:'s en réserve',
     unavailable: 'Le film est indisponible. Votre voyage peut commencer.',
     ready:'Lancez le film quand vous le souhaitez.', volume:'Volume', settings:'Réglages du lecteur', speed:'Vitesse de lecture', shortcuts:'Raccourcis clavier (?)', help:'Raccourcis', restart:'Revoir le film',
   },
@@ -37,6 +37,13 @@ const ICONS = Object.freeze({
   complete: 'check', close: 'xmark',
 });
 const icon = name => solidIcon(ICONS[name] || name);
+const PLAYER_CONTROL_SELECTOR = 'button, input, label, a, .prologue-header, .prologue-controls, .prologue-gate, .prologue-player-menu';
+// A button handler may replace its SVG before the click bubbles here. The
+// original event path retains that button even when the target is detached.
+export function isFilmControlEvent(event) {
+  return Boolean(event.composedPath?.().some(node=>node?.matches?.(PLAYER_CONTROL_SELECTOR))
+    || event.target?.closest?.(PLAYER_CONTROL_SELECTOR));
+}
 const clock = seconds => {
   const total = Math.max(0, Math.floor(Number(seconds) || 0));
   return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`;
@@ -136,6 +143,7 @@ export function createPrologue({
     const active = session;
     if (!active) return;
     session = null;
+    active.cancelPreparation();
     active.cancelLanguageSwitch();
     active.controller.abort();
     active.cancelFrame();
@@ -179,13 +187,13 @@ export function createPrologue({
     element.tabIndex = -1;
     element.classList.remove('prologue-chrome-hidden', 'prologue-caption-off');
     // Only static interface markup uses HTML. Every supplied cue uses textContent.
-    element.innerHTML = `<canvas class="prologue-backdrop" width="0" height="0" aria-hidden="true"></canvas><video id="intro-video" class="prologue-film" playsinline preload="none" aria-hidden="true" tabindex="-1"></video><canvas class="prologue-language-frame" width="0" height="0" aria-hidden="true" hidden></canvas>
+    element.innerHTML = `<canvas class="prologue-backdrop" width="0" height="0" aria-hidden="true"></canvas><video id="intro-video" class="prologue-film" playsinline preload="auto" aria-hidden="true" tabindex="-1"></video><canvas class="prologue-language-frame" width="0" height="0" aria-hidden="true" hidden></canvas>
       <div class="prologue-shade" aria-hidden="true"></div>
       <header class="prologue-header"><span class="prologue-brand" aria-hidden="true"><img src="${BRAND_ASSET}" alt="" width="32" height="28">RELIC</span><span class="prologue-preview" hidden></span></header>
       <button class="prologue-reveal prologue-visually-hidden" type="button" hidden></button>
       <div class="prologue-caption"><img class="prologue-endmark" src="${BRAND_ASSET}" alt="" width="128" height="112" aria-hidden="true"><h1 id="intro-line"></h1><span class="prologue-visually-hidden" id="intro-transcript" aria-live="polite" aria-atomic="true"></span></div>
       <div class="prologue-gate" hidden><p id="intro-status" role="status"></p><div class="prologue-gate-actions"><button class="prologue-play-film" type="button">${icon('play')}</button><button class="prologue-enter" type="button"><span></span></button></div></div>
-      <p class="prologue-loading" role="status" hidden></p>
+      <p class="prologue-loading" role="status" hidden></p><span class="prologue-buffer-meter" aria-hidden="true" hidden></span>
       <p class="prologue-feedback" role="status" aria-live="polite" hidden></p>
       <footer class="prologue-controls">
         <label class="prologue-scrubber"><span class="prologue-visually-hidden"></span><input type="range" min="0" max="1" step="0.01" value="0" disabled></label>
@@ -218,6 +226,7 @@ export function createPrologue({
     const range = element.querySelector('.prologue-scrubber input');
     const time = element.querySelector('.prologue-time');
     const loading = element.querySelector('.prologue-loading');
+    const bufferMeter = element.querySelector('.prologue-buffer-meter');
     const header = element.querySelector('.prologue-header');
     const preview = element.querySelector('.prologue-preview');
     const languageButton = element.querySelector('.prologue-language');
@@ -276,7 +285,8 @@ export function createPrologue({
     let backdropScene = '';
     let sourceSwitch = null;
     let preferredRate = 1;
-    const active = { controller, video, backdrop, languageFrame, caption, cancelFrame, cancelLoading, cancelChrome, typing, cancelFeedback, cancelLanguageSwitch, stream: null, changeLanguage };
+    let bufferState = null, preparation = null, hasStarted = false;
+    const active = { controller, video, backdrop, languageFrame, caption, cancelFrame, cancelLoading, cancelChrome, typing, cancelFeedback, cancelLanguageSwitch, cancelPreparation, stream: null, changeLanguage };
     session = active;
     const current = () => session === active && !signal.aborted;
     const duration = () => Number.isFinite(video.duration) && video.duration > 0
@@ -377,8 +387,11 @@ export function createPrologue({
     function setRate(value){preferredRate=Math.max(.25,Math.min(2,Math.round(Number(value)*4)/4));video.defaultPlaybackRate=preferredRate;video.playbackRate=preferredRate;render();setChrome(true);showFeedback(`${video.playbackRate}×`);}
     function seekTo(value){
       if(!hasSource||failed||sourceSwitch||video.readyState<1)return;
+      const resume = explicitPlaybackIntent && (Boolean(preparation) || !video.paused);
+      if (preparation) {attempt+=1;cancelPreparation();}
       try{video.currentTime=Math.max(0,Math.min(duration(),Number(value)||0));}catch{}
       render();setChrome(true);
+      if (resume) playFilm(false);
     }
     function setMenu(open,help=false){
       const position=sourceSwitch?.position??video.currentTime;
@@ -408,15 +421,56 @@ export function createPrologue({
       loading.hidden = true;
       scheduleChrome();
     }
+    function renderBuffer(state = bufferState) {
+      if (!current()) return;
+      bufferState = state;
+      const preparing = Boolean(preparation);
+      const show = Boolean(state) && !failed && !cueEnding && (gateReason === 'ready' || preparing);
+      bufferMeter.hidden = !show;
+      bufferMeter.style.setProperty('--buffer-progress', `${Math.min(100,Math.round((state?.ahead || 0)/Math.max(.01,(preparing?state?.required:state?.preloadTarget)||8)*100))}%`);
+      element.classList.toggle('prologue-buffering', preparing);
+      element.dataset.bufferAhead = String(Math.floor(state?.ahead || 0));
+      if (!show) return;
+      const label = state.networkRecovering || state.networkFailed ? copy().bufferRetry
+        : !preparing && state.ready ? copy().bufferReady : copy().loading;
+      const text = `${label} · ${Math.floor(state.ahead)} ${copy().buffered}`;
+      if (gateReason === 'ready') {status.hidden=false;status.textContent=text;}
+      loading.hidden = !preparing || gateReason === 'ready';
+      if (!loading.hidden) loading.textContent=text;
+    }
+    function cancelPreparation() {
+      const pending = preparation;
+      preparation = null;
+      pending?.abort();
+      active.stream?.setPlaybackIntent(false);
+      cancelLoading();
+      renderBuffer();
+    }
+    function prepareSource() {
+      if (active.stream) return active.stream;
+      if (!filmMedia.src && !filmMedia.hls) throw new Error('The film source is unavailable.');
+      hasSource = true;
+      active.stream = attachFilmSource(video,filmMedia,{
+        shouldResume:()=>current()&&explicitPlaybackIntent&&!document.hidden&&!element.inert,
+        onBuffer:renderBuffer,
+      });
+      active.stream.suspend(document.hidden || element.inert);
+      return active.stream;
+    }
     function waiting() {
-      if (loadingTimer !== null || video.paused || failed) return;
+      if (loadingTimer !== null || preparation || video.paused || failed || !explicitPlaybackIntent) return;
       loadingTimer = view.setTimeout(() => {
         loadingTimer = null;
-        if (!current() || video.paused || video.readyState >= 3 || failed) return;
-        loading.textContent = copy().loading;
-        loading.hidden = false;
-        setChrome(true, false);
-      }, 3000);
+        if (!current() || video.paused || video.readyState >= 3 || failed || !explicitPlaybackIntent) return;
+        if (active.stream?.mode === 'native-hls') {
+          // iOS decides how much native HLS may load before a play gesture.
+          // Pausing here can stop its downloader and prevent recovery entirely.
+          loading.textContent=copy().loading;loading.hidden=false;setChrome(true,false);return;
+        }
+        // Pause deliberately and build a useful reserve instead of repeatedly
+        // restarting after one decoded frame on an unreliable connection.
+        playFilm(false,true);
+      }, 700);
     }
     function queueFrame() {
       if (!current() || video.paused || video.ended || frame !== null) return;
@@ -534,7 +588,7 @@ export function createPrologue({
       // cannot hide the exit. On the final card they join the persistent brand.
       // Neither the media `ended` event nor a timer advances into the atlas.
       element.classList.toggle('prologue-ending', Boolean(ending));
-      const paused = sourceSwitch ? !sourceSwitch.resume : video.paused;
+      const paused = sourceSwitch ? !sourceSwitch.resume : video.paused && !preparation;
       element.classList.toggle('prologue-paused', paused && !gateReason);
       if (ending) {
         if (gate.parentElement !== caption) caption.append(gate);
@@ -582,8 +636,8 @@ export function createPrologue({
         range.setAttribute('aria-valuetext', clockText);
       }
       syncVolume();
-      const paused = sourceSwitch ? !sourceSwitch.resume : video.paused;
-      const nextTransport = `${language()}|${paused}|${video.ended}|${video.muted}|${gateReason}|${soundChoice}|${captionsVisible}|${video.playbackRate}|${document.fullscreenElement === element}|${Boolean(sourceSwitch)}`;
+      const paused = sourceSwitch ? !sourceSwitch.resume : video.paused && !preparation;
+      const nextTransport = `${language()}|${paused}|${video.ended}|${video.muted}|${gateReason}|${soundChoice}|${captionsVisible}|${video.playbackRate}|${document.fullscreenElement === element}|${Boolean(sourceSwitch)}|${Boolean(preparation)}`;
       if (transportState !== nextTransport) {
         transportState = nextTransport;
         element.setAttribute('aria-label', copy().introduction);
@@ -592,7 +646,8 @@ export function createPrologue({
         preview.textContent = filmMedia.preview ? copy().preview : '';
         download.setAttribute('aria-label', copy().offline);
         download.title = copy().offline;
-        const playLabel = video.ended ? copy().restart : hasSource ? copy().resume : copy().play;
+        const playLabel = preparation ? copy().pause : video.ended ? copy().restart : hasStarted ? copy().resume : copy().play;
+        play.innerHTML = icon(preparation ? 'pause' : 'play');
         play.setAttribute('aria-label', playLabel);
         play.title = playLabel;
         enter.querySelector('span').textContent = copy().enter;
@@ -625,6 +680,7 @@ export function createPrologue({
         fullscreen.setAttribute('aria-label', document.fullscreenElement === element ? copy().exitFullscreen : copy().fullscreen);
         fullscreen.title=fullscreen.getAttribute('aria-label');
       }
+      renderBuffer();
     }
     function showGate(reason) {
       if (!current()) return;
@@ -681,22 +737,22 @@ export function createPrologue({
         for (const event of events) video.addEventListener(event, check);
         video.addEventListener('error', error);
         operation.controller.signal.addEventListener('abort', aborted, {once:true});
-        timer = view.setTimeout(() => { cleanup(); reject(new Error('The narration change timed out.')); }, 30000);
+        timer = view.setTimeout(() => { cleanup(); reject(new Error('The narration change timed out.')); }, 120000);
         check();
       });
     }
     async function changeLanguage(next) {
       const previous = sourceSwitch;
       const position = previous?.position ?? (Number.isFinite(video.currentTime) ? video.currentTime : 0);
-      const resume = previous ? previous.resume && explicitPlaybackIntent : !video.paused && !video.ended && explicitPlaybackIntent;
+      const resume = previous ? previous.resume && explicitPlaybackIntent : (Boolean(preparation) || !video.paused) && !video.ended && explicitPlaybackIntent;
+      cancelPreparation();
       cancelLanguageSwitch(Boolean(previous));
       filmMedia = { ...media, ...(media.languages?.[next] ?? {}) };
       cues = [...(media.captions?.[next] ?? defaultCues)].sort((a,b)=>a.start-b.start);
       cueIndex = -2; cueLanguage = ''; transportState = '';
       offlineReady = false; offlineCheck = null;
       if (filmMedia.poster) video.poster = filmMedia.poster;
-      // Choosing a voice on the ready screen must not load the film.
-      if (!hasSource) { render(); if (gateReason) showGate(gateReason); return true; }
+      const wasReady = gateReason === 'ready';
       const operation = { position, resume, controller:new view.AbortController() };
       sourceSwitch = operation;
       if (!previous && video.readyState >= 2 && video.videoWidth) {
@@ -716,7 +772,7 @@ export function createPrologue({
       failed = false; hideGate(); render(); setChrome(true,false);
       try {
         const metadata = waitForMedia(operation,['loadedmetadata','durationchange'],()=>video.readyState>=1);
-        try { active.stream = attachFilmSource(video,filmMedia,{shouldResume:()=>current()&&!sourceSwitch&&explicitPlaybackIntent&&!document.hidden&&!element.inert}); }
+        try { prepareSource(); }
         catch (error) { operation.controller.abort(); await metadata.catch(()=>{}); throw error; }
         await metadata;
         if (!current() || sourceSwitch !== operation) return false;
@@ -730,6 +786,7 @@ export function createPrologue({
         clearLanguageFrame();
         video.playbackRate = preferredRate;
         explicitPlaybackIntent = Boolean(continuePlaying);
+        if (wasReady && !continuePlaying) showGate('ready');
         render(); setChrome(true);
         if (continuePlaying) await playFilm(false);
         return true;
@@ -738,8 +795,9 @@ export function createPrologue({
         cancelLanguageSwitch(); fail(); return false;
       }
     }
-    async function playFilm(withFeedback = true) {
+    async function playFilm(withFeedback = true, rebuffer = false) {
       if (!current() || failed || document.hidden || element.inert) return;
+      cancelPreparation();
       explicitPlaybackIntent = true;
       if (sourceSwitch) { sourceSwitch.resume=true; render(); return; }
       if (video.ended) { try { video.currentTime=0; } catch {} }
@@ -750,38 +808,50 @@ export function createPrologue({
       }
       if (!current() || failed || request !== attempt) return;
       if (!filmMedia.src && !filmMedia.hls) { fail(); return; }
-      if (!hasSource) {
-        hasSource = true;
-        video.preload = 'auto';
-        try { active.stream = attachFilmSource(video, filmMedia, {shouldResume:()=>current()&&explicitPlaybackIntent&&!document.hidden&&!element.inert}); }
-        catch { fail(); return; }
-      }
+      try { prepareSource(); } catch { fail(); return; }
       if (document.hidden || element.inert) { explicitPlaybackIntent = false; return; }
-      hideGate();
+      const pending = new view.AbortController();
+      preparation = pending;
+      active.stream.setPlaybackIntent(true);
+      if (!video.paused) video.pause();
+      render(); setChrome(true,false);
       try {
+        // Native HLS on iOS may only fetch media after the original play
+        // gesture. Keep that gesture and let its built-in buffer recover.
+        if (active.stream.mode !== 'native-hls') await active.stream.waitForBuffer({signal:pending.signal,rebuffer});
+        if (!current() || request !== attempt || preparation !== pending || !explicitPlaybackIntent || document.hidden || element.inert) return;
+        preparation = null;
+        cancelLoading();
+        hideGate();
         await video.play();
         if (!current() || request !== attempt) return;
+        hasStarted = true;
         render(); queueFrame(); scheduleChrome();
         if (withFeedback) showPlaybackFeedback(true);
-      } catch {
+      } catch (error) {
+        if (preparation === pending) preparation = null;
+        if (error?.name === 'AbortError') return;
         if (!current() || request !== attempt || failed || document.hidden) return;
+        explicitPlaybackIntent = false; active.stream?.setPlaybackIntent(false);
         showGate('blocked');
       }
     }
     function pauseFilm() {
       attempt += 1;
       explicitPlaybackIntent = false;
+      cancelPreparation();
       if (sourceSwitch) sourceSwitch.resume=false;
       video.pause();
       render();
       showPlaybackFeedback(false);
     }
     function togglePlayback() {
-      (sourceSwitch ? sourceSwitch.resume : !video.paused) ? pauseFilm() : playFilm();
+      (sourceSwitch ? sourceSwitch.resume : Boolean(preparation) || !video.paused) ? pauseFilm() : playFilm();
     }
     function fail() {
       if (!current() || failed) return;
       failed = true;
+      cancelPreparation();
       cancelLanguageSwitch();
       attempt += 1;
       explicitPlaybackIntent = false;
@@ -795,8 +865,10 @@ export function createPrologue({
       showGate('unavailable');
     }
     function visibilityChanged() {
-      if (!current() || !document.hidden) return;
-      explicitPlaybackIntent=false;if(sourceSwitch)sourceSwitch.resume=false;attempt+=1;video.pause();setChrome(true,false);
+      if (!current()) return;
+      active.stream?.suspend(document.hidden || element.inert);
+      if (!document.hidden) return;
+      explicitPlaybackIntent=false;if(sourceSwitch)sourceSwitch.resume=false;attempt+=1;cancelPreparation();video.pause();render();setChrome(true,false);
     }
     function trapFocus(event) {
       if (!current() || element.inert) return;
@@ -836,19 +908,18 @@ export function createPrologue({
       if(/^[0-9]$/.test(key)){seekTo(duration()*Number(key)/10);return;}
       seekTo(video.currentTime+(['j','arrowleft'].includes(key)?-1:1)*(['j','l'].includes(key)?10:5));
     }
-    const isPlayerControl = target => Boolean(target.closest('button, input, label, a, .prologue-header, .prologue-controls, .prologue-gate, .prologue-player-menu'));
     element.addEventListener('pointerdown', event => {
       lastPointer = { x: event.clientX, y: event.clientY };
       screenPress = { x: event.clientX, y: event.clientY };
       screenDragged = false;
       dismissingPlayerMenu = menuOpen;
-      if (isPlayerControl(event.target)) setChrome(true);
+      if (isFilmControlEvent(event)) setChrome(true);
     }, { signal });
     element.addEventListener('pointercancel', () => { screenPress = null; screenDragged = true; }, { signal });
     // A single click or tap on the picture is a playback action. Pointerdown
     // only records the gesture so dragging a control never toggles playback.
     element.addEventListener('click', event => {
-      if (!current() || element.inert || cueEnding || isPlayerControl(event.target) || screenDragged || dismissingPlayerMenu) return;
+      if (!current() || element.inert || cueEnding || isFilmControlEvent(event) || screenDragged || dismissingPlayerMenu) return;
       setChrome(true);
       togglePlayback();
     }, { signal });
@@ -879,7 +950,7 @@ export function createPrologue({
     document.addEventListener('fullscreenchange', render, { signal });
     document.addEventListener('keydown', keyboardControls, { signal, capture: true });
     enter.addEventListener('click', finish, { signal });
-    play.addEventListener('click', () => { soundChoice = true; playFilm(); }, { signal });
+    play.addEventListener('click', () => { soundChoice = true; togglePlayback(); }, { signal });
     pause.addEventListener('click', () => togglePlayback(), { signal });
     audio.addEventListener('click', toggleMute, { signal });
     range.addEventListener('input', () => {
@@ -891,7 +962,7 @@ export function createPrologue({
       if (document.hidden || element.inert || !explicitPlaybackIntent) { explicitPlaybackIntent=false; video.pause(); return; }
       hideGate(); render(); queueFrame(); scheduleChrome();
     }, { signal });
-    video.addEventListener('pause', () => { if(!sourceSwitch)explicitPlaybackIntent=false; cancelFrame(); cancelLoading(); render(); setChrome(true, false); }, { signal });
+    video.addEventListener('pause', () => { if(!video.paused)return; if(!sourceSwitch&&!preparation){explicitPlaybackIntent=false;active.stream?.setPlaybackIntent(false);} cancelFrame(); cancelLoading(); render(); setChrome(true, false); }, { signal });
     video.addEventListener('playing', cancelLoading, { signal });
     video.addEventListener('waiting', waiting, { signal });
     video.addEventListener('stalled', waiting, { signal });
@@ -907,8 +978,11 @@ export function createPrologue({
     // A Sources/offline dialog can open and close while a voice is loading.
     // Remember its pause immediately, even if the new track finishes later.
     const inertObserver = new view.MutationObserver(() => {
-      if (!current() || !element.inert) return;
+      if (!current()) return;
+      active.stream?.suspend(element.inert || document.hidden);
+      if (!element.inert) return;
       explicitPlaybackIntent = false;
+      attempt += 1; cancelPreparation();
       if (sourceSwitch) sourceSwitch.resume = false;
       video.pause();
       render();
@@ -916,15 +990,16 @@ export function createPrologue({
     inertObserver.observe(element,{attributes:true,attributeFilter:['inert']});
     signal.addEventListener('abort',()=>inertObserver.disconnect(),{once:true});
     document.addEventListener('keydown', trapFocus, { signal });
-    view.addEventListener('offline', async () => {
-      if (!await offlinePlayable() && current()) fail();
-    }, { signal });
+    // A transient disconnect must not discard already buffered pictures.
+    view.addEventListener('offline', () => { if(current()) renderBuffer(); }, { signal });
     view.addEventListener('online', () => { offlineReady = false; offlineCheck = null; }, { signal });
     view.addEventListener('resize', render, { signal });
     render();
     onOpen();
-    // Opening is a ready state, never an autoplay attempt or a media download.
+    // Fetch a bounded reserve while the user decides. Playback still requires
+    // an explicit gesture; the heavy atlas starts only after this film closes.
     showGate('ready');
+    try { prepareSource(); } catch { fail(); }
     if (keyboard) play.focus({ preventScroll: true });
 
   }

@@ -7,6 +7,7 @@ import {loadGlobalHeightGrid,createGlobalTerrainProvider} from './global-terrain
 import {createCelestialScene,celestialRayDistance,getBodyIdFromPick} from './celestial-scene.js';
 import {wheelZoomFactor} from '../atlas/orbital-navigation.js';
 import {scenePalette} from '../ui/scene-theme.js';
+import {createIonEarthTiles} from './ion-earth.js';
 
 Cesium.Ion.defaultAccessToken='';
 const CHANNEL='relic-detailed-globe-v15';
@@ -21,6 +22,7 @@ const credits=document.querySelector('#credits'),sourceCredit=document.querySele
 let viewer,tileset,buildings,celestial,disposed=false,ready=false,paused=false,focus={id:body},sourceMode='imagery',sourceLabel='',ionStatus='loading';
 let lastState=0,lastFrame=null,globalGrid=null,geography={lat:18,lon:0},lastHeading=0;
 let defaultFov=Math.PI/3;
+let earth3D=null,earthTerrainReady=false,earthBuildingsRequested=false;
 const adaptiveImagery=[];
 const post=(type,payload={})=>{if(parent!==window)parent.postMessage({channel:CHANNEL,type,...payload},location.origin);};
 const finite=value=>typeof value==='number'&&Number.isFinite(value);
@@ -28,7 +30,7 @@ const clamp=Cesium.Math.clamp;
 const compact=matchMedia('(pointer:coarse)').matches||innerWidth<760;
 function requestRender(){if(viewer&&!viewer.isDestroyed())viewer.scene.requestRender();}
 function updateCredits(){
-  const source=sourceMode==='nasa-global-dem'?globalGrid?.sourceUrl:body==='earth'?'https://cesium.com/learn/cesiumjs-learn/cesiumjs-terrain/':body==='moon'?'https://cesium.com/platform/cesium-ion/content/cesium-moon/':'https://cesium.com/platform/cesium-ion/content/cesium-mars/';
+  const source=sourceMode==='nasa-global-dem'?globalGrid?.sourceUrl:sourceMode==='ion-photorealistic'?'https://cesium.com/learn/cesiumjs-learn/cesiumjs-photorealistic-3d-tiles/':body==='earth'?'https://cesium.com/learn/cesiumjs-learn/cesiumjs-terrain/':body==='moon'?'https://cesium.com/platform/cesium-ion/content/cesium-moon/':'https://cesium.com/platform/cesium-ion/content/cesium-mars/';
   sourceCredit.replaceChildren();
   const link=document.createElement('a');link.href=source;link.target='_blank';link.rel='noopener noreferrer';link.textContent=sourceLabel;sourceCredit.append(link);
   requestAnimationFrame(()=>{if(disposed)return;document.documentElement.style.setProperty('--credit-height',`${Math.ceil(credits.getBoundingClientRect().height)}px`);if(viewer&&!viewer.isDestroyed())viewer.resize();requestRender();});
@@ -72,7 +74,11 @@ function applyFrame(frame){
 }
 function groundHeight(lat,lon){
   const point=new Cesium.Cartographic(lon*DEG,lat*DEG);
-  return viewer.scene.globe.show?(viewer.scene.globe.getHeight(point)||0):0;
+  return surfaceHeight(point);
+}
+function surfaceHeight(point){
+  if(viewer.scene.globe.show)return viewer.scene.globe.getHeight(point)||0;
+  try{const height=viewer.scene.sampleHeight?.(point);return finite(height)&&Math.abs(height)<radius*.015?height:0;}catch{return 0;}
 }
 function goTo(lat,lon,range,heading=0,tilt=0){
   geography={lat:clamp(lat,-89.99,89.99),lon:((lon+540)%360)-180};
@@ -116,7 +122,7 @@ function state(force=false){
   lastState=performance.now();const frame=cameraFrame();if(!frame)return;
   const point=ellipsoid.cartesianToCartographic(frame.target),cameraPoint=ellipsoid.cartesianToCartographic(viewer.camera.positionWC);
   const latitude=point.latitude/DEG,longitude=point.longitude/DEG;
-  const groundUnderCamera=viewer.scene.globe.show?(viewer.scene.globe.getHeight(cameraPoint)||0):0;
+  const groundUnderCamera=surfaceHeight(cameraPoint);
   const altitudeRatio=Math.max(0,cameraPoint.height-groundUnderCamera)/radius;
   for(const entry of adaptiveImagery){const show=altitudeRatio<entry.maximumAltitudeRatio;if(entry.layer.show!==show){entry.layer.show=show;requestRender();}}
   if(![latitude,longitude,cameraPoint.height,frame.range].every(Number.isFinite))return;
@@ -174,21 +180,31 @@ async function addImagery(){
 }
 async function addTerrain(){
   const token=getCesiumToken();ionStatus=!token?'missing-token':validateCesiumToken(token)?'invalid-token':'loading';
-  if(ionStatus==='loading')try{
-    if(body==='earth'){
+  if(body==='earth'&&ionStatus==='loading'){
+    const refreshEarth=()=>{
+      if(disposed)return;
+      if(earth3D.active){tileset=earth3D.tileset;sourceMode='ion-photorealistic';sourceLabel='Google Photorealistic 3D Tiles · Cesium ion';ionStatus='ready';}
+      else{
+        sourceMode=earthTerrainReady?'ion-terrain':'imagery';
+        sourceLabel=earthTerrainReady?'Cesium ion · World Terrain':'NASA / Esri imagery';
+        ionStatus=earth3D.status==='loading'?'loading':'asset-unavailable';
+        if(earth3D.status==='loading')sourceLabel+=' · loading photorealistic 3D';
+        else if(earth3D.status==='error'&&earthTerrainReady)void addEarthBuildings(token);
+      }
+      updateCredits();state(true);requestRender();
+    };
+    earth3D=createIonEarthTiles({Cesium,viewer,compact,onState:refreshEarth});
+    // Start the complete 3D Earth immediately. Measured world terrain remains
+    // visible underneath while its first photogrammetric tiles are prepared.
+    const photo=earth3D.enable(token);
+    const terrain=(async()=>{try{
       const resource=await Cesium.IonResource.fromAssetId(1,{accessToken:token});
       const provider=await Cesium.CesiumTerrainProvider.fromUrl(resource,{requestVertexNormals:true,requestWaterMask:true});
-      if(disposed)return;viewer.terrainProvider=provider;
-      sourceMode='ion-terrain';sourceLabel='Cesium ion · World Terrain';ionStatus='ready';updateCredits();state(true);requestRender();
-      // Genuine OSM building footprints/heights are an additional measured-data
-      // layer; they are not photogrammetry or a claim of universal city coverage.
-      try{
-        const buildingResource=await Cesium.IonResource.fromAssetId(96188,{accessToken:token});
-        const value=await Cesium.Cesium3DTileset.fromUrl(buildingResource,{showCreditsOnScreen:true,maximumScreenSpaceError:compact?20:12,cacheBytes:64*1024*1024,maximumCacheOverflowBytes:32*1024*1024});
-        if(disposed){value.destroy();return;}buildings=viewer.scene.primitives.add(value);sourceLabel='Cesium ion · World Terrain + OSM Buildings';updateCredits();requestRender();
-      }catch{/* World terrain remains available if the optional building asset is not enabled. */}
-      return;
-    }
+      if(disposed){provider.destroy?.();return;}viewer.terrainProvider=provider;earthTerrainReady=true;refreshEarth();
+    }catch{refreshEarth();}})();
+    await Promise.allSettled([photo,terrain]);return;
+  }
+  if(ionStatus==='loading')try{
     const id=body==='moon'?2684829:3644333;
     const resource=await Cesium.IonResource.fromAssetId(id,{accessToken:token});
     const value=await Cesium.Cesium3DTileset.fromUrl(resource,{showCreditsOnScreen:true,enableCollision:true,maximumScreenSpaceError:compact?10:6,
@@ -209,6 +225,15 @@ async function addTerrain(){
   }catch{sourceMode='ellipsoid';sourceLabel=body==='moon'?'NASA LROC imagery · elevation unavailable':'NASA Viking/CTX imagery · elevation unavailable';updateCredits();}
   else{sourceMode='ellipsoid';sourceLabel='NASA / Esri imagery · ion terrain unavailable';updateCredits();}
   state(true);
+}
+async function addEarthBuildings(token){
+  if(earthBuildingsRequested||disposed)return;earthBuildingsRequested=true;
+  try{
+    const resource=await Cesium.IonResource.fromAssetId(96188,{accessToken:token});
+    const value=await Cesium.Cesium3DTileset.fromUrl(resource,{showCreditsOnScreen:true,maximumScreenSpaceError:compact?20:12,cacheBytes:64*1024*1024,maximumCacheOverflowBytes:32*1024*1024});
+    if(disposed||earth3D?.active){value.destroy();return;}
+    buildings=viewer.scene.primitives.add(value);sourceLabel='Cesium ion · World Terrain + OSM Buildings · photorealistic tiles unavailable';updateCredits();state(true);requestRender();
+  }catch{/* Keep measured world terrain if the optional OSM asset is unavailable. */}
 }
 function suspend(value){paused=Boolean(value);if(disposed||!viewer||viewer.isDestroyed())return;viewer.useDefaultRenderLoop=(!paused||!ready)&&!document.hidden;if(!paused||!ready){viewer.resize();requestRender();}}
 function applyViewTheme(value){
@@ -234,7 +259,7 @@ function receive(event){
   else if(action==='topDown')orient(0,0,0);
   else if(action==='resetView')resetView();
 }
-function dispose(){if(disposed)return;disposed=true;creditObserver.disconnect();window.removeEventListener('message',receive);celestial?.dispose();if(viewer&&!viewer.isDestroyed())viewer.destroy();}
+function dispose(){if(disposed)return;disposed=true;creditObserver.disconnect();window.removeEventListener('message',receive);earth3D?.destroy();celestial?.dispose();if(viewer&&!viewer.isDestroyed())viewer.destroy();}
 async function start(){
   try{
     viewer=new Cesium.Viewer('globe',{ellipsoid,globe:new Cesium.Globe(ellipsoid),mapProjection:new Cesium.GeographicProjection(ellipsoid),

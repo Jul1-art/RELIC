@@ -1,8 +1,8 @@
 /* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'interface-20261104-v17-3-public';
-const INTERFACE_RELEASE = 'interface-20261104-v17-3';
+const VERSION = 'interface-20261104-v18-2-public';
+const INTERFACE_RELEASE = 'interface-20261104-v18-2';
 const CLIENT_VERSION_TIMEOUT = 650;
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
@@ -30,6 +30,7 @@ const CORE = [
 // This also covers a first visit whose early imports preceded worker control.
 const OFFLINE_CORE = [
   ...CORE,
+  'src/atlas/boot.js','src/atlas/atlas-bootstrap.js','src/atlas/solar-navigation.js','src/worlds/ion-earth.js','intro/film-buffer-policy.js',
   'src/atlas/celestial-context.js','src/worlds/celestial-scene.js','src/ui/monochrome.css',
   'pages/globe.html','src/atlas/detailed-globe.js','src/atlas/detailed-globe.css',
   'src/worlds/embedded-globe.js','src/worlds/embedded-globe.css','src/worlds/global-terrain.js',

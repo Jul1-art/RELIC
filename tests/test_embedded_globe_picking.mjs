@@ -6,6 +6,7 @@ import * as Cesium from '../vendor/cesium/index.js';
 import * as celestial from '../src/worlds/celestial-scene.js';
 import * as navigation from '../src/atlas/orbital-navigation.js';
 import * as sceneTheme from '../src/ui/scene-theme.js';
+import * as ionEarth from '../src/worlds/ion-earth.js';
 
 // Execute the native renderer's actual navigation functions without booting a
 // WebGL widget. Only its final browser bootstrap is replaced by test accessors.
@@ -13,7 +14,7 @@ async function fixture(body){
   const source=await readFile(new URL('../src/worlds/embedded-globe.js',import.meta.url),'utf8');
   assert.match(source,/\nstart\(\);\s*$/);
   const instrumented=source.replace(/\nstart\(\);\s*$/,`
-    export {pickTarget,cameraFrame,zoom,state};
+    export {pickTarget,cameraFrame,zoom,state,surfaceHeight};
     export function install(v,options={}){
       viewer=v;buildings=options.buildings;lastFrame=options.frame||null;
       ready=Boolean(options.ready);focus={id:body,context:options.context||[]};
@@ -36,6 +37,7 @@ async function fixture(body){
     './celestial-scene.js':celestial,
     '../atlas/orbital-navigation.js':navigation,
     '../ui/scene-theme.js':sceneTheme,
+    './ion-earth.js':ionEarth,
   };
   const module=new vm.SourceTextModule(instrumented,{context});
   await module.link(name=>{
@@ -117,4 +119,14 @@ test('a context world in ion depth contributes its own physical scale instead of
   assert.equal(state.scaleReference,'earth');
   const range=earth.position.x-earth.radiusMeters-v.viewer.camera.positionWC.x;
   assert.ok(Math.abs(state.metersPerPixel-2*range*Math.tan(Math.PI/6)/600)<1e-8);
+});
+
+test('photogrammetric terrain heights remain local while external worlds cannot become ground',async t=>{
+  const f=await fixture('earth');t.after(f.restore);const v=viewerFor({body:'earth'});f.api.install(v.viewer);
+  v.viewer.scene.sampleHeight=()=>230;
+  assert.equal(f.api.surfaceHeight(new Cesium.Cartographic(0,0)),230);
+  v.viewer.scene.sampleHeight=()=>384400000;
+  assert.equal(f.api.surfaceHeight(new Cesium.Cartographic(0,0)),0);
+  v.viewer.scene.sampleHeight=()=>undefined;
+  assert.equal(f.api.surfaceHeight(new Cesium.Cartographic(0,0)),0);
 });

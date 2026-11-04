@@ -18,7 +18,21 @@ await module.link(specifier => {
   }, { context });
 });
 await module.evaluate();
-const { resolveFilmEnding, suppressFilmOutroChrome } = module.namespace;
+const { resolveFilmEnding, suppressFilmOutroChrome, isFilmControlEvent } = module.namespace;
+
+test('a control click stays a control after its handler replaces the clicked SVG', () => {
+  const detachedSvg={closest:()=>null,matches:()=>false};
+  const button={matches:selector=>selector.includes('button')};
+  // The SVG was removed by a transport render; only the event's original path
+  // still contains the Play button. It must never toggle picture playback too.
+  assert.equal(isFilmControlEvent({target:detachedSvg,composedPath:()=>[detachedSvg,button,{matches:()=>false}]}),true);
+  assert.equal(isFilmControlEvent({target:detachedSvg,composedPath:()=>[detachedSvg,{matches:()=>false}]}),false);
+});
+
+test('control recognition also supports events without a composed path',()=>{
+  assert.equal(isFilmControlEvent({target:{closest:()=>({})}}),true);
+  assert.equal(isFilmControlEvent({target:{closest:()=>null}}),false);
+});
 
 // V10's final scene was correctly named, but its caption was `visual`. The
 // player must identify the final card without relying on a publisher's cue kind.
