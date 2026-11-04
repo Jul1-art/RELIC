@@ -75,6 +75,10 @@ html:root body :is(.google3d-dialog,.api-settings-dialog,.relic-api-dialog) :is(
 html:root body :is(.google3d-dialog,.api-settings-dialog,.relic-api-dialog) :is(.relic-api-provider,.relic-api-note,.relic-api-keyless,button){background:var(--chrome-input)!important}
 html:root body :is(.google3d-dialog,.api-settings-dialog,.relic-api-dialog) button:hover{background:var(--chrome-hover)!important}
 html:root body .relic-api-dialog button.relic-api-save{background:var(--chrome-active)!important;color:var(--chrome-active-ink)!important}
+html:root body :is(.google3d-dialog,.api-settings-dialog,.relic-api-dialog){color-scheme:inherit!important}
+html:root body .relic-api-dialog .relic-api-input-row{background:var(--chrome-surface)!important;border-color:var(--chrome-line)!important}
+html:root body .relic-api-dialog .relic-api-input-row:focus-within{outline:2px solid var(--chrome-focus);outline-offset:3px}
+html:root body .relic-api-dialog .relic-api-reveal{background:transparent!important;color:var(--chrome-ink)!important}
 html:root body :is(.google3d-dialog,.api-settings-dialog,.relic-api-dialog) :is(p,small,label,.relic-api-status,.relic-api-eyebrow){color:var(--chrome-muted)!important}
 
 /* Labels, rulers and attribution keep contrast over both the sky and imagery. */
