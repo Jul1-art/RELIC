@@ -2,8 +2,8 @@ import { getLanguage, onLanguageChange } from '../atlas/atlas-live.js?v=3';
 import { worldIcon } from './world-icons.js';
 
 const COPY = {
-  en: {navigation:'Exploration',worlds:'Worlds',search:'Search',information:'View information',reset:'Reset view',more:'More actions',close:'Close',menu:'Controls',view:'View',replay:'Watch the film',sources:'Sources and creators',settings:'Settings',language:'Language',searchTitle:'Search',worldsTitle:'Worlds',closeInformation:'Close information',selectWorld:'Select a world to see its information',light:'Switch to light mode',dark:'Switch to dark mode'},
-  fr: {navigation:'Exploration',worlds:'Mondes',search:'Rechercher',information:'Informations de la vue',reset:'Recentrer la vue',more:'Autres actions',close:'Fermer',menu:'Commandes',view:'Vue',replay:'Revoir le film',sources:'Sources et créateurs',settings:'Réglages',language:'Langue',searchTitle:'Rechercher',worldsTitle:'Mondes',closeInformation:'Fermer les informations',selectWorld:'Sélectionner un monde pour voir ses informations',light:'Passer en mode clair',dark:'Passer en mode sombre'},
+  en: {navigation:'Exploration',worlds:'Worlds',search:'Search',information:'View information',reset:'Reset view',more:'More actions',close:'Close',menu:'Controls',view:'View',replay:'Watch the film',sources:'Sources and creators',settings:'Settings',language:'Language',searchTitle:'Search',worldsTitle:'Worlds',closeInformation:'Close information',selectWorld:'Select a world to see its information',light:'Switch to light mode',dark:'Switch to dark mode',home:'Solar system',tiltAction:'Change viewing angle',heightAction:'Change terrain exaggeration',northAction:'North up',worldsDescription:'Choose your next destination.',searchPlaces:'Find a place on Earth, or enter coordinates.',searchCoordinates:'Enter coordinates to explore this world.',searchSites:'Find a NASA site or enter coordinates.',moreDescription:'Your view, time and preferences.',worldsShort:'Worlds',searchShort:'Search',informationShort:'Info',moreShort:'More',lightShort:'Light',darkShort:'Dark'},
+  fr: {navigation:'Exploration',worlds:'Mondes',search:'Rechercher',information:'Informations de la vue',reset:'Recentrer la vue',more:'Autres actions',close:'Fermer',menu:'Commandes',view:'Vue',replay:'Revoir le film',sources:'Sources et créateurs',settings:'Réglages',language:'Langue',searchTitle:'Rechercher',worldsTitle:'Mondes',closeInformation:'Fermer les informations',selectWorld:'Sélectionner un monde pour voir ses informations',light:'Passer en mode clair',dark:'Passer en mode sombre',home:'Système solaire',tiltAction:'Changer l’angle de vue',heightAction:'Changer l’amplification du relief',northAction:'Orienter le nord en haut',worldsDescription:'Choisissez votre prochaine destination.',searchPlaces:'Trouvez un lieu sur Terre ou saisissez des coordonnées.',searchCoordinates:'Saisissez des coordonnées pour explorer ce monde.',searchSites:'Trouvez un site NASA ou saisissez des coordonnées.',moreDescription:'La vue, le temps et vos préférences.',worldsShort:'Mondes',searchShort:'Recherche',informationShort:'Infos',moreShort:'Plus',lightShort:'Clair',darkShort:'Sombre'},
 };
 let instance;
 const element = (tag, className) => Object.assign(document.createElement(tag), {className});
@@ -44,11 +44,16 @@ export function initializeActionRail() {
   panel.hidden = true;
   panel.inert = true;
   const heading = element('div','rail-panel-heading');
+  const handle=element('div','rail-sheet-handle');handle.setAttribute('aria-hidden','true');
+  const headingCopy=element('div','rail-panel-heading-copy');
   const title = element('h2','rail-panel-title');
   title.id = 'rail-panel-title';
   panel.setAttribute('aria-labelledby',title.id);
   const close = iconButton('rail-close','xmark','close');
-  heading.append(title,close);
+  const description=element('p','rail-panel-description');description.id='rail-panel-description';
+  panel.setAttribute('aria-describedby',description.id);
+  const shortcut=element('kbd','rail-shortcut');shortcut.textContent='esc';shortcut.setAttribute('aria-hidden','true');
+  headingCopy.append(title,description);heading.append(handle,headingCopy,shortcut,close);
   const worlds = element('div','rail-worlds');
   worlds.append(picker);
   const menu = element('div','rail-menu');
@@ -58,7 +63,7 @@ export function initializeActionRail() {
   view.append(viewTitle);
   const menuActions = element('div','rail-menu-actions');
   const menuViews = {worlds,search:command,more:menu};
-  let active = '', opener, closeTimer=0, revealFrame=0;
+  let active = '', opener, closeTimer=0, revealFrame=0, focusFrame=0;
   const worldButton = iconButton('rail-worlds','globe','worlds');
   const searchButton = iconButton('rail-search','magnifying-glass','search');
   const moreButton = iconButton('rail-more','sliders','more');
@@ -69,18 +74,21 @@ export function initializeActionRail() {
     button.setAttribute('aria-controls',panel.id);
     button.setAttribute('aria-expanded','false');
   }
-  if (brand) { brand.classList.add('rail-brand'); rail.append(brand); }
+  if (brand) { brand.classList.add('rail-brand'); brand.dataset.railLabel=COPY[getLanguage()==='fr'?'fr':'en'].home;rail.append(brand); }
   rail.append(primary,utility);
   primary.append(worldButton,searchButton);
   information.classList.add('rail-button');
   information.dataset.railCopy = 'information';
+  information.querySelector('span:not(.world-icon)')?.classList.add('rail-button-label');
   information.querySelector('svg')?.remove();
   information.insertAdjacentHTML('afterbegin',railGlyph('circle-info'));
   primary.append(information);
   const reset = dashboard.querySelector(atlas ? '#overview-button' : '#reset-view,#reset-button');
-  if (reset && !atlas) {
+  if (reset) {
     reset.classList.add('rail-button');
-    reset.dataset.railCopy = 'reset';
+    reset.dataset.railCopy = atlas?'home':'reset';
+    reset.querySelector('span:not(.world-icon)')?.classList.add('rail-button-label');
+    reset.hidden=false;
     reset.querySelector('.world-icon,svg')?.remove();
     reset.insertAdjacentHTML('afterbegin',worldIcon('rotate'));
     view.append(reset);
@@ -140,14 +148,6 @@ export function initializeActionRail() {
     if (event.key === 'Escape') {
       if (active) { event.preventDefault(); event.stopPropagation(); show('',null,true); }
       else if (dashboard.dataset.panelOpen === 'true') { event.preventDefault(); event.stopPropagation(); setInformation(false); information.focus({preventScroll:true}); }
-    } else if (event.key==='Tab' && active) {
-      const targets=[...panel.querySelectorAll('button,a[href],input,select,textarea,[tabindex]')]
-        .filter(node=>node.tabIndex>=0&&!node.disabled&&!node.closest('[hidden],[inert]')&&node.getClientRects().length);
-      if(!targets.length)return;
-      const index=targets.indexOf(document.activeElement);
-      if(index<0||!event.shiftKey&&index===targets.length-1||event.shiftKey&&index===0){
-        event.preventDefault();targets[event.shiftKey?targets.length-1:0].focus({preventScroll:true});
-      }
     } else if (((event.key === '/' && !event.ctrlKey && !event.altKey && !event.metaKey)
       || ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k'))
       && !event.target.closest('input,textarea,select,[contenteditable=true]')) {
@@ -162,6 +162,45 @@ export function initializeActionRail() {
     new MutationObserver(()=>{if (replay.hidden) replay.hidden=false;})
       .observe(replay,{attributes:true,attributeFilter:['hidden']});
   }
+  for(const type of ['planet-dashboard-location','relic-place-selected'])window.addEventListener(type,()=>queueMicrotask(()=>{if(active==='search')show('',searchButton,true);}));
+  // Dialog actions are delegated by their own modules. Restore the dock only
+  // when that dialog has left focus without a usable return target.
+  document.addEventListener('close',event=>{
+    if(event.target.tagName!=='DIALOG')return;
+    requestAnimationFrame(()=>{
+      const focused=document.activeElement;
+      if(!filmActive()&&!shell.inert&&(focused===document.body||!focused?.isConnected||focused.closest?.('[inert]')))(opener||moreButton).focus({preventScroll:true});
+    });
+  },true);
+  const updateViewport=()=>{
+    const viewport=window.visualViewport,visibleHeight=viewport?.height||window.innerHeight;
+    const offset=Math.max(0,window.innerHeight-visibleHeight-(viewport?.offsetTop||0));
+    shell.style.setProperty('--rail-viewport-height',`${visibleHeight}px`);
+    shell.style.setProperty('--rail-keyboard-offset',`${offset}px`);
+    shell.dataset.keyboard=String(offset>120&&Boolean(command.querySelector('input:focus')));
+  };
+  window.visualViewport?.addEventListener('resize',updateViewport);
+  window.visualViewport?.addEventListener('scroll',updateViewport);
+  window.addEventListener('resize',updateViewport);
+  command.addEventListener('focusin',updateViewport);command.addEventListener('focusout',()=>requestAnimationFrame(updateViewport));
+  updateViewport();
+  let sheetDrag;
+  heading.addEventListener('pointerdown',event=>{
+    if(event.pointerType!=='touch'||event.target.closest('button')||!matchMedia('(max-width:700px) and (min-height:521px)').matches)return;
+    sheetDrag={id:event.pointerId,x:event.clientX,y:event.clientY};heading.setPointerCapture?.(event.pointerId);
+  });
+  heading.addEventListener('pointermove',event=>{
+    if(sheetDrag?.id!==event.pointerId)return;
+    const delta=Math.max(0,event.clientY-sheetDrag.y);
+    panel.dataset.dragging='true';panel.style.setProperty('--rail-drag-y',`${Math.min(150,delta)}px`);
+  });
+  const endSheetDrag=event=>{
+    if(sheetDrag?.id!==event.pointerId)return;
+    const dismiss=event.type!=='pointercancel'&&event.clientY-sheetDrag.y>72&&Math.abs(event.clientX-sheetDrag.x)<90;
+    sheetDrag=null;delete panel.dataset.dragging;panel.style.removeProperty('--rail-drag-y');
+    if(dismiss)show('',null,true);
+  };
+  heading.addEventListener('pointerup',endSheetDrag);heading.addEventListener('pointercancel',endSheetDrag);
   let currentBody = dashboard.dataset.dashboardBody;
   new MutationObserver(()=>{
     if (dashboard.dataset.dashboardBody !== currentBody) {
@@ -178,6 +217,7 @@ export function initializeActionRail() {
   document.body.classList.add('has-action-rail');
   setInformation(false);
   onLanguageChange(()=>{if(active)setInformation(false);render();});
+  new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
   window.addEventListener('relic-preferences-change',render);
   render();
   instance = {element:shell,show,close:()=>show('')};
@@ -199,15 +239,14 @@ export function initializeActionRail() {
   }
   function show(name,trigger,restoreFocus=false) {
     if (name && filmActive()) return;
+    if(name&&!Object.hasOwn(menuViews,name))return;
     if (name && active!==name) setInformation(false);
-    if (active==='worlds' && name!=='worlds') {
-      const pickerTrigger=picker.querySelector('.pd-world-trigger');
-      if (pickerTrigger?.getAttribute('aria-expanded')==='true') pickerTrigger.click();
-    }
     if (trigger) opener = trigger;
-    clearTimeout(closeTimer);cancelAnimationFrame(revealFrame);
+    clearTimeout(closeTimer);cancelAnimationFrame(revealFrame);cancelAnimationFrame(focusFrame);
+    panel.scrollTop=0;
     active = name;
     shell.dataset.open = name || 'none';
+    panel.dataset.panelKind=name||'none';
     panel.inert = !name;
     if(name){
       const entering=panel.hidden||panel.dataset.phase==='closing';
@@ -223,12 +262,15 @@ export function initializeActionRail() {
     }
     for (const [key,button] of Object.entries(triggers)) button.setAttribute('aria-expanded',String(key===name));
     if (name==='worlds') {
-      const trigger = picker.querySelector('.pd-world-trigger');
-      if (trigger?.getAttribute('aria-expanded')!=='true') trigger?.click();
+      picker.dispatchEvent(new CustomEvent('planet-dashboard-picker',{detail:{inline:true}}));
     }
     render();
-    if (name==='search') requestAnimationFrame(()=>command.querySelector('input')?.focus({preventScroll:true}));
-    if (name==='more') requestAnimationFrame(()=>close.focus({preventScroll:true}));
+    if(name)focusFrame=requestAnimationFrame(()=>{
+      if(active!==name||filmActive()||panel.inert||panel.hidden)return;
+      if(name==='worlds')picker.dispatchEvent(new CustomEvent('planet-dashboard-picker',{detail:{inline:true,focus:true}}));
+      else if(name==='search')command.querySelector('input')?.focus({preventScroll:true});
+      else close.focus({preventScroll:true});
+    });
     if (!name && restoreFocus) opener?.focus({preventScroll:true});
   }
   function render() {
@@ -237,12 +279,13 @@ export function initializeActionRail() {
     const hasWorld=Boolean(dashboard.dataset.dashboardBody&&dashboard.dataset.dashboardBody!=='overview');
     rail.setAttribute('aria-label',copy.navigation);
     title.textContent = copy[active==='worlds'?'worldsTitle':active==='search'?'searchTitle':'menu'];
+    description.textContent=copy[active==='worlds'?'worldsDescription':active==='search'?(['overview','earth'].includes(currentBody)?'searchPlaces':atlas?'searchCoordinates':'searchSites'):'moreDescription'];
     for (const target of shell.querySelectorAll('[data-rail-copy]')) {
       const label = target===information?(hasWorld?(informationOpen?copy.closeInformation:copy.information):copy.selectWorld):copy[target.dataset.railCopy];
       target.dataset.railLabel = label;
-      if (target.matches('button,a')) {target.setAttribute('aria-label',label);target.title=label;}
+      if (target.matches('button,a')) {target.setAttribute('aria-label',label);target.removeAttribute('title');}
       const span = target.querySelector('.rail-button-label');
-      if (span) span.textContent=label;
+      if (span) {const short=copy[target.dataset.railCopy+'Short']||label;span.textContent=short;target.dataset.shortLabel=short;}
       if (target.matches('h3')) target.textContent=label;
       if (target.matches('.rail-menu-film')) target.querySelector('span').textContent=label;
     }
@@ -251,19 +294,26 @@ export function initializeActionRail() {
       const button = menu.querySelector(selector);
       if (button) button.dataset.railLabel = copy[key];
     }
+    for(const [selector,key] of [['#tilt-button','tiltAction'],['#height-button','heightAction'],['#north-button','northAction']]){
+      const button=menu.querySelector(selector);if(button){button.setAttribute('aria-label',copy[key]);button.removeAttribute('title');}
+    }
     inspectorClose.setAttribute('aria-label',copy.closeInformation);
-    inspectorClose.title=copy.closeInformation;
+    inspectorClose.removeAttribute('title');
+    if(atlas&&reset)reset.hidden=!hasWorld;
+    information.hidden=false;
     information.disabled=!hasWorld;
     information.setAttribute('aria-disabled',String(!hasWorld));
     information.setAttribute('aria-expanded',String(informationOpen));
     themeButton.dataset.themeState=document.documentElement.dataset.theme==='day'?'day':'night';
     const themeLabel=copy[themeButton.dataset.themeState==='day'?'dark':'light'];
-    themeButton.dataset.railLabel=themeLabel;themeButton.setAttribute('aria-label',themeLabel);themeButton.title=themeLabel;
+    themeButton.dataset.railLabel=themeLabel;themeButton.setAttribute('aria-label',themeLabel);themeButton.removeAttribute('title');
     themeButton.setAttribute('aria-pressed',String(themeButton.dataset.themeState==='day'));
-    themeButton.querySelector('.rail-button-label').textContent=themeLabel;
+    themeButton.dataset.shortLabel=copy[themeButton.dataset.themeState==='day'?'darkShort':'lightShort'];
+    themeButton.querySelector('.rail-button-label').textContent=themeButton.dataset.shortLabel;
     const name = picker.querySelector('.pd-picker-value')?.textContent;
-    worldButton.title = name ? `${copy.worlds} · ${name}` : copy.worlds;
-    worldButton.dataset.railLabel=worldButton.title;
+    worldButton.dataset.railLabel=name?`${copy.worlds} · ${name}`:copy.worlds;
+    searchButton.setAttribute('aria-keyshortcuts','Control+k Meta+k /');
+    if(brand){brand.dataset.railLabel=copy.home;brand.setAttribute('aria-label',copy.home);if(!hasWorld)brand.setAttribute('aria-current','page');else brand.removeAttribute('aria-current');}
   }
 }
 

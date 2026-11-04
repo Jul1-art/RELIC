@@ -57,49 +57,18 @@ export function initializePlanetDashboard(options = {}) {
   // Kept for host integrations; the user always sees the styled listbox above.
   const select=document.createElement('select');select.id='dashboard-world-select';select.name='world';select.hidden=true;select.tabIndex=-1;select.setAttribute('aria-hidden','true');
   picker.append(pickerToggle,pickerList,select);
-  let pickerOpen=false,activeWorld=0,findWorld='',findTimer=0;
   const worldOptions=new Map();
   for(const id of BODIES){
     const option=node('button','pd-world-option');option.type='button';option.id='dashboard-world-option-'+id;option.dataset.world=id;option.tabIndex=-1;option.setAttribute('role','option');
     const disc=node('span','pd-world-disc');disc.dataset.world=id;disc.setAttribute('aria-hidden','true');
     const name=node('span','pd-world-name');const selected=node('span','pd-world-selected');selected.setAttribute('aria-hidden','true');
     option.append(disc,name,selected);pickerList.append(option);worldOptions.set(id,option);
-    option.addEventListener('click',()=>chooseWorld(id));
   }
-  function highlightWorld(index){
-    activeWorld=(index+BODIES.length)%BODIES.length;
-    for(const [id,option] of worldOptions)option.classList.toggle('is-active',id===BODIES[activeWorld]);
-    const option=worldOptions.get(BODIES[activeWorld]);pickerList.setAttribute('aria-activedescendant',option.id);option.scrollIntoView({block:'nearest'});
-  }
-  function showPicker(value,returnFocus=false){
-    pickerOpen=Boolean(value);pickerList.hidden=!pickerOpen;pickerToggle.setAttribute('aria-expanded',String(pickerOpen));picker.dataset.open=String(pickerOpen);
-    if(pickerOpen){highlightWorld(BODIES.indexOf(body));pickerList.focus({preventScroll:true});}
-    else {pickerList.removeAttribute('aria-activedescendant');if(returnFocus)pickerToggle.focus({preventScroll:true});}
-  }
-  function chooseWorld(id){
-    showPicker(false,true);if(id===body)return;
-    select.value=id;select.dispatchEvent(new Event('change',{bubbles:true}));
-  }
-  pickerToggle.addEventListener('click',()=>showPicker(!pickerOpen));
-  pickerToggle.addEventListener('keydown',event=>{if(['ArrowDown','ArrowUp','Home','End'].includes(event.key)){event.preventDefault();showPicker(true);if(event.key==='Home')highlightWorld(0);if(event.key==='End')highlightWorld(BODIES.length-1);}});
-  pickerList.addEventListener('keydown',event=>{
-    if(['ArrowDown','ArrowUp','Home','End','Enter',' ','Escape'].includes(event.key)){
-      event.preventDefault();event.stopPropagation();
-      if(event.key==='Escape'){showPicker(false,true);return;}
-      if(event.key==='Enter'||event.key===' '){chooseWorld(BODIES[activeWorld]);return;}
-      highlightWorld(event.key==='Home'?0:event.key==='End'?BODIES.length-1:activeWorld+(event.key==='ArrowDown'?1:-1));
-    }else if(event.key==='Tab')showPicker(false);
-    else if(event.key.length===1&&!event.ctrlKey&&!event.metaKey&&!event.altKey){
-      clearTimeout(findTimer);findWorld+=event.key.toLocaleLowerCase();findTimer=setTimeout(()=>{findWorld='';},550);
-      const start=activeWorld+1;for(let offset=0;offset<BODIES.length;offset++){const index=(start+offset)%BODIES.length;if(NAMES[language()][BODIES[index]].toLocaleLowerCase().startsWith(findWorld)){highlightWorld(index);break;}}
-    }
-  });
-  document.addEventListener('pointerdown',event=>{if(pickerOpen&&!picker.contains(event.target))showPicker(false);});
-  picker.addEventListener('focusout',event=>{
-    // A click focuses its option between pointerdown and click. Do not dismiss
-    // that option while the browser is still transferring focus within the list.
-    if(event.relatedTarget&&picker.contains(event.relatedTarget))return;
-    requestAnimationFrame(()=>{if(pickerOpen&&!picker.contains(document.activeElement))showPicker(false);});
+  const pickerNavigation=createWorldPickerNavigation({picker,toggle:pickerToggle,list:pickerList,options:worldOptions,
+    getBody:()=>body,getNames:()=>NAMES[language()],onChoose:id=>{
+      if(id===body)return;
+      select.value=id;select.dispatchEvent(new Event('change',{bubbles:true}));
+    },
   });
   const actions=originalHeader?.querySelector('.header-actions');
   if (actions) actions.before(picker);else header.append(picker);
@@ -156,6 +125,7 @@ export function initializePlanetDashboard(options = {}) {
     pickerLabel.textContent=text('WORLD','MONDE');pickerValue.textContent=NAMES[language()][selected];
     pickerToggle.setAttribute('aria-label',text('Choose a world: ','Choisir un monde : ')+NAMES[language()][selected]);
     pickerList.setAttribute('aria-label',text('Planets and moons','Planètes et lunes'));
+    pickerNavigation.refresh();
     for(const [id,option] of worldOptions){option.querySelector('.pd-world-name').textContent=NAMES[language()][id];option.setAttribute('aria-selected',String(id===selected));}
     select.setAttribute('aria-label',text('Choose a planet or moon','Choisir une planète ou une lune'));
     panelButton.querySelector('span').textContent=text('View data','Données de la vue');
@@ -165,7 +135,7 @@ export function initializePlanetDashboard(options = {}) {
     if(atlasSearch){atlasSearch.querySelector('[type=submit]').setAttribute('aria-label',text('Locate','Localiser'));atlasSearch.querySelector('input').setAttribute('aria-label',text('Search a place or coordinates','Rechercher un lieu ou des coordonnées'));}
   }
   select.addEventListener('change',()=>{
-    const next=select.value;if(!BODIES.includes(next))return;showPicker(false);
+    const next=select.value;if(!BODIES.includes(next))return;pickerNavigation.close();
     const event=new CustomEvent('planet-dashboard-world',{detail:{body:next},cancelable:true});
     window.dispatchEvent(event);
     if(!event.defaultPrevented){select.value=body;navigateTo(dashboardDestination(next));}
@@ -175,7 +145,7 @@ export function initializePlanetDashboard(options = {}) {
   window.addEventListener('relic-world-selected',event=>setBody(event.detail?.body||event.detail?.id));
   window.addEventListener('planet-dashboard-panel',event=>{setPanel(event.detail?.open!==false);render();});
   onLanguageChange(()=>{setBody(body);render();});
-  instance={element:root,viewport,inspector,search,select,setBody,setPanel,closePicker:()=>showPicker(false)};
+  instance={element:root,viewport,inspector,search,select,setBody,setPanel,closePicker:pickerNavigation.close,setPickerInline:pickerNavigation.setInline,focusPicker:pickerNavigation.open};
   setBody(body);setPanel(open);render();
   window.dispatchEvent(new CustomEvent('planet-dashboard-mounted',{detail:{view:atlas?'atlas':'surface',body}}));
   let resizeFrame=0;
@@ -197,7 +167,7 @@ export function initializePlanetDashboard(options = {}) {
     const submit=node('button','pd-locate');submit.type='submit';submit.innerHTML=worldIcon('magnifying-glass');
     const state=node('p','pd-search-state');state.setAttribute('role','status');
     const results=node('div','pd-search-results');results.id='dashboard-search-results';results.setAttribute('role','listbox');results.hidden=true;
-    form.append(input,submit,state,results);
+    const field=node('div','pd-atlas-field');field.append(input,submit);form.append(field,state,results);
     let request,active=-1;
     function dismiss(){results.hidden=true;input.setAttribute('aria-expanded','false');input.removeAttribute('aria-activedescendant');active=-1;}
     function choose(place){
@@ -240,3 +210,75 @@ export function initializePlanetDashboard(options = {}) {
 }
 
 export function setDashboardBody(body){instance?.setBody(body);}
+
+/** The dock owns the panel visibility; the ordinary header owns its dropdown.
+ * Keeping these states separate avoids an empty Worlds panel after Tab. */
+export function createWorldPickerNavigation({picker,toggle,list,options,getBody,getNames,onChoose,
+  documentRef=document,frame=requestAnimationFrame}={}){
+  const ids=[...options.keys()],listeners=[];
+  let inline=false,open=false,active=0,find='',findTimer=0;
+  const original={hidden:toggle.hidden,inert:toggle.inert,tabIndex:list.tabIndex};
+  const listen=(target,type,handler)=>{target.addEventListener(type,handler);listeners.push([target,type,handler]);};
+  function highlight(index){
+    active=(index+ids.length)%ids.length;
+    for(const [id,option] of options)option.classList.toggle('is-active',id===ids[active]);
+    const option=options.get(ids[active]);
+    if(option){list.setAttribute('aria-activedescendant',option.id);option.scrollIntoView({block:'nearest'});}
+  }
+  function expose(value,returnFocus=false,focus=false){
+    open=inline||Boolean(value);list.hidden=!open;toggle.setAttribute('aria-expanded',String(open));picker.dataset.open=String(open);
+    if(open){
+      highlight(Math.max(0,ids.indexOf(getBody())));
+      if(focus)list.focus({preventScroll:true});
+    }else{
+      list.removeAttribute('aria-activedescendant');clearTimeout(findTimer);find='';
+      if(returnFocus)toggle.focus({preventScroll:true});
+    }
+  }
+  function setInline(value){
+    inline=Boolean(value);picker.dataset.railInline=String(inline);
+    toggle.hidden=inline||original.hidden;toggle.inert=inline||original.inert;
+    list.tabIndex=inline?0:original.tabIndex;
+    expose(inline);
+  }
+  function choose(id){expose(false,!inline);onChoose(id);}
+  for(const [id,option] of options)listen(option,'click',()=>choose(id));
+  listen(toggle,'click',()=>expose(!open,false,true));
+  listen(toggle,'keydown',event=>{
+    if(!['ArrowDown','ArrowUp','Home','End'].includes(event.key))return;
+    event.preventDefault();expose(true,false,true);
+    if(event.key==='Home')highlight(0);if(event.key==='End')highlight(ids.length-1);
+  });
+  listen(list,'keydown',event=>{
+    if(event.key==='Escape'&&inline)return; // The dock handles Escape and restores its opener.
+    if(['ArrowDown','ArrowUp','Home','End','Enter',' ','Escape'].includes(event.key)){
+      event.preventDefault();event.stopPropagation();
+      if(event.key==='Escape'){expose(false,true);return;}
+      // A real click preserves adapter listeners and the dock's dismissal path,
+      // including when the already selected world is chosen with the keyboard.
+      if(event.key==='Enter'||event.key===' '){options.get(ids[active])?.click();return;}
+      highlight(event.key==='Home'?0:event.key==='End'?ids.length-1:active+(event.key==='ArrowDown'?1:-1));
+    }else if(event.key==='Tab'){if(!inline)expose(false);}
+    else if(event.key.length===1&&!event.ctrlKey&&!event.metaKey&&!event.altKey){
+      clearTimeout(findTimer);find+=event.key.toLocaleLowerCase();findTimer=setTimeout(()=>{find='';},550);
+      const names=getNames(),start=active+1;
+      for(let offset=0;offset<ids.length;offset++){
+        const index=(start+offset)%ids.length;
+        if(names[ids[index]].toLocaleLowerCase().startsWith(find)){highlight(index);break;}
+      }
+    }
+  });
+  listen(documentRef,'pointerdown',event=>{if(!inline&&open&&!picker.contains(event.target))expose(false);});
+  listen(picker,'focusout',event=>{
+    if(inline||event.relatedTarget&&picker.contains(event.relatedTarget))return;
+    frame(()=>{if(!inline&&open&&!picker.contains(documentRef.activeElement))expose(false);});
+  });
+  listen(picker,'planet-dashboard-picker',event=>{
+    if(typeof event.detail?.inline==='boolean')setInline(event.detail.inline);
+    if(event.detail?.focus)expose(true,false,true);
+  });
+  return {setInline,open:()=>expose(true,false,true),close:()=>expose(false),
+    refresh(){if(open)highlight(Math.max(0,ids.indexOf(getBody())));},
+    dispose(){clearTimeout(findTimer);for(const [target,type,handler] of listeners)target.removeEventListener(type,handler);},
+  };
+}

@@ -11,8 +11,9 @@ function renderTheme(){
   if(color)color.content=day?'#f5f5f7':'#000000';
   for(const button of document.querySelectorAll('[data-theme-toggle]')){
     button.dataset.themeState=day?'day':'night';button.dataset.railLabel=label;
-    button.setAttribute('aria-label',label);button.setAttribute('aria-pressed',String(day));button.title=label;
-    const text=button.querySelector('.rail-button-label');if(text)text.textContent=label;
+    button.setAttribute('aria-label',label);button.setAttribute('aria-pressed',String(day));
+    if(button.closest?.('.relic-action-rail'))button.removeAttribute('title');else button.title=label;
+    const text=button.querySelector('.rail-button-label');if(text)text.textContent=button.dataset.shortLabel||label;
   }
 }
 

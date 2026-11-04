@@ -1,177 +1,251 @@
-/* A compact, floating dock keeps navigation close without framing the scene. */
+/* The navigation is one compact dock and one contextual, scrollable surface. */
 .has-action-rail{
-  --rail-width:60px;--rail-left:92px;
-  --rail-panel:var(--chrome-surface,#000);--rail-ink:var(--chrome-ink,#fff);
-  --rail-muted:var(--chrome-muted,#fff);--rail-line:var(--chrome-line,#ffffff24);
+  --rail-width:68px;
+  --rail-edge:16px;
+  --rail-left:calc(var(--rail-edge) + var(--rail-width) + 14px);
+  --rail-credits:calc(var(--provider-credits-height,0px) + var(--detailed-credits-height,0px));
+  --rail-safe-top:max(16px,env(safe-area-inset-top,0px));
+  --rail-safe-bottom:calc(16px + env(safe-area-inset-bottom,0px) + var(--rail-credits));
+  --rail-available:calc(100dvh - var(--rail-safe-top) - var(--rail-safe-bottom));
+  --rail-panel:var(--chrome-surface,#000);
+  --rail-ink:var(--chrome-ink,#fff);
+  --rail-muted:var(--chrome-muted,#fff);
+  --rail-line:var(--chrome-line,#ffffff24);
 }
 .has-action-rail .planet-dashboard{display:block!important;padding:0!important;background:var(--chrome-bg,#000)!important}
 .has-action-rail .planet-dashboard>.pd-header,.has-action-rail .planet-dashboard>.pd-footer{display:none!important}
 .has-action-rail .planet-dashboard>.pd-workspace{position:absolute!important;inset:0!important;display:block!important;margin:0!important;padding:0!important;width:100%!important;height:100%!important}
 .has-action-rail .planet-dashboard .pd-viewport{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;border:0!important;border-radius:0!important}
 .has-action-rail .planet-dashboard #planet-dashboard-inspector.pd-inspector{
-  position:absolute!important;z-index:30;inset:24px 24px calc(24px + var(--provider-credits-height,0px) + var(--detailed-credits-height,0px)) auto!important;
-  width:min(360px,calc(100% - 116px));max-height:none!important;border:1px solid var(--chrome-line,#ffffff24)!important;border-radius:24px!important;
-  background:var(--chrome-surface,#000)!important;color:var(--chrome-ink,#fff)!important;
-  box-shadow:var(--chrome-shadow,0 16px 56px #0004);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
-  animation:inspector-reveal .32s cubic-bezier(.2,.8,.2,1) both;scrollbar-color:var(--chrome-line) transparent;
+  position:absolute!important;z-index:30;
+  inset:var(--rail-safe-top) var(--rail-edge) var(--rail-safe-bottom) auto!important;
+  width:min(370px,calc(100% - var(--rail-left) - 20px));max-height:none!important;
+  border:1px solid var(--rail-line)!important;border-radius:26px!important;
+  background:var(--rail-panel)!important;color:var(--rail-ink)!important;
+  box-shadow:var(--chrome-shadow);overscroll-behavior:contain;scrollbar-width:thin;
+  scrollbar-color:var(--chrome-muted) transparent;animation:rail-inspector-reveal .25s cubic-bezier(.2,.8,.2,1) both;
 }
 .has-action-rail .planet-dashboard #planet-dashboard-inspector.pd-inspector[hidden]{display:none!important}
-.relic-action-shell{position:fixed;inset:0;z-index:60;pointer-events:none;color:var(--chrome-ink,#fff);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Arial,sans-serif}
+.relic-action-shell{
+  position:fixed;inset:0;z-index:60;pointer-events:none;color:var(--rail-ink);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Arial,sans-serif;
+}
 .relic-action-shell *{box-sizing:border-box}
-.relic-action-shell [hidden]{display:none!important}
+.relic-action-shell [hidden],.relic-action-shell #relic-action-panel [hidden]{display:none!important}
 html body.has-action-rail nav#relic-action-rail.relic-action-rail[data-compact]{
-  position:absolute;left:16px;right:auto;top:50%;bottom:auto!important;display:flex;flex-direction:column;align-items:center;gap:16px;
-  width:var(--rail-width);height:auto;max-height:calc(100dvh - 48px - var(--provider-credits-height,0px) - var(--detailed-credits-height,0px));
-  margin:0;padding:9px 7px;border:1px solid var(--chrome-line,#ffffff24);border-radius:22px;background:var(--chrome-surface,#000);
-  box-shadow:var(--chrome-shadow,0 12px 44px #0004);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
-  pointer-events:auto;transform:translateY(-50%);overflow:visible;
+  position:absolute;left:var(--rail-edge);right:auto;bottom:auto!important;
+  top:calc((100dvh + var(--rail-safe-top) - var(--rail-safe-bottom))/2);
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  width:var(--rail-width);height:auto;max-height:var(--rail-available);
+  margin:0;padding:9px;border:1px solid var(--rail-line);border-radius:25px;
+  background:var(--rail-panel);box-shadow:var(--chrome-shadow);
+  pointer-events:auto;transform:translateY(-50%);isolation:isolate;overflow:visible;
 }
 .rail-primary,.rail-utility{position:relative;display:flex;flex-direction:column;align-items:center;gap:5px;min-height:0;width:100%}
-.rail-utility{gap:5px;padding-top:14px}
-.rail-utility::before{content:"";position:absolute;top:0;left:8px;right:8px;height:1px;background:var(--chrome-line,#ffffff24)}
+.rail-utility{padding-top:13px}
+.rail-utility::before{content:"";position:absolute;top:0;left:10px;right:10px;height:1px;background:var(--rail-line)}
 .relic-action-rail .rail-brand{
-  display:flex!important;align-items:center;justify-content:center;flex:0 0 42px;height:42px;min-height:42px!important;width:42px!important;
-  margin:0!important;padding:8px!important;border:0!important;border-radius:15px;background:#000!important;box-shadow:none!important;
-  color:#fff;text-decoration:none;overflow:hidden;transition:transform .24s cubic-bezier(.2,.8,.2,1);
+  display:flex!important;align-items:center;justify-content:center;flex:0 0 48px;
+  width:48px!important;min-width:48px!important;height:48px;min-height:48px!important;
+  margin:0!important;padding:10px!important;border:0!important;border-radius:17px;background:#000!important;
+  box-shadow:none!important;color:#fff;text-decoration:none;overflow:hidden;
+  transition:transform .2s cubic-bezier(.2,.8,.2,1);
 }
-.relic-action-rail .rail-brand:hover{transform:scale(1.06)}
-.relic-action-rail .rail-brand :is(.relic-mark,.relic-brand-mark){display:block;width:27px!important;height:27px!important;flex:0 0 27px;object-fit:contain;filter:none!important}
+.relic-action-rail .rail-brand:hover{transform:scale(1.04)}
+.relic-action-rail .rail-brand :is(.relic-mark,.relic-brand-mark){display:block;width:28px!important;height:28px!important;flex:0 0 28px;object-fit:contain;filter:none!important}
 .relic-action-rail .rail-brand .back-arrow{display:flex!important;align-items:center;justify-content:center;width:26px!important;height:26px!important;min-height:0!important;padding:0!important;background:#000!important;border:0!important;color:#fff!important}
 .relic-action-rail .identity-copy,.relic-action-rail .rail-brand>span:not(.back-arrow){display:none!important}
 .relic-action-rail .back-link{font-size:0;letter-spacing:0}
 .relic-action-shell .rail-button,.has-action-rail .rail-inspector-close{
-  position:relative;display:flex!important;align-items:center;justify-content:center;gap:11px;flex:0 0 44px;
-  width:44px;min-width:44px;min-height:44px;height:44px;padding:12px!important;margin:0!important;border:0!important;border-radius:14px!important;
-  background:transparent!important;color:var(--chrome-ink,#fff)!important;box-shadow:none!important;opacity:1!important;
-  font:inherit;font-size:12px;font-weight:500;line-height:1.3;text-align:left;text-decoration:none;white-space:nowrap;cursor:pointer;
-  touch-action:manipulation;-webkit-tap-highlight-color:transparent;
-  transition:background .2s,color .2s,transform .24s cubic-bezier(.2,.8,.2,1);
+  position:relative;display:flex!important;align-items:center;justify-content:center;gap:10px;
+  flex:0 0 48px;width:48px;min-width:48px;height:48px;min-height:48px;
+  margin:0!important;padding:14px!important;border:0!important;border-radius:16px!important;
+  background:transparent!important;color:var(--rail-ink)!important;box-shadow:none!important;opacity:1!important;
+  font:inherit;font-size:12px;font-weight:500;line-height:1.3;text-align:left;text-decoration:none;white-space:nowrap;
+  cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+  transition:background .18s ease,color .18s ease,transform .2s cubic-bezier(.2,.8,.2,1);
 }
 .relic-action-shell .rail-button[hidden]{display:none!important}
-.relic-action-shell .rail-button:not(:disabled):not([aria-expanded=true]):hover{background:var(--chrome-hover,#ffffff14)!important;transform:translateY(-1px)}
-.relic-action-shell .rail-button[aria-expanded=true]{background:var(--chrome-active,#fff)!important;color:var(--chrome-active-ink,#000)!important}
-.relic-action-shell .rail-button:not(:disabled):active{transform:scale(.94)}
-.relic-action-shell :is(svg,.world-icon),.has-action-rail .rail-inspector-close svg{display:block!important;flex:0 0 19px!important;width:19px!important;height:19px!important;min-width:19px!important;max-height:19px!important;fill:currentColor;stroke:none;opacity:1!important}
-.relic-action-shell svg:not(.fas){fill:none;stroke:currentColor;stroke-width:1.6}
-.has-action-rail .rail-inspector-close svg.rail-glyph{fill:none;stroke:currentColor;stroke-width:1.6}
-.relic-action-shell .world-icon svg{width:19px!important;height:19px!important;min-width:19px!important}
+.relic-action-shell .rail-button:not(:disabled):not([aria-expanded=true]):not([aria-current]):hover{background:var(--chrome-hover)!important}
+.relic-action-shell .rail-button:is([aria-expanded=true],[aria-current=page],[aria-current=true]){background:var(--chrome-active)!important;color:var(--chrome-active-ink)!important}
+.relic-action-rail .rail-button::before{
+  content:"";position:absolute;left:-10px;top:calc(50% - 9px);width:3px;height:18px;border-radius:0 3px 3px 0;
+  background:var(--rail-ink);opacity:0;transform:scaleY(.3);transition:opacity .18s,transform .2s;
+}
+.relic-action-rail .rail-button:is([aria-expanded=true],[aria-current=page],[aria-current=true])::before{opacity:1;transform:scaleY(1)}
+.relic-action-shell .rail-button:not(:disabled):active{transform:scale(.95)}
+.relic-action-shell :is(svg,.world-icon),.has-action-rail .rail-inspector-close svg{display:block!important;flex:0 0 20px!important;width:20px!important;height:20px!important;min-width:20px!important;max-height:20px!important;opacity:1!important}
+.relic-action-shell .world-icon svg{width:20px!important;height:20px!important;min-width:20px!important;fill:currentColor;stroke:none}
+.relic-action-shell svg.rail-glyph,.has-action-rail .rail-inspector-close svg.rail-glyph{fill:none!important;stroke:currentColor!important;stroke-width:1.65}
 .relic-action-rail .rail-button>span:not(.world-icon){display:none!important}
 .relic-action-shell .rail-theme-action>svg:nth-of-type(2){display:none!important}
 .relic-action-shell .rail-theme-action[data-theme-state=day]>svg:first-of-type{display:none!important}
 .relic-action-shell .rail-theme-action[data-theme-state=day]>svg:nth-of-type(2){display:block!important}
 .relic-action-rail .rail-button::after{
-  content:attr(data-rail-label);position:absolute;left:calc(100% + 18px);top:50%;transform:translate(4px,-50%);
-  padding:9px 12px;border:1px solid var(--chrome-line,#ffffff24);border-radius:10px;background:var(--chrome-elevated,#000);color:var(--chrome-ink,#fff);
-  box-shadow:var(--chrome-shadow,0 8px 24px #0003);opacity:0;visibility:hidden;pointer-events:none;font-size:12px;line-height:1.25;font-weight:450;white-space:nowrap;
-  transition:opacity .18s,visibility .18s,transform .2s;
+  content:attr(data-rail-label);position:absolute;left:calc(100% + 20px);top:50%;transform:translate(-3px,-50%);
+  padding:10px 13px;border:1px solid var(--rail-line);border-radius:11px;background:var(--chrome-elevated);color:var(--rail-ink);
+  box-shadow:var(--chrome-shadow);opacity:0;visibility:hidden;pointer-events:none;
+  font-size:12px;font-weight:500;line-height:1.35;white-space:nowrap;
+  transition:opacity .15s ease,visibility .15s ease,transform .2s cubic-bezier(.2,.8,.2,1);
 }
 .relic-action-rail .rail-button:not(:disabled):is(:hover,:focus-visible)::after{opacity:1;visibility:visible;transform:translate(0,-50%)}
 .relic-action-shell[data-open]:not([data-open=none]) .relic-action-rail .rail-button::after{display:none}
 html body.has-action-rail section#relic-action-panel.relic-action-panel{
-  position:absolute;left:var(--rail-left);right:auto;top:50%;bottom:auto!important;width:min(344px,calc(100vw - 112px));
-  max-height:calc(100dvh - 64px - 2 * var(--provider-credits-height,0px) - 2 * var(--detailed-credits-height,0px));
-  margin:0;padding:20px;border:1px solid var(--chrome-line,#ffffff24);border-radius:24px;background:var(--chrome-surface,#000);color:var(--chrome-ink,#fff);
-  backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);box-shadow:var(--chrome-shadow,0 20px 64px #0005);
-  pointer-events:auto;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--chrome-line,#ffffff24) transparent;
+  position:absolute;left:var(--rail-left);right:auto;bottom:auto!important;
+  top:calc((100dvh + var(--rail-safe-top) - var(--rail-safe-bottom))/2);
+  width:min(368px,calc(100vw - var(--rail-left) - 20px));max-height:var(--rail-available);
+  margin:0;padding:20px;border:1px solid var(--rail-line);border-radius:26px;
+  background:var(--rail-panel);color:var(--rail-ink);box-shadow:var(--chrome-shadow);
+  pointer-events:auto;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--chrome-muted) transparent;
   opacity:1;transform:translateY(-50%);transform-origin:left center;
-  transition:opacity .18s ease,transform .3s cubic-bezier(.2,.8,.2,1);animation:none;
+  transition:opacity .18s ease,transform .24s cubic-bezier(.2,.8,.2,1);animation:none;
 }
-html body.has-action-rail section#relic-action-panel.relic-action-panel:is([data-phase=entering],[data-phase=closing]){opacity:0;transform:translate(-12px,-50%) scale(.985);pointer-events:none}
-.rail-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-2px -2px 14px 2px;padding-bottom:13px;border-bottom:1px solid var(--chrome-line,#ffffff24)}
-.rail-panel-title{margin:0;color:var(--chrome-ink,#fff);font-size:18px;line-height:1.35;font-weight:600;letter-spacing:-.035em}
-.relic-action-shell #rail-close{width:32px;min-width:32px;height:32px;min-height:32px;flex-basis:32px;padding:8px!important;border-radius:50%!important}
+html body.has-action-rail section#relic-action-panel.relic-action-panel:is([data-phase=entering],[data-phase=closing]){opacity:0;transform:translate(-10px,-50%) scale(.985);pointer-events:none}
+.rail-panel-heading{
+  position:sticky;top:-20px;z-index:3;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+  margin:-20px -20px 17px;padding:20px 20px 17px;border-bottom:1px solid var(--rail-line);background:var(--rail-panel);
+}
+.rail-panel-heading-copy{flex:1;min-width:0;align-self:center}
+.rail-panel-title{margin:0;color:var(--rail-ink);font-size:21px;font-weight:600;line-height:1.25;letter-spacing:-.045em}
+.rail-panel-eyebrow{margin:0 0 6px;color:var(--rail-muted);font-size:10px;font-weight:600;line-height:1.3;letter-spacing:.09em;text-transform:uppercase}
+.rail-panel-description{max-width:29ch;margin:6px 0 0;color:var(--rail-muted);font-size:12px;line-height:1.5;letter-spacing:-.01em}
+.relic-action-shell #rail-close{width:40px;min-width:40px;height:40px;min-height:40px;flex-basis:40px;margin:-5px -7px 0 0!important;padding:10px!important;border-radius:50%!important;background:var(--chrome-input)!important}
 .relic-action-shell #rail-close>span{display:none}
-.relic-action-panel :is(button,a,input,select):focus-visible,.relic-action-rail :is(button,a):focus-visible,.has-action-rail .rail-inspector-close:focus-visible{outline:2px solid var(--chrome-focus,var(--chrome-ink,#fff));outline-offset:3px}
-.relic-action-panel .pd-world-picker{width:100%;max-width:none;min-height:0;margin:0;--pd-ink:var(--chrome-ink,#fff);--pd-muted:var(--chrome-muted,#fff);--pd-panel:var(--chrome-surface,#000);--pd-border:var(--chrome-line,#ffffff24)}
+.rail-sheet-handle{display:none}
+.relic-action-panel :is(button,a,input,select):focus-visible,.relic-action-rail :is(button,a):focus-visible,.has-action-rail .rail-inspector-close:focus-visible{outline:2px solid var(--chrome-focus,var(--rail-ink));outline-offset:3px}
+.relic-action-shell :is(button,input,select):disabled{opacity:.38!important;cursor:default}
+.relic-action-shell .rail-button:disabled{color:var(--rail-muted)!important}
+.rail-shortcut{display:inline-flex;align-items:center;justify-content:center;min-width:23px;min-height:22px;margin-inline-start:auto;padding:2px 5px;border:1px solid var(--rail-line);border-radius:5px;color:var(--rail-muted);font:inherit;font-size:10px;white-space:nowrap}
+.rail-context{display:flex;align-items:center;gap:11px;margin:0 0 17px;padding:12px;border:1px solid var(--rail-line);border-radius:14px;background:var(--chrome-input);font-size:13px;font-weight:500;line-height:1.4}
+.rail-context :is(small,.rail-context-label){display:block;color:var(--rail-muted);font-size:10px;font-weight:400;line-height:1.5}
+.rail-context .pd-world-disc{flex:0 0 24px;width:24px;height:24px}
+
+/* The existing world picker keeps its listbox and keyboard behaviour. */
+.relic-action-panel .pd-world-picker{width:100%;max-width:none;height:auto;min-height:0;margin:0;--pd-ink:var(--rail-ink);--pd-muted:var(--rail-muted);--pd-panel:var(--rail-panel);--pd-border:var(--rail-line)}
 .relic-action-panel .pd-world-trigger{display:none!important}
 .relic-action-panel .pd-world-list{position:static;width:100%;max-width:none;max-height:none;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;animation:none}
-.relic-action-panel .pd-world-option{min-height:42px;padding:9px 11px;border-radius:12px;color:var(--chrome-ink,#fff);font-size:13px;gap:12px}
-.relic-action-panel .pd-world-option:hover,.relic-action-panel .pd-world-option.is-active:not([aria-selected=true]){background:var(--chrome-hover,#ffffff14)!important;color:var(--chrome-ink,#fff)!important}
-.relic-action-panel .pd-world-option[aria-selected=true]{background:var(--chrome-active,#fff)!important;color:var(--chrome-active-ink,#000)!important}
-.relic-action-panel .pd-world-option :is(.pd-world-name,.pd-world-selected){color:inherit!important;font-size:13px;font-weight:450}
-html body .relic-action-panel .pd-world-option[aria-selected=true] .pd-world-disc{border-color:var(--chrome-active-ink,#000)!important;background:transparent!important}
+.relic-action-panel .pd-world-option{min-height:48px;margin:3px 0;padding:11px 12px;border:1px solid transparent;border-radius:14px;color:var(--rail-ink);font-size:13px;gap:13px}
+.relic-action-panel .pd-world-option:hover,.relic-action-panel .pd-world-option.is-active:not([aria-selected=true]){background:var(--chrome-hover)!important;color:var(--rail-ink)!important}
+.relic-action-panel .pd-world-option[aria-selected=true]{border-color:var(--rail-line);background:var(--chrome-active)!important;color:var(--chrome-active-ink)!important}
+.relic-action-panel .pd-world-option :is(.pd-world-name,.pd-world-selected){color:inherit!important;font-size:13px;font-weight:500}
+html body .relic-action-panel .pd-world-option[aria-selected=true] .pd-world-disc{border-color:var(--chrome-active-ink)!important;background:transparent!important}
 .relic-action-panel .pd-world-option .pd-world-selected{background:currentColor}
-.relic-action-panel .pd-command{display:block;margin:0;padding:0;border:0;--pd-ink:var(--chrome-ink,#fff);--pd-muted:var(--chrome-muted,#fff);--pd-panel:var(--chrome-surface,#000);--pd-border:var(--chrome-line,#ffffff24)}
+.rail-world-filter{width:100%;min-height:44px;margin:0 0 12px;padding:11px 13px;border:1px solid var(--rail-line);border-radius:13px;background:var(--chrome-input);color:var(--rail-ink);font:inherit;font-size:13px}
+.rail-world-empty{margin:16px 8px;color:var(--rail-muted);font-size:12px;line-height:1.6}
+
+/* Both the planetary and atlas search adapters use the same field and rows. */
+.relic-action-panel .pd-command{display:block;margin:0;padding:0;border:0;--pd-ink:var(--rail-ink);--pd-muted:var(--rail-muted);--pd-panel:var(--rail-panel);--pd-border:var(--rail-line)}
 .relic-action-panel .pd-command-context{display:none}
-.relic-action-panel .pd-command #place-form{position:relative!important;inset:auto!important;display:block!important;width:100%!important;max-width:none!important;min-width:0!important;height:auto!important;min-height:48px!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;transform:none!important}
+.relic-action-panel .pd-command #place-form{position:relative!important;inset:auto!important;display:block!important;width:100%!important;max-width:none!important;min-width:0!important;height:auto!important;min-height:50px!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;transform:none!important}
 .relic-action-panel .pd-command #search-toggle{display:none!important}
 .relic-action-panel .pd-command #search-content{position:static!important;display:block!important;inset:auto!important;width:100%!important;max-width:none!important;min-width:0!important;max-height:none!important;padding:0!important;border:0;border-radius:0;background:transparent!important;box-shadow:none!important;overflow:visible!important;transform:none!important;visibility:visible!important;opacity:1!important}
-.relic-action-panel .pd-command .place-search-field,.relic-action-panel .pd-command .pd-atlas-search{display:flex!important;align-items:center;gap:8px;height:48px!important;padding:4px 5px 4px 13px!important;border:1px solid var(--chrome-line,#ffffff24)!important;border-radius:13px!important;background:var(--chrome-input,#000)!important}
-.relic-action-panel .pd-command input{flex:1;min-width:0;width:100%;height:36px;padding:0;border:0!important;outline:0!important;background:transparent!important;color:var(--chrome-ink,#fff)!important;font:inherit;font-size:14px;letter-spacing:-.015em;box-shadow:none!important}
-.relic-action-panel .pd-command input::placeholder{color:var(--chrome-muted,#fff);opacity:1}
-.relic-action-panel .pd-command .pd-atlas-search{position:relative!important;inset:auto!important;flex-direction:row!important;width:100%!important;max-width:none!important;min-width:0!important;min-height:48px!important;margin:0!important;box-shadow:none!important;transform:none!important}
-.relic-action-panel .pd-command input[type=search]::-webkit-search-cancel-button{appearance:none;-webkit-appearance:none;width:12px;height:12px;margin-inline:7px;background:var(--chrome-muted,#fff);clip-path:polygon(15% 0,50% 35%,85% 0,100% 15%,65% 50%,100% 85%,85% 100%,50% 65%,15% 100%,0 85%,35% 50%,0 15%);cursor:pointer}
+.relic-action-panel .pd-command :is(.place-search-field,.pd-atlas-field){display:flex!important;align-items:center;gap:7px;height:50px!important;padding:3px 4px 3px 14px!important;border:1px solid var(--rail-line)!important;border-radius:14px!important;background:var(--chrome-input)!important;transition:border-color .15s,box-shadow .15s}
+.relic-action-panel .pd-command :is(.place-search-field,.pd-atlas-field):focus-within{border-color:var(--chrome-focus)!important;box-shadow:0 0 0 1px var(--chrome-focus)!important}
+.relic-action-panel .pd-command input{flex:1;min-width:0;width:100%;height:40px;padding:0;border:0!important;outline:0!important;background:transparent!important;color:var(--rail-ink)!important;font:inherit;font-size:14px;letter-spacing:-.015em;box-shadow:none!important}
+.relic-action-panel .pd-command input::placeholder{color:var(--rail-muted);opacity:1}
+.relic-action-panel .pd-command .pd-atlas-search{position:relative!important;inset:auto!important;display:block!important;width:100%!important;max-width:none!important;min-width:0!important;min-height:0!important;height:auto!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;transform:none!important}
+.relic-action-panel .pd-command input[type=search]::-webkit-search-cancel-button{appearance:none;-webkit-appearance:none;width:12px;height:12px;margin-inline:7px;background:var(--rail-muted);clip-path:polygon(15% 0,50% 35%,85% 0,100% 15%,65% 50%,100% 85%,85% 100%,50% 65%,15% 100%,0 85%,35% 50%,0 15%);cursor:pointer}
 .relic-action-panel .pd-command input[type=search]:placeholder-shown::-webkit-search-cancel-button{opacity:0;pointer-events:none}
-.relic-action-panel .pd-command :is(.place-search-field button,.pd-locate){display:grid;place-items:center;flex:0 0 auto;min-width:36px;height:36px;min-height:36px;padding:9px;border:0;border-radius:10px;background:transparent;color:var(--chrome-ink,#fff);font:inherit;font-size:11px}
-.relic-action-panel .pd-command :is(.place-search-field button,.pd-locate):hover{background:var(--chrome-hover,#ffffff14);color:var(--chrome-ink,#fff)}
-.relic-action-panel .pd-command :is(#suggestions,.pd-search-results){position:relative!important;inset:auto!important;width:100%;max-height:min(360px,50dvh);margin:12px 0 0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;transform:none!important;overflow:auto}
-.relic-action-panel .pd-command :is(#suggestions,.pd-search-results) button{display:flex;align-items:center;gap:10px;min-height:46px;width:100%;padding:11px 10px;border:0;border-radius:11px;background:transparent;color:var(--chrome-ink,#fff);font:inherit;font-size:12px;text-align:left}
-.relic-action-panel .pd-command :is(#suggestions,.pd-search-results) button:is(:hover,[aria-selected=true]){background:var(--chrome-hover,#ffffff14);color:var(--chrome-ink,#fff)}
+.relic-action-panel .pd-command :is(.place-search-field button,.pd-locate){display:grid;place-items:center;flex:0 0 42px;min-width:42px;height:42px;min-height:42px;padding:10px;border:0;border-radius:11px;background:transparent;color:var(--rail-ink);font:inherit;font-size:11px;cursor:pointer;touch-action:manipulation}
+.relic-action-panel .pd-command :is(.place-search-field button,.pd-locate):hover{background:var(--chrome-hover);color:var(--rail-ink)}
+.relic-action-panel .pd-command :is(#suggestions,.pd-search-results){position:relative!important;inset:auto!important;width:100%;max-height:min(360px,48dvh);margin:13px 0 0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;transform:none!important;overflow:auto;overscroll-behavior:contain;scroll-padding:6px}
+.relic-action-panel .pd-command :is(#suggestions,.pd-search-results) button{display:flex;align-items:center;gap:11px;min-height:50px;width:100%;padding:12px;border:0;border-radius:12px;background:transparent;color:var(--rail-ink);font:inherit;font-size:12px;text-align:left;cursor:pointer;touch-action:manipulation}
+.relic-action-panel .pd-command :is(#suggestions,.pd-search-results) button:is(:hover,[aria-selected=true]){background:var(--chrome-hover);color:var(--rail-ink)}
 .relic-action-panel .pd-command .place-search-results :is(strong,small){display:block;line-height:1.5;color:inherit}
-.relic-action-panel .pd-command .place-search-results small{font-size:11px;color:var(--chrome-muted,#fff)}
-.relic-action-panel .pd-command :is(.place-search-status,.pd-search-state,.place-search-credit){position:static;display:block;margin:12px 3px 0;padding:0;border:0;background:transparent;color:var(--chrome-muted,#fff);font-size:11px;line-height:1.6}
+.relic-action-panel .pd-command .place-search-results small{font-size:11px;color:var(--rail-muted)}
+.relic-action-panel .pd-command :is(.place-search-status,.pd-search-state,.place-search-credit){position:static;display:block;margin:13px 3px 0;padding:0;border:0;background:transparent;color:var(--rail-muted);font-size:11px;line-height:1.6}
 .relic-action-panel .pd-command :is(.place-search-status,.pd-search-state):empty{display:none}
-.rail-section-title{margin:0 0 10px 10px;color:var(--chrome-muted,#fff);font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
-.rail-view{margin:0 0 14px;padding-bottom:14px;border-bottom:1px solid var(--chrome-line,#ffffff24)}
+
+/* Utility rows retain the existing renderer and settings event handlers. */
+.rail-section-title,.rail-menu-section-title{margin:0 0 8px 12px;color:var(--rail-muted);font-size:10px;font-weight:600;line-height:1.5;letter-spacing:.08em;text-transform:uppercase}
+.rail-view{margin:0 0 16px;padding-bottom:16px;border-bottom:1px solid var(--rail-line)}
 .relic-action-panel :is(.earth-controls,.view-controls,.header-actions,.google3d-control,.terrain-google3d){position:static!important;inset:auto!important;display:flex!important;flex-direction:column;align-items:stretch!important;gap:4px!important;width:100%!important;min-width:0;max-width:none!important;height:auto!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;backdrop-filter:none!important;box-shadow:none!important;transform:none!important;overflow:visible!important}
-.relic-action-panel .header-actions{padding:0!important}
-.relic-action-panel :is(.header-actions button,.rail-menu-film,.rail-view button){position:relative!important;display:flex!important;align-items:center;justify-content:flex-start!important;gap:12px!important;width:100%!important;height:42px!important;min-height:42px!important;min-width:0!important;flex:0 0 auto!important;margin:0!important;padding:10px 11px!important;border:0!important;border-radius:11px!important;background:transparent!important;color:var(--chrome-ink,#fff)!important;box-shadow:none!important;font:inherit!important;font-size:12px!important;font-weight:450!important;line-height:1.35!important;text-align:left;text-decoration:none;cursor:pointer;touch-action:manipulation}
-.relic-action-panel :is(.header-actions button,.rail-menu-film,.rail-view button):not(:disabled):hover{background:var(--chrome-hover,#ffffff14)!important;color:var(--chrome-ink,#fff)!important}
-.relic-action-panel .header-actions button::after{content:attr(data-rail-label);display:block;flex:1;min-width:0;white-space:normal;font-size:12px;line-height:1.4}
+.relic-action-panel :is(.header-actions button,.rail-menu-film,.rail-view button){position:relative!important;display:flex!important;align-items:center;justify-content:flex-start!important;gap:12px!important;width:100%!important;height:48px!important;min-height:48px!important;min-width:0!important;flex:0 0 auto!important;margin:0!important;padding:12px!important;border:0!important;border-radius:13px!important;background:transparent!important;color:var(--rail-ink)!important;box-shadow:none!important;font:inherit!important;font-size:13px!important;font-weight:500!important;line-height:1.4!important;text-align:left;text-decoration:none;cursor:pointer;touch-action:manipulation}
+.relic-action-panel :is(.header-actions button,.rail-menu-film,.rail-view button):not(:disabled):hover{background:var(--chrome-hover)!important;color:var(--rail-ink)!important}
+.relic-action-panel .header-actions button::after{content:attr(data-rail-label);display:block;flex:1;min-width:0;white-space:normal;font-size:13px;line-height:1.4}
 .relic-action-panel .header-actions [data-language-toggle]{letter-spacing:0!important}
 .relic-action-panel .header-actions [data-language-toggle] span{display:none!important}
-.relic-action-panel .header-actions [data-language-toggle]::before{content:attr(data-active-language);width:19px;flex:0 0 19px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0;text-align:center}
+.relic-action-panel .header-actions [data-language-toggle]::before{content:attr(data-active-language);display:grid;place-items:center;flex:0 0 22px;width:22px;height:22px;border:1px solid var(--rail-line);border-radius:6px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0}
 .relic-action-panel .header-actions [data-theme-toggle]{display:none!important}
 .relic-action-panel .google3d-control>span,.relic-action-panel .terrain-google3d>span{display:none}
 html[data-theme] body.has-action-rail .relic-action-panel .rail-view button>span{display:block!important}
-.relic-action-panel .solar-simulation{margin-top:14px;padding:13px;border:1px solid var(--chrome-line,#ffffff24);border-radius:15px;background:var(--chrome-input,#000);color:var(--chrome-ink,#fff)}
-.relic-action-panel .solar-simulation>h3{margin-bottom:10px;color:var(--chrome-muted,#fff)}
-.relic-action-panel .solar-simulation-row{display:grid;grid-template-columns:36px minmax(0,1fr);gap:8px;margin-bottom:10px}
-html body .relic-action-panel .solar-simulation-row>button{width:36px!important;min-width:36px!important;height:36px!important;min-height:36px!important;justify-content:center!important;padding:9px!important;border:1px solid var(--chrome-line,#ffffff24)!important;border-radius:10px!important}
-.relic-action-panel .solar-simulation-row select{width:100%;min-width:0;height:36px;padding:5px 8px;border:1px solid var(--chrome-line,#ffffff24);border-radius:10px;background:var(--chrome-surface,#000);color:var(--chrome-ink,#fff);font:inherit;font-size:11px}
-.relic-action-panel .simulation-date{display:block;color:var(--chrome-ink,#fff);font-size:12px;font-variant-numeric:tabular-nums}
-.relic-action-panel .simulation-status{margin:8px 0;color:var(--chrome-muted,#fff);font-size:11px;line-height:1.6}
-html body .relic-action-panel .solar-simulation :is(.simulation-now,.simulation-overview){height:auto!important;min-height:34px!important;font-size:11px!important;padding:8px!important}
+.relic-action-panel .solar-simulation{margin-top:18px;padding:15px;border:1px solid var(--rail-line);border-radius:17px;background:var(--chrome-input);color:var(--rail-ink)}
+.relic-action-panel .solar-simulation>h3{margin:0 0 13px;color:var(--rail-muted);font-size:11px;line-height:1.4}
+.relic-action-panel .solar-simulation-row{display:grid;grid-template-columns:44px minmax(0,1fr);gap:9px;margin-bottom:12px}
+html body .relic-action-panel .solar-simulation-row>button{width:44px!important;min-width:44px!important;height:44px!important;min-height:44px!important;justify-content:center!important;padding:12px!important;border:1px solid var(--rail-line)!important;border-radius:12px!important}
+.relic-action-panel .solar-simulation-row select{width:100%;min-width:0;height:44px;padding:7px 11px;border:1px solid var(--rail-line);border-radius:12px;background:var(--rail-panel);color:var(--rail-ink);font:inherit;font-size:12px}
+.relic-action-panel .simulation-date{display:block;color:var(--rail-ink);font-size:12px;font-weight:500;line-height:1.5;font-variant-numeric:tabular-nums}
+.relic-action-panel .simulation-status{margin:9px 0;color:var(--rail-muted);font-size:11px;line-height:1.6}
+html body .relic-action-panel .solar-simulation :is(.simulation-now,.simulation-overview){height:auto!important;min-height:44px!important;font-size:12px!important;padding:10px!important}
 body[data-simulation-state=inspection] .relic-action-panel .solar-simulation-row,body[data-simulation-state=inspection] .relic-action-panel .simulation-now{display:none!important}
-.has-action-rail .rail-inspector-close{position:sticky;top:12px;right:12px;align-self:flex-end;z-index:2;flex:0 0 32px;width:32px!important;min-width:32px!important;min-height:32px!important;height:32px!important;padding:8px!important;margin:12px 12px -36px 0!important;border-radius:50%!important;background:var(--chrome-elevated,#000)!important;color:var(--chrome-ink,#fff)!important}
-.has-action-rail .rail-inspector-close:hover{background:var(--chrome-hover,#ffffff14)!important}
+.has-action-rail .rail-inspector-close{position:sticky;top:14px;right:14px;align-self:flex-end;z-index:2;flex:0 0 40px;width:40px!important;min-width:40px!important;height:40px!important;min-height:40px!important;margin:14px 14px -44px 0!important;padding:10px!important;border-radius:50%!important;background:var(--chrome-elevated)!important;color:var(--rail-ink)!important}
+.has-action-rail .rail-inspector-close:hover{background:var(--chrome-hover)!important}
 .has-action-rail .rail-inspector-close span{display:none}
-.has-action-rail .planet-dashboard #planet-dashboard-inspector.pd-inspector h1,.has-action-rail .planet-dashboard #planet-dashboard-inspector.pd-inspector h2{padding-right:32px}
+.has-action-rail .planet-dashboard #planet-dashboard-inspector.pd-inspector :is(h1,h2){padding-right:36px}
 html[data-relic-film=active] .relic-action-shell,.intro-active .relic-action-shell{visibility:hidden;pointer-events:none}
-.relic-action-shell :is(button,input,select):disabled{color:var(--chrome-muted,#fff)!important;opacity:.45!important;cursor:default}
-@keyframes inspector-reveal{from{opacity:0;transform:translateX(14px) scale(.99)}to{opacity:1;transform:none}}
+@keyframes rail-inspector-reveal{from{opacity:0;transform:translateX(10px) scale(.99)}to{opacity:1;transform:none}}
+
 @media(pointer:coarse){
- .relic-action-panel .pd-world-option{min-height:44px}
- .relic-action-shell #rail-close,.has-action-rail .rail-inspector-close{width:40px!important;min-width:40px!important;min-height:40px!important;height:40px!important}
+  .relic-action-shell #rail-close,.has-action-rail .rail-inspector-close{width:44px!important;min-width:44px!important;height:44px!important;min-height:44px!important;flex-basis:44px}
+  .rail-shortcut{display:none}
 }
+/* On a phone, primary destinations keep their names within thumb reach. */
 @media(max-width:700px) and (min-height:521px){
- html body.has-action-rail nav#relic-action-rail.relic-action-rail[data-compact]{
-   left:50%;right:auto;top:auto;bottom:calc(18px + env(safe-area-inset-bottom,0px) + var(--provider-credits-height,0px) + var(--detailed-credits-height,0px))!important;
-   flex-direction:row;align-items:center;justify-content:center;gap:11px;width:fit-content;max-width:calc(100% - 24px);height:60px;margin:0;padding:7px;border-radius:21px;transform:translateX(-50%);
- }
- .relic-action-rail .rail-brand{display:none!important}
- .rail-primary,.rail-utility{flex-direction:row;gap:3px;width:auto}
- .rail-utility{padding:0 0 0 11px}
- .rail-utility::before{left:0;right:auto;top:8px;bottom:8px;width:1px;height:auto}
- .relic-action-rail .rail-button{width:44px;min-width:44px;flex:0 0 44px;height:44px;min-height:44px;padding:12px!important}
- .relic-action-rail .rail-button::after{display:none!important}
- html body.has-action-rail section#relic-action-panel.relic-action-panel{
-   left:16px;right:16px;top:auto;bottom:calc(92px + env(safe-area-inset-bottom,0px) + var(--provider-credits-height,0px) + var(--detailed-credits-height,0px))!important;
-   width:auto;max-height:calc(100dvh - 126px - env(safe-area-inset-bottom,0px) - var(--provider-credits-height,0px) - var(--detailed-credits-height,0px));padding:18px;border-radius:24px;transform:none;transform-origin:center bottom;
- }
- html body.has-action-rail section#relic-action-panel.relic-action-panel:is([data-phase=entering],[data-phase=closing]){transform:translateY(12px) scale(.985)}
- .relic-action-panel .pd-command input{font-size:16px}
- .has-action-rail .planet-dashboard #planet-dashboard-inspector.pd-inspector{inset:16px 16px calc(92px + env(safe-area-inset-bottom,0px) + var(--provider-credits-height,0px) + var(--detailed-credits-height,0px)) 16px!important;width:auto;max-width:none!important;border-radius:24px!important}
+  .has-action-rail{--rail-edge:12px;--rail-safe-top:max(12px,env(safe-area-inset-top,0px));--rail-safe-bottom:calc(12px + env(safe-area-inset-bottom,0px) + var(--rail-credits))}
+  html body.has-action-rail nav#relic-action-rail.relic-action-rail[data-compact]{
+    left:50%;right:auto;top:auto;bottom:var(--rail-safe-bottom)!important;
+    flex-direction:row;align-items:stretch;justify-content:center;gap:3px;
+    width:min(380px,calc(100% - 24px));max-width:none;max-height:none;height:72px;
+    padding:7px;border-radius:24px;transform:translateX(-50%);
+  }
+  .relic-action-rail .rail-brand{display:none!important}
+  .rail-primary,.rail-utility{display:contents}
+  .rail-utility::before{display:none}
+  .relic-action-rail .rail-button{flex:1 1 0;width:auto;min-width:44px;min-height:56px;height:56px;flex-direction:column;gap:5px;padding:8px 3px!important;border-radius:17px!important;text-align:center}
+  .relic-action-rail .rail-button>span.rail-button-label{display:block!important;max-width:100%;overflow:hidden;text-overflow:ellipsis;font-size:11px;font-weight:500;line-height:1.2;letter-spacing:-.02em}
+  .relic-action-rail .rail-button::after{display:none!important}
+  .relic-action-rail .rail-button::before{left:calc(50% - 7px);top:auto;bottom:-7px;width:14px;height:2px;border-radius:2px 2px 0 0;transform:scaleX(.4)}
+  .relic-action-rail .rail-button:is([aria-expanded=true],[aria-current=page],[aria-current=true])::before{transform:scaleX(1)}
+  .relic-action-rail :is(svg,.world-icon){flex-basis:19px!important;width:19px!important;height:19px!important;min-width:19px!important;max-height:19px!important}
+  html body.has-action-rail section#relic-action-panel.relic-action-panel{
+    left:12px;right:12px;top:auto;bottom:calc(var(--rail-safe-bottom) + 82px)!important;
+    width:auto;max-height:calc(var(--rail-available) - 82px);padding:20px;border-radius:26px;
+    transform:translateY(var(--rail-drag-y,0px));transform-origin:center bottom;scroll-padding-top:100px;
+  }
+  html body.has-action-rail section#relic-action-panel.relic-action-panel:is([data-phase=entering],[data-phase=closing]){transform:translateY(calc(var(--rail-drag-y,0px) + 12px)) scale(.985)}
+  .rail-panel-heading{padding-top:22px;touch-action:pan-x}
+  .rail-panel-title{font-size:21px}
+  .rail-sheet-handle{position:absolute;display:block;left:calc(50% - 16px);top:7px;width:32px;height:3px;border-radius:3px;background:var(--rail-line);pointer-events:none}
+  .relic-action-panel .pd-command input,.rail-world-filter{font-size:16px}
+  .relic-action-panel .pd-command :is(#suggestions,.pd-search-results){max-height:min(320px,36dvh)}
+  .rail-shortcut{display:none}
+  .has-action-rail .planet-dashboard #planet-dashboard-inspector.pd-inspector{inset:var(--rail-safe-top) 12px calc(var(--rail-safe-bottom) + 82px) 12px!important;width:auto;max-width:none!important;border-radius:26px!important}
 }
+.relic-action-panel[data-dragging=true]{transition:none!important;user-select:none}
+/* visualViewport keeps the active search surface above the software keyboard. */
+@media(max-width:700px){
+  .relic-action-shell[data-keyboard=true] nav#relic-action-rail.relic-action-rail{visibility:hidden;pointer-events:none}
+  html body.has-action-rail .relic-action-shell[data-keyboard=true] section#relic-action-panel.relic-action-panel{
+    left:12px;right:12px;top:auto;bottom:calc(12px + var(--rail-keyboard-offset,0px))!important;
+    width:auto;max-height:calc(var(--rail-viewport-height,100dvh) - 24px);transform:translateY(var(--rail-drag-y,0px));
+  }
+}
+/* Landscape keeps the dock beside the scene and every control reachable. */
 @media(max-height:520px){
- .has-action-rail{--rail-width:54px;--rail-left:82px}
- html body.has-action-rail nav#relic-action-rail.relic-action-rail[data-compact]{left:12px;gap:8px;padding:7px 6px;max-height:calc(100dvh - 24px - var(--provider-credits-height,0px) - var(--detailed-credits-height,0px));border-radius:20px}
- .relic-action-rail .rail-brand{display:none!important}
- .rail-primary,.rail-utility{gap:3px}
- .rail-utility{padding-top:10px}
- .relic-action-rail .rail-button{width:40px;min-width:40px;flex-basis:40px;height:40px;min-height:40px;padding:11px!important}
- html body.has-action-rail section#relic-action-panel.relic-action-panel{width:min(344px,calc(100vw - 98px));max-height:calc(100dvh - 24px - 2 * var(--provider-credits-height,0px) - 2 * var(--detailed-credits-height,0px));padding:16px}
- .has-action-rail .planet-dashboard #planet-dashboard-inspector.pd-inspector{inset:12px 12px calc(12px + var(--provider-credits-height,0px) + var(--detailed-credits-height,0px)) auto!important;width:min(340px,calc(100% - 96px));max-height:none!important}
+  .has-action-rail{--rail-width:58px;--rail-edge:12px;--rail-safe-top:max(10px,env(safe-area-inset-top,0px));--rail-safe-bottom:calc(10px + env(safe-area-inset-bottom,0px) + var(--rail-credits))}
+  html body.has-action-rail nav#relic-action-rail.relic-action-rail[data-compact]{gap:6px;padding:6px;border-radius:20px;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+  .relic-action-rail .rail-brand{display:none!important}
+  .rail-primary,.rail-utility{gap:2px}
+  .rail-utility{padding-top:8px}
+  .relic-action-rail .rail-button{width:44px;min-width:44px;height:44px;min-height:44px;flex-basis:44px;padding:12px!important;border-radius:13px!important}
+  .relic-action-rail .rail-button::after{display:none!important}
+  .relic-action-rail .rail-button::before{left:-6px}
+  html body.has-action-rail section#relic-action-panel.relic-action-panel{width:min(368px,calc(100vw - var(--rail-left) - 12px));padding:16px;border-radius:21px}
+  .rail-panel-heading{top:-16px;margin:-16px -16px 14px;padding:16px}
+  .rail-panel-title{font-size:19px}
+  .rail-panel-description{font-size:11px}
+  .has-action-rail .planet-dashboard #planet-dashboard-inspector.pd-inspector{width:min(350px,calc(100% - var(--rail-left) - 12px));border-radius:21px!important}
 }
+@media(hover:none){.relic-action-rail .rail-button::after{display:none!important}}
 html[data-motion=reduced] :is(.relic-action-rail,.relic-action-panel,.pd-inspector){animation:none!important;transition:none!important}
 @media(prefers-reduced-motion:reduce){html:not([data-motion=full]) :is(.relic-action-rail,.relic-action-panel,.pd-inspector){animation:none!important;transition:none!important}}

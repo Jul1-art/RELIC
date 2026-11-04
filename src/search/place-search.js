@@ -162,6 +162,7 @@ export function createPlaceSearch({ world, places, onSelect, getBias, language }
     try {
       await onSelect(place);
       setExpanded(false);
+      window.dispatchEvent(new CustomEvent('relic-place-selected',{detail:{world}}));
       if (window.innerWidth < 760) input.blur();
     } catch (error) {
       setStatus('error');
@@ -273,6 +274,7 @@ export function createPlaceSearch({ world, places, onSelect, getBias, language }
       ? (en() ? 'City, address, landmark or coordinates…' : 'Ville, adresse, lieu ou coordonnées…')
       : (en() ? 'NASA site or coordinates…' : 'Site NASA ou coordonnées…');
     submit.textContent = en() ? 'Go' : 'Aller';
+    submit.setAttribute('aria-label',en()?'Go to this location':'Aller à ce lieu');
     form.querySelector('.place-search-credit').textContent = world === 'earth'
       ? (en() ? 'Places © OpenStreetMap contributors · Photon / GeoNames' : 'Lieux © contributeurs OpenStreetMap · Photon / GeoNames')
       : (en() ? 'NASA sites and coordinates' : 'Sites NASA et coordonnées');
