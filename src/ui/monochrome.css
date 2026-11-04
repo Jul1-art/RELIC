@@ -1,98 +1,106 @@
-/* App chrome is black and white. Scientific images, world textures, orbital
-   traces and required provider-owned logos retain their source colours. */
-html:root,html:root body{
-  color-scheme:dark;background:#000;color:#fff;
-  --ui-ink:#fff;--ui-muted:#fff;--ui-soft:#fff;--ui-stroke:#fff;
-  --ui-glass:#000;--ui-shadow:none;--ui-blue:#fff;--ui-blue-hover:#fff;
-}
+/* Neutral chrome adapters. Planetary imagery and scientific lighting retain
+   their natural colours; day mode changes the interface, not the textures. */
+html:root,html:root body{background:var(--chrome-bg);color:var(--chrome-ink)}
 html:root body .planet-dashboard,
 html:root body.has-action-rail{
-  --pd-border:#fff;--pd-panel:#000;--pd-ink:#fff;--pd-muted:#fff;
-  --rail-panel:#000;--rail-ink:#fff;--rail-muted:#fff;--rail-line:#fff;--rail-hover:#000;
-  background:#000!important;color:#fff!important;
+  --pd-border:var(--chrome-line);--pd-panel:var(--chrome-surface);--pd-ink:var(--chrome-ink);--pd-muted:var(--chrome-muted);
+  --rail-panel:var(--chrome-surface);--rail-ink:var(--chrome-ink);--rail-muted:var(--chrome-muted);--rail-line:var(--chrome-line);--rail-hover:var(--chrome-hover);
+  background:var(--chrome-bg)!important;color:var(--chrome-ink)!important;
 }
-html:root body :is(.pd-workspace,.pd-viewport,#scene,#terrain-scene,#globe){background:#000!important}
+html:root body :is(.pd-workspace,.pd-viewport,#scene,#terrain-scene,#globe){background:var(--chrome-bg)!important}
 html:root body :is(.vignette,.scene-vignette){background:none!important;box-shadow:none!important}
-html:root body [data-theme-toggle],html:root body .theme-toggle{display:none!important}
+html:root body.atlas-page #scene::after{content:none!important;background:none!important}
 
-/* Navigation geometry and opening motion live in action-rail.css. */
+/* Inspectors share the same surface and contrast as the navigation dock. */
 html:root body.has-action-rail .planet-dashboard .pd-inspector,
-html:root body .planet-dashboard :is(.details,.explorer-panel,.view-card,.site-panel,.map-options),
-html:root body :is(.google3d-dialog,.api-settings-dialog,.relic-api-dialog){
-  background:#000!important;color:#fff!important;border-color:#fff!important;
-  box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+html:root body .planet-dashboard :is(.details,.explorer-panel,.view-card,.site-panel,.map-options){
+  background:var(--chrome-surface)!important;color:var(--chrome-ink)!important;border-color:var(--chrome-line)!important;
+  box-shadow:var(--chrome-shadow)!important;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
 }
-html:root body .planet-dashboard :is(.pd-inspector,.details,.explorer-panel,.view-card,.site-panel,.map-options) *,
-html:root body :is(.google3d-dialog,.api-settings-dialog,.relic-api-dialog) *{
-  color:#fff!important;text-shadow:none!important;opacity:1!important;
+html:root body .planet-dashboard :is(.pd-inspector,.details,.explorer-panel,.view-card,.site-panel,.map-options) :where(*){
+  color:inherit!important;text-shadow:none!important;
 }
 html:root body .planet-dashboard :is(.pd-inspector,.details,.explorer-panel,.view-card,.site-panel,.map-options)
-  :is(button,input,select,textarea,.place-search-field,.coordinate-field,.layer-switch,.date-field),
-html:root body :is(.google3d-dialog,.api-settings-dialog,.relic-api-dialog) :is(button,input,select,textarea){
-  background:#000!important;color:#fff!important;border-color:#fff!important;
-  accent-color:#fff!important;box-shadow:none!important;
+  :is(button,input,select,textarea,.place-search-field,.coordinate-field,.layer-switch,.date-field){
+  background:var(--chrome-input)!important;color:var(--chrome-ink)!important;border-color:var(--chrome-line)!important;
+  accent-color:var(--chrome-ink)!important;box-shadow:none!important;
 }
+html:root body .planet-dashboard :is(.pd-inspector,.details,.explorer-panel,.view-card,.site-panel,.map-options)
+  :is(button,a[role=button]):hover{background:var(--chrome-hover)!important}
 html:root body .planet-dashboard :is(button,input,select,textarea):focus-visible,
-html:root body :is(.google3d-dialog,.api-settings-dialog,.relic-api-dialog) :is(button,input,select,textarea):focus-visible{
-  outline:2px solid #fff!important;outline-offset:3px;
-}
-html:root body .planet-dashboard :is(input,textarea)::placeholder{color:#fff!important;opacity:1}
-html:root body .planet-dashboard :is(.panel-divider,.live-title,.live-metric,.solar-moon-catalogue,.solar-moon-entry){border-color:#fff!important}
-html:root body .planet-dashboard .panel-divider{background:#fff!important}
-html:root body .planet-dashboard :is(.live-warning,.solar-body-description,.solar-model-note,.solar-source,.solar-moon-meta,.data-note,.source-row,.view-facts,.site-facts,.summary-head,.card-kicker,.eyebrow){color:#fff!important}
-html:root body .planet-dashboard :is(.header-language,.world-settings-button,.detail-action,.overview-button,.site-button,.source-link,.earth-controls button,.view-controls button,.move-pad button){
-  color:#fff!important;background:#000!important;border-color:#fff!important;box-shadow:none!important;
-}
+html:root body :is(.relic-settings-dialog,.relic-sources-dialog,.google3d-dialog,.api-settings-dialog,.relic-api-dialog)
+  :is(a,button,input,select,textarea,summary):focus-visible{outline:2px solid var(--chrome-focus)!important;outline-offset:3px}
+html:root body :is(.planet-dashboard,.relic-action-panel,.relic-api-dialog) :is(input,textarea)::placeholder{color:var(--chrome-muted)!important;opacity:1}
+html:root body .planet-dashboard :is(.panel-divider,.live-title,.live-metric,.solar-moon-catalogue,.solar-moon-entry){border-color:var(--chrome-line)!important}
+html:root body .planet-dashboard .panel-divider{background:var(--chrome-line)!important}
+html:root body .planet-dashboard :is(.solar-model-note,.solar-source,.solar-moon-meta,.solar-moon-count,.data-note,.source-row,.card-kicker,.eyebrow){color:var(--chrome-muted)!important}
+html:root body :is(.detail-orb,.pd-world-disc,.pd-picker-icon){background:var(--chrome-elevated)!important;border:1px solid var(--chrome-line)!important;box-shadow:none!important}
 
-/* Settings and sources use the same two solid colours. */
+/* Settings use semantic variables instead of a second independent palette. */
 html:root body .relic-settings-dialog{
-  --settings-bg:#000;--settings-ink:#fff;--settings-muted:#fff;--settings-line:#fff;
-  --settings-control:#000;--settings-selected:#000;--settings-accent:#fff;--settings-button-ink:#000;
+  --settings-bg:var(--chrome-surface);--settings-ink:var(--chrome-ink);--settings-muted:var(--chrome-muted);--settings-line:var(--chrome-line);
+  --settings-control:var(--chrome-input);--settings-selected:var(--chrome-hover);--settings-accent:var(--chrome-active);--settings-button-ink:var(--chrome-active-ink);
 }
 html:root body .relic-sources-dialog{
-  --sources-bg:#000;--sources-ink:#fff;--sources-muted:#fff;--sources-line:#fff;
+  --sources-bg:var(--chrome-surface);--sources-ink:var(--chrome-ink);--sources-muted:var(--chrome-muted);--sources-line:var(--chrome-line);
 }
 html:root body :is(.relic-settings-dialog,.relic-sources-dialog){
-  border-color:#fff!important;background:#000!important;color:#fff!important;
-  box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+  border-color:var(--chrome-line)!important;background:var(--chrome-surface)!important;color:var(--chrome-ink)!important;
+  box-shadow:var(--chrome-shadow)!important;
 }
-html:root body :is(.relic-settings-dialog,.relic-sources-dialog)::backdrop{
-  background:#000;backdrop-filter:none;-webkit-backdrop-filter:none;
+html:root body :is(.relic-settings-dialog,.relic-sources-dialog,.google3d-dialog,.api-settings-dialog,.relic-api-dialog)::backdrop{
+  background:var(--chrome-overlay);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
 }
-html:root body :is(.relic-settings-dialog,.relic-sources-dialog) *{
-  color:#fff!important;border-color:#fff!important;text-shadow:none!important;box-shadow:none!important;opacity:1!important;
-}
-html:root body :is(.relic-settings-dialog,.relic-sources-dialog)
-  :is(button,input,select,textarea,nav,section,header,footer,.relic-settings-option,.relic-sources-people>div,.relic-sources-links a,.relic-sources-catalogue,.relic-creator-avatar){background:#000!important}
-html:root body .relic-settings-dialog .relic-settings-selected{background:#fff!important}
-html:root body .relic-settings-dialog .relic-settings-option[aria-checked=false] .relic-settings-selected{background:#000!important}
-html:root body dialog.relic-settings-dialog button.relic-settings-done,
-html:root body dialog.relic-settings-dialog button.relic-settings-done *{background:#fff!important;color:#000!important}
-html:root body .relic-settings-dialog [data-settings-field=theme],
+html:root body .relic-settings-dialog :is(.relic-settings-close,.relic-settings-tabs){background:var(--chrome-input);border-color:var(--chrome-line)}
+html:root body .relic-settings-dialog :is(.relic-settings-close,.relic-settings-tabs button):hover{background:var(--chrome-hover)}
+html:root body .relic-settings-dialog .relic-settings-tabs button[aria-selected=true]{background:var(--chrome-elevated);color:var(--chrome-ink);box-shadow:0 1px 3px #0000000a}
+html:root body .relic-settings-dialog .relic-settings-preview{border-color:var(--chrome-line);background:var(--chrome-elevated);color:var(--chrome-ink)}
+html:root body .relic-settings-dialog .relic-settings-preview[data-preview=night]{background:#111;color:#fff}
+html:root body .relic-settings-dialog .relic-settings-preview[data-preview=day]{background:#fff;color:#111}
+html:root body .relic-settings-dialog .relic-settings-option[aria-checked=true]{border-color:var(--chrome-ink);background:var(--chrome-hover)}
+html:root body .relic-settings-dialog button.relic-settings-done{background:var(--chrome-active)!important;color:var(--chrome-active-ink)!important}
 html:root body .relic-settings-dialog [data-settings-field=accent]{display:none!important}
-html:root body .relic-settings-dialog :is(.relic-settings-tabs button svg,.relic-settings-option-icon,.relic-settings-option-copy small){opacity:1!important}
-html:root body :is(.relic-settings-dialog,.relic-sources-dialog) :is(a,button,input,select,summary):focus-visible{outline-color:#fff!important}
+html:root body .relic-settings-dialog :is(.relic-settings-option-copy small,.relic-settings-intro,.relic-settings-hint,.relic-settings-status){color:var(--chrome-muted)}
+html:root body .relic-sources-dialog :is(.relic-sources-close,.relic-sources-people>div,.relic-sources-links a,.relic-sources-catalogue){background:var(--chrome-input);border-color:var(--chrome-line)}
+html:root body .relic-sources-dialog :is(.relic-sources-close,.relic-sources-links a):hover{background:var(--chrome-hover);border-color:var(--chrome-line)}
+html:root body .relic-sources-dialog a{color:var(--sources-ink);text-decoration-color:var(--chrome-muted);text-underline-offset:3px}
+html:root body .relic-sources-content>a{display:inline-block;margin:3px 8px 5px 0}
 
-/* Labels, scale and attribution stay legible over the original imagery. */
-html:root body :is(.natural-moon-label,.comet-label,.solar-scale-note,.gesture-hint){color:#fff!important;background:#000!important;text-shadow:none!important}
-html:root body .solar-scale-note *{color:#fff!important;border-color:#fff!important}
+/* Optional public provider dialogs also work on a light surface. */
+html:root body :is(.google3d-dialog,.api-settings-dialog,.relic-api-dialog){
+  color-scheme:inherit;background:var(--chrome-surface)!important;color:var(--chrome-ink)!important;border-color:var(--chrome-line)!important;box-shadow:var(--chrome-shadow)!important;
+}
+html:root body :is(.google3d-dialog,.api-settings-dialog,.relic-api-dialog) :where(*){color:inherit!important;text-shadow:none!important;border-color:var(--chrome-line)!important}
+html:root body :is(.google3d-dialog,.api-settings-dialog,.relic-api-dialog) :is(input,select,textarea){background:var(--chrome-input)!important;color:var(--chrome-ink)!important;accent-color:var(--chrome-ink)}
+html:root body :is(.google3d-dialog,.api-settings-dialog,.relic-api-dialog) :is(.relic-api-provider,.relic-api-note,.relic-api-keyless,button){background:var(--chrome-input)!important}
+html:root body :is(.google3d-dialog,.api-settings-dialog,.relic-api-dialog) button:hover{background:var(--chrome-hover)!important}
+html:root body .relic-api-dialog button.relic-api-save{background:var(--chrome-active)!important;color:var(--chrome-active-ink)!important}
+html:root body :is(.google3d-dialog,.api-settings-dialog,.relic-api-dialog) :is(p,small,label,.relic-api-status,.relic-api-eyebrow){color:var(--chrome-muted)!important}
+
+/* Labels, rulers and attribution keep contrast over both the sky and imagery. */
+html:root body :is(.planet-label,.natural-moon-label,.comet-label,.solar-scale-note,.gesture-hint){
+  color:var(--chrome-ink)!important;background:var(--chrome-surface)!important;text-shadow:none!important;opacity:1!important;
+}
+html:root body .solar-scale-note *{color:var(--chrome-ink)!important;border-color:var(--chrome-ink)!important}
+html:root body :is(.planet-label,.natural-moon-label,.comet-label){border-radius:6px}
+html:root body .comet-label-layer button.comet-site-label{background:var(--chrome-surface)!important;color:var(--chrome-ink)!important;border-color:var(--chrome-line)!important;box-shadow:none!important}
+html:root body .comet-label-layer button.comet-site-label:is(:hover,:focus-visible){background:var(--chrome-elevated)!important;border-color:var(--chrome-focus)!important}
 html:root body .pd-viewport>.provider-credit-dock,
 html:root body :is(#credits,#source-credit,#cesium-credit,#cesium-credits,.cesium-credits,.earth-attribution,.scene-credit,.esri-attribution,#imagery-credit){
-  background:#000!important;color:#fff!important;border-color:#fff!important;box-shadow:none!important;
+  background:var(--chrome-surface)!important;color:var(--chrome-ink)!important;border-color:var(--chrome-line)!important;box-shadow:none!important;
 }
-html:root body :is(.provider-credit-dock,#credits,#source-credit,#cesium-credit,#cesium-credits,.cesium-credits,.earth-attribution,.scene-credit,.esri-attribution,#imagery-credit) *{color:#fff!important;text-shadow:none!important}
-html:root body :is(.provider-credit-dock,#credits,#cesium-credit,#cesium-credits) *{opacity:1!important}
-html:root body :is(.google3d-dialog,.api-settings-dialog,.relic-api-dialog) :is(div,section,header,footer,form){background:#000!important;border-color:#fff!important}
-html:root body :is(.google3d-dialog,.api-settings-dialog,.relic-api-dialog)::backdrop{background:#000;backdrop-filter:none;-webkit-backdrop-filter:none}
-html:root body .cesium-credit-lightbox-overlay{background:#000!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+html:root body :is(.provider-credit-dock,#credits,#source-credit,#cesium-credit,#cesium-credits,.cesium-credits,.earth-attribution,.scene-credit,.esri-attribution,#imagery-credit) *{
+  color:var(--chrome-ink)!important;text-shadow:none!important;opacity:1!important;
+}
+html:root body :is(#cesium-credit,#cesium-credits,.provider-credit-dock) .cesium-credit-logoContainer img,
+html:root body :is(.relic-dialog-logo,.view-loading-mark img){filter:var(--chrome-logo-filter)}
+html:root body .cesium-credit-lightbox-overlay{background:var(--chrome-overlay)!important;backdrop-filter:blur(12px)!important;-webkit-backdrop-filter:blur(12px)!important}
 html:root body .cesium-credit-lightbox,
-html:root body .cesium-credit-lightbox *{background:#000!important;color:#fff!important;border-color:#fff!important}
-html:root body :is(.loading,.error,.earth-loading,.earth-error,.error-screen,#failure){background:#000!important;color:#fff!important;border-color:#fff!important;box-shadow:none!important}
-html:root body :is(.loading,.error,.earth-loading,.earth-error,.error-screen,#failure) *{color:#fff!important;border-color:#fff!important}
-html:root body :is(.view-loading-card,.view-error-card,.view-loading-retry,.view-error-actions button,.view-error-actions a){background:#000!important;color:#fff!important;border-color:#fff!important;box-shadow:none!important}
-html:root body .view-loading-track{background:#000!important;border:1px solid #fff}
-html:root body .view-loading-track>span{background:#fff!important}
-html:root body .planet-dashboard :is(.planet-label,.natural-moon-label,.comet-label){color:#fff!important;opacity:1!important}
-html:root body :is(.detail-orb,.pd-world-disc,.pd-picker-icon){background:#000!important;border:1px solid #fff!important;box-shadow:none!important}
-html:root body :is(#cesium-credit,#cesium-credits,.provider-credit-dock) .cesium-credit-logoContainer img{filter:brightness(0) invert(1)}
-html:root body .provider-credit-dock,html:root body :is(.pd-inspector,.relic-settings-dialog,.relic-sources-dialog){scrollbar-color:#fff #000}
+html:root body .cesium-credit-lightbox *{background:var(--chrome-surface)!important;color:var(--chrome-ink)!important;border-color:var(--chrome-line)!important}
+html:root body :is(.loading,.error,.earth-loading,.earth-error,.error-screen,#failure){background:var(--chrome-bg)!important;color:var(--chrome-ink)!important;border-color:var(--chrome-line)!important;box-shadow:none!important}
+html:root body :is(.loading,.error,.earth-loading,.earth-error,.error-screen,#failure) *{color:var(--chrome-ink)!important;border-color:var(--chrome-line)!important}
+html:root body :is(.view-loading-card,.view-error-card,.view-loading-retry,.view-error-actions button,.view-error-actions a){background:var(--chrome-surface)!important;color:var(--chrome-ink)!important;border-color:var(--chrome-line)!important;box-shadow:var(--chrome-shadow)!important}
+html:root body .view-loading-track{background:var(--chrome-elevated)!important;border:1px solid var(--chrome-line)}
+html:root body .view-loading-track>span{background:var(--chrome-ink)!important}
+html:root body .provider-credit-dock,html:root body :is(.pd-inspector,.relic-settings-dialog,.relic-sources-dialog){scrollbar-color:var(--chrome-muted) transparent}
+html[data-relic-navigating=true]::after{background:linear-gradient(90deg,transparent,var(--chrome-ink),transparent)}

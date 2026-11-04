@@ -74,3 +74,13 @@ test('native marker picking dispatches real body ids and excludes hidden/foregro
   f.scene.picked=undefined;f.viewer.camera.directionWC=new Cesium.Cartesian3(-1,0,0);assert.equal(f.celestial.handleClick({x:400,y:300}),false,'An offscreen world behind the viewer cannot capture a ground click');
   f.celestial.setBodies([]);assert.equal(f.celestial.lookAt('earth'),false);assert.equal(f.credits.size,0);f.celestial.dispose();
 });
+
+test('day and night markers contrast with their sky without changing celestial geometry',()=>{
+  const f=fixture();f.celestial.setBodies([earth]);
+  const sphere=[...f.owned].find(value=>value instanceof f.C.Primitive),matrix=Cesium.Matrix4.clone(sphere.modelMatrix);
+  f.celestial.setTheme('day');
+  const collections=[...f.owned].filter(value=>value.items),point=collections[0].items[0],label=collections[1].items[0];
+  assert.deepEqual(point.color,Cesium.Color.BLACK);assert.deepEqual(label.fillColor,Cesium.Color.BLACK);assert.deepEqual(label.outlineColor,Cesium.Color.WHITE);
+  assert.deepEqual(sphere.modelMatrix,matrix);assert.equal(sphere.geometryInstances.geometry._radii.x,6371000);
+  f.celestial.setTheme('night');assert.deepEqual(point.color,Cesium.Color.WHITE);assert.deepEqual(label.outlineColor,Cesium.Color.BLACK);f.celestial.dispose();
+});

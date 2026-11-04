@@ -11,6 +11,7 @@ import { configureWorldPerformance, cameraDuration, flyToLocation, createOvervie
 import { createViewLoading } from '../ui/view-loading.js';
 import { initializeProviderCredits } from '../ui/provider-credits.js?v=14';
 import { backendFeatureAvailable, markBackendFeatureUnavailable } from '../core/atlas-services.js';
+import { observeSceneTheme } from '../ui/scene-theme.js';
 
 const $ = selector => document.querySelector(selector);
 const viewLoading = createViewLoading({ element:$('#loading'), errorElement:$('#error'), getLanguage });
@@ -29,6 +30,7 @@ const tychoLocal = Cesium.Rectangle.fromDegrees(-11.93657107, -44.40436103, -10.
 const pressed = new Set();
 
 let viewer;
+let disposeSceneTheme = () => {};
 let overviewFraming;
 let lastHud = 0;
 let orientationAnimation = null;
@@ -483,7 +485,11 @@ async function start() {
     if (viewer.scene.skyBox) viewer.scene.skyBox.show = false;
     if (viewer.scene.sun) viewer.scene.sun.show = false;
     if (viewer.scene.moon) viewer.scene.moon.show = false;
-    viewer.scene.backgroundColor = Cesium.Color.BLACK;
+    disposeSceneTheme = observeSceneTheme(palette => {
+      if (viewer.isDestroyed()) return;
+      viewer.scene.backgroundColor = Cesium.Color.fromCssColorString(palette.background);
+      viewer.scene.requestRender();
+    });
     viewer.scene.globe.baseColor = Cesium.Color.fromCssColorString(body === 'mars' ? '#80503c' : body === 'moon' ? '#686765' : '#102436');
     viewer.scene.globe.enableLighting = false;
     viewer.scene.globe.depthTestAgainstTerrain = true;
@@ -565,6 +571,7 @@ placeSearch = createPlaceSearch({
   },
 });
 start();
+window.addEventListener('pagehide', event => { if (!event.persisted) disposeSceneTheme(); });
 startLiveData($('#terrain-live-data'), () => body);
 onLanguageChange(lang => {
   viewLoading.refresh();

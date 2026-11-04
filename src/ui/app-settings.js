@@ -4,12 +4,12 @@ import { worldIcon } from './world-icons.js';
 const STORAGE_KEY = 'relic.preferences.v1';
 const root = document.documentElement;
 const defaults = Object.freeze({ language:'en', theme:'night', accent:'mono', motion:'system', quality:'adaptive' });
-const choices = Object.freeze({ language:['en','fr'], theme:['night'], accent:['mono'], motion:['system','full','reduced'], quality:['adaptive','high'] });
+const choices = Object.freeze({ language:['en','fr'], theme:['night','day'], accent:['mono'], motion:['system','full','reduced'], quality:['adaptive','high'] });
 const sections = ['general','display','experience'];
 const COPY = {
   en:{
     settings:'Settings', subtitle:'Viewing preferences', general:'General', display:'Display', experience:'Experience',
-    generalTitle:'Language', generalHint:'',
+    generalTitle:'Language & appearance', generalHint:'',
     displayTitle:'Rendering', displayHint:'',
     experienceTitle:'Motion', experienceHint:'Transitions and camera journeys.',
     language:'Language', languageHint:'Menus and the introduction.', theme:'Appearance', themeHint:'A consistent theme across your views.',
@@ -25,7 +25,7 @@ const COPY = {
   },
   fr:{
     settings:'Réglages', subtitle:'Préférences d’affichage', general:'Général', display:'Affichage', experience:'Interaction',
-    generalTitle:'Langue', generalHint:'',
+    generalTitle:'Langue et apparence', generalHint:'',
     displayTitle:'Rendu', displayHint:'',
     experienceTitle:'Animations', experienceHint:'Transitions et mouvements de caméra.',
     language:'Langue', languageHint:'Les menus et l’introduction.', theme:'Apparence', themeHint:'Un thème commun à toutes vos vues.',
@@ -44,8 +44,10 @@ const COPY = {
 function initialPreferences() {
   let saved = {};
   try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {}; } catch { /* The session still works without device storage. */ }
-  const result = { ...defaults, language:getLanguage() };
-  for (const key of ['motion','quality']) if (choices[key].includes(saved[key])) result[key] = saved[key];
+  let theme = ['night','day'].includes(root.dataset.theme) ? root.dataset.theme : defaults.theme;
+  try { const legacy = localStorage.getItem('nasa-atlas-theme'); if (choices.theme.includes(legacy)) theme = legacy; } catch {}
+  const result = { ...defaults, theme, language:getLanguage() };
+  for (const key of ['theme','motion','quality']) if (choices[key].includes(saved[key])) result[key] = saved[key];
   return result;
 }
 
@@ -60,12 +62,13 @@ const copy = () => COPY[getLanguage() === 'fr' ? 'fr' : 'en'];
 const motionQuery = globalThis.matchMedia?.('(prefers-reduced-motion: reduce)');
 
 function applyPreferences() {
-  root.dataset.theme = 'night';
+  root.dataset.theme = preferences.theme;
+  root.style.colorScheme = preferences.theme === 'day' ? 'light' : 'dark';
   root.dataset.accent = 'mono';
   root.dataset.motion = preferences.motion === 'system' ? (motionQuery?.matches ? 'reduced' : 'full') : preferences.motion;
   root.dataset.quality = preferences.quality;
   const color = document.querySelector('meta[name="theme-color"]');
-  if (color) color.content = '#000000';
+  if (color) color.content = preferences.theme === 'day' ? '#f5f5f7' : '#000000';
 }
 
 function persist() {
@@ -83,7 +86,7 @@ export function getPreferences() { return { ...preferences }; }
 export function setPreferences(patch = {}) {
   const next = { ...preferences };
   for (const key of Object.keys(choices)) if (choices[key].includes(patch[key])) next[key] = patch[key];
-  next.theme = 'night'; next.accent = 'mono';
+  next.accent = 'mono';
   preferences = next;
   if (getLanguage() !== next.language) setLanguage(next.language);
   applyPreferences();
@@ -129,7 +132,7 @@ function buildDialog() {
   dialog.innerHTML = `<header class="relic-settings-header"><div><p class="relic-settings-eyebrow"><img class="relic-dialog-logo" src="${new URL('../../assets/relic-logo-v1.png', import.meta.url).href}" alt="" width="26" height="23">RELIC <span aria-hidden="true">/</span> <span data-settings-copy="settings"></span></p><h2 id="relic-settings-title" data-settings-copy="settings"></h2><p id="relic-settings-subtitle" class="relic-settings-intro" data-settings-copy="subtitle"></p></div><button class="relic-settings-close" type="button" data-settings-close>${worldIcon('xmark')}</button></header>
     <nav class="relic-settings-tabs" role="tablist" aria-label="Settings sections">${sections.map((section, index) => `<button type="button" role="tab" id="settings-tab-${section}" data-settings-tab="${section}" aria-controls="settings-panel-${section}" aria-selected="${index === 0}" tabindex="${index === 0 ? '0' : '-1'}">${worldIcon(['globe','sliders','compass'][index])}<span data-settings-copy="${section}"></span></button>`).join('')}</nav>
     <div class="relic-settings-content">
-      <section class="relic-settings-section" id="settings-panel-general" data-settings-panel="general" role="tabpanel" aria-labelledby="settings-tab-general">${sectionHeading('general')}${field('language', [['en'],['fr']])}</section>
+      <section class="relic-settings-section" id="settings-panel-general" data-settings-panel="general" role="tabpanel" aria-labelledby="settings-tab-general">${sectionHeading('general')}${field('language', [['en'],['fr']])}${field('theme', [['night','moon'],['day','sun']])}</section>
       <section class="relic-settings-section" id="settings-panel-display" data-settings-panel="display" role="tabpanel" aria-labelledby="settings-tab-display" hidden>${sectionHeading('display')}${field('quality', [['adaptive','globe','adaptiveHint'],['high','cube','highHint']])}<button class="relic-settings-provider" type="button" data-settings-provider hidden><span>${worldIcon('layer-group')}</span><span><strong data-settings-copy="providers"></strong><small data-settings-copy="providersHint"></small></span>${worldIcon('arrow-up-right-from-square')}</button></section>
       <section class="relic-settings-section" id="settings-panel-experience" data-settings-panel="experience" role="tabpanel" aria-labelledby="settings-tab-experience" hidden>${sectionHeading('experience')}${field('motion', [['system','sliders','systemHint'],['full','play','fullHint'],['reduced','pause','reducedHint']])}</section>
     </div>

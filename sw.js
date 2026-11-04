@@ -1,7 +1,9 @@
 /* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'solar-context-mono-20261030-v16-public';
+const VERSION = 'interface-20261104-v17-2-public';
+const INTERFACE_RELEASE = 'interface-20261104-v17';
+const CLIENT_VERSION_TIMEOUT = 650;
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
 const APP_PREFIX = `relic-atlas-${encodeURIComponent(SCOPE.pathname)}-`;
@@ -44,7 +46,7 @@ const OFFLINE_CORE = [
   'src/atlas/styles.css', 'src/worlds/earth.css', 'src/worlds/terrain.css', 'src/atlas/live.css',
   'src/atlas/premium.css', 'src/ui/theme.css', 'src/atlas/compact.css', 'src/atlas/relic-shell.css', 'src/worlds/relic-worlds.css',
   'intro/film-bridge.css', 'src/ui/app-settings.css', 'src/ui/action-rail.css', 'src/ui/navigation.css', 'src/ui/branding.css', 'src/ui/interaction-motion.css', 'assets/jules-avatar.jpg',
-  'src/atlas/app.js', 'src/atlas/atlas-live.js', 'src/core/atlas-services.js', 'src/atlas/orbital-data.js', 'src/ui/theme.js',
+  'src/atlas/app.js', 'src/atlas/atlas-live.js', 'src/core/atlas-services.js', 'src/atlas/orbital-data.js', 'src/ui/scene-theme.js', 'src/ui/theme.js',
   'src/atlas/surface-detail.js', 'src/atlas/nasa-worlds.js', 'src/worlds/earth-view.js', 'src/worlds/earth-imagery.js',
   'src/worlds/earth-terrain.js', 'src/worlds/terrain-globe.js', 'src/worlds/terrain-view.js',
   'src/core/paths.js', 'src/search/coordinateParser.js',
@@ -61,6 +63,48 @@ const OFFLINE_CORE = [
   'intro/assets/prologue/sources-v9.json', 'intro/assets/prologue/encoding-v9-hd50.json',
   'vendor/three.module.js', 'vendor/OrbitControls.js',
 ].map(path => /^https?:/.test(path) ? path : local(path));
+
+// Only outdated application documents need a refresh. New documents already
+// acknowledge their release from the early head, before their imports finish.
+const refreshedClients = new Set();
+function upgradeCandidate(client) {
+  if (client?.type !== 'window' || client.frameType !== 'top-level') return false;
+  try { return belongsToApp(new URL(client.url)); } catch { return false; }
+}
+function interfaceVersion(client) {
+  return new Promise(resolve => {
+    const channel = new MessageChannel();
+    let settled = false;
+    const finish = release => {
+      if (settled) return;
+      settled = true; clearTimeout(timer);
+      channel.port1.onmessage = channel.port1.onmessageerror = null;
+      channel.port1.close();
+      try { channel.port2.close(); } catch { /* Its ownership was transferred. */ }
+      resolve(release);
+    };
+    const timer = setTimeout(() => finish(null), CLIENT_VERSION_TIMEOUT);
+    channel.port1.onmessage = event => finish(event.data?.release);
+    channel.port1.onmessageerror = () => finish(null);
+    try { client.postMessage({ type:'RELIC_INTERFACE_VERSION' }, [channel.port2]); }
+    catch { finish(null); }
+  });
+}
+async function upgradeOpenInterfaces() {
+  const clients = await self.clients.matchAll({ type:'window', includeUncontrolled:true });
+  await Promise.all(clients.filter(upgradeCandidate).map(async client => {
+    if (refreshedClients.has(client.id) || await interfaceVersion(client) === INTERFACE_RELEASE) return;
+    // Do not pull a visitor back after they navigated away during the handshake.
+    const current = await self.clients.get(client.id);
+    if (!upgradeCandidate(current) || current.url !== client.url || refreshedClients.has(client.id)) return;
+    refreshedClients.add(client.id);
+    try {
+      // A navigation fetch can wait for activation. Awaiting its completion
+      // inside activate.waitUntil would therefore deadlock the upgrade.
+      Promise.resolve(current.navigate(current.url)).catch(() => {});
+    } catch { /* A closing tab must not prevent the worker from activating. */ }
+  }));
+}
 
 const pending = new Map();
 let cooldownUntil = 0;
@@ -195,6 +239,7 @@ self.addEventListener('activate', event => {
     const names = await caches.keys();
     await Promise.all(names.filter(name => name.startsWith(APP_PREFIX) && ![SHELL, ASSETS].includes(name)).map(name => caches.delete(name)));
     await self.clients.claim();
+    await upgradeOpenInterfaces();
   })());
 });
 self.addEventListener('message', event => {

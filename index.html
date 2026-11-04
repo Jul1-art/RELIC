@@ -11,11 +11,11 @@
   <link rel="apple-touch-icon" href="./assets/relic-icon-v1-192.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <script>document.documentElement.dataset.theme='night';document.documentElement.dataset.accent='mono';</script>
+  <script>(()=>{let theme='night';try{theme=JSON.parse(localStorage.getItem('relic.preferences.v1')||'{}').theme||localStorage.getItem('nasa-atlas-theme')||theme;}catch{}const requested=new URLSearchParams(location.search).get('theme');if(requested==='day'||requested==='night')theme=requested;document.documentElement.dataset.theme=theme==='day'?'day':'night';document.documentElement.dataset.accent='mono';document.documentElement.style.colorScheme=theme==='day'?'light':'dark';})();</script>
   <link rel="stylesheet" href="./src/atlas/styles.css?v=7">
   <link rel="stylesheet" href="./src/atlas/live.css?v=1">
   <link rel="stylesheet" href="./src/atlas/premium.css?v=8">
-  <link rel="stylesheet" href="./src/ui/theme.css?v=16">
+  <link rel="stylesheet" href="./src/ui/theme.css?v=17">
   <link rel="stylesheet" href="./src/atlas/compact.css?v=3">
   <link rel="stylesheet" href="./src/atlas/relic-shell.css?v=1">
   <link rel="stylesheet" href="./src/ui/app-settings.css?v=polish-4">
@@ -29,7 +29,7 @@
   <link rel="stylesheet" href="./src/ui/provider-credits.css?v=14">
   <link rel="stylesheet" href="./src/atlas/atlas-presentation.css?v=polish-4">
   <link rel="stylesheet" href="./src/atlas/solar-exploration.css?v=15">
-  <link rel="stylesheet" href="./src/atlas/detailed-globe.css?v=15">
+  <link rel="stylesheet" href="./src/atlas/detailed-globe.css?v=17">
   <link rel="stylesheet" href="./src/atlas/simulation-controls.css?v=14">
   <link rel="stylesheet" href="./src/atlas/natural-system.css?v=13">
   <link rel="stylesheet" href="./src/atlas/comet-67p.css?v=13">
@@ -37,8 +37,9 @@
   <link rel="stylesheet" href="./src/ui/branding.css?v=brand-7">
   <link rel="stylesheet" href="./intro/prologue-ending-v9.css?v=9">
   <link rel="stylesheet" href="./src/ui/interaction-motion.css?v=story-9">
-  <link rel="stylesheet" href="./src/ui/action-rail.css?v=16">
-  <link rel="stylesheet" href="./src/ui/monochrome.css?v=16">
+  <link rel="stylesheet" href="./src/ui/action-rail.css?v=17">
+  <link rel="stylesheet" href="./src/ui/monochrome.css?v=17">
+  <script>if('serviceWorker' in navigator)navigator.serviceWorker.addEventListener('message',event=>{if(event.data?.type==='RELIC_INTERFACE_VERSION')event.ports?.[0]?.postMessage({release:'interface-20261104-v17'});});</script>
 </head>
 <body class="atlas-page" data-mode="overview">
   <div id="scene" aria-label="Interactive solar system"></div>
@@ -87,9 +88,9 @@
   <div class="loading" id="loading" role="status"><span class="view-loading-mark" aria-hidden="true"><img src="./assets/relic-logo-v1.png" alt="" width="30" height="27"></span><span>Opening the solar system</span></div>
   <div class="error-screen" id="error-screen" role="alert" hidden><strong>The 3D view could not start.</strong><p id="error-message">Reload the page to try again.</p></div>
   <section id="intro" class="intro" aria-label="RELIC — the story of exploration"></section>
-  <script type="module" src="./src/ui/theme.js?v=16"></script>
+  <script type="module" src="./src/ui/theme.js?v=17"></script>
   <script type="module" src="./intro/film-bridge.js?v=story-9"></script>
-  <script type="module" src="./src/atlas/app.js?v=solar-16"></script>
-  <script type="module" src="./src/ui/action-rail.js?v=16"></script>
+  <script type="module" src="./src/atlas/app.js?v=solar-17"></script>
+  <script type="module" src="./src/ui/action-rail.js?v=17"></script>
 </body>
 </html>

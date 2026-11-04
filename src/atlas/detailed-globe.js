@@ -6,10 +6,11 @@ const CHANNEL='relic-detailed-globe-v15';
  */
 export function createDetailedGlobe({host,onState=()=>{},onInteraction=()=>{},onSelect=()=>{}}){
   if(!document.querySelector('link[href*="detailed-globe.css"]')){
-    const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('./detailed-globe.css?v=15',import.meta.url).href;document.head.append(link);
+    const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('./detailed-globe.css?v=17',import.meta.url).href;document.head.append(link);
   }
   let frame=null,current=null,ready=false,timer=0,state={},disposed=false,loading=false;
   const origin=location.origin;
+  const theme=()=>document.documentElement?.dataset.theme==='day'?'day':'night';
   const send=(action,payload={})=>frame?.contentWindow?.postMessage({channel:CHANNEL,action,...payload},origin);
   function teardown(){
     clearTimeout(timer);if(frame){send('dispose');frame.remove();}
@@ -26,6 +27,7 @@ export function createDetailedGlobe({host,onState=()=>{},onInteraction=()=>{},on
       frame.title=value.id==='earth'?'Earth · detailed 3D':value.id==='moon'?'Moon · detailed 3D':'Mars · detailed 3D';
       frame.setAttribute('allow','fullscreen');
       const url=new URL('../../pages/globe.html',import.meta.url);url.searchParams.set('body',value.id);
+      url.searchParams.set('theme',theme());
       frame.src=url.href;host.append(frame);emit();
       timer=setTimeout(()=>{if(!ready){teardown();emit({error:'unavailable'});}},30000);
     }else send('focus',{focus:current});
@@ -34,7 +36,7 @@ export function createDetailedGlobe({host,onState=()=>{},onInteraction=()=>{},on
   function receive(event){
     if(disposed||event.origin!==origin||event.source!==frame?.contentWindow||event.data?.channel!==CHANNEL)return;
     const data=event.data;
-    if(data.type==='boot'){send('focus',{focus:current});return;}
+    if(data.type==='boot'){send('theme',{value:theme()});send('focus',{focus:current});return;}
     if(data.type==='ready'){clearTimeout(timer);ready=true;loading=false;frame.classList.add('is-ready');state={...state,...data.state};emit();return;}
     if(data.type==='state'){state={...state,...data.state};emit();return;}
     if(data.type==='interaction'){onInteraction();return;}
@@ -42,6 +44,8 @@ export function createDetailedGlobe({host,onState=()=>{},onInteraction=()=>{},on
     if(data.type==='error'){teardown();emit({error:'unavailable'});}
   }
   window.addEventListener('message',receive);
+  const updateTheme=()=>send('theme',{value:theme()});
+  window.addEventListener('relic-preferences-change',updateTheme);
   const command=(action,value)=>{if(!ready)return false;send(action,{value});return true;};
   return {setFocus,hide,setContext(context){if(current)current.context=context;send('context',{context});},lookAt:id=>command('lookAt',id),lookAround:(yaw,pitch)=>command('look',{yaw,pitch}),
     get active(){return Boolean(frame&&ready);},get loading(){return loading;},
@@ -50,6 +54,6 @@ export function createDetailedGlobe({host,onState=()=>{},onInteraction=()=>{},on
     zoom:factor=>command('zoom',factor),tilt:degrees=>command('tilt',degrees),setTilt:degrees=>command('setTilt',degrees),
     turn:degrees=>command('turn',degrees),move:direction=>command('move',direction),topDown:()=>command('topDown'),resetView:()=>command('resetView'),
     pause(value=true){send('pause',{value:Boolean(value)});},
-    dispose(){hide();disposed=true;window.removeEventListener('message',receive);}
+    dispose(){hide();disposed=true;window.removeEventListener('message',receive);window.removeEventListener('relic-preferences-change',updateTheme);}
   };
 }

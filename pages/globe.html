@@ -5,15 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Detailed planetary globe — RELIC</title>
   <link rel="stylesheet" href="../vendor/cesium/Widgets/widgets.css">
-  <link rel="stylesheet" href="../src/worlds/embedded-globe.css?v=15">
+  <link rel="stylesheet" href="../src/ui/theme.css?v=17">
+  <link rel="stylesheet" href="../src/worlds/embedded-globe.css?v=17">
   <script>window.CESIUM_BASE_URL=new URL('../vendor/cesium/',document.baseURI).href;</script>
-  <link rel="stylesheet" href="../src/ui/monochrome.css?v=16">
-  <script>document.documentElement.dataset.theme='night';document.documentElement.dataset.accent='mono';</script>
+  <link rel="stylesheet" href="../src/ui/monochrome.css?v=17">
+  <script>(()=>{let theme='night';try{theme=JSON.parse(localStorage.getItem('relic.preferences.v1')||'{}').theme||localStorage.getItem('nasa-atlas-theme')||theme;}catch{}const requested=new URLSearchParams(location.search).get('theme');if(requested==='day'||requested==='night')theme=requested;document.documentElement.dataset.theme=theme==='day'?'day':'night';document.documentElement.dataset.accent='mono';document.documentElement.style.colorScheme=theme==='day'?'light':'dark';})();</script>
+  <script>if('serviceWorker' in navigator)navigator.serviceWorker.addEventListener('message',event=>{if(event.data?.type==='RELIC_INTERFACE_VERSION')event.ports?.[0]?.postMessage({release:'interface-20261104-v17'});});</script>
 </head>
 <body>
   <main id="globe" aria-label="Detailed 3D planetary globe"></main>
   <footer id="credits"><span id="source-credit"></span><div id="cesium-credit"></div></footer>
   <div id="failure" role="status" hidden></div>
-  <script type="module" src="../src/worlds/embedded-globe.js?v=15"></script>
+  <script type="module" src="../src/worlds/embedded-globe.js?v=17"></script>
 </body>
 </html>

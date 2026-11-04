@@ -9,14 +9,14 @@
   <link rel="apple-touch-icon" href="../assets/relic-icon-v1-192.png">
   <meta name="description" content="Explorez la Terre en 3D avec relief NASA SRTM et imagerie satellite détaillée.">
   <title>Earth — RELIC</title>
-  <script>document.documentElement.dataset.theme='night';document.documentElement.dataset.accent='mono';</script>
+  <script>(()=>{let theme='night';try{theme=JSON.parse(localStorage.getItem('relic.preferences.v1')||'{}').theme||localStorage.getItem('nasa-atlas-theme')||theme;}catch{}const requested=new URLSearchParams(location.search).get('theme');if(requested==='day'||requested==='night')theme=requested;document.documentElement.dataset.theme=theme==='day'?'day':'night';document.documentElement.dataset.accent='mono';document.documentElement.style.colorScheme=theme==='day'?'light':'dark';})();</script>
   <link rel="stylesheet" href="../vendor/cesium/Widgets/widgets.css">
   <link rel="stylesheet" href="../src/worlds/earth.css?v=10">
   <link rel="stylesheet" href="../src/core/google3d.css?v=2">
   <link rel="stylesheet" href="../src/search/place-search.css?v=3">
   <link rel="stylesheet" href="../src/atlas/live.css?v=1">
   <link rel="stylesheet" href="../src/atlas/premium.css?v=8">
-  <link rel="stylesheet" href="../src/ui/theme.css?v=16">
+  <link rel="stylesheet" href="../src/ui/theme.css?v=17">
   <link rel="stylesheet" href="../src/atlas/compact.css?v=3">
   <link rel="stylesheet" href="../src/worlds/relic-worlds.css?v=3">
   <link rel="stylesheet" href="../src/ui/navigation.css">
@@ -26,8 +26,9 @@
   <script>window.CESIUM_BASE_URL = new URL('../vendor/cesium/', document.baseURI).href;</script>
   <link rel="stylesheet" href="../src/ui/branding.css?v=brand-7">
   <link rel="stylesheet" href="../src/ui/interaction-motion.css?v=story-9">
-  <link rel="stylesheet" href="../src/ui/action-rail.css?v=11">
-  <link rel="stylesheet" href="../src/ui/monochrome.css?v=16">
+  <link rel="stylesheet" href="../src/ui/action-rail.css?v=17">
+  <link rel="stylesheet" href="../src/ui/monochrome.css?v=17">
+  <script>if('serviceWorker' in navigator)navigator.serviceWorker.addEventListener('message',event=>{if(event.data?.type==='RELIC_INTERFACE_VERSION')event.ports?.[0]?.postMessage({release:'interface-20261104-v17'});});</script>
 </head>
 <body class="earth-page relic-world" data-dashboard-view="surface">
   <div id="globe" aria-label="Globe terrestre interactif"></div>
@@ -76,10 +77,10 @@
   <div id="cesium-credits" class="cesium-credits"></div>
   <div id="earth-loading" class="earth-loading"><span class="view-loading-mark" aria-hidden="true"><img src="../assets/relic-logo-v1.png" alt="" width="30" height="27"></span><span>Chargement…</span></div>
   <div id="earth-error" class="earth-error" hidden>Impossible de charger le globe. Rechargez la page pour réessayer.</div>
-  <script type="module" src="../src/ui/theme.js?v=16"></script>
+  <script type="module" src="../src/ui/theme.js?v=17"></script>
   <script type="module" src="../src/core/world-bridge.js?v=polish-4"></script>
   <script type="module" src="../src/worlds/earth-view.js?v=polish-4"></script>
   <script type="module" src="../src/ui/world-ui.js?v=polish-4"></script>
-  <script type="module" src="../src/ui/action-rail.js?v=11"></script>
+  <script type="module" src="../src/ui/action-rail.js?v=17"></script>
 </body>
 </html>

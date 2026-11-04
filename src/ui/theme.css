@@ -1,12 +1,30 @@
-/* One appearance across the atlas and every planetary renderer. */
-:root{color-scheme:dark;background:#000;color:#fff}
-body{
-  --ui-ink:#fff;--ui-muted:#fff;--ui-soft:#fff;--ui-stroke:#fff;
-  --ui-glass:#000;--ui-shadow:none;--ui-blue:#fff;--ui-blue-hover:#fff;
-  --pd-border:#fff;--pd-panel:#000;--pd-ink:#fff;--pd-muted:#fff;
-  --rail-panel:#000;--rail-ink:#fff;--rail-muted:#fff;--rail-line:#fff;--rail-hover:#000;
-  background:#000;color:#fff;
+/* Neutral material tokens shared by the dock, dialogs and planetary views. */
+:root{
+  color-scheme:dark;
+  --chrome-bg:#000;--chrome-surface:#080808;--chrome-elevated:#111;
+  --chrome-ink:#fff;--chrome-muted:#b6b6b6;--chrome-line:#ffffff24;
+  --chrome-hover:#ffffff12;--chrome-active:#fff;--chrome-active-ink:#000;
+  --chrome-shadow:0 16px 54px #0007,0 1px 2px #0005;
+  --chrome-overlay:#0009;--chrome-focus:#fff;--chrome-input:#ffffff08;
+  --chrome-logo-filter:brightness(0) invert(1);
+  background:var(--chrome-bg);color:var(--chrome-ink);
 }
-[data-theme-toggle],.theme-toggle{display:none!important}
+html[data-theme=day]{
+  color-scheme:light;
+  --chrome-bg:#f5f5f7;--chrome-surface:#fff;--chrome-elevated:#f6f6f6;
+  --chrome-ink:#111;--chrome-muted:#5b5b5b;--chrome-line:#00000020;
+  --chrome-hover:#00000008;--chrome-active:#111;--chrome-active-ink:#fff;
+  --chrome-shadow:0 16px 54px #00000012,0 1px 3px #0000000d;
+  --chrome-overlay:#0005;--chrome-focus:#111;--chrome-input:#00000004;
+  --chrome-logo-filter:brightness(0);
+}
+body{
+  --ui-ink:var(--chrome-ink);--ui-muted:var(--chrome-muted);--ui-soft:var(--chrome-muted);
+  --ui-stroke:var(--chrome-line);--ui-glass:var(--chrome-surface);--ui-shadow:var(--chrome-shadow);
+  --ui-blue:var(--chrome-ink);--ui-blue-hover:var(--chrome-muted);
+  --pd-border:var(--chrome-line);--pd-panel:var(--chrome-surface);--pd-ink:var(--chrome-ink);--pd-muted:var(--chrome-muted);
+  --rail-panel:var(--chrome-surface);--rail-ink:var(--chrome-ink);--rail-muted:var(--chrome-muted);--rail-line:var(--chrome-line);--rail-hover:var(--chrome-hover);
+  background:var(--chrome-bg);color:var(--chrome-ink);
+}
 .header-actions{display:flex;align-items:center;gap:7px;flex:0 0 auto}
 @media(max-width:760px){.header-actions{gap:5px}}

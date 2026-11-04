@@ -8,9 +8,8 @@ export async function createNaturalSystems({THREE,scene,planetGroups,planets,get
  const textureFiles=new Map(textureCatalogue.textures.map(t=>[t.name,t.file]));const rows=catalogue.satellites.filter(r=>planetGroups.has(r.parent));
  const states=new Map(),systems=new Map(),pickable=[],owned=[],labelNodes=[];
  const positionFor=(row,date)=>getRelativePosition?.(row,date)||relativePositionKm(row,date);
- const dummy=new THREE.Object3D(),arrowDummy=new THREE.Object3D(),v=new THREE.Vector3(),up=new THREE.Vector3(0,1,0);let orbitMode='auto',focus='overview',lastDate=new Date(),lastUpdate=-Infinity,disposed=false;
+ const dummy=new THREE.Object3D(),v=new THREE.Vector3();let orbitMode='auto',focus='overview',lastDate=new Date(),lastUpdate=-Infinity,disposed=false;
  const sphere=new THREE.SphereGeometry(1,64,40),rock=new THREE.IcosahedronGeometry(1,1);owned.push(sphere,rock);
- const arrowGeometry=new THREE.ConeGeometry(.48,1.5,4);owned.push(arrowGeometry);
  const loader=new THREE.TextureLoader();
  const labelLayer=document.createElement('div');labelLayer.className='natural-label-layer';labelHost.parentElement.append(labelLayer);
  const fr=()=>getLanguage()==='fr';
@@ -44,10 +43,6 @@ export async function createNaturalSystems({THREE,scene,planetGroups,planets,get
    const mesh=new THREE.InstancedMesh(rock,mat,minor.length);mesh.name=planet.id+'-small-moons';mesh.frustumCulled=false;mesh.userData.moonIds=minor.map(s=>s.row.id);group.add(mesh);pickable.push(mesh);
    minor.forEach((s,i)=>{s.instances=mesh;s.instanceIndex=i;});system.instances=mesh;
   }
-  if(system.major.length){
-   const material=new THREE.MeshBasicMaterial({color:0x8faebe,transparent:true,opacity:.6,depthWrite:false});owned.push(material);
-   system.arrows=new THREE.InstancedMesh(arrowGeometry,material,system.major.length);system.arrows.frustumCulled=false;system.arrows.name=planet.id+'-orbit-direction';group.add(system.arrows);
-  }
   for(const [key,values,opacity] of [['orbits',lineVertices,.12],['innerOrbits',innerVertices,.23],['compactOrbits',overviewVertices,.10]]){
    const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(values,3));geometry.computeBoundingSphere();
    const material=new THREE.LineBasicMaterial({color:0x7b94a6,transparent:true,opacity,depthWrite:false});owned.push(geometry,material);
@@ -74,13 +69,6 @@ export async function createNaturalSystems({THREE,scene,planetGroups,planets,get
     if(state.mesh){state.mesh.position.copy(state.offset);state.mesh.visible=focus!=='overview'||state.major;if(active&&focus!=='overview')loadTexture(state);}
     else {dummy.position.copy(state.offset);dummy.rotation.set(row.naifId*.017||.4,row.naifId*.009||.8,.4);dummy.scale.setScalar(focus==='overview'?0:state.radius);dummy.updateMatrix();state.instances.setMatrixAt(state.instanceIndex,dummy.matrix);}
    }
-   if(system.arrows)for(const [index,row] of system.major.entries()){
-    const state=states.get(row.id),start=Number(date)+row.periodDays*86400000*.08;
-    const a=relativePositionKm(row,new Date(start)),b=relativePositionKm(row,new Date(start+row.periodDays*86400000*.001));
-    state.arrowOffset=new THREE.Vector3(a.x,a.y,a.z).multiplyScalar(system.scale);
-    state.arrowDirection=new THREE.Vector3(b.x-a.x,b.y-a.y,b.z-a.z).normalize();
-    state.arrowIndex=index;
-   }
    if(system.instances){system.instances.instanceMatrix.needsUpdate=true;system.instances.boundingSphere=null;}
   }
  }
@@ -96,15 +84,8 @@ export async function createNaturalSystems({THREE,scene,planetGroups,planets,get
      dummy.position.copy(state.offset);dummy.rotation.set(row.naifId*.017||.4,row.naifId*.009||.8,.4);
      dummy.scale.setScalar(focus==='overview'?0:state.displayRadius);dummy.updateMatrix();state.instances.setMatrixAt(state.instanceIndex,dummy.matrix);
     }
-    if(system.arrows&&state.major&&state.arrowOffset){
-     arrowDummy.position.copy(state.arrowOffset);arrowDummy.quaternion.setFromUnitVectors(up,state.arrowDirection);
-     const d=camera.position.distanceTo(v.copy(system.group.position).add(state.arrowOffset));
-     arrowDummy.scale.setScalar(2*d*Math.tan(camera.fov*Math.PI/360)/height*5.5);
-     arrowDummy.updateMatrix();system.arrows.setMatrixAt(state.arrowIndex,arrowDummy.matrix);
-    }
    }
    if(system.instances){system.instances.instanceMatrix.needsUpdate=true;system.instances.boundingSphere=null;}
-   if(system.arrows)system.arrows.instanceMatrix.needsUpdate=true;
   }
  }
  function updateOrbitVisibility(dt=0){
@@ -116,8 +97,11 @@ export async function createNaturalSystems({THREE,scene,planetGroups,planets,get
    for(const [key,target] of [['orbits',opacity.all],['innerOrbits',opacity.inner]]){
     const material=system[key].material;material.opacity+=(target-material.opacity)*blend;system[key].visible=material.opacity>.001;
    }
-   if(system.arrows){system.arrows.visible=focus!=='overview'&&!closeMoon&&(system.orbits.visible||system.innerOrbits.visible);system.arrows.material.opacity=Math.min(.65,(system.orbits.material.opacity+system.innerOrbits.material.opacity)*5);}
   }
+ }
+ function setTheme(theme='night'){
+  const color=theme==='day'?0x505661:0x7b94a6;
+  for(const system of systems.values())for(const key of ['orbits','innerOrbits','compactOrbits'])system[key].material.color.set(color);
  }
  function pickNearRay(ray,{touch=false}={}){
   const height=Math.max(1,labelLayer.clientHeight),parentFocus=parentOf(focus)||focus;
@@ -148,6 +132,7 @@ export async function createNaturalSystems({THREE,scene,planetGroups,planets,get
  updatePositions(lastDate);updateVisualSizes();updateOrbitVisibility();
  return {
   pickable,
+  setTheme,
   update(date=new Date(),dt=0){lastDate=date;const now=Number(date);if(Math.abs(now-lastUpdate)>200){updatePositions(date);lastUpdate=now;}else for(const state of states.values())state.position.copy(planetGroups.get(state.row.parent).position).add(state.offset);updateVisualSizes();updateOrbitVisibility(dt);updateLabels();},
   setFocus(id){const next=id||'overview';if((parentOf(next)||next)!==(parentOf(focus)||focus))orbitMode='auto';focus=next;updatePositions(lastDate);lastUpdate=Number(lastDate);updateVisualSizes();updateOrbitVisibility();updateLabels();},
   setOrbitMode(mode='auto'){orbitMode=['auto','inner','all'].includes(mode)?mode:'auto';updateVisualSizes();updateOrbitVisibility();},

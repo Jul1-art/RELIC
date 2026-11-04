@@ -9,12 +9,14 @@ import { startLiveData, getLanguage, onLanguageChange } from '../atlas/atlas-liv
 import { configureWorldPerformance, cameraDuration, flyToLocation, createOverviewFraming } from './world-performance.js';
 import { createViewLoading } from '../ui/view-loading.js';
 import { initializeProviderCredits } from '../ui/provider-credits.js?v=14';
+import { observeSceneTheme } from '../ui/scene-theme.js';
 
 const $ = selector => document.querySelector(selector);
 const viewLoading = createViewLoading({ element:$('#earth-loading'), errorElement:$('#earth-error'), getLanguage });
 const input = $('#place-input');
 
 let viewer;
+let disposeSceneTheme = () => {};
 let overviewFraming;
 let currentLayer;
 let remoteLayer;
@@ -146,6 +148,12 @@ async function start() {
     viewer.scene.globe.depthTestAgainstTerrain = true;
     viewer.scene.verticalExaggeration = 2;
     viewer.scene.skyAtmosphere.show = true;
+    disposeSceneTheme = observeSceneTheme(palette => {
+      if (viewer.isDestroyed()) return;
+      viewer.scene.backgroundColor = Cesium.Color.fromCssColorString(palette.background);
+      if (viewer.scene.skyBox) viewer.scene.skyBox.show = !palette.light;
+      viewer.scene.requestRender();
+    });
     viewer.scene.screenSpaceCameraController.minimumZoomDistance = 100;
     viewer.scene.screenSpaceCameraController.maximumZoomDistance = 55000000;
     overviewFraming = createOverviewFraming(viewer, Cesium, { ellipsoid:Cesium.Ellipsoid.WGS84, longitude:12, latitude:25 });
@@ -211,6 +219,7 @@ $('#google3d-toggle').addEventListener('click', async () => {
   await google3D.enable();
 });
 start();
+window.addEventListener('pagehide', event => { if (!event.persisted) disposeSceneTheme(); });
 startLiveData($('#earth-live-data'), () => 'earth');
 onLanguageChange(lang => {
   viewLoading.refresh();

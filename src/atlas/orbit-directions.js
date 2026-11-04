@@ -43,42 +43,44 @@ export function writeOrbitTrail(path, head, positions, fraction=.085) {
 export function createOrbitDirections({THREE,scene,planets,orbitLines,getPosition}) {
   const group=new THREE.Group();group.name='planet-orbit-directions';scene.add(group);
   const trailMaterial=new THREE.LineBasicMaterial({color:0xffffff,vertexColors:true,transparent:true,opacity:.98,depthWrite:false,toneMapped:false});
-  const arrowMaterial=new THREE.LineBasicMaterial({color:0x49b4ff,transparent:true,opacity:.95,depthWrite:false,toneMapped:false});
+  const blue=new THREE.Color(0x228fff);
   const records=planets.map(planet=>{
     const source=orbitLines.get(planet.id).geometry.attributes.position;
     const points=Array.from({length:source.count},(_,i)=>new THREE.Vector3().fromBufferAttribute(source,i));
     const path=makeOrbitPath(points,planet.closed??planet.id!=='67p');
-    const normal=new THREE.Vector3().crossVectors(points[1].clone().sub(points[0]),points[2].clone().sub(points[1])).normalize();
-    const geometry=new THREE.BufferGeometry(),positions=new Float32Array(72*3),colors=new Float32Array(72*3),blue=new THREE.Color(0x228fff);
-    for(let i=0;i<72;i++){const brightness=.015+.985*(i/71)**1.8;colors[i*3]=blue.r*brightness;colors[i*3+1]=blue.g*brightness;colors[i*3+2]=blue.b*brightness;}
+    const geometry=new THREE.BufferGeometry(),positions=new Float32Array(72*3),colors=new Float32Array(72*3);
     geometry.setAttribute('position',new THREE.BufferAttribute(positions,3).setUsage(THREE.DynamicDrawUsage));geometry.setAttribute('color',new THREE.BufferAttribute(colors,3));
     const line=new THREE.Line(geometry,trailMaterial);line.frustumCulled=false;group.add(line);
-    const arrowGeometry=new THREE.BufferGeometry(),arrowVertices=new Float32Array(12);arrowGeometry.setAttribute('position',new THREE.BufferAttribute(arrowVertices,3).setUsage(THREE.DynamicDrawUsage));
-    const arrow=new THREE.LineSegments(arrowGeometry,arrowMaterial);arrow.frustumCulled=false;group.add(arrow);
-    return {planet,path,normal,geometry,positions,line,arrowGeometry,arrowVertices,arrow,lastHead:new THREE.Vector3(Infinity,Infinity,Infinity),lastDistance:0,end:0};
+    return {planet,path,geometry,positions,line,lastHead:new THREE.Vector3(Infinity,Infinity,Infinity)};
   });
-  const head=new THREE.Vector3(),tip=new THREE.Vector3(),tangent=new THREE.Vector3(),side=new THREE.Vector3(),stem=new THREE.Vector3(),pointA={},pointB={};
+  const head=new THREE.Vector3();
+  let appliedTheme;
+  function setTheme(theme='night'){
+    const light=theme==='day';if(appliedTheme===light)return;appliedTheme=light;
+    const background=light?1:0;
+    for(const {geometry} of records){
+      const colors=geometry.attributes.color;
+      for(let i=0;i<colors.count;i++){
+        const brightness=.015+.985*(i/(colors.count-1))**1.8;
+        colors.setXYZ(i,background+(blue.r-background)*brightness,background+(blue.g-background)*brightness,background+(blue.b-background)*brightness);
+      }
+      colors.needsUpdate=true;
+    }
+  }
+  setTheme();
   return {
-    update(camera,visible,date){
+    setTheme,
+    update(_camera,visible,date){
       group.visible=visible;if(!visible)return;
       for(const record of records){
-        const {planet,path,normal,geometry,positions,line,arrowGeometry,arrowVertices,arrow,lastHead}=record;
+        const {planet,path,geometry,positions,line,lastHead}=record;
         const current=getPosition?.(planet.id,date)||planet.position||path.points[0];
-        if(!current||![current.x,current.y,current.z].every(Number.isFinite)){line.visible=arrow.visible=false;continue;}
-        line.visible=arrow.visible=true;head.set(current.x,current.y,current.z);
+        if(!current||![current.x,current.y,current.z].every(Number.isFinite)){line.visible=false;continue;}
+        line.visible=true;head.set(current.x,current.y,current.z);
         const moved=head.distanceToSquared(lastHead)>1e-20;
-        if(moved){record.end=writeOrbitTrail(path,head,positions);geometry.attributes.position.needsUpdate=true;lastHead.copy(head);}
-        const distance=camera.position.distanceTo(head);
-        if(!moved&&Math.abs(distance-record.lastDistance)<Math.max(1,distance)*.008)continue;
-        record.lastDistance=distance;
-        const length=Math.min((planet.orbit||path.length/(Math.PI*2))*.06,Math.max(.15,distance*.0045));
-        const backoff=Math.max((planet.size||.6)*1.7,length*.8),tipDistance=record.end-backoff;
-        sampleOrbitDistance(path,tipDistance,pointA);sampleOrbitDistance(path,tipDistance+Math.max(.001,length*.1),pointB);
-        tip.set(pointA.x,pointA.y,pointA.z);tangent.set(pointB.x-pointA.x,pointB.y-pointA.y,pointB.z-pointA.z).normalize();side.crossVectors(tangent,normal).normalize();stem.copy(tip).addScaledVector(tangent,-length);
-        let offset=0;for(const sign of [-1,1])for(const point of [tip,stem.clone().addScaledVector(side,length*.42*sign)]){arrowVertices[offset++]=point.x;arrowVertices[offset++]=point.y;arrowVertices[offset++]=point.z;}
-        arrowGeometry.attributes.position.needsUpdate=true;
+        if(moved){writeOrbitTrail(path,head,positions);geometry.attributes.position.needsUpdate=true;lastHead.copy(head);}
       }
     },
-    dispose(){group.removeFromParent();for(const record of records){record.geometry.dispose();record.arrowGeometry.dispose();}trailMaterial.dispose();arrowMaterial.dispose();}
+    dispose(){group.removeFromParent();for(const record of records)record.geometry.dispose();trailMaterial.dispose();}
   };
 }

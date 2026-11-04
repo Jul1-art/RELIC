@@ -5,19 +5,83 @@ import { readFile } from 'node:fs/promises';
 const source = await readFile(new URL('../sw.js', import.meta.url), 'utf8');
 const origin='https://example.test/RELIC/';
 
-async function worker() {
+async function worker({windows=[]}={}) {
   const stores=new Map(), events=new Map(), requests=[], networkPolicies=[];
   let active=0,peak=0,time=Date.parse('2026-10-25T12:00:00Z');
   let serve=async request=>new Response(/\.html(?:\?|$)/.test(request.url)?'<title>Earth — RELIC</title><main>viewer</main>':'resource', {headers:{'Content-Type':/\.html(?:\?|$)/.test(request.url)?'text/html':'application/javascript'}});
   const caches={async open(name){if(!stores.has(name))stores.set(name,new Map());const entries=stores.get(name);return{async match(key){return entries.get(typeof key==='string'?key:key.url)?.clone();},async put(key,response){entries.set(typeof key==='string'?key:key.url,response.clone());}};},async keys(){return [...stores.keys()];},async delete(name){return stores.delete(name);}};
   class Clock extends Date {static now(){return time;}}
-  const self={registration:{scope:origin},clients:{async claim(){}},async skipWaiting(){},addEventListener(name,callback){events.set(name,callback);},RELICFilmCache:{serve(request,scope){return Promise.resolve(new Response(JSON.stringify({range:request.headers.get('Range'),scope}),{status:206}));}}};
-  const context=vm.createContext({self,caches,URL,Request,Response,Headers,Date:Clock,console,importScripts(){},async fetch(request,options={}){requests.push(request.url);networkPolicies.push(options.cache);active++;peak=Math.max(peak,active);try{await new Promise(resolve=>setTimeout(resolve,4));return await serve(request);}finally{active--;}}});
+  const self={registration:{scope:origin},clients:{async claim(){},async matchAll(options){assert.equal(options.type,'window');assert.equal(options.includeUncontrolled,true);return windows;},async get(id){return windows.find(client=>client.id===id);}},async skipWaiting(){},addEventListener(name,callback){events.set(name,callback);},RELICFilmCache:{serve(request,scope){return Promise.resolve(new Response(JSON.stringify({range:request.headers.get('Range'),scope}),{status:206}));}}};
+  const context=vm.createContext({self,caches,URL,Request,Response,Headers,Date:Clock,console,MessageChannel,setTimeout,clearTimeout,importScripts(){},async fetch(request,options={}){requests.push(request.url);networkPolicies.push(options.cache);active++;peak=Math.max(peak,active);try{await new Promise(resolve=>setTimeout(resolve,4));return await serve(request);}finally{active--;}}});
   vm.runInContext(source,context,{filename:'sw.js'});
   function request(path,{navigate=false,reload=false,headers={}}={}){const r=new Request(new URL(path,origin),{cache:reload?'reload':'default',headers});if(navigate)Object.defineProperty(r,'mode',{value:'navigate'});return r;}
   async function dispatch(type,event={}){let work;events.get(type)({...event,waitUntil(p){work=p;},respondWith(p){work=p;}});return work===undefined?undefined:await work;}
   return{stores,events,requests,networkPolicies,request,dispatch,peak:()=>peak,advance:ms=>{time+=ms;},setServe:fn=>{serve=fn;},async message(type){let reply;await dispatch('message',{data:{type},ports:[{postMessage(value){reply=value;}}]});return reply;}};
 }
+
+function applicationClient({id='current',url=origin+'index.html?body=moon#surface',frameType='top-level',release='interface-20261104-v17'}={}) {
+  const posts=[],navigations=[];
+  return {id,url,frameType,type:'window',posts,navigations,
+    postMessage(message,ports){posts.push(message);assert.equal(ports.length,1);if(release!==null)ports[0].postMessage({release});},
+    navigate(destination){navigations.push(destination);return Promise.resolve();},
+  };
+}
+
+test('activation keeps an acknowledged current interface open without a reload',async()=>{
+  const client=applicationClient(),w=await worker({windows:[client]});
+  await w.dispatch('activate');
+  assert.equal(client.posts.length,1);assert.equal(client.posts[0].type,'RELIC_INTERFACE_VERSION');
+  assert.deepEqual(client.navigations,[]);assert.equal(w.requests.length,0);
+});
+
+test('activation refreshes an old document once at its exact URL without waiting on navigation',async()=>{
+  const client=applicationClient({release:'interface-v16'});
+  client.navigate=destination=>{client.navigations.push(destination);return new Promise(()=>{});};
+  const w=await worker({windows:[client]});let deadline;
+  try{await Promise.race([w.dispatch('activate'),new Promise((_,reject)=>{deadline=setTimeout(()=>reject(new Error('Activation waited for client.navigate')),500);})]);}
+  finally{clearTimeout(deadline);}
+  assert.deepEqual(client.navigations,[client.url]);
+  await w.dispatch('activate');assert.deepEqual(client.navigations,[client.url]);
+});
+
+test('an unresponsive old page is refreshed after a bounded release handshake',async()=>{
+  const client=applicationClient({release:null}),w=await worker({windows:[client]});
+  const started=performance.now();await w.dispatch('activate');
+  assert.ok(performance.now()-started>=500,'The old page gets an opportunity to acknowledge');
+  assert.ok(performance.now()-started<1500,'The handshake cannot hold activation indefinitely');
+  assert.deepEqual(client.navigations,[client.url]);
+});
+
+test('upgrade probes exclude nested frames, external pages, other scopes and private routes',async()=>{
+  const clients=[
+    applicationClient({id:'nested',frameType:'nested',release:null}),
+    applicationClient({id:'external',url:'https://external.test/RELIC/index.html',release:null}),
+    applicationClient({id:'other-scope',url:'https://example.test/RELIC-other/index.html',release:null}),
+    applicationClient({id:'auth',url:origin+'auth/login',release:null}),
+    applicationClient({id:'credential',url:origin+'index.html?access_token=fixture',release:null}),
+  ];
+  const w=await worker({windows:clients});await w.dispatch('activate');
+  for(const client of clients){assert.deepEqual(client.posts,[]);assert.deepEqual(client.navigations,[]);}
+});
+
+test('a page that leaves the application during the release probe is never pulled back',async()=>{
+  const initial=applicationClient({release:'interface-v16'}),windows=[initial];
+  const departed=applicationClient({id:initial.id,url:'https://external.test/new-page'});
+  initial.postMessage=(message,ports)=>{ports[0].postMessage({release:'interface-v16'});windows[0]=departed;};
+  const w=await worker({windows});await w.dispatch('activate');
+  assert.deepEqual(initial.navigations,[]);assert.deepEqual(departed.navigations,[]);
+});
+
+test('interface activation preserves saved films and other application storage',async()=>{
+  const w=await worker({windows:[applicationClient()]});
+  const film=new Map([['saved-film','fixture bytes']]),other=new Map([['preferences','fixture preferences']]);
+  w.stores.set('relic-film-offline-fixture',film);w.stores.set('relic-atlas-%2FOther%2F-old-shell',other);
+  w.stores.set('relic-atlas-%2FRELIC%2F-previous-shell',new Map());
+  await w.dispatch('activate');
+  assert.equal(w.stores.get('relic-film-offline-fixture'),film);assert.equal(film.get('saved-film'),'fixture bytes');
+  assert.equal(w.stores.get('relic-atlas-%2FOther%2F-old-shell'),other);
+  assert.equal(w.stores.has('relic-atlas-%2FRELIC%2F-previous-shell'),false);
+});
 
 test('installation fetches only seven small shell resources with at most three concurrent requests',async()=>{
  const w=await worker();await w.dispatch('install');assert.equal(w.requests.length,7);assert(w.peak()<=3);assert(!w.requests.some(url=>url.includes('/vendor/')||url.includes('/prologue/')||url.includes('api-config')));

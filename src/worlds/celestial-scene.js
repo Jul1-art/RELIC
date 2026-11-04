@@ -75,6 +75,7 @@ export function createCelestialScene({Cesium,viewer,onSelect=()=>{}}){
   const originalFar=viewer.camera.frustum.far,originalLogDepth=scene.logarithmicDepthBuffer;
   const position=new C.Cartesian3(),towardCamera=new C.Cartesian3(),screenPoint=new C.Cartesian2();
   let disposed=false,hasCredit=false,lastFar=originalFar;
+  let light=false;
   scene.logarithmicDepthBuffer=true;
   const request=()=>{if(!disposed&&!viewer.isDestroyed?.())scene.requestRender();};
   function removeRecord(record){if(record.sphere)scene.primitives.remove(record.sphere);points.remove(record.point);labels.remove(record.label);records.delete(record.row.id);}
@@ -95,8 +96,8 @@ export function createCelestialScene({Cesium,viewer,onSelect=()=>{}}){
     record.sphere=sphere;request();return sphere;
   }
   function addRecord(row){
-    const point=points.add({id:row.id,position:new C.Cartesian3(row.position.x,row.position.y,row.position.z),pixelSize:2.5,color:C.Color.WHITE,outlineWidth:0,disableDepthTestDistance:0});point.relicCelestial=true;
-    const label=labels.add({id:row.id,text:row.name||row.id,position:point.position,show:false,font:'11px system-ui, sans-serif',fillColor:C.Color.WHITE,outlineColor:C.Color.BLACK,outlineWidth:3,
+    const point=points.add({id:row.id,position:new C.Cartesian3(row.position.x,row.position.y,row.position.z),pixelSize:2.5,color:light?C.Color.BLACK:C.Color.WHITE,outlineWidth:0,disableDepthTestDistance:0});point.relicCelestial=true;
+    const label=labels.add({id:row.id,text:row.name||row.id,position:point.position,show:false,font:'11px system-ui, sans-serif',fillColor:light?C.Color.BLACK:C.Color.WHITE,outlineColor:light?C.Color.WHITE:C.Color.BLACK,outlineWidth:3,
       style:C.LabelStyle.FILL_AND_OUTLINE,horizontalOrigin:C.HorizontalOrigin.LEFT,verticalOrigin:C.VerticalOrigin.CENTER,pixelOffset:new C.Cartesian2(10,0),disableDepthTestDistance:0});label.relicCelestial=true;
     const record={row,sphere:null,point,label};records.set(row.id,record);return record;
   }
@@ -174,6 +175,7 @@ export function createCelestialScene({Cesium,viewer,onSelect=()=>{}}){
   }
   const removePreRender=(scene.preUpdate||scene.preRender).addEventListener(updateVisibility);
   return {setBodies,lookAt,handleClick,getBodyIdFromPick,getBody:id=>records.get(id)?.row||null,
+    setTheme(theme='night'){light=theme==='day';for(const record of records.values()){record.point.color=light?C.Color.BLACK:C.Color.WHITE;record.label.fillColor=record.point.color;record.label.outlineColor=light?C.Color.WHITE:C.Color.BLACK;}request();},
     dispose(){if(disposed)return;disposed=true;removePreRender();if(viewer.isDestroyed?.()){records.clear();return;}for(const record of [...records.values()])removeRecord(record);scene.primitives.remove(points);scene.primitives.remove(labels);if(hasCredit)viewer.creditDisplay?.removeStaticCredit(credit);if(viewer.camera.frustum.far===lastFar)viewer.camera.frustum.far=originalFar;scene.logarithmicDepthBuffer=originalLogDepth;}
   };
 }

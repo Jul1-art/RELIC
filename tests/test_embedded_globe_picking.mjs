@@ -5,6 +5,7 @@ import {readFile} from 'node:fs/promises';
 import * as Cesium from '../vendor/cesium/index.js';
 import * as celestial from '../src/worlds/celestial-scene.js';
 import * as navigation from '../src/atlas/orbital-navigation.js';
+import * as sceneTheme from '../src/ui/scene-theme.js';
 
 // Execute the native renderer's actual navigation functions without booting a
 // WebGL widget. Only its final browser bootstrap is replaced by test accessors.
@@ -34,6 +35,7 @@ async function fixture(body){
     './global-terrain.js':{loadGlobalHeightGrid(){},createGlobalTerrainProvider(){}},
     './celestial-scene.js':celestial,
     '../atlas/orbital-navigation.js':navigation,
+    '../ui/scene-theme.js':sceneTheme,
   };
   const module=new vm.SourceTextModule(instrumented,{context});
   await module.link(name=>{

@@ -6,6 +6,7 @@ import {approximatePosition} from '../atlas/orbital-data.js';
 import {loadGlobalHeightGrid,createGlobalTerrainProvider} from './global-terrain.js';
 import {createCelestialScene,celestialRayDistance,getBodyIdFromPick} from './celestial-scene.js';
 import {wheelZoomFactor} from '../atlas/orbital-navigation.js';
+import {scenePalette} from '../ui/scene-theme.js';
 
 Cesium.Ion.defaultAccessToken='';
 const CHANNEL='relic-detailed-globe-v15';
@@ -210,10 +211,16 @@ async function addTerrain(){
   state(true);
 }
 function suspend(value){paused=Boolean(value);if(disposed||!viewer||viewer.isDestroyed())return;viewer.useDefaultRenderLoop=(!paused||!ready)&&!document.hidden;if(!paused||!ready){viewer.resize();requestRender();}}
+function applyViewTheme(value){
+  const theme=value==='day'?'day':'night',palette=scenePalette(theme);
+  document.documentElement.dataset.theme=theme;document.documentElement.style.colorScheme=palette.light?'light':'dark';
+  viewer.scene.backgroundColor=Cesium.Color.fromCssColorString(palette.background);celestial?.setTheme(theme);requestRender();
+}
 function receive(event){
   if(event.origin!==location.origin||event.source!==parent||event.data?.channel!==CHANNEL||disposed||!viewer)return;
   const {action,value}=event.data;
-  if(action==='focus')setFocus(event.data.focus);
+  if(action==='theme')applyViewTheme(value);
+  else if(action==='focus')setFocus(event.data.focus);
   else if(action==='context'){focus.context=event.data.context||[];celestial?.setBodies(focus.context);state(true);}
   else if(action==='lookAt'&&typeof value==='string'){celestial?.lookAt(value);state(true);}
   else if(action==='look'&&value)lookAround(value.yaw,value.pitch);
@@ -238,6 +245,7 @@ async function start(){
     viewer.clock.shouldAnimate=false;scene.requestRenderMode=true;scene.maximumRenderTimeChange=Infinity;
     scene.backgroundColor=Cesium.Color.BLACK;scene.highDynamicRange=false;scene.verticalExaggeration=1;
     celestial=createCelestialScene({Cesium,viewer,onSelect:id=>post('select',{id})});
+    applyViewTheme(document.documentElement.dataset.theme);
     scene.globe.baseColor=Cesium.Color.fromCssColorString(body==='earth'?'#183444':body==='moon'?'#777573':'#82533e');
     scene.globe.maximumScreenSpaceError=compact?2.5:1.5;scene.globe.tileCacheSize=compact?72:160;scene.globe.depthTestAgainstTerrain=true;
     if(scene.skyBox)scene.skyBox.show=false;if(scene.skyAtmosphere)scene.skyAtmosphere.show=false;if(scene.sun)scene.sun.show=false;if(scene.moon)scene.moon.show=false;
