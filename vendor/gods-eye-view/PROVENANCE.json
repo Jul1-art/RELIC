@@ -21,6 +21,13 @@
       "sha256": "a21c2f0e524a8391dc1ccd46f739c76548a74d2417c4ab17c30506e312ff1536"
     },
     {
+      "sourcePath": "src/ui/rail/rangeValue.js",
+      "localPath": "ui/rail/rangeValue.js",
+      "role": "runtime",
+      "gitBlob": "a043643793529c58b80b770601af2f5195c7ad5c",
+      "sha256": "d50a40dd8fd230e451c5e74b8192aa4c4f7258a898b41f45a9e6bddf10ad43a4"
+    },
+    {
       "sourcePath": "src/bloom.js",
       "localPath": "bloom.js",
       "role": "runtime",

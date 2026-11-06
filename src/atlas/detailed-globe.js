@@ -15,6 +15,7 @@ export function createDetailedGlobe({host,onState=()=>{},onInteraction=()=>{},on
   const origin=location.origin;
   const theme=()=>document.documentElement?.dataset.theme==='day'?'day':'night';
   const send=(action,payload={})=>frame?.contentWindow?.postMessage({channel:CHANNEL,action,...payload},origin);
+  const updateTheme=()=>send('theme',{value:theme(),motion:document.documentElement.dataset.motion});
   function teardown(){
     clearTimeout(timer);if(frame){send('dispose');frame.remove();}
     frame=null;ready=false;loading=false;state={};
@@ -39,7 +40,7 @@ export function createDetailedGlobe({host,onState=()=>{},onInteraction=()=>{},on
   function receive(event){
     if(disposed||event.origin!==origin||event.source!==frame?.contentWindow||event.data?.channel!==CHANNEL)return;
     const data=event.data;
-    if(data.type==='boot'){send('theme',{value:theme()});send('focus',{focus:current});if(visualSettings)send('visualSettings',{value:visualSettings});return;}
+    if(data.type==='boot'){updateTheme();send('focus',{focus:current});if(visualSettings)send('visualSettings',{value:visualSettings});return;}
     if(data.type==='ready'){clearTimeout(timer);ready=true;loading=false;frame.classList.add('is-ready');state={...state,...data.state};emit();return;}
     if(data.type==='state'){state={...state,...data.state};emit();return;}
     if(data.type==='interaction'){onInteraction();return;}
@@ -47,7 +48,6 @@ export function createDetailedGlobe({host,onState=()=>{},onInteraction=()=>{},on
     if(data.type==='error'){teardown();emit({error:'unavailable'});}
   }
   window.addEventListener('message',receive);
-  const updateTheme=()=>send('theme',{value:theme()});
   window.addEventListener('relic-preferences-change',updateTheme);
   const command=(action,value)=>{if(!ready)return false;send(action,{value});return true;};
   return {setFocus,hide,setVisualSettings(value){visualSettings=normalizeVisualSettings(value,visualSettings);send('visualSettings',{value:visualSettings});},setContext(context){if(current)current.context=context;send('context',{context});},lookAt:id=>command('lookAt',id),lookAround:(yaw,pitch)=>command('look',{yaw,pitch}),

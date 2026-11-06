@@ -528,14 +528,17 @@ const scaleReadout=createScaleReadout({host:sceneHost.parentElement,camera,getLa
   return {id:selected,distance,viewportHeight:viewportSize().height,radius,radiusKm,special,hideRuler:skyView,kmPerPixel:native?.metersPerPixel/1000};
 }});
 function updateScaleNote(){scaleReadout.update();}
-let wasDetailedActive=false;
+let wasDetailedActive=false,previousDetailedSource;
 detailedGlobe=createDetailedGlobe({host:sceneHost,onState:state=>{
   document.body.dataset.detailedGlobe=state.active?'active':state.loading?'loading':state.error?'unavailable':'inactive';
   document.body.style.setProperty('--detailed-credits-height',state.active?`${state.creditHeight||30}px`:'0px');
   renderer.domElement.style.visibility=state.active?'hidden':'';
   controls.enabled=!state.active&&!rendererSuspended;
   if(state.active&&!wasDetailedActive){surfaceDetail.clear();detailedGlobe.pause(rendererSuspended||filmActive||document.hidden);}
+  const rendererChanged=state.active!==wasDetailedActive||state.sourceMode!==previousDetailedSource;
   wasDetailedActive=state.active;
+  previousDetailedSource=state.sourceMode;
+  if(rendererChanged)inspectionControls?.publish();
   updateScaleNote();
 },onInteraction:()=>{flight=null;hideGestureHint();},onSelect:id=>selectBody(id)});
 function makeNativeContext(id){
@@ -587,11 +590,15 @@ function frameSatelliteSystem(parent,majorOnly){
 function isWorldInspection(){return selected!=='overview'&&selected!=='sun';}
 function syncInspectionScene(){
   const active=isWorldInspection();
-  stars.visible=!currentScenePalette.light&&(!active||inspectionSettings.stars!==false);
-  stars.material.color.set(active?0xffffff:0xa6bddb);
+  const showLabels=!active||inspectionSettings.labels!==false;
+  stars.visible=active?inspectionSettings.stars!==false:!currentScenePalette.light;
+  stars.material.color.set(currentScenePalette.light?0x3f5266:active?0xffffff:0xa6bddb);
+  stars.material.opacity=currentScenePalette.light?.36:.52;
+  labelHost.hidden=!showLabels;
+  moon.visible=!naturalSystems&&(selected==='moon'||(selected==='earth'&&inspectionSettings.moons!==false));
   solarIllumination.setEnabled(!active||inspectionSettings.lighting!==false);
-  naturalSystems?.setDisplay({moons:!active||inspectionSettings.moons!==false,orbits:!active||inspectionSettings.orbits!==false,labels:!active||inspectionSettings.labels!==false});
-  comet?.setLabels(!active||inspectionSettings.labels!==false);
+  naturalSystems?.setDisplay({moons:!active||inspectionSettings.moons!==false,orbits:!active||inspectionSettings.orbits!==false,labels:showLabels});
+  comet?.setLabels(showLabels);
 }
 function getInspectionState(){
   if(!isWorldInspection())return {body:selected};
@@ -599,12 +606,14 @@ function getInspectionState(){
   const native=detailedGlobe?.getViewState();
   const navigation=native||globeNavigation?.getViewState();
   const coordinates=native||globeNavigation?.getSurfaceCoordinates();
+  const parent=parentBodyId(selected);
+  const satellites=naturalSystems?.getSatellites(parent)||[];
   return {body:selected,name:displayBody(detail).name,latitude:coordinates?.latitude,longitude:coordinates?.longitude,
     altitudeKm:coordinates?.altitudeKm,headingDeg:navigation?.headingDeg,tiltDeg:navigation?.tiltDeg,
     rangeMeters:native?.rangeMeters||(navigation?.rangeWorld&&detail.radiusKm?navigation.rangeWorld/detail.size*detail.radiusKm*1000:undefined),
     capabilities:{
-      orbits:!native&&Boolean(naturalSystems?.getSatellites(parentBodyId(selected)).length),
-      moons:Boolean(native||naturalSystems?.getSatellites(parentBodyId(selected)).length),
+      orbits:!native&&satellites.length>0,
+      moons:native?['earth','mars'].includes(parent):satellites.some(row=>row.id!==selected)||(!naturalSystems&&selected==='earth'),
       lighting:!['ion-photorealistic','ion-3d-tiles'].includes(native?.sourceMode),
       tilt:Boolean(navigation)&&!detailedGlobe.loading,north:Boolean(navigation)&&!detailedGlobe.loading,
     },
@@ -737,7 +746,6 @@ function selectBody(id,recenter=false,{preserveCamera=false}={}) {
   updateDetail(id);
   setDetailsCollapsed(false);
   if(id!=='overview')openInformation();
-  moon.visible=!naturalSystems&&(id==='earth'||id==='moon');
   controls.enableDamping=id==='overview';
   controls.zoomToCursor=id==='overview';
   controls.screenSpacePanning=id!=='overview';
@@ -948,7 +956,8 @@ const labelCameraPosition = new THREE.Vector3();
 const labelCameraDirection = new THREE.Vector3();
 const labelPoint = new THREE.Vector3();
 function positionLabels() {
-  if (selected !== 'overview') return;
+  if (labelHost.hidden||detailedGlobe.active) return;
+  const overview=selected==='overview';
   const occupied = [];
   const {width,height} = viewportSize();
   const fontSize = width < 650 ? 11 : 12;
@@ -964,7 +973,7 @@ function positionLabels() {
   const candidates = planets.map(planet=>({planet,...project(planetGroups.get(planet.id).position,planet.size)}));
   // Linear AU distances make real worlds subpixel in a full-system view.
   // Keep a small enlarged selection symbol, while leaving all centres exact.
-  for(const item of candidates){const scale=Math.max(1,2.6/Math.max(.0001,item.radius));planetGroups.get(item.planet.id).scale.setScalar(scale);item.radius*=scale;}
+  if(overview)for(const item of candidates){const scale=Math.max(1,2.6/Math.max(.0001,item.radius));planetGroups.get(item.planet.id).scale.setScalar(scale);item.radius*=scale;}
   // Prioritize readable bodies, then leave room around both text and planets.
   candidates.sort((a,b)=>b.radius-a.radius);
   for (const item of candidates) {
@@ -974,7 +983,7 @@ function positionLabels() {
     const w=labelWidths.get(key), h=28;
     const coveredBySun=item.depth>sunScreen.depth && Math.hypot(item.x-sunScreen.x,item.y-sunScreen.y)<Math.max(0,sunScreen.radius-item.radius*.3);
     let box=null;
-    if(item.depth>0 && item.z>-1 && item.z<1 && item.radius<Math.min(width,height)*.16 && !coveredBySun){
+    if(item.depth>0 && item.z>-1 && item.z<1 && item.radius<Math.min(width,height)*(overview?.16:.43) && !coveredBySun){
       for(const offset of [Math.max(3,item.radius)+9,-Math.max(3,item.radius)-h-7,Math.max(3,item.radius)+27]){
         const candidate={x:item.x-w/2,y:item.y+offset,w,h};
         if(candidate.x<12||candidate.x+w>width-12||candidate.y<12||candidate.y+h>height-12)continue;
@@ -1129,7 +1138,7 @@ createNaturalSystems({THREE,scene,planetGroups,planets,getLanguage,getSelected:(
   system.setTheme(currentScenePalette.light?'day':'night');
   for(const {parent,group} of system.getGroups())solarIllumination.register(parent,group);
   const index=pickable.indexOf(moon);if(index>=0)pickable.splice(index,1);moon.visible=false;scene.remove(moon,moonOrbit);
-  system.update(simulationClock.date,0);solarIllumination.registerOrientation('moon',system.getMesh('moon'));applyFocusVisibility();updateDetail(selected);
+  system.update(simulationClock.date,0);solarIllumination.registerOrientation('moon',system.getMesh('moon'));applyFocusVisibility();updateDetail(selected);inspectionControls?.publish();
   document.body.dataset.satelliteCatalogue='ready';document.body.dataset.satelliteCount=String(system.getCounts?.().total??'');
   if(requestedBody&&system.getBody(requestedBody)&&selected==='overview')restoreInspection(requestedBody);
   window.dispatchEvent(new CustomEvent('relic-satellites-ready',{detail:system.getCounts?.()}));

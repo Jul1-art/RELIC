@@ -272,8 +272,8 @@ export function initializeActionRail() {
     if(name&&!Object.hasOwn(menuViews,name))return;
     if(name==='search'&&inspectionActive()){
       if(active)show('');
-      const tray=inspection.element.querySelector('#inspection-location-popover');
-      if(tray&&!tray.hidden)inspection.close('location',true);else inspection.openLocation(searchButton);
+      const toggle=inspection.element.querySelector('#inspection-location .inspection-tray-toggle');
+      if(toggle?.getAttribute('aria-expanded')==='true')inspection.close('location',true);else inspection.openLocation(searchButton);
       return;
     }
     if(name&&inspectionActive())for(const key of ['location','presets','display','data'])inspection.close(key);

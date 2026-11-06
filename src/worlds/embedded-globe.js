@@ -245,7 +245,11 @@ function applyViewTheme(value){
 function receive(event){
   if(event.origin!==location.origin||event.source!==parent||event.data?.channel!==CHANNEL||disposed||!viewer)return;
   const {action,value}=event.data;
-  if(action==='theme')applyViewTheme(value);
+  if(action==='theme'){
+    const {motion}=event.data;
+    if(motion==='reduced'||motion==='full')document.documentElement.dataset.motion=motion;
+    applyViewTheme(value);
+  }
   else if(action==='visualSettings'){effects?.setSettings(value);document.documentElement.dataset.visualPreset=effects?.settings.style||'normal';celestial?.setLabelsVisible?.(effects?.settings.labels!==false);state(true);}
   else if(action==='focus')setFocus(event.data.focus);
   else if(action==='context'){focus.context=event.data.context||[];celestial?.setBodies(focus.context);state(true);}

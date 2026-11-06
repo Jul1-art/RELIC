@@ -3,7 +3,7 @@ import {nightVisionShader} from '../../vendor/gods-eye-view/styles/surveillance.
 import {thermalShader} from '../../vendor/gods-eye-view/styles/thermal.js';
 import {animeShader} from '../../vendor/gods-eye-view/styles/anime.js';
 import {noirShader} from '../../vendor/gods-eye-view/styles/noir.js';
-import {SHARPEN_SHADER,STYLE_PRESET_DEFAULTS} from '../../vendor/gods-eye-view/ui/visualPresets.js';
+import {SHARPEN_SHADER,STYLE_PRESET_DEFAULTS,TRANSITION_DURATION_MS} from '../../vendor/gods-eye-view/ui/visualPresets.js';
 
 /** Original MIT-licensed God's Eye View shader modules remain byte-identical.
  * Only decorative sensor HUD compositing is omitted: these pictures are not
@@ -56,6 +56,52 @@ export function normalizeVisualSettings(patch={},previous){
   return next;
 }
 
+function prefersReducedMotion(){
+  const motion=globalThis.document?.documentElement.dataset.motion;
+  return motion==='reduced'||(!motion&&globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches);
+}
+
+// The timing and easing come from God's Eye View's VisualEffects animation loop.
+// Track the shader intensities separately so both renderers share that motion.
+export function createStyleTransition({now=()=>performance.now(),reducedMotion=prefersReducedMotion}={}){
+  const intensities=Object.fromEntries(Object.keys(STYLE_SHADERS).map(style=>[style,0]));
+  const transitions=new Map();
+  let selected='normal';
+
+  function update(time=now(),immediate){
+    if(!transitions.size)return;
+    const finish=immediate??reducedMotion();
+    for(const [style,transition] of transitions){
+      const t=finish?1:Math.min((time-transition.start)/TRANSITION_DURATION_MS,1.0);
+      const eased=t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+      intensities[style]=transition.from+(transition.to-transition.from)*eased;
+      if(t>=1.0){
+        intensities[style]=transition.to;
+        transitions.delete(style);
+      }
+    }
+  }
+
+  function setStyle(style){
+    if(style===selected)return;
+    selected=style;
+    const start=now();
+    const immediate=reducedMotion();
+    update(start,immediate);
+    for(const [id,from] of Object.entries(intensities)){
+      const to=Number(id===style);
+      if(immediate||from===to){
+        intensities[id]=to;
+        transitions.delete(id);
+      }else{
+        transitions.set(id,{start,from,to});
+      }
+    }
+  }
+
+  return {intensities,setStyle,update,get active(){return transitions.size>0;}};
+}
+
 export const TONE_SCOPE_SHADER=`
   uniform sampler2D colorTexture;
   uniform vec2 colorTextureDimensions;
@@ -71,7 +117,12 @@ export const TONE_SCOPE_SHADER=`
     vec2 p=(v_textureCoordinates-.5)*vec2(colorTextureDimensions.x/colorTextureDimensions.y,1.);
     float radius=.47;
     float edge=max(.001,feather*.30);
-    float mask=1.-smoothstep(radius-edge,radius,length(p));
-    out_FragColor=vec4(mix(color,mix(background,color,mask),scopeEnabled),source.a);
+    float distanceFromCenter=length(p);
+    float mask=1.-smoothstep(radius-edge,radius,distanceFromCenter);
+    // The aperture remains visible against empty sky in either theme.
+    float pixel=1./colorTextureDimensions.y;
+    float rim=1.-smoothstep(pixel*.5,pixel*1.5,abs(distanceFromCenter-radius));
+    vec3 scoped=mix(mix(background,color,mask),1.-background,rim*.22);
+    out_FragColor=vec4(mix(color,scoped,scopeEnabled),source.a);
   }
 `;

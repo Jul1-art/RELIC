@@ -1,3 +1,5 @@
+@import url('../../vendor/gods-eye-view/original/src/ui/styles/slider.css');
+
 @font-face {
   font-family: 'GEV Inter';
   src: url('../../vendor/gods-eye-view/fonts/inter.woff2') format('woff2');
@@ -519,7 +521,9 @@ html[data-theme=day] .relic-inspection-shell .inspection-preset.active { border-
 .inspection-group-title { margin: 0 0 8px; color: var(--inspection-muted); font: 650 10px/1.4 var(--inspection-mono); letter-spacing: .1em; text-transform: uppercase; }
 .inspection-setting-group-body { display: grid; gap: 5px; }
 .inspection-setting { display: grid; align-items: center; grid-template-columns: minmax(0, 1fr) auto; gap: 5px 10px; min-height: 37px; padding: 7px 9px; border: 1px solid var(--inspection-border); border-radius: 8px; background: var(--inspection-raise); color: var(--inspection-ink); font-size: 12px; }
-.inspection-setting[data-available=false] { opacity: .52; }
+.inspection-setting[data-available=false] { color: var(--inspection-muted); }
+.inspection-setting[data-available=true].inspection-switch { cursor: pointer; }
+.inspection-setting-reason { grid-column: 1 / -1; color: var(--inspection-muted); font-size: 11px; line-height: 1.45; }
 .inspection-setting input { margin: 0; accent-color: var(--inspection-accent); }
 .inspection-setting.pp-toggle-btn.active {
   border-color: var(--accent);
@@ -529,6 +533,8 @@ html[data-theme=day] .relic-inspection-shell .inspection-preset.active { border-
 
 .inspection-switch input { width: 18px; height: 18px; }
 .inspection-range input { grid-column: 1 / -1; width: 100%; min-width: 0; height: 18px; }
+html[data-theme=day] .inspection-range input::-webkit-slider-runnable-track { background: var(--inspection-border-hover); }
+html[data-theme=day] .inspection-range input::-moz-range-track { background: var(--inspection-border-hover); }
 .inspection-setting-value { color: var(--inspection-muted); font: 11px/1 var(--inspection-mono); }
 .inspection-data-tabs { display: flex; gap: 4px; margin-bottom: 12px; }
 .relic-inspection-shell .inspection-data-tab { flex: 1; min-height: 36px; padding: 5px 7px; border-color: var(--inspection-border); border-radius: 8px; font-size: 10px; line-height: 1.2; }
@@ -689,7 +695,7 @@ html[data-theme=day] body.has-inspection-shell #relic-action-rail .rail-button:i
   .inspection-module-toggle .panel-divider { display: none; }
   .inspection-module-toggle svg { width: 14px; height: 14px; flex-basis: 14px; }
   .inspection-module-label { font-size: 9px; letter-spacing: .06em; }
-  .inspection-module-body { position: fixed; top: calc(var(--inspection-top) + 104px); right: 10px; left: 10px; bottom: auto; max-height: calc(100dvh - var(--inspection-bottom) - 186px); padding: 12px; border: 1px solid var(--inspection-border); border-radius: 15px; background: var(--inspection-surface); box-shadow: var(--inspection-shadow); }
+  .inspection-module-body { position: fixed; top: calc(var(--inspection-top) + 104px); right: 10px; left: 10px; bottom: auto; max-height: calc(100dvh - var(--inspection-bottom) - 186px); padding: 12px; border: 1px solid var(--inspection-border); border-radius: 15px; background: var(--inspection-popover); box-shadow: var(--inspection-shadow); }
   .inspection-preset-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
   .relic-inspection-shell .inspection-preset { min-height: 44px; }
   .inspection-preset .btn-key { display: none; }

@@ -49,7 +49,7 @@ export function createStandaloneInspectionControls({Cesium,viewer,body,ellipsoid
       altitudeKm:Math.max(0,camera.positionCartographic.height)/1000,rangeMeters:frame?.range,
       tiltDeg:frame?Cesium.Math.toDegrees(frame.pitch)+90:undefined,
       headingDeg:frame?Cesium.Math.toDegrees(Cesium.Math.zeroToTwoPi(frame.heading)):undefined,
-      capabilities:{orbits:false,moons:false,labels:false}};
+      capabilities:{orbits:false,moons:false,labels:false,lighting:scene.globe.show}};
   }
   function execute(action,value){
     if(viewer.isDestroyed())return false;

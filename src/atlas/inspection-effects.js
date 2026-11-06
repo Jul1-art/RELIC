@@ -1,5 +1,5 @@
 import { bloomStrengthFromIntensity } from '../../vendor/gods-eye-view/bloom.js';
-import { STYLE_PARAMETERS, SHARPEN_SHADER, TONE_SCOPE_SHADER, normalizeVisualSettings, visualStyleShader } from '../ui/visual-effects.js';
+import { STYLE_PARAMETERS, SHARPEN_SHADER, TONE_SCOPE_SHADER, createStyleTransition, normalizeVisualSettings, visualStyleShader } from '../ui/visual-effects.js';
 
 const FULLSCREEN_VERTEX=`
   precision highp float;
@@ -32,6 +32,8 @@ const BLOOM_SHADER=`
 export function createThreeInspectionEffects({THREE,renderer,scene,camera}) {
   let settings=normalizeVisualSettings(), theme='night', resources, destroyed=false;
   const start=performance.now();
+  const transition=createStyleTransition();
+  const styleParams=new Map();
   const size=new THREE.Vector2();
   const toneFunctions=new Map([
     [THREE.LinearToneMapping,'LinearToneMapping'],[THREE.ReinhardToneMapping,'ReinhardToneMapping'],
@@ -74,24 +76,29 @@ export function createThreeInspectionEffects({THREE,renderer,scene,camera}) {
     const passesScene=new THREE.Scene();passesScene.add(quad);
     resources={output,sharpen,bloom,adjustments,presets,capture,scratch,geometry,quad,passesScene,passesCamera:new THREE.Camera()};
   }
-  function stylePass() {
-    if(settings.style==='normal')return null;
+  function stylePass(id) {
     const {presets}=resources;
-    if(!presets.has(settings.style)){
-      const shader=visualStyleShader(settings.style);
-      const values={intensity:1,...Object.fromEntries(STYLE_PARAMETERS[settings.style].map(meta=>[meta.key,meta.default]))};
+    if(!presets.has(id)){
+      const shader=visualStyleShader(id);
+      const values={intensity:0,...Object.fromEntries(STYLE_PARAMETERS[id].map(meta=>[meta.key,meta.default]))};
       if(shader.includes('uniform float time;'))values.time=0;
-      presets.set(settings.style,createPass(shader,values));
+      presets.set(id,createPass(shader,values));
     }
-    return presets.get(settings.style);
+    return presets.get(id);
   }
-  function setSettings(patch) {settings=normalizeVisualSettings(patch,settings);}
+  function setSettings(patch) {
+    settings=normalizeVisualSettings(patch,settings);
+    transition.setStyle(settings.style);
+    styleParams.set(settings.style,settings.styleParams);
+  }
   function setTheme(value) {theme=value==='day'?'day':'night';}
   function render(time=performance.now()) {
-    const needsBloom=settings.bloom&&settings.bloomIntensity>12;
+    const bloomStrength=bloomStrengthFromIntensity(settings.bloomIntensity);
+    const needsBloom=settings.bloom&&bloomStrength>.06;
     const needsSharpen=settings.sharpen&&settings.sharpenIntensity>0;
     const needsTone=settings.scope||settings.exposure!==1||settings.contrast!==1;
-    if(destroyed||renderer.capabilities.isWebGL2===false||(!needsBloom&&!needsSharpen&&!needsTone&&settings.style==='normal')){
+    transition.update();
+    if(destroyed||renderer.capabilities.isWebGL2===false||(!needsBloom&&!needsSharpen&&!needsTone&&!transition.active&&settings.style==='normal')){
       renderer.render(scene,camera);return;
     }
     if(!resources)prepare();
@@ -103,13 +110,15 @@ export function createThreeInspectionEffects({THREE,renderer,scene,camera}) {
     if(capture.width!==width||capture.height!==height)for(const target of [capture,...scratch])target.setSize(width,height);
     const passes=[output];
     output.uniforms.toneMappingExposure.value=renderer.toneMappingExposure;
-    const style=stylePass();
-    if(style){
-      for(const [key,value] of Object.entries(settings.styleParams))style.uniforms[key].value=value;
-      if(style.uniforms.time)style.uniforms.time=(time-start)/1000;
+    for(const [id,intensity] of Object.entries(transition.intensities)){
+      if(intensity<=.001)continue;
+      const style=stylePass(id);
+      style.uniforms.intensity.value=intensity;
+      for(const [key,value] of Object.entries(styleParams.get(id)))style.uniforms[key].value=value;
+      if(style.uniforms.time)style.uniforms.time.value=(time-start)/1000;
       passes.push(style);
     }
-    if(needsBloom){bloom.uniforms.strength.value=bloomStrengthFromIntensity(settings.bloomIntensity);passes.push(bloom);}
+    if(needsBloom){bloom.uniforms.strength.value=bloomStrength;passes.push(bloom);}
     if(needsSharpen){sharpen.uniforms.amount.value=.1+settings.sharpenIntensity*.02;passes.push(sharpen);}
     if(needsTone){
       adjustments.uniforms.exposure.value=settings.exposure;

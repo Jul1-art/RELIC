@@ -1,0 +1,173 @@
+/* Motion from God's Eye View at a33bc379 (MIT).
+   See vendor/gods-eye-view/NOTICE.txt. Selectors bind to RELIC's existing shell. */
+
+/* command-dock-sliding.css: slide-up command trays. */
+.relic-inspection-shell :is(#inspection-location, #inspection-presets) > .dock-popover-content {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(0.55rem) scale(0.985);
+  transform-origin: bottom left;
+  transition:
+    opacity 180ms ease,
+    visibility 0s linear 180ms,
+    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.relic-inspection-shell #inspection-presets > .dock-popover-content {
+  transform-origin: bottom right;
+}
+.relic-inspection-shell :is(#inspection-location, #inspection-presets):not(.collapsed) > .dock-popover-content {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+  margin-bottom: 10px;
+  transition-delay: 0s;
+}
+
+/* command-dock-compact.css: reveal the location row and preset buttons. */
+.relic-inspection-shell .inspection-tray:not(.collapsed) :is(.inspection-location-row, .button-grid) {
+  animation: command-dock-reveal 220ms ease-out both;
+}
+@keyframes command-dock-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(0.2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* foundation.css and controls.css: reveal a parameter panel. */
+.relic-inspection-shell {
+  --transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.relic-inspection-shell .inspection-module-body {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition:
+    opacity var(--transition-smooth),
+    visibility var(--transition-smooth),
+    transform var(--transition-smooth);
+}
+.relic-inspection-shell .inspection-module:not(.collapsed) > .inspection-module-body {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.relic-inspection-shell .inspection-module.collapsed > .inspection-module-body {
+  pointer-events: none;
+}
+/* Keep the outgoing body at its original width until the fade finishes. */
+@media (min-width: 701px) {
+  .relic-inspection-shell .inspection-modules:not(:has(.inspection-module:not(.collapsed))) .inspection-module.collapsed.inspection-collapsing {
+    flex: 0 1 auto;
+    width: 100%;
+  }
+}
+/* An incoming module owns the shared position immediately. */
+.relic-inspection-shell .inspection-modules:has(.inspection-module:not(.collapsed)) .inspection-collapsing > .inspection-module-body {
+  display: none;
+}
+
+/* controls.css: panel control and preset tile transitions. */
+.relic-inspection-shell .inspection-module-toggle svg {
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+.relic-inspection-shell .inspection-module-toggle:not([aria-expanded=true]):hover svg {
+  border-color: var(--glass-border-hover);
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.07);
+}
+.relic-inspection-shell .inspection-preset:active {
+  transform: translateY(0);
+}
+.relic-inspection-shell .inspection-preset .btn-icon {
+  transition:
+    color var(--transition-fast),
+    text-shadow var(--transition-fast);
+}
+.relic-inspection-shell .inspection-preset .btn-label {
+  transition: color var(--transition-fast);
+}
+.relic-inspection-shell .inspection-preset .btn-key {
+  transition: opacity var(--transition-fast);
+}
+.relic-inspection-shell .inspection-setting.pp-toggle-btn {
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    color var(--transition-fast),
+    border-radius var(--transition-fast);
+}
+
+/* command-dock-sliding.css: center dock control feedback, on RELIC's home logo. */
+.relic-inspection-shell .inspection-home {
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+.relic-inspection-shell .inspection-home img {
+  opacity: 0.68;
+  transition:
+    filter var(--transition-fast),
+    opacity var(--transition-fast);
+}
+.relic-inspection-shell .inspection-home:is(:hover, :focus-visible) {
+  border-color: rgba(0, 212, 255, 0.48);
+  box-shadow:
+    0 0 0 0.18rem rgba(0, 212, 255, 0.06),
+    0 0 0.9rem rgba(0, 212, 255, 0.12);
+}
+.relic-inspection-shell .inspection-home:is(:hover, :focus-visible) img {
+  opacity: 1;
+}
+
+html[data-motion=reduced] .relic-inspection-shell *,
+html[data-motion=reduced] .relic-inspection-shell *::before,
+html[data-motion=reduced] .relic-inspection-shell *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:not([data-motion=full]) .relic-inspection-shell *,
+  html:not([data-motion=full]) .relic-inspection-shell *::before,
+  html:not([data-motion=full]) .relic-inspection-shell *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* The globe styles zero all durations in this media query. Honor RELIC's
+     explicit Full motion preference at the original upstream durations. */
+  html[data-motion=full] .relic-inspection-shell :is(#inspection-location, #inspection-presets) > .dock-popover-content {
+    transition-duration: 180ms, 0s, 220ms !important;
+  }
+  html[data-motion=full] .relic-inspection-shell :is(.inspection-location-row, .inspection-preset-grid) {
+    animation-duration: 220ms !important;
+  }
+  html[data-motion=full] .relic-inspection-shell .inspection-module-body {
+    transition-duration: 300ms !important;
+  }
+  html[data-motion=full] .relic-inspection-shell .inspection-preset::before,
+  html[data-motion=full] .relic-inspection-shell :is(
+    .inspection-module-toggle svg,
+    .inspection-preset,
+    .inspection-preset .btn-icon,
+    .inspection-preset .btn-label,
+    .inspection-preset .btn-key,
+    .inspection-setting.pp-toggle-btn,
+    .inspection-home,
+    .inspection-home img
+  ) {
+    transition-duration: 150ms !important;
+  }
+}

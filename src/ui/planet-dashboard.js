@@ -115,7 +115,7 @@ export function initializePlanetDashboard(options = {}) {
     const previous=body;body=next;if(previous!==next)atlasSearch?.dispatchEvent(new Event('dashboard-context-change'));document.body.dataset.dashboardBody=next;root.dataset.dashboardBody=next;select.value=next;
     commandLabel.textContent=atlas&&next==='overview'?text('Choose a world to explore','Choisissez un monde à explorer'):text('Explore your current world','Explorez votre monde');
     panelButton.hidden=next==='overview';
-    if(next==='overview')setPanel(false);else if(!matchMedia('(max-width: 960px)').matches)setPanel(true);
+    if(next==='overview')setPanel(false);else if(previous!==next&&!matchMedia('(max-width: 960px)').matches)setPanel(true);
     if(atlasSearch)atlasSearch.querySelector('input').placeholder=['overview','earth'].includes(next)?text('Search a place or enter coordinates','Rechercher un lieu ou saisir des coordonnées'):text('Enter latitude, longitude','Saisir latitude, longitude');
     render();
   }

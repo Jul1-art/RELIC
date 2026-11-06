@@ -1,7 +1,7 @@
 /** Keep large 3D libraries, mosaics and catalogues off the film's connection. */
 export function createAtlasBootstrap({root=document.documentElement,events=window,
   filmScript=document.querySelector('script[src*="film-bridge.js"]'),
-  load=()=>import('./app.js?v=solar-20'),onError=()=>{
+  load=()=>import('./app.js?v=solar-21'),onError=()=>{
     document.querySelector('#loading').hidden=true;document.querySelector('#error-screen').hidden=false;
   }}={}){
   let pending=null,disposed=false;

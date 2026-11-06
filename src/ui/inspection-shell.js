@@ -1,7 +1,9 @@
 import {getLanguage as defaultLanguage,onLanguageChange as defaultLanguageChange} from '../atlas/atlas-live.js?v=3';
 import {PLANET_SITES} from '../atlas/nasa-worlds.js';
 import {VISUAL_SETTINGS,VISUAL_PRESETS,STYLE_PARAMETERS} from './visual-effects.js';
-import {bindPanelDisclosure,collapsePanelOnEscape} from '../../vendor/gods-eye-view/panelDisclosure.js';
+import {collapsePanelOnEscape} from '../../vendor/gods-eye-view/panelDisclosure.js';
+import {vRangeValue} from '../../vendor/gods-eye-view/ui/rail/rangeValue.js';
+import {bindInspectionMotion,setInspectionPanelExpanded} from './inspection-motion.js';
 
 /* Adapted from God's Eye View (MIT), a33bc37: GlobeActions.vue,
  * CommandDockView.vue and DisplayPanel.vue. Original sources and license are
@@ -26,6 +28,11 @@ const node=(tag,className)=>Object.assign(document.createElement(tag),{className
 const DEFAULTS=Object.fromEntries(Object.entries(VISUAL_SETTINGS).map(([key,value])=>[key,value.default]));
 const CITIES=[['Austin',30.2672,-97.7431],['San Francisco',37.7749,-122.4194],['New York',40.7128,-74.006],['Tokyo',35.6762,139.6503],['London',51.5074,-.1278]];
 const SYMBOLS={normal:'◯',crt:'▦',nvg:'🌙',flir:'🌡️',anime:'✦',noir:'◐'};
+const PERCENT_SETTINGS=new Set(['bloomIntensity','sharpenIntensity','scopeFeather']);
+const AVAILABILITY={
+ en:{loading:'Waiting for the renderer',lighting:'Sunlight is baked into these tiles',labels:'This view has no object labels',moons:'This view has no natural moon layer',orbits:'This view has no moon orbit layer'},
+ fr:{loading:'Chargement du moteur de rendu',lighting:'L’éclairage est intégré à ces tuiles',labels:'Cette vue n’affiche aucun nom d’objet',moons:'Cette vue n’affiche aucune couche de lunes',orbits:'Cette vue n’affiche aucune couche d’orbites lunaires'},
+};
 
 export function inspectionActive({body,film=false}={}){return Boolean(body&&body!=='overview'&&body!=='sun'&&!film);}
 
@@ -35,7 +42,7 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  if(!dashboard)return null;
  command ||= document.querySelector('.pd-command');inspector ||= dashboard.querySelector('.pd-inspector');
  if(!command||!inspector)return null;
- if(!document.querySelector('link[href*="inspection-shell.css"]')){const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('./inspection-shell.css?v=20',import.meta.url).href;document.head.append(link);}
+ if(!document.querySelector('link[href*="inspection-shell.css"]')){const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('./inspection-shell.css?v=21',import.meta.url).href;document.head.append(link);}
  const languageButton=document.querySelector('[data-language-toggle]');
  const originalLanguageClass=languageButton?.classList.contains('header-language');
  const markers=new Map();
@@ -81,7 +88,7 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  for(const icon of [localeGlobe,localeCaret])icon.setAttribute('aria-hidden','true');
  const feedback=node('div','inspection-feedback');feedback.setAttribute('role','status');feedback.setAttribute('aria-live','polite');feedback.hidden=true;
  root.append(top,modules,dock,locale,feedback);document.body.append(root);
- let dashboardBody=dashboard.dataset.dashboardBody;
+ let dashboardBody=dashboard.dataset.dashboardBody,publishedBody;
  let state={body:dashboardBody,settings:{...DEFAULTS,style:'normal'},capabilities:{}};
  let active=false,disposed=false,focusFrame=0,feedbackTimer=0;
  const panelOpeners=new Map();
@@ -90,9 +97,13 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  const narrow=matchMedia('(max-width:1180px)');
  const panels={location,presets,display,data};
  for(const [key,panel] of Object.entries(panels)){
-  panel.toggle.addEventListener('click',()=>show(openPanels.has(key)?'':key,panel.toggle,key));
+  const tray=key==='location'||key==='presets';
+  disclosures.push(bindInspectionMotion({panel,isActive:()=>active&&!disposed,
+   onToggle:(collapsed,options)=>collapsed?close(key,options?.explicit):show(key,panel.toggle,{focus:!tray}),
+   onEscape:event=>collapsePanelOnEscape(event,{panel:panel.element,onChange:()=>close(key),returnFocusTo:()=>panel.toggle}),
+   focusTarget:()=>key==='location'?command.querySelector('input'):presetButtons.get(state.settings.style),
+  }));
   panel.close.addEventListener('click',()=>close(key,true));
-  disclosures.push(bindPanelDisclosure({panel:panel.element,onEscape:event=>collapsePanelOnEscape(event,{panel:panel.element,onChange:()=>close(key),returnFocusTo:()=>panel.toggle})}));
   panel.pin?.addEventListener('click',()=>{if(pinned.has(key))pinned.delete(key);else pinned.add(key);panel.pin.setAttribute('aria-pressed',String(pinned.has(key)));panel.element.classList.toggle('dock-pinned',pinned.has(key));});
  }
  const listen=(target,type,handler,options)=>{target.addEventListener(type,handler,options);removers.push(()=>target.removeEventListener(type,handler,options));};
@@ -171,13 +182,24 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
   header.append(title,pin,close);body.append(header);element.append(toggle,body);return {element,toggle,body,close,pin};
  }
  function makeSetting(key,descriptor,host){
-  const row=node('label',`inspection-setting ${descriptor.type==='range'?'inspection-range pp-slider-row visible':'inspection-switch pp-toggle-btn'}`);row.dataset.setting=key;
-  const label=node('span','inspection-setting-label');const input=document.createElement('input');input.type=descriptor.type==='range'?'range':'checkbox';input.id=`inspection-setting-${key}`;
-  const output=node('output','inspection-setting-value');output.htmlFor=input.id;
-  if(input.type==='range'){input.min=descriptor.min;input.max=descriptor.max;input.step=descriptor.step||1;input.value=descriptor.default;row.append(label,output,input);}
-  else{input.checked=Boolean(descriptor.default);row.append(label,input);}
-  input.addEventListener(input.type==='range'?'input':'change',()=>{const value=input.type==='checkbox'?input.checked:Number(input.value);state.settings[key]=value;if(key.startsWith('style:')){const param=key.slice(6);state.settings.styleParams={...(state.settings.styleParams||{}),[param]:value};emit('styleParams',state.settings.styleParams);}else emit(key,value);syncSettings();});
-  host.append(row);return {row,label,input,output,descriptor};
+  const range=descriptor.type==='range';
+  const row=node('label',`inspection-setting ${range?'inspection-range pp-slider-row visible':'inspection-switch pp-toggle-btn'}`);row.dataset.setting=key;
+  const label=node('span',`inspection-setting-label ${range?'pp-slider-mini-label':'pp-label'}`);
+  const input=document.createElement('input');input.type=range?'range':'checkbox';input.id=`inspection-setting-${key}`;
+  const output=node('output','inspection-setting-value pp-slider-value');output.htmlFor=input.id;output.setAttribute('aria-live','off');
+  const reason=node('small','inspection-setting-reason');reason.id=`${input.id}-reason`;reason.hidden=true;
+  if(range){
+   input.className='gev-quantitative-slider pp-slider';
+   input.min=descriptor.min;input.max=descriptor.max;input.step=descriptor.step||1;input.value=descriptor.default;
+   row.append(label,output,input);
+  }else{input.checked=Boolean(descriptor.default);row.append(label,input);}
+  row.append(reason);
+  input.addEventListener(range?'input':'change',()=>{
+   const value=range?input.valueAsNumber:input.checked;
+   if(key.startsWith('style:'))emit('styleParams',{[key.slice(6)]:value});
+   else emit(key,value);
+  });
+  host.append(row);return {row,label,input,output,reason,descriptor};
  }
  function restore(){
   for(const [item,marker] of markers)if(marker.parentNode)marker.after(item);
@@ -211,18 +233,17 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
    if(narrow.matches){close('location');close('presets');}
    openPanel('data');
   }else if(dashboard.dataset.panelOpen!=='true')close('data');
-  root.dataset.world=state.body;organizeData();syncCamera();
+  root.dataset.world=state.body;organizeData();syncCamera();syncSettings();
  }
  function update(next){
+  publishedBody=next.body;
   const previousBody=state.body;state={...state,...next,settings:{...state.settings,...next.settings},capabilities:next.capabilities||state.capabilities};
   if(previousBody!==state.body){selectDataTab('overview');renderDestinations();}
-  refresh();syncSettings();
+  refresh();
  }
- function openPanel(key){const panel=panels[key];if(!panel||openPanels.has(key))return;openPanels.add(key);panel.element.classList.remove('collapsed');panel.body.hidden=false;panel.body.inert=false;panel.toggle.setAttribute('aria-expanded','true');}
- function show(name,opener,closingKey){
-  if(!active)return;
-  if(!name){close(closingKey||[...openPanels].at(-1),true);return;}
-  if(!panels[name])return;
+ function openPanel(key){const panel=panels[key];if(!panel||openPanels.has(key))return;openPanels.add(key);setInspectionPanelExpanded(panel,true);}
+ function show(name,opener,{focus=true}={}){
+  if(!active||!panels[name])return;
   if(opener)panelOpeners.set(name,opener);
   // The trays share one popover position, including when one is pinned.
   if(name==='location'||name==='presets')for(const key of ['location','presets'])if(key!==name)close(key);
@@ -232,6 +253,7 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
   if(name==='data')events.dispatchEvent(new CustomEvent('planet-dashboard-panel',{detail:{open:true}}));
   if(name==='location'){command.hidden=false;command.inert=false;}
   cancelAnimationFrame(focusFrame);
+  if(!focus)return;
   focusFrame=requestAnimationFrame(()=>{
    if(!active||!openPanels.has(name))return;
    const target=name==='location'?command.querySelector('input'):name==='data'?tabButtons.get(dataTab):name==='presets'?presetButtons.get(state.settings.style):panels[name].body.querySelector('input:not(:disabled)');
@@ -240,7 +262,7 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  }
  function close(key,returnFocus=false){
   if(!key){for(const opened of [...openPanels])close(opened);return;}
-  if(!panels[key]||!openPanels.has(key))return;cancelAnimationFrame(focusFrame);const panel=panels[key];openPanels.delete(key);panel.element.classList.add('collapsed');panel.body.hidden=true;panel.body.inert=true;panel.toggle.setAttribute('aria-expanded','false');
+  if(!panels[key]||!openPanels.has(key))return;cancelAnimationFrame(focusFrame);const panel=panels[key];openPanels.delete(key);setInspectionPanelExpanded(panel,false);
   if(key==='data'&&dashboard.dataset.panelOpen==='true')events.dispatchEvent(new CustomEvent('planet-dashboard-panel',{detail:{open:false}}));
   const opener=panelOpeners.get(key);panelOpeners.delete(key);
   if(returnFocus&&active)(opener?.isConnected&&opener.getClientRects().length?opener:panel.toggle).focus({preventScroll:true});
@@ -262,22 +284,40 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
   for(const [key,control] of actions)control.disabled=state.capabilities[key]===false;
  }
  function syncSettings(){
-  const style=state.settings.style||'normal',words=copy();
-  for(const [id,button] of presetButtons){const selected=id===style;button.classList.toggle('active',selected);button.setAttribute('aria-pressed',String(selected));}
+  const style=state.settings.style||'normal',language=getLanguage()==='fr'?'fr':'en';
+  const ready=publishedBody===state.body;
+  for(const [id,button] of presetButtons){const selected=id===style;button.disabled=!ready;button.classList.toggle('active',selected);button.setAttribute('aria-pressed',String(selected));}
   for(const [key,control] of controls){
-   const {input,label,output,descriptor,row}=control,value=state.settings[key]??descriptor.default;
-   const supported=state.capabilities[key]!==false;input.disabled=!supported;row.dataset.available=String(supported);row.title=supported?'':words.unsupported;
    const toggle={bloomIntensity:'bloom',sharpenIntensity:'sharpen',scopeFeather:'scope'}[key];
-   row.hidden=Boolean(toggle&&!state.settings[toggle]);
-   label.textContent=(getLanguage()==='fr'?descriptor.fr:descriptor.label)||key;input.setAttribute('aria-label',label.textContent);
-   if(input.type==='checkbox'){input.checked=Boolean(value);row.classList.toggle('active',input.checked&&supported);}else{input.value=value;output.value=String(Number(value).toFixed(input.step==='0.05'?2:0));output.textContent=output.value;}
+   control.row.hidden=Boolean(toggle&&!state.settings[toggle]);
+   syncSetting(key,control,state.settings[key],ready&&(state.capabilities[key]!==false));
   }
   if(styleGroup.element.dataset.style!==style){
    styleGroup.element.dataset.style=style;styleGroup.body.replaceChildren();styleControls.clear();
    for(const descriptor of STYLE_PARAMETERS[style]||[])styleControls.set(descriptor.key,makeSetting('style:'+descriptor.key,{...descriptor,type:'range'},styleGroup.body));
   }
   styleGroup.element.hidden=!styleControls.size;
-  for(const [key,control] of styleControls){control.label.textContent=(getLanguage()==='fr'?control.descriptor.fr:control.descriptor.label)||key;control.input.setAttribute('aria-label',control.label.textContent);control.input.value=state.settings.styleParams?.[key]??control.descriptor.default;control.output.value=String(Number(control.input.value).toFixed(2));control.output.textContent=control.output.value;}
+  for(const [key,control] of styleControls)syncSetting(key,control,state.settings.styleParams?.[key],ready);
+
+  function syncSetting(key,{input,label,output,reason,descriptor,row},value=descriptor.default,supported){
+   input.disabled=!supported;row.dataset.available=String(supported);
+   reason.hidden=supported;
+   if(supported){input.removeAttribute('aria-describedby');}
+   else{
+    reason.textContent=AVAILABILITY[language][ready?key:'loading']||copy().unsupported;
+    input.setAttribute('aria-describedby',reason.id);
+   }
+   label.textContent=(language==='fr'?descriptor.fr:descriptor.label)||key;
+   input.setAttribute('aria-label',label.textContent);
+   if(input.type==='checkbox'){
+    input.checked=Boolean(value);row.classList.toggle('active',input.checked&&supported);
+   }else{
+    vRangeValue.updated(input,{value});
+    const digits=(input.step.split('.')[1]||'').length;
+    const number=input.valueAsNumber.toLocaleString(language,{minimumFractionDigits:digits,maximumFractionDigits:digits,useGrouping:false});
+    output.value=PERCENT_SETTINGS.has(key)?`${number}%`:number;
+   }
+  }
  }
  function selectDataTab(key){
   dataTab=key;dataContent.dataset.tab=key;dataContent.setAttribute('aria-labelledby',`inspection-tab-${key}`);

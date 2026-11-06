@@ -7,3 +7,5 @@ html body.atlas-page .planet-dashboard #planet-labels .planet-label:focus-visibl
 @media(max-width:650px){html body.atlas-page .planet-dashboard #planet-labels .planet-label{font-size:11px}}
 html[data-motion=reduced] body.atlas-page .planet-dashboard #planet-labels .planet-label{transition:none}
 @media(prefers-reduced-motion:reduce){html:not([data-motion=full]) body.atlas-page .planet-dashboard #planet-labels .planet-label{transition:none}}
+
+html body.atlas-page .planet-dashboard #planet-labels[hidden]{display:none!important}
