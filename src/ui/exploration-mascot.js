@@ -13,11 +13,11 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
   styles.rel='stylesheet';
   styles.href=new URL('./exploration-mascot.css',import.meta.url).href;
   const systemMotion=matchMedia('(prefers-reduced-motion: reduce)');
-  let styled=false,suspended=false,paused=false,timer,flight,position=0,request=0,disposed=false;
+  let styled=false,suspended=false,paused=false,timer,frame=0,position=0,request=0,disposed=false;
 
   function motionAllowed() {
     const preference=document.documentElement.dataset.motion;
-    return Boolean(button.animate)&&preference!=='reduced'&&(preference==='full'||!systemMotion.matches);
+    return preference!=='reduced'&&(preference==='full'||!systemMotion.matches);
   }
   function canWalk() {
     return !button.hidden&&!paused&&motionAllowed();
@@ -28,18 +28,13 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
   }
   function place(x) {
     position=x;
-    button.style.transform=`translateX(${x}px)`;
+    button.style.translate=`${x}px 0`;
   }
   function stopWalking() {
     request++;
     clearTimeout(timer);
-    if(!flight)return;
-    // Preserve the point already reached when a movement is interrupted.
-    const transform=getComputedStyle(button).transform;
-    if(transform!=='none')place(new DOMMatrixReadOnly(transform).m41);
-    const cancelled=flight;
-    flight=null;
-    cancelled.cancel();
+    cancelAnimationFrame(frame);
+    frame=0;
   }
   function rest() {
     sprite.setPose('front','resting');
@@ -56,24 +51,31 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
     const destination=position<end/2?end:0;
     const right=destination>position;
     const step=request;
-    const ready=await sprite.setPose(right?'front_right':'front_left','walking');
+    const ready=await sprite.prepareWalk(right);
     if(step!==request||!canWalk())return;
     if(!ready||getComputedStyle(button).visibility==='hidden'){
       rest();
       return;
     }
-    const moving=button.animate(
-      [{transform:`translateX(${position}px)`},{transform:`translateX(${destination}px)`}],
-      {duration:Math.max(450,Math.abs(destination-position)*19),easing:'linear'},
-    );
-    flight=moving;
-    moving.finished.then(()=>{
-      if(flight!==moving)return;
-      flight=null;
-      place(destination);
-      sprite.setPose(right?'right_profile':'left_profile','idle');
-      schedule(rest,3800);
-    },()=>{});
+    const origin=position;
+    const stride=sprite.element.offsetHeight*.42;
+    const cycles=Math.max(1,Math.round(Math.abs(destination-origin)/stride));
+    const duration=cycles*560;
+    let start;
+    function advance(time) {
+      start ??= time;
+      const progress=Math.min(1,(time-start)/duration);
+      place(origin+(destination-origin)*progress);
+      if(progress<1){
+        sprite.drawWalk(progress*cycles);
+        frame=requestAnimationFrame(advance);
+      }else{
+        frame=0;
+        sprite.setPose(right?'right_profile':'left_profile','idle');
+        schedule(rest,3800);
+      }
+    }
+    frame=requestAnimationFrame(advance);
   }
   function refresh() {
     if(disposed)return;

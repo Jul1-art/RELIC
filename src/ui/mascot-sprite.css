@@ -1,7 +1,6 @@
 .relic-mascot-sprite {
   position: relative;
   display: block;
-  width: auto;
   height: var(--mascot-height, 86px);
   aspect-ratio: 320 / 500;
   isolation: isolate;
@@ -26,22 +25,25 @@
   transform-origin: 50% 96%;
 }
 
-.mascot-sprite-layer {
+.mascot-sprite-still {
   position: absolute;
   top: 0;
   left: 50%;
   height: 100%;
-  aspect-ratio: var(--mascot-source-ratio);
-  background: var(--mascot-source) center / contain no-repeat;
-  image-rendering: pixelated;
   translate: -50% 0;
+  background: center / contain no-repeat;
+  image-rendering: pixelated;
 }
 
-.relic-mascot-sprite:not([data-state="walking"]) .mascot-sprite-layer:not(.mascot-sprite-still),
-.relic-mascot-sprite[data-state="walking"] .mascot-sprite-still,
-.relic-mascot-sprite[data-profile="true"] :is(.mascot-sprite-left-arm, .mascot-sprite-right-arm) {
+.mascot-sprite-walk {
+  width: 100%;
+  height: 100%;
   display: none;
+  image-rendering: pixelated;
 }
+
+.relic-mascot-sprite[data-state="walking"] .mascot-sprite-still { display: none; }
+.relic-mascot-sprite[data-state="walking"] .mascot-sprite-walk { display: block; }
 
 .relic-mascot-sprite[data-state="idle"] .mascot-sprite-figure {
   animation: relic-mascot-breathe 3.4s ease-in-out infinite;
@@ -52,54 +54,9 @@
   filter: brightness(.88);
 }
 
-.relic-mascot-sprite[data-state="walking"] {
-  --mascot-step-time: .64s;
-  --mascot-stride: 8deg;
-}
-
-.relic-mascot-sprite[data-state="walking"] .mascot-sprite-figure {
-  animation: relic-mascot-step-body calc(var(--mascot-step-time) / 2) ease-in-out infinite;
-}
-
-.relic-mascot-sprite[data-state="walking"] :is(.mascot-sprite-far-leg, .mascot-sprite-near-leg) {
-  animation: relic-mascot-stride var(--mascot-step-time) ease-in-out infinite;
-}
-
-.relic-mascot-sprite[data-state="walking"] :is(.mascot-sprite-left-arm, .mascot-sprite-right-arm) {
-  animation: relic-mascot-swing var(--mascot-step-time) ease-in-out infinite;
-}
-
-.relic-mascot-sprite[data-state="walking"] :is(.mascot-sprite-far-leg, .mascot-sprite-right-arm) {
-  animation-delay: calc(var(--mascot-step-time) / -2);
-}
-
-.relic-mascot-sprite[data-profile="true"] {
-  --mascot-stride: 15deg;
-}
-
-.relic-mascot-sprite[data-profile="true"] .mascot-sprite-far-leg {
-  filter: brightness(.68);
-}
-
 @keyframes relic-mascot-breathe {
   0%, 100% { transform: scaleY(1); }
   50% { transform: scaleY(.983); }
-}
-
-@keyframes relic-mascot-step-body {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-2.5%); }
-}
-
-@keyframes relic-mascot-stride {
-  0%, 100% { transform: rotate(calc(-1 * var(--mascot-stride))); }
-  33% { transform: rotate(var(--mascot-stride)) translateY(-2%); }
-  66% { transform: rotate(var(--mascot-stride)); }
-}
-
-@keyframes relic-mascot-swing {
-  0%, 100% { transform: rotate(9deg); }
-  50% { transform: rotate(-9deg); }
 }
 
 html[data-motion="reduced"] .relic-mascot-sprite * {
