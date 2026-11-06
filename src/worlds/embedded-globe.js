@@ -20,7 +20,8 @@ if(!['earth','moon','mars'].includes(body))throw new Error('Unsupported globe');
 const ellipsoid=body==='earth'?Cesium.Ellipsoid.WGS84:body==='moon'?Cesium.Ellipsoid.MOON:new Cesium.Ellipsoid(3396000,3396000,3396000);
 Cesium.Ellipsoid.default=ellipsoid;
 const radius=ellipsoid.maximumRadius,DEG=Math.PI/180;
-const credits=document.querySelector('#credits'),sourceCredit=document.querySelector('#source-credit');
+const credits=document.querySelector('#credits');
+let sourceCredit;
 let viewer,tileset,buildings,celestial,effects,disposed=false,ready=false,paused=false,focus={id:body},sourceMode='imagery',sourceLabel='',ionStatus='loading';
 let lastState=0,lastFrame=null,globalGrid=null,geography={lat:18,lon:0},lastHeading=0;
 let cameraMotion,lastCameraAction=null,arrivalPlayed=false;
@@ -34,8 +35,8 @@ const compact=matchMedia('(pointer:coarse)').matches||innerWidth<760;
 function requestRender(){if(viewer&&!viewer.isDestroyed())viewer.scene.requestRender();}
 function updateCredits(){
   const source=sourceMode==='nasa-global-dem'?globalGrid?.sourceUrl:sourceMode==='ion-photorealistic'?'https://cesium.com/learn/cesiumjs-learn/cesiumjs-photorealistic-3d-tiles/':body==='earth'?'https://cesium.com/learn/cesiumjs-learn/cesiumjs-terrain/':body==='moon'?'https://cesium.com/platform/cesium-ion/content/cesium-moon/':'https://cesium.com/platform/cesium-ion/content/cesium-mars/';
-  sourceCredit.replaceChildren();
-  const link=document.createElement('a');link.href=source;link.target='_blank';link.rel='noopener noreferrer';link.textContent=sourceLabel;sourceCredit.append(link);
+  if(sourceCredit)viewer.creditDisplay.removeStaticCredit(sourceCredit);
+  const link=document.createElement('a');link.href=source;link.target='_blank';link.rel='noopener noreferrer';link.textContent=sourceLabel;sourceCredit=new Cesium.Credit(link.outerHTML,false);viewer.creditDisplay.addStaticCredit(sourceCredit);
   requestAnimationFrame(()=>{if(disposed)return;document.documentElement.style.setProperty('--credit-height',`${Math.ceil(credits.getBoundingClientRect().height)}px`);if(viewer&&!viewer.isDestroyed())viewer.resize();requestRender();});
 }
 const creditObserver=new ResizeObserver(()=>{if(disposed)return;document.documentElement.style.setProperty('--credit-height',`${Math.ceil(credits.getBoundingClientRect().height)}px`);if(viewer&&!viewer.isDestroyed())viewer.resize();requestRender();state(true);});creditObserver.observe(credits);

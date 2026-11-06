@@ -9,3 +9,5 @@ html[data-motion=reduced] body.atlas-page .planet-dashboard #planet-labels .plan
 @media(prefers-reduced-motion:reduce){html:not([data-motion=full]) body.atlas-page .planet-dashboard #planet-labels .planet-label{transition:none}}
 
 html body.atlas-page .planet-dashboard #planet-labels[hidden]{display:none!important}
+
+html body.atlas-page #imagery-credit[data-source-detail]{display:none!important}

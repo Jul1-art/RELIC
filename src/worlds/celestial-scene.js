@@ -71,7 +71,7 @@ export function createCelestialScene({Cesium,viewer,onSelect=()=>{}}){
   const C=Cesium,scene=viewer.scene,records=new Map();
   const points=scene.primitives.add(new C.PointPrimitiveCollection());points.relicCelestial=true;
   const labels=scene.primitives.add(new C.LabelCollection());labels.relicCelestial=true;
-  const credit=new C.Credit('Celestial imagery · NASA · <a href="https://www.solarsystemscope.com/textures/" target="_blank" rel="noopener noreferrer">Solar System Scope / INOVE · CC BY 4.0</a>',true);
+  const credit=new C.Credit('Celestial imagery · NASA · <a href="https://www.solarsystemscope.com/textures/" target="_blank" rel="noopener noreferrer">Solar System Scope / INOVE · CC BY 4.0</a>',false);
   const originalFar=viewer.camera.frustum.far,originalLogDepth=scene.logarithmicDepthBuffer;
   const position=new C.Cartesian3(),towardCamera=new C.Cartesian3(),screenPoint=new C.Cartesian2();
   let disposed=false,hasCredit=false,lastFar=originalFar;

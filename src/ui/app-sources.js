@@ -68,6 +68,13 @@ function createDialog(trigger) {
 export async function openSources(trigger) {
   if (activeDialog?.open) { activeDialog.querySelector('.relic-sources-close').focus({preventScroll:true}); return; }
   const {dialog,content,signal} = createDialog(trigger);
+  const currentImagery=document.querySelector('[data-source-detail]:not([hidden])');
+  if(currentImagery?.textContent.trim()){
+    heading(content,french()?'Imagerie de la vue':'Current view imagery');
+    const credit=document.createElement('p');
+    credit.append(...[...currentImagery.childNodes].map(node=>node.cloneNode(true)));
+    content.append(credit);
+  }
   paragraph(content, french() ? 'Explorer ce que nous avons laissé derrière nous.' : 'Explore what we left behind.', 'relic-sources-lead');
   const people = document.createElement('div'); people.className = 'relic-sources-people'; content.append(people);
   for (const [name, role] of [['Jules',french() ? 'Développement et interface' : 'Development and interface'],['Hugo',french() ? 'Recherche spatiale et récits' : 'Space research and storytelling']]) {

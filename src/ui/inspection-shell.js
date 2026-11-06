@@ -1,4 +1,4 @@
-import {getLanguage as defaultLanguage,onLanguageChange as defaultLanguageChange} from '../atlas/atlas-live.js?v=3';
+import {getLanguage as defaultLanguage,setLanguage,onLanguageChange as defaultLanguageChange} from '../atlas/atlas-live.js?v=3';
 import {PLANET_SITES} from '../atlas/nasa-worlds.js';
 import {VISUAL_SETTINGS,VISUAL_PRESETS,STYLE_PARAMETERS} from './visual-effects.js';
 import {collapsePanelOnEscape} from '../../vendor/gods-eye-view/panelDisclosure.js';
@@ -13,17 +13,17 @@ const COPY={
  fr:{actions:'Actions de la vue planétaire',share:'Copier le lien de la vue',tilt:'Basculer entre vue verticale et oblique',north:'Nord en haut',reset:'Recentrer ce monde',home:'Revenir au système solaire',location:'Localisation',presets:'Préréglages visuels',display:'Affichage',data:'Données du monde',close:'Fermer',pin:'Garder ce panneau ouvert',overview:'Vue générale',moons:'Lunes et orbites',missions:'Sites et missions',scene:'Scène',image:'Image',style:'Paramètres du style',labels:'Noms des objets',orbits:'Orbites des lunes',moonsSetting:'Lunes naturelles',noMoons:'Le catalogue des lunes est disponible dans la vue du système solaire.',noSites:'Aucun catalogue de sites d’atterrissage n’est encore disponible pour ce monde.',coordinates:'Explorez la latitude et la longitude de ce monde.',siteHelp:'Choisissez une destination ou utilisez la recherche.',planetData:'Dimensions mesurées, position et sites d’exploration.',unsupported:'Indisponible dans cette vue',shareHint:'Copiez le lien de cette vue',copy:'Copier',copied:'Lien de la vue copié',language:'Changer la langue',styleSimulated:'Simulation du rendu des capteurs.'},
 };
 const GLYPHS={
- share:'<path d="m10 13 4-4m-6 6-1 1a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0m2 2 1-1a4 4 0 0 1 6 6l-4 4a4 4 0 0 1-6 0"/>',
- tilt:'<path d="m12 3 8 5v8l-8 5-8-5V8Zm0 0v9m-8-4 8 4 8-4m-8 4v9"/>',
+ share:'<svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24" aria-hidden="true"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>',
+ tilt:'<svg viewBox="0 0 48 48" fill="none" width="48" height="48" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17V12H17 M31 12H36V17 M12 31V36H17 M31 36H36V31" stroke-width="3"/><path d="M24 16L32 20.5V29.5L24 34L16 29.5V20.5Z M24 16V34 M24 25L32 20.5 M24 25L16 20.5" stroke-width="2.5"/></svg>',
  north:'<path d="m12 3 7 17-7-4-7 4Z"/>',
- reset:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c5 5 5 13 0 18-5-5-5-13 0-18Z"/>',
+ reset:'<svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>',
  location:'<path d="M19 10c0 6-7 11-7 11S5 16 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/>',
  presets:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="m4 14 6-5 10 8M4 8l4-3 12 9"/>',
  close:'<path d="m7 7 10 10M7 17 17 7"/>',
  pin:'<path d="m9 3 6 0-1 6 3 4H7l3-4Zm3 10v8"/>',
  chevron:'<path d="m9 5 7 7-7 7"/>',
 };
-const glyph=type=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${GLYPHS[type]||''}</svg>`;
+const glyph=type=>GLYPHS[type]?.startsWith('<svg')?GLYPHS[type]:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${GLYPHS[type]||''}</svg>`;
 const node=(tag,className)=>Object.assign(document.createElement(tag),{className});
 const DEFAULTS=Object.fromEntries(Object.entries(VISUAL_SETTINGS).map(([key,value])=>[key,value.default]));
 const CITIES=[['Austin',30.2672,-97.7431],['San Francisco',37.7749,-122.4194],['New York',40.7128,-74.006],['Tokyo',35.6762,139.6503],['London',51.5074,-.1278]];
@@ -42,11 +42,9 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  if(!dashboard)return null;
  command ||= document.querySelector('.pd-command');inspector ||= dashboard.querySelector('.pd-inspector');
  if(!command||!inspector)return null;
- if(!document.querySelector('link[href*="inspection-shell.css"]')){const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('./inspection-shell.css?v=22',import.meta.url).href;document.head.append(link);}
- const languageButton=document.querySelector('[data-language-toggle]');
- const originalLanguageClass=languageButton?.classList.contains('header-language');
+ if(!document.querySelector('link[href*="inspection-shell.css"]')){const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('./inspection-shell.css?v=23',import.meta.url).href;document.head.append(link);}
  const markers=new Map();
- for(const item of [command,inspector,languageButton].filter(Boolean)){const marker=document.createComment('RELIC inspection return slot');item.before(marker);markers.set(item,marker);}
+ for(const item of [command,inspector].filter(Boolean)){const marker=document.createComment('RELIC inspection return slot');item.before(marker);markers.set(item,marker);}
  const root=node('div','relic-inspection-shell');root.id='relic-inspection-shell';root.hidden=true;root.inert=true;
  const top=node('nav','inspection-top-actions');top.id='inspection-top-actions';
  const actions=new Map();
@@ -96,11 +94,19 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
   const button=node('button','style-btn inspection-preset');button.type='button';button.dataset.style=preset.id;button.innerHTML=`<span class="btn-icon" aria-hidden="true">${SYMBOLS[preset.id]||'◯'}</span><span class="btn-label"></span><kbd class="btn-key">${index+1}</kbd>`;button.querySelector('.btn-label').textContent=preset.label;button.addEventListener('click',()=>emit('preset',preset.id));presetGrid.append(button);presetButtons.set(preset.id,button);
  }
  const treatmentNote=node('p','inspection-treatment-note');presets.body.append(presetGrid,treatmentNote);
- const locale=node('div','locale-picker inspection-locale');
- const localeGlobe=node('i','locale-picker-globe');localeGlobe.innerHTML=glyph('reset');
+ const locale=node('details','locale-picker inspection-locale');
+ const localeToggle=node('summary','locale-picker-button');
  const localeCode=node('span','locale-picker-code');
- const localeCaret=node('i','locale-picker-caret');localeCaret.innerHTML=glyph('chevron');
- for(const icon of [localeGlobe,localeCaret])icon.setAttribute('aria-hidden','true');
+ const caret=node('span','inspection-language-caret');caret.textContent='▾';caret.setAttribute('aria-hidden','true');
+ localeToggle.append(localeCode,caret);
+ const localeOptions=node('div','inspection-language-options');
+ for(const [code,name] of [['en','English'],['fr','Français']]){
+  const option=node('button','inspection-language-option');option.type='button';option.textContent=name;
+  option.lang=code;option.dataset.language=code;
+  option.addEventListener('click',()=>{setLanguage(code);locale.open=false;localeToggle.focus();});
+  localeOptions.append(option);
+ }
+ locale.append(localeToggle,localeOptions);
  const feedback=node('div','inspection-feedback');feedback.setAttribute('role','status');feedback.setAttribute('aria-live','polite');feedback.hidden=true;
  root.append(top,modules,dock,locale,feedback);document.body.append(root);
  let dashboardBody=dashboard.dataset.dashboardBody,publishedBody;
@@ -142,12 +148,15 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  listen(events,'planet-dashboard-location',()=>{if(active&&!pinned.has('location'))close('location');});
  listen(events,'relic-place-selected',()=>{if(active&&!pinned.has('location'))close('location');});
  listen(document,'pointerdown',event=>{
-  if(!active||root.contains(event.target))return;
+  if(!active)return;
+  if(!locale.contains(event.target))locale.open=false;
+  if(root.contains(event.target))return;
   for(const key of ['location','presets'])if(openPanels.has(key)&&!pinned.has(key))close(key);
  });
  listen(document,'keydown',event=>{
   if(!active||document.querySelector('dialog[open]')||event.defaultPrevented)return;
   if(event.key==='Escape'){
+   if(locale.open){event.preventDefault();locale.open=false;localeToggle.focus();return;}
    const key=[...openPanels].reverse().find(key=>!pinned.has(key));if(key){event.preventDefault();event.stopPropagation();close(key,true);}return;
   }
   if(event.ctrlKey||event.metaKey||event.altKey||event.target.closest?.('input,textarea,select,[contenteditable=true]'))return;
@@ -224,11 +233,7 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  }
  function restore(){
   for(const [item,marker] of markers)if(marker.parentNode)marker.after(item);
-  if(languageButton){
-   languageButton.classList.remove('locale-picker-button');
-   languageButton.classList.toggle('header-language',originalLanguageClass);
-   for(const item of [localeGlobe,localeCode,localeCaret])item.remove();
-  }
+  locale.open=false;
  }
  function refresh(){
   if(disposed)return;
@@ -236,11 +241,6 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
   if(next!==active){active=next;root.hidden=!active;root.inert=!active;document.body.classList.toggle('has-inspection-shell',active);
    if(active){
     locationSearch.append(command);dataContent.prepend(inspector);
-    if(languageButton){
-     languageButton.classList.remove('header-language');
-     languageButton.classList.add('locale-picker-button');
-     languageButton.append(localeGlobe,localeCode,localeCaret);locale.append(languageButton);
-    }
     if(compact.matches&&dashboard.dataset.panelOpen==='true'){
      events.dispatchEvent(new CustomEvent('planet-dashboard-panel',{detail:{open:false}}));
     }
@@ -294,7 +294,10 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
   for(const [key,action] of actions){action.setAttribute('aria-label',words[key]);action.title=words[key];}
   syncCamera();
   for(const element of root.querySelectorAll('[data-inspection-copy]')){const text=words[element.dataset.inspectionCopy];element.setAttribute('aria-label',text);element.title=text;if(element.matches('h2,h3'))element.textContent=text;else if(element.matches('.inspection-module-toggle'))element.querySelector('.inspection-module-label').textContent=text;else if(element.matches('.inspection-tray-toggle'))element.querySelector('.inspection-tray-label').textContent=text;}
-  if(languageButton)localeCode.textContent=getLanguage().toUpperCase();
+  const language=getLanguage();
+  localeCode.textContent=language.toUpperCase();
+  localeToggle.setAttribute('aria-label',language==='fr'?'Langue · Français':'Language · English');
+  for(const option of localeOptions.children)option.setAttribute('aria-pressed',String(option.dataset.language===language));
   for(const [key,button] of tabButtons){button.textContent=words[key];button.setAttribute('aria-selected',String(dataTab===key));button.tabIndex=dataTab===key?0:-1;}
   treatmentNote.textContent=words.styleSimulated;
   moonFallback.replaceChildren();const p=node('p','');p.textContent=words.noMoons;const go=button('home','inspection-text-button');go.textContent=words.home;go.addEventListener('click',()=>emit('home'));moonFallback.append(p,go);

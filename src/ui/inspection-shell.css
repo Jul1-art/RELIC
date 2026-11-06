@@ -764,3 +764,11 @@ html[data-theme=day] body.has-inspection-shell #relic-action-rail .rail-button:i
   .inspection-preset .btn-icon { font-size: 1.15rem; }
   .inspection-preset .btn-label { padding-top: 10px; font-size: .56rem; }
 }
+
+.relic-inspection-shell .inspection-locale {pointer-events:auto}
+.relic-inspection-shell .inspection-locale summary {list-style:none}
+.relic-inspection-shell .inspection-locale summary::-webkit-details-marker {display:none}
+.inspection-language-options {position:absolute;right:0;bottom:calc(100% + 8px);display:grid;gap:4px;min-width:128px;padding:5px;border:1px solid var(--inspection-border-hover);border-radius:10px;background:var(--inspection-popover);box-shadow:var(--inspection-shadow)}
+.relic-inspection-shell .inspection-language-option {min-height:42px;padding:6px 10px;text-align:left;border-radius:6px}
+.relic-inspection-shell .inspection-language-option:is(:hover,:focus-visible,[aria-pressed=true]) {background:var(--inspection-highlight);color:var(--inspection-accent)}
+.inspection-top-actions [data-inspection-action=tilt] svg {width:26px;height:26px;flex-basis:26px}

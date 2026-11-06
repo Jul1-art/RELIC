@@ -5,7 +5,6 @@ import { PLANET_SITES, NASA_IMAGERY } from './nasa-worlds.js';
 import { startLiveData, getLanguage, onLanguageChange } from './atlas-live.js?v=3';
 import { initializePlanetDashboard, setDashboardBody } from '../ui/planet-dashboard.js';
 import { createViewLoading } from '../ui/view-loading.js';
-import { initializeProviderCredits } from '../ui/provider-credits.js?v=14';
 import { approximateOrbit } from './orbital-data.js';
 import { createNaturalSystems } from './natural-system.js';
 import { createSmallBodyBelts } from './small-body-belts.js';
@@ -459,7 +458,7 @@ const tempPosition = new THREE.Vector3();
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 const imageryCredit = $('#imagery-credit');
-initializeProviderCredits({ viewport:dashboard.viewport, elements:[imageryCredit] });
+
 function showBaseImageryCredit(id) {
   imageryCredit.hidden=false;
   if(comet?.getBody(id)){imageryCredit.textContent='67P · ESA/Rosetta/OSIRIS · ESA SPICE · NASA/JPL Horizons';return;}
@@ -602,7 +601,7 @@ function syncInspectionScene(){
   stars.visible=active?inspectionSettings.stars!==false:!currentScenePalette.light;
   stars.material.color.set(currentScenePalette.light?0x3f5266:active?0xffffff:0xa6bddb);
   stars.material.opacity=currentScenePalette.light?.36:.52;
-  labelHost.hidden=!showLabels;
+  labelHost.hidden=active||!showLabels;
   moon.visible=!naturalSystems&&(selected==='moon'||(selected==='earth'&&inspectionSettings.moons!==false));
   solarIllumination.setEnabled(!active||inspectionSettings.lighting!==false);
   naturalSystems?.setDisplay({moons:!active||inspectionSettings.moons!==false,orbits:!active||inspectionSettings.orbits!==false,labels:showLabels});
