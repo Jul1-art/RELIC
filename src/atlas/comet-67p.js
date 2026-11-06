@@ -115,6 +115,7 @@ export async function createComet67P({THREE, scene, auToWorld, onSelect, getLang
     update,
     getHeliocentricPosition(date=new Date()){return interpolateCometState(ephemeris,date)?.positionKm||null;},
     setFocus(id){focus=id||'overview';update(lastState?.validAt?new Date(lastState.validAt):new Date());},
+    setLabels(visible){if(layer)layer.hidden=!visible;},
     getParent:id=>id==='philae'||id==='rosetta'?'67p':undefined,
     worldPosition:id=>COMET_IDS.includes(id)&&lastState?positions.get(id):undefined,
     getMesh:id=>id==='67p'?nucleus:sites.get(id)?.craft||null,

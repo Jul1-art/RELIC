@@ -129,6 +129,10 @@ export async function openSources(trigger) {
   paragraph(content,french()
     ? 'Les tailles et les distances sont adaptées pour faciliter la lecture de la vue solaire. Les systèmes locaux utilisent une échelle proportionnelle des distances ; les très petites lunes sont agrandies pour rester sélectionnables.'
     : 'Sizes and distances are adapted for readability in the solar overview. Local moon systems use proportional distances; very small moons are enlarged to remain selectable.','relic-sources-note');
+  heading(content,french()?'Interface de la vue planétaire':'Planet view interface');
+  paragraph(content,french()?"Commandes et effets visuels adaptés de God’s Eye View, sous licence MIT.":"View controls and visual effects adapted from God’s Eye View under the MIT license.");
+  sourceLink(content,'God’s Eye View · GitHub','https://github.com/bilawalsidhu/gods-eye-view');
+  sourceLink(content,french()?'Licence et provenance':'License and provenance',new URL('../../vendor/gods-eye-view/PROVENANCE.json',import.meta.url).href);
   heading(content, french() ? 'Le film' : 'The film');
   const minutes = Math.floor(PROLOGUE_MEDIA.duration / 60);
   const seconds = Math.round(PROLOGUE_MEDIA.duration % 60);

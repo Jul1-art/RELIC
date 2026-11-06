@@ -75,7 +75,7 @@ export function createCelestialScene({Cesium,viewer,onSelect=()=>{}}){
   const originalFar=viewer.camera.frustum.far,originalLogDepth=scene.logarithmicDepthBuffer;
   const position=new C.Cartesian3(),towardCamera=new C.Cartesian3(),screenPoint=new C.Cartesian2();
   let disposed=false,hasCredit=false,lastFar=originalFar;
-  let light=false;
+  let light=false, labelsVisible=true;
   scene.logarithmicDepthBuffer=true;
   const request=()=>{if(!disposed&&!viewer.isDestroyed?.())scene.requestRender();};
   function removeRecord(record){if(record.sphere)scene.primitives.remove(record.sphere);points.remove(record.point);labels.remove(record.label);records.delete(record.row.id);}
@@ -115,7 +115,7 @@ export function createCelestialScene({Cesium,viewer,onSelect=()=>{}}){
       if(pixels>=1.2)ensureSphere(record).show=true;
       else if(record.sphere)record.sphere.show=false;
       record.point.show=pixels<1.2&&!occluded;
-      record.label.show=pixels>=2.5&&!occluded&&pixels<height*.35;
+      record.label.show=labelsVisible&&pixels>=2.5&&!occluded&&pixels<height*.35;
       if(record.label.show){
         C.Cartesian3.subtract(origin,position,towardCamera);C.Cartesian3.normalize(towardCamera,towardCamera);
         C.Cartesian3.multiplyByScalar(towardCamera,record.row.radiusMeters*1.025,towardCamera);
@@ -175,6 +175,7 @@ export function createCelestialScene({Cesium,viewer,onSelect=()=>{}}){
   }
   const removePreRender=(scene.preUpdate||scene.preRender).addEventListener(updateVisibility);
   return {setBodies,lookAt,handleClick,getBodyIdFromPick,getBody:id=>records.get(id)?.row||null,
+    setLabelsVisible(value){labelsVisible=Boolean(value);updateVisibility();request();},
     setTheme(theme='night'){light=theme==='day';for(const record of records.values()){record.point.color=light?C.Color.BLACK:C.Color.WHITE;record.label.fillColor=record.point.color;record.label.outlineColor=light?C.Color.WHITE:C.Color.BLACK;}request();},
     dispose(){if(disposed)return;disposed=true;removePreRender();if(viewer.isDestroyed?.()){records.clear();return;}for(const record of [...records.values()])removeRecord(record);scene.primitives.remove(points);scene.primitives.remove(labels);if(hasCredit)viewer.creditDisplay?.removeStaticCredit(credit);if(viewer.camera.frustum.far===lastFar)viewer.camera.frustum.far=originalFar;scene.logarithmicDepthBuffer=originalLogDepth;}
   };

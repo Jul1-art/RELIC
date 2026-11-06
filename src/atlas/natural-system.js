@@ -9,6 +9,8 @@ export async function createNaturalSystems({THREE,scene,planetGroups,planets,get
  const states=new Map(),systems=new Map(),pickable=[],owned=[],labelNodes=[];
  const positionFor=(row,date)=>getRelativePosition?.(row,date)||relativePositionKm(row,date);
  const dummy=new THREE.Object3D(),v=new THREE.Vector3();let orbitMode='auto',focus='overview',lastDate=new Date(),lastUpdate=-Infinity,disposed=false;
+ let display={moons:true,orbits:true,labels:true};
+ const visibleMoon=state=>focus==='overview'||display.moons||state.row.id===focus;
  const sphere=new THREE.SphereGeometry(1,64,40),rock=new THREE.IcosahedronGeometry(1,1);owned.push(sphere,rock);
  const loader=new THREE.TextureLoader();
  const labelLayer=document.createElement('div');labelLayer.className='natural-label-layer';labelHost.parentElement.append(labelLayer);
@@ -66,8 +68,8 @@ export async function createNaturalSystems({THREE,scene,planetGroups,planets,get
     if(p){const scale=focus==='overview'?state.compact:system.scale;state.offset.set(p.x*scale,p.y*scale,p.z*scale);}
     else state.offset.set(system.planet.size*1.9,0,0);
     state.position.copy(system.group.position).add(state.offset);
-    if(state.mesh){state.mesh.position.copy(state.offset);state.mesh.visible=focus!=='overview'||state.major;if(active&&focus!=='overview')loadTexture(state);}
-    else {dummy.position.copy(state.offset);dummy.rotation.set(row.naifId*.017||.4,row.naifId*.009||.8,.4);dummy.scale.setScalar(focus==='overview'?0:state.radius);dummy.updateMatrix();state.instances.setMatrixAt(state.instanceIndex,dummy.matrix);}
+    if(state.mesh){state.mesh.position.copy(state.offset);state.mesh.visible=visibleMoon(state)&&(focus!=='overview'||state.major);if(active&&focus!=='overview')loadTexture(state);}
+    else {dummy.position.copy(state.offset);dummy.rotation.set(row.naifId*.017||.4,row.naifId*.009||.8,.4);dummy.scale.setScalar(focus==='overview'||!visibleMoon(state)?0:state.radius);dummy.updateMatrix();state.instances.setMatrixAt(state.instanceIndex,dummy.matrix);}
    }
    if(system.instances){system.instances.instanceMatrix.needsUpdate=true;system.instances.boundingSphere=null;}
   }
@@ -82,7 +84,7 @@ export async function createNaturalSystems({THREE,scene,planetGroups,planets,get
     if(state.mesh)state.mesh.scale.setScalar(state.displayRadius);
     else{
      dummy.position.copy(state.offset);dummy.rotation.set(row.naifId*.017||.4,row.naifId*.009||.8,.4);
-     dummy.scale.setScalar(focus==='overview'?0:state.displayRadius);dummy.updateMatrix();state.instances.setMatrixAt(state.instanceIndex,dummy.matrix);
+     dummy.scale.setScalar(focus==='overview'||!visibleMoon(state)?0:state.displayRadius);dummy.updateMatrix();state.instances.setMatrixAt(state.instanceIndex,dummy.matrix);
     }
    }
    if(system.instances){system.instances.instanceMatrix.needsUpdate=true;system.instances.boundingSphere=null;}
@@ -95,7 +97,7 @@ export async function createNaturalSystems({THREE,scene,planetGroups,planets,get
    const closeMoon=selected&&camera.position.distanceTo(selected.position)<selected.radius*15;
    const opacity=moonOrbitOpacity({mode:orbitMode,distance,planetRadius:system.planet.size,closeMoon:focus==='overview'||closeMoon,count:system.records.length});
    for(const [key,target] of [['orbits',opacity.all],['innerOrbits',opacity.inner]]){
-    const material=system[key].material;material.opacity+=(target-material.opacity)*blend;system[key].visible=material.opacity>.001;
+    const material=system[key].material;material.opacity+=(target-material.opacity)*blend;system[key].visible=(focus==='overview'||display.orbits)&&material.opacity>.001;
    }
   }
  }
@@ -107,7 +109,7 @@ export async function createNaturalSystems({THREE,scene,planetGroups,planets,get
   const height=Math.max(1,labelLayer.clientHeight),parentFocus=parentOf(focus)||focus;
   let chosen=null,best=Infinity;
   for(const state of states.values()){
-   if(focus==='overview'?!state.major:state.row.parent!==parentFocus)continue;
+   if(!visibleMoon(state)||(focus==='overview'?!state.major:state.row.parent!==parentFocus))continue;
    v.copy(state.position).project(camera);if(v.z<=-1||v.z>=1||Math.abs(v.x)>1.05||Math.abs(v.y)>1.05)continue;
    const along=v.copy(state.position).sub(ray.origin).dot(ray.direction);if(along<=0)continue;
    const unitsPerPixel=2*along*Math.tan(camera.fov*Math.PI/360)/height;
@@ -118,8 +120,10 @@ export async function createNaturalSystems({THREE,scene,planetGroups,planets,get
   return chosen;
  }
  function updateLabels(){
+  labelLayer.hidden=focus!=='overview'&&!display.labels;
+  if(labelLayer.hidden)return;
   const parentFocus=parentOf(focus)||focus;const selected=states.get(focus);let candidates=[];
-  if(focus!=='overview'&&!(selected&&camera.position.distanceTo(selected.position)<selected.radius*12))candidates=[...(selected?[selected]:[]),...([...states.values()].filter(s=>s.major&&s.row.parent===parentFocus&&s!==selected))].slice(0,10);
+  if(focus!=='overview'&&!(selected&&camera.position.distanceTo(selected.position)<selected.radius*12))candidates=[...(selected?[selected]:[]),...([...states.values()].filter(s=>s.major&&visibleMoon(s)&&s.row.parent===parentFocus&&s!==selected))].slice(0,10);
   while(labelNodes.length<candidates.length){const button=document.createElement('button');button.type='button';button.className='natural-moon-label';button.addEventListener('click',()=>onSelect(button.dataset.moon));labelLayer.append(button);labelNodes.push(button);}
   const width=labelLayer.clientWidth,height=labelLayer.clientHeight,occupied=[],labelGap=matchMedia('(pointer:coarse)').matches?46:32;
   labelNodes.forEach((button,index)=>{
@@ -135,10 +139,14 @@ export async function createNaturalSystems({THREE,scene,planetGroups,planets,get
   setTheme,
   update(date=new Date(),dt=0){lastDate=date;const now=Number(date);if(Math.abs(now-lastUpdate)>200){updatePositions(date);lastUpdate=now;}else for(const state of states.values())state.position.copy(planetGroups.get(state.row.parent).position).add(state.offset);updateVisualSizes();updateOrbitVisibility(dt);updateLabels();},
   setFocus(id){const next=id||'overview';if((parentOf(next)||next)!==(parentOf(focus)||focus))orbitMode='auto';focus=next;updatePositions(lastDate);lastUpdate=Number(lastDate);updateVisualSizes();updateOrbitVisibility();updateLabels();},
+  setDisplay(next){
+   if(next.moons===display.moons&&next.orbits===display.orbits&&next.labels===display.labels)return;
+   display={...display,...next};updatePositions(lastDate);updateVisualSizes();updateOrbitVisibility();updateLabels();
+  },
   setOrbitMode(mode='auto'){orbitMode=['auto','inner','all'].includes(mode)?mode:'auto';updateVisualSizes();updateOrbitVisibility();},
   getOrbitMode:()=>orbitMode,
   getDisplayRadius:id=>states.get(id)?.displayRadius||0,
-  getFocusCandidates(){return [...states.values()].filter(state=>state.system.group.visible&&(state.mesh?state.mesh.visible:focus!=='overview')).map(state=>({id:state.row.id,parent:state.row.parent,position:state.position,radius:state.radius,displayRadius:state.displayRadius,visible:true}));},
+  getFocusCandidates(){return [...states.values()].filter(state=>state.system.group.visible&&(state.mesh?state.mesh.visible:focus!=='overview'&&visibleMoon(state))).map(state=>({id:state.row.id,parent:state.row.parent,position:state.position,radius:state.radius,displayRadius:state.displayRadius,visible:true}));},
   getRelativePositionKm(id,date=lastDate){const state=states.get(id);return state?positionFor(state.row,date):null;},
   getGroups:()=>[...systems.values()].map(system=>({parent:system.planet.id,group:system.group})),
   getGroup:parent=>systems.get(parent)?.group||null,

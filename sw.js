@@ -1,8 +1,8 @@
 /* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'interface-20261104-v19-4-public';
-const INTERFACE_RELEASE = 'interface-20261104-v19-4';
+const VERSION = 'inspection-20261106-v20-2-public';
+const INTERFACE_RELEASE = 'inspection-20261106-v20-2';
 const CLIENT_VERSION_TIMEOUT = 650;
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
@@ -30,6 +30,14 @@ const CORE = [
 // This also covers a first visit whose early imports preceded worker control.
 const OFFLINE_CORE = [
   ...CORE,
+  'src/ui/inspection-shell.js','src/ui/inspection-shell.css','src/ui/inspection-controls.js','src/ui/visual-effects.js',
+  'src/atlas/inspection-effects.js','src/worlds/inspection-effects.js','src/worlds/inspection-controls.js',
+  'vendor/gods-eye-view/panelDisclosure.js','vendor/gods-eye-view/bloom.js','vendor/gods-eye-view/i18n/marker.js',
+  'vendor/gods-eye-view/ui/visualPresets.js','vendor/gods-eye-view/PROVENANCE.json',
+  'vendor/gods-eye-view/styles/retro.js','vendor/gods-eye-view/styles/surveillance.js','vendor/gods-eye-view/styles/thermal.js',
+  'vendor/gods-eye-view/styles/anime.js','vendor/gods-eye-view/styles/noir.js',
+  'vendor/gods-eye-view/icons/location.svg','vendor/gods-eye-view/icons/visual-presets.svg','vendor/gods-eye-view/icons/pin.svg',
+  'vendor/gods-eye-view/fonts/inter.woff2','vendor/gods-eye-view/fonts/jetbrains-mono.woff2',
   'src/atlas/boot.js','src/atlas/atlas-bootstrap.js','src/atlas/solar-navigation.js','src/worlds/ion-earth.js','intro/film-buffer-policy.js',
   'src/atlas/celestial-context.js','src/worlds/celestial-scene.js','src/ui/monochrome.css',
   'pages/globe.html','src/atlas/detailed-globe.js','src/atlas/detailed-globe.css',
@@ -126,6 +134,7 @@ function cacheKey(request) {
   return url.href;
 }
 function immutable(url) {
+  if(url.pathname.startsWith(new URL('vendor/gods-eye-view/',SCOPE).pathname))return false;
   return url.pathname.startsWith(new URL('vendor/', SCOPE).pathname)
     || url.pathname.startsWith(new URL('intro/assets/vendor/', SCOPE).pathname)
     || (url.pathname.startsWith(new URL('assets/', SCOPE).pathname) && !/\.(?:json|webmanifest)$/i.test(url.pathname));

@@ -74,6 +74,7 @@ export function createSolarIllumination({THREE, getHeliocentricPosition, nightFl
   const parents = new Map(), materials = new Map(), atmospheres = new Map(), orientations = new Map(), roots = new Map();
   const matrix = new THREE.Matrix4(), x = new THREE.Vector3(), y = new THREE.Vector3(), z = new THREE.Vector3();
   let lastUpdate = -Infinity;
+  const lightingEnabled={value:1};
 
   function parent(id) {
     if (!parents.has(id)) parents.set(id, { value:new THREE.Vector3(1, 0, 0) });
@@ -93,17 +94,18 @@ export function createSolarIllumination({THREE, getHeliocentricPosition, nightFl
           material.onBeforeCompile = function(shader, renderer) {
             previousCompile.call(this, shader, renderer);
             shader.uniforms.relicSunDirection = direction;
+            shader.uniforms.relicSolarLighting=lightingEnabled;
             shader.uniforms.relicNightFloor = { value:nightFloor };
             shader.uniforms.relicDayIntensity = { value:dayIntensity };
-            shader.fragmentShader = 'uniform vec3 relicSunDirection;\nuniform float relicNightFloor;\nuniform float relicDayIntensity;\n' + shader.fragmentShader;
+            shader.fragmentShader = 'uniform vec3 relicSunDirection;\nuniform float relicSolarLighting;\nuniform float relicNightFloor;\nuniform float relicDayIntensity;\n' + shader.fragmentShader;
             shader.fragmentShader = shader.fragmentShader.replace('#include <opaque_fragment>', `
               vec3 relicSunView = normalize(mat3(viewMatrix) * relicSunDirection);
               float relicDaylight = max(dot(normalize(normal), relicSunView), 0.0);
-              outgoingLight = diffuseColor.rgb * (relicNightFloor + relicDayIntensity * relicDaylight);
+              outgoingLight = diffuseColor.rgb * mix(1.0, relicNightFloor + relicDayIntensity * relicDaylight, relicSolarLighting);
               #include <opaque_fragment>
             `);
           };
-          material.customProgramCacheKey = function() { return previousKey.call(this) + ':relic-solar-lambert-v1'; };
+          material.customProgramCacheKey = function() { return previousKey.call(this) + ':relic-solar-lambert-v2'; };
           const onDispose = () => { materials.delete(material); material.removeEventListener('dispose', onDispose); };
           material.addEventListener('dispose', onDispose);
           materials.set(material, { previousCompile, previousKey, onDispose });
@@ -146,6 +148,7 @@ export function createSolarIllumination({THREE, getHeliocentricPosition, nightFl
   }
 
   return { register, registerOrientation, applyBodyOrientation, update,
+    setEnabled(value){lightingEnabled.value=value?1:0;},
     dispose() {
       for (const [material, original] of materials) { material.onBeforeCompile = original.previousCompile; material.customProgramCacheKey = original.previousKey; material.removeEventListener('dispose', original.onDispose); material.needsUpdate = true; }
       for (const [material, fragment] of atmospheres) { material.fragmentShader = fragment; delete material.uniforms.relicSunDirection; material.needsUpdate = true; }

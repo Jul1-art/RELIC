@@ -176,7 +176,8 @@ try {
   if (marker?.path === new URL('../', import.meta.url).pathname && Date.now() - marker.at < 5 * 60 * 1000) returningToAtlas = true;
 } catch { /* Direct visits continue to show the opening. */ }
 const startupParameters = new URL(location.href).searchParams;
-if (startupParameters.has('sources') || returningToAtlas && !startupParameters.has('film')) { introduction.classList.add('hidden'); setFilmActive(false); }
+const sharedInspection=startupParameters.get('view')==='inspection'&&startupParameters.has('body');
+if (startupParameters.has('sources') || (returningToAtlas||sharedInspection) && !startupParameters.has('film')) { introduction.classList.add('hidden'); setFilmActive(false); }
 else film.start();
 
 // A small diagnostic surface is useful to host pages and automated playback

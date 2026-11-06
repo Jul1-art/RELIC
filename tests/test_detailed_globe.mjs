@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFile} from 'node:fs/promises';
+import {normalizeVisualSettings} from '../src/ui/visual-effects.js';
 
 async function fixture(){
   const messages=[],states=[],listeners=new Map(),frames=[];
@@ -12,7 +13,10 @@ async function fixture(){
   const context=vm.createContext({URL,document,location:{origin:'https://example.invalid'},window:{addEventListener:(type,cb)=>listeners.set(type,cb),removeEventListener:type=>listeners.delete(type)},setTimeout:()=>1,clearTimeout(){}});
   const source=await readFile(new URL('../src/atlas/detailed-globe.js',import.meta.url),'utf8');
   const module=new vm.SourceTextModule(source,{context,initializeImportMeta(meta){meta.url='https://example.invalid/RELIC/src/atlas/detailed-globe.js';}});
-  await module.link(()=>{});await module.evaluate();
+  await module.link(name=>{
+    assert.equal(name,'../ui/visual-effects.js');
+    return new vm.SyntheticModule(['normalizeVisualSettings'],function(){this.setExport('normalizeVisualSettings',normalizeVisualSettings);},{context});
+  });await module.evaluate();
   const globe=module.namespace.createDetailedGlobe({host:{append(){}},onState:state=>states.push(state)});
   const receive=(frame,type,state,origin='https://example.invalid')=>listeners.get('message')({origin,source:frame.contentWindow,data:{channel:'relic-detailed-globe-v15',type,state}});
   return {globe,frames,messages,states,receive,listeners,document};
@@ -51,4 +55,19 @@ test('theme changes reach a loading or ready globe without replacing its camera 
   assert.equal(f.messages.at(-1).message.value,'night');assert.equal(f.messages.at(-1).message.action,'theme');
   assert.equal(f.frames.length,1);assert.equal(frame.removed,undefined);
   assert.equal(f.messages.filter(row=>row.message.action==='focus').length,focusMessages);f.globe.dispose();
+});
+
+// A preview can change before the child frame loads or while it is replaced.
+test('the current safe visual settings reach every newly booted detail frame',async()=>{
+  const f=await fixture();
+  f.globe.setVisualSettings({style:'nvg',stars:false,token:'not-for-the-frame',styleParams:{gain:.7,token:'private'}});
+  f.globe.setFocus({id:'earth'});f.receive(f.frames[0],'boot');
+  let message=f.messages.at(-1).message;
+  assert.equal(message.action,'visualSettings');assert.equal(message.value.style,'nvg');
+  assert.equal(message.value.stars,false);assert.equal(message.value.styleParams.gain,.7);
+  assert.equal('token' in message.value,false);assert.equal('token' in message.value.styleParams,false);
+  f.globe.setFocus({id:'mars'});f.receive(f.frames[1],'boot');
+  message=f.messages.at(-1).message;
+  assert.equal(message.value.style,'nvg');assert.equal(message.value.styleParams.gain,.7);
+  f.globe.dispose();
 });

@@ -1,3 +1,5 @@
+import {normalizeVisualSettings} from '../ui/visual-effects.js';
+
 const BODIES=new Set(['earth','moon','mars']);
 const CHANNEL='relic-detailed-globe-v15';
 /** One lazy, same-origin Cesium frame. Removing it releases its WebGL context,
@@ -8,6 +10,7 @@ export function createDetailedGlobe({host,onState=()=>{},onInteraction=()=>{},on
   if(!document.querySelector('link[href*="detailed-globe.css"]')){
     const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('./detailed-globe.css?v=17',import.meta.url).href;document.head.append(link);
   }
+  let visualSettings=null;
   let frame=null,current=null,ready=false,timer=0,state={},disposed=false,loading=false;
   const origin=location.origin;
   const theme=()=>document.documentElement?.dataset.theme==='day'?'day':'night';
@@ -36,7 +39,7 @@ export function createDetailedGlobe({host,onState=()=>{},onInteraction=()=>{},on
   function receive(event){
     if(disposed||event.origin!==origin||event.source!==frame?.contentWindow||event.data?.channel!==CHANNEL)return;
     const data=event.data;
-    if(data.type==='boot'){send('theme',{value:theme()});send('focus',{focus:current});return;}
+    if(data.type==='boot'){send('theme',{value:theme()});send('focus',{focus:current});if(visualSettings)send('visualSettings',{value:visualSettings});return;}
     if(data.type==='ready'){clearTimeout(timer);ready=true;loading=false;frame.classList.add('is-ready');state={...state,...data.state};emit();return;}
     if(data.type==='state'){state={...state,...data.state};emit();return;}
     if(data.type==='interaction'){onInteraction();return;}
@@ -47,7 +50,7 @@ export function createDetailedGlobe({host,onState=()=>{},onInteraction=()=>{},on
   const updateTheme=()=>send('theme',{value:theme()});
   window.addEventListener('relic-preferences-change',updateTheme);
   const command=(action,value)=>{if(!ready)return false;send(action,{value});return true;};
-  return {setFocus,hide,setContext(context){if(current)current.context=context;send('context',{context});},lookAt:id=>command('lookAt',id),lookAround:(yaw,pitch)=>command('look',{yaw,pitch}),
+  return {setFocus,hide,setVisualSettings(value){visualSettings=normalizeVisualSettings(value,visualSettings);send('visualSettings',{value:visualSettings});},setContext(context){if(current)current.context=context;send('context',{context});},lookAt:id=>command('lookAt',id),lookAround:(yaw,pitch)=>command('look',{yaw,pitch}),
     get active(){return Boolean(frame&&ready);},get loading(){return loading;},
     getViewState:()=>ready?{id:current?.id,...state}:null,
     getSurfaceCoordinates:()=>ready?{id:current?.id,latitude:state.latitude,longitude:state.longitude,altitudeKm:state.altitudeKm}:null,

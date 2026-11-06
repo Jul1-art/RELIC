@@ -64,6 +64,7 @@ export function initializeActionRail() {
   const menuActions = element('div','rail-menu-actions');
   const menuViews = {worlds,search:command,more:menu};
   let active = '', opener, closeTimer=0, revealFrame=0, focusFrame=0;
+  let inspection=null,inspectionPromise=null;
   const worldButton = iconButton('rail-worlds','globe','worlds');
   const searchButton = iconButton('rail-search','magnifying-glass','search');
   const moreButton = iconButton('rail-more','sliders','more');
@@ -147,11 +148,12 @@ export function initializeActionRail() {
     if (event.defaultPrevented || document.querySelector('dialog[open]') || filmActive()) return;
     if (event.key === 'Escape') {
       if (active) { event.preventDefault(); event.stopPropagation(); show('',null,true); }
-      else if (dashboard.dataset.panelOpen === 'true') { event.preventDefault(); event.stopPropagation(); setInformation(false); information.focus({preventScroll:true}); }
+      else if (!inspectionActive() && dashboard.dataset.panelOpen === 'true') { event.preventDefault(); event.stopPropagation(); setInformation(false); information.focus({preventScroll:true}); }
     } else if (((event.key === '/' && !event.ctrlKey && !event.altKey && !event.metaKey)
       || ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k'))
       && !event.target.closest('input,textarea,select,[contenteditable=true]')) {
-      event.preventDefault(); event.stopPropagation(); show('search',searchButton);
+      event.preventDefault(); event.stopPropagation();
+      if(inspectionActive())inspection.openLocation(searchButton);else show('search',searchButton);
     }
   },{capture:true});
   const replay = document.getElementById('relic-replay');
@@ -206,12 +208,14 @@ export function initializeActionRail() {
     if (dashboard.dataset.dashboardBody !== currentBody) {
       currentBody = dashboard.dataset.dashboardBody;
       show('');
+      void mountInspection();
     }
     render();
   }).observe(dashboard,{attributes:true,attributeFilter:['data-dashboard-body','data-panel-open']});
   window.addEventListener('relic-film-state',()=>{
     if (filmActive()) show('');
     shell.inert = filmActive();
+    if(!filmActive())void mountInspection();
   });
   shell.inert = filmActive();
   document.body.classList.add('has-action-rail');
@@ -223,6 +227,7 @@ export function initializeActionRail() {
   instance = {element:shell,show,close:()=>show('')};
   window.dispatchEvent(new CustomEvent('relic-action-rail-mounted'));
   requestAnimationFrame(()=>window.dispatchEvent(new Event('resize')));
+  void mountInspection();
   return instance;
 
   function iconButton(id,icon,key) {
@@ -234,12 +239,44 @@ export function initializeActionRail() {
   function filmActive() {
     return window.__relicFilmActive === true || document.documentElement.dataset.relicFilm === 'active';
   }
+  function inspectionActive(){return Boolean(inspection&&!inspection.element.hidden&&!filmActive());}
+  function mountInspection(){
+    if(inspection||inspectionPromise||filmActive()||!currentBody||['overview','sun'].includes(currentBody))return inspectionPromise;
+    inspectionPromise=import('./inspection-shell.js').then(({createInspectionShell})=>{
+      if(filmActive()||['overview','sun'].includes(currentBody))return;
+      const searchWasOpen=active==='search';
+      if(searchWasOpen)show('');
+      inspection=createInspectionShell({dashboard,command,inspector,getLanguage,onLanguageChange});
+      if(!inspection)return;
+      const locationToggle=inspection.element.querySelector('#inspection-location .inspection-tray-toggle');
+      const syncSearch=()=>{
+        searchButton.setAttribute('aria-controls',inspectionActive()?'inspection-location-popover':panel.id);
+        if(inspectionActive())searchButton.setAttribute('aria-expanded',locationToggle?.getAttribute('aria-expanded')||'false');
+      };
+      const observer=new MutationObserver(syncSearch);
+      observer.observe(inspection.element,{attributes:true,attributeFilter:['hidden']});
+      if(locationToggle)observer.observe(locationToggle,{attributes:true,attributeFilter:['aria-expanded']});
+      inspection.element.addEventListener('click',event=>{
+        if(active&&event.target.closest('.inspection-module-toggle,.inspection-tray-toggle'))show('');
+      });
+      syncSearch();
+      if(searchWasOpen)inspection.openLocation(searchButton);
+    }).catch(()=>{}).finally(()=>{inspectionPromise=null;});
+    return inspectionPromise;
+  }
   function setInformation(open) {
     window.dispatchEvent(new CustomEvent('planet-dashboard-panel',{detail:{open}}));
   }
   function show(name,trigger,restoreFocus=false) {
     if (name && filmActive()) return;
     if(name&&!Object.hasOwn(menuViews,name))return;
+    if(name==='search'&&inspectionActive()){
+      if(active)show('');
+      const tray=inspection.element.querySelector('#inspection-location-popover');
+      if(tray&&!tray.hidden)inspection.close('location',true);else inspection.openLocation(searchButton);
+      return;
+    }
+    if(name&&inspectionActive())for(const key of ['location','presets','display','data'])inspection.close(key);
     if (name && active!==name) setInformation(false);
     if (trigger) opener = trigger;
     clearTimeout(closeTimer);cancelAnimationFrame(revealFrame);cancelAnimationFrame(focusFrame);
@@ -251,13 +288,13 @@ export function initializeActionRail() {
     if(name){
       const entering=panel.hidden||panel.dataset.phase==='closing';
       panel.hidden=false;panel.dataset.phase=entering?'entering':'open';
-      for (const [key,region] of Object.entries(menuViews)) {region.hidden=key!==name;region.inert=key!==name;}
+      for (const [key,region] of Object.entries(menuViews)) if(panel.contains(region)){region.hidden=key!==name;region.inert=key!==name;}
       if(entering){panel.getBoundingClientRect();revealFrame=requestAnimationFrame(()=>{if(active)panel.dataset.phase='open';});}
     }else{
       panel.dataset.phase='closing';
       const reduced=document.documentElement.dataset.motion==='reduced'
         ||(!document.documentElement.dataset.motion&&matchMedia('(prefers-reduced-motion:reduce)').matches);
-      const finish=()=>{if(active)return;panel.hidden=true;delete panel.dataset.phase;for(const region of Object.values(menuViews)){region.hidden=true;region.inert=true;}};
+      const finish=()=>{if(active)return;panel.hidden=true;delete panel.dataset.phase;for(const region of Object.values(menuViews))if(panel.contains(region)){region.hidden=true;region.inert=true;}};
       if(reduced)finish();else closeTimer=setTimeout(finish,180);
     }
     for (const [key,button] of Object.entries(triggers)) button.setAttribute('aria-expanded',String(key===name));

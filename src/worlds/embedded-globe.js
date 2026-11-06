@@ -8,6 +8,7 @@ import {createCelestialScene,celestialRayDistance,getBodyIdFromPick} from './cel
 import {wheelZoomFactor} from '../atlas/orbital-navigation.js';
 import {scenePalette} from '../ui/scene-theme.js';
 import {createIonEarthTiles} from './ion-earth.js';
+import {createCesiumInspectionEffects} from './inspection-effects.js';
 
 Cesium.Ion.defaultAccessToken='';
 const CHANNEL='relic-detailed-globe-v15';
@@ -19,7 +20,7 @@ const ellipsoid=body==='earth'?Cesium.Ellipsoid.WGS84:body==='moon'?Cesium.Ellip
 Cesium.Ellipsoid.default=ellipsoid;
 const radius=ellipsoid.maximumRadius,DEG=Math.PI/180;
 const credits=document.querySelector('#credits'),sourceCredit=document.querySelector('#source-credit');
-let viewer,tileset,buildings,celestial,disposed=false,ready=false,paused=false,focus={id:body},sourceMode='imagery',sourceLabel='',ionStatus='loading';
+let viewer,tileset,buildings,celestial,effects,disposed=false,ready=false,paused=false,focus={id:body},sourceMode='imagery',sourceLabel='',ionStatus='loading';
 let lastState=0,lastFrame=null,globalGrid=null,geography={lat:18,lon:0},lastHeading=0;
 let defaultFov=Math.PI/3;
 let earth3D=null,earthTerrainReady=false,earthBuildingsRequested=false;
@@ -152,7 +153,7 @@ function setLighting(value){
     }
   }
   if(local){const direction=new Cesium.Cartesian3(-local.x,-local.y,-local.z);Cesium.Cartesian3.normalize(direction,direction);viewer.scene.light=new Cesium.DirectionalLight({direction,intensity:1.45});}
-  viewer.scene.globe.enableLighting=true;viewer.scene.globe.dynamicAtmosphereLighting=false;
+  viewer.scene.globe.enableLighting=effects?.settings.lighting??true;viewer.scene.globe.dynamicAtmosphereLighting=false;
   requestRender();
 }
 function setFocus(value){
@@ -235,16 +236,17 @@ async function addEarthBuildings(token){
     buildings=viewer.scene.primitives.add(value);sourceLabel='Cesium ion · World Terrain + OSM Buildings · photorealistic tiles unavailable';updateCredits();state(true);requestRender();
   }catch{/* Keep measured world terrain if the optional OSM asset is unavailable. */}
 }
-function suspend(value){paused=Boolean(value);if(disposed||!viewer||viewer.isDestroyed())return;viewer.useDefaultRenderLoop=(!paused||!ready)&&!document.hidden;if(!paused||!ready){viewer.resize();requestRender();}}
+function suspend(value){paused=Boolean(value);if(disposed||!viewer||viewer.isDestroyed())return;viewer.useDefaultRenderLoop=(!paused||!ready)&&!document.hidden;effects?.pause(paused||document.hidden);if(!paused||!ready){viewer.resize();requestRender();}}
 function applyViewTheme(value){
   const theme=value==='day'?'day':'night',palette=scenePalette(theme);
   document.documentElement.dataset.theme=theme;document.documentElement.style.colorScheme=palette.light?'light':'dark';
-  viewer.scene.backgroundColor=Cesium.Color.fromCssColorString(palette.background);celestial?.setTheme(theme);requestRender();
+  viewer.scene.backgroundColor=Cesium.Color.fromCssColorString(palette.background);celestial?.setTheme(theme);effects?.setTheme(theme);requestRender();
 }
 function receive(event){
   if(event.origin!==location.origin||event.source!==parent||event.data?.channel!==CHANNEL||disposed||!viewer)return;
   const {action,value}=event.data;
   if(action==='theme')applyViewTheme(value);
+  else if(action==='visualSettings'){effects?.setSettings(value);document.documentElement.dataset.visualPreset=effects?.settings.style||'normal';celestial?.setLabelsVisible?.(effects?.settings.labels!==false);state(true);}
   else if(action==='focus')setFocus(event.data.focus);
   else if(action==='context'){focus.context=event.data.context||[];celestial?.setBodies(focus.context);state(true);}
   else if(action==='lookAt'&&typeof value==='string'){celestial?.lookAt(value);state(true);}
@@ -259,7 +261,7 @@ function receive(event){
   else if(action==='topDown')orient(0,0,0);
   else if(action==='resetView')resetView();
 }
-function dispose(){if(disposed)return;disposed=true;creditObserver.disconnect();window.removeEventListener('message',receive);earth3D?.destroy();celestial?.dispose();if(viewer&&!viewer.isDestroyed())viewer.destroy();}
+function dispose(){if(disposed)return;disposed=true;creditObserver.disconnect();window.removeEventListener('message',receive);earth3D?.destroy();effects?.destroy();celestial?.dispose();if(viewer&&!viewer.isDestroyed())viewer.destroy();}
 async function start(){
   try{
     viewer=new Cesium.Viewer('globe',{ellipsoid,globe:new Cesium.Globe(ellipsoid),mapProjection:new Cesium.GeographicProjection(ellipsoid),
@@ -269,11 +271,13 @@ async function start(){
     defaultFov=viewer.camera.frustum.fov;
     viewer.clock.shouldAnimate=false;scene.requestRenderMode=true;scene.maximumRenderTimeChange=Infinity;
     scene.backgroundColor=Cesium.Color.BLACK;scene.highDynamicRange=false;scene.verticalExaggeration=1;
+    effects=createCesiumInspectionEffects({Cesium,viewer});
+    document.documentElement.dataset.visualPreset=effects.settings.style;
     celestial=createCelestialScene({Cesium,viewer,onSelect:id=>post('select',{id})});
     applyViewTheme(document.documentElement.dataset.theme);
     scene.globe.baseColor=Cesium.Color.fromCssColorString(body==='earth'?'#183444':body==='moon'?'#777573':'#82533e');
     scene.globe.maximumScreenSpaceError=compact?2.5:1.5;scene.globe.tileCacheSize=compact?72:160;scene.globe.depthTestAgainstTerrain=true;
-    if(scene.skyBox)scene.skyBox.show=false;if(scene.skyAtmosphere)scene.skyAtmosphere.show=false;if(scene.sun)scene.sun.show=false;if(scene.moon)scene.moon.show=false;
+    if(scene.skyAtmosphere)scene.skyAtmosphere.show=false;if(scene.sun)scene.sun.show=false;if(scene.moon)scene.moon.show=false;
     scene.globe.showGroundAtmosphere=false;scene.fog.enabled=false;
     controller.inertiaSpin=0;controller.inertiaTranslate=0;controller.inertiaZoom=0;
     controller.minimumZoomDistance=10;controller.maximumZoomDistance=radius*12;controller.enableCollisionDetection=true;

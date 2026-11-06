@@ -1,0 +1,16 @@
+God's Eye View — selected source modules
+
+Copyright (c) 2026 Bilawal Sidhu
+Upstream: https://github.com/bilawalsidhu/gods-eye-view
+Pinned commit: a33bc379cb32e2204cb3c88664dfe652fcc4fa5a
+License: MIT; the full upstream LICENSE is included beside this notice.
+
+Native disclosure controls, visual shaders, preset metadata, bloom helpers
+and three interface icons are reused in RELIC. Original Vue views and selected CSS are included as
+unchanged comparison sources for the adapted locked-world interface.
+RELIC supplies its own planet data, navigation and renderer integration.
+See PROVENANCE.json for exact paths and SHA-256 hashes.
+
+No third-party upstream datasets, models, provider credentials or keys are
+bundled by this integration. The upstream code license does not license
+third-party data; the upstream LICENSE retains its explanatory notice.

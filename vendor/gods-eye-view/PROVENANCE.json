@@ -1,0 +1,232 @@
+{
+  "project": "God's Eye View",
+  "repository": "https://github.com/bilawalsidhu/gods-eye-view",
+  "commit": "a33bc379cb32e2204cb3c88664dfe652fcc4fa5a",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 Bilawal Sidhu",
+  "sourceFilesUnmodified": true,
+  "files": [
+    {
+      "sourcePath": "LICENSE",
+      "localPath": "LICENSE",
+      "role": "license",
+      "gitBlob": "4f01699a2afc703093fcf07181129c3724aae9ff",
+      "sha256": "b231bb38e2d4eab741643126087cbe9df2b58e2f2e5abf27ad613d05f52b01ca"
+    },
+    {
+      "sourcePath": "src/ui/panelDisclosure.js",
+      "localPath": "panelDisclosure.js",
+      "role": "runtime",
+      "gitBlob": "18026df4a30649957595a9954dbb0d73e6165788",
+      "sha256": "a21c2f0e524a8391dc1ccd46f739c76548a74d2417c4ab17c30506e312ff1536"
+    },
+    {
+      "sourcePath": "src/bloom.js",
+      "localPath": "bloom.js",
+      "role": "runtime",
+      "gitBlob": "fba0472d26aca0732bbb6855a26c645d33b2886a",
+      "sha256": "7d67152d956e2658c1de9262c337d086eb46031bb79c6d211acce5b8bfc2de1b"
+    },
+    {
+      "sourcePath": "src/i18n/marker.js",
+      "localPath": "i18n/marker.js",
+      "role": "runtime",
+      "gitBlob": "bb59369e3b71b9d9d7fc8ec4b2fd7dddb82381d6",
+      "sha256": "8b9c5d7a233d59205e7e74428bf5c8a6bd8e916a45737e44b199c02593199c41"
+    },
+    {
+      "sourcePath": "src/ui/visualPresets.js",
+      "localPath": "ui/visualPresets.js",
+      "role": "runtime",
+      "gitBlob": "ca251e48c21cfa9c9e08279d6d28897bd6fb64b4",
+      "sha256": "387e54bb5d87dcd231fd460ad1daab9757d27e6b5fb8be34392984235b1114b8"
+    },
+    {
+      "sourcePath": "src/styles/retro.js",
+      "localPath": "styles/retro.js",
+      "role": "runtime",
+      "gitBlob": "f4e2d8f6251a8fe4c799242d1f8e475698adc5f7",
+      "sha256": "1d712e218930cb40ec8fc76f5f401fa53f1def98ce1ecf3834a55855cfb0eeee"
+    },
+    {
+      "sourcePath": "src/styles/surveillance.js",
+      "localPath": "styles/surveillance.js",
+      "role": "runtime",
+      "gitBlob": "5eae7fdd342209b29d26a2627bac4688dd1a1a07",
+      "sha256": "8c51e932ee28c3bdb80045e6f37f416fb75a8722a02159de7146c0c36f2c3152"
+    },
+    {
+      "sourcePath": "src/styles/thermal.js",
+      "localPath": "styles/thermal.js",
+      "role": "runtime",
+      "gitBlob": "f623275074d17297bc92c5134fc6d5bd1e3f1e2a",
+      "sha256": "67109739082cc98c7df057d7f0ef1dd1ec20a1ad1a5774a6141fa0e9a8045d0a"
+    },
+    {
+      "sourcePath": "src/styles/anime.js",
+      "localPath": "styles/anime.js",
+      "role": "runtime",
+      "gitBlob": "4097ecc48816042d8277376f8b4ecb03f154a669",
+      "sha256": "ad56dce707ff10774660df022baa9d96b4bf7b5920ef65c75c423b69e5156e29"
+    },
+    {
+      "sourcePath": "src/styles/noir.js",
+      "localPath": "styles/noir.js",
+      "role": "runtime",
+      "gitBlob": "472dde990f15f9161578af70339dc23f2e1e6f11",
+      "sha256": "749bcf2bfd5f7ff3387ea7f9787ac24a39805eb052be9c753fad08ee90fd711a"
+    },
+    {
+      "sourcePath": "src/ui/visualEffects.js",
+      "localPath": "original/src/ui/visualEffects.js",
+      "role": "adaptation-reference",
+      "gitBlob": "9d10f0cef31a2aa22f3e0b9aba5c841d65491ab7",
+      "sha256": "5f1c91883b8f4629bfefd08015222bcdda10c3aaaa171016a0506c4b7f791560"
+    },
+    {
+      "sourcePath": "src/ui/views/panels/GlobeActions.vue",
+      "localPath": "original/src/ui/views/panels/GlobeActions.vue",
+      "role": "adaptation-reference",
+      "gitBlob": "d2c45cb0a4e2f823394b7f48533bd2ee26964eca",
+      "sha256": "cf7063fe6b696d2ba3c9807e2c7894e1876e648ae336f9ef3be5bb357243f39d"
+    },
+    {
+      "sourcePath": "src/ui/views/panels/GlobeCompass.vue",
+      "localPath": "original/src/ui/views/panels/GlobeCompass.vue",
+      "role": "adaptation-reference",
+      "gitBlob": "284e3cd40bb3b456fcaf8538fac79d5fa01e1b0e",
+      "sha256": "94f298a33a85b1b39b788eb5d4a0a73fabe10c9d2d3ba00143dc181682e36bde"
+    },
+    {
+      "sourcePath": "src/ui/views/CommandDockView.vue",
+      "localPath": "original/src/ui/views/CommandDockView.vue",
+      "role": "adaptation-reference",
+      "gitBlob": "ed2db21964eaee718669622d5c5b10c3ccd06640",
+      "sha256": "e1f2b30537c6c2a8ec264c0493e180b083329ea93d5715bdf03120f19b0fa1d2"
+    },
+    {
+      "sourcePath": "src/ui/views/panels/DisplayPanel.vue",
+      "localPath": "original/src/ui/views/panels/DisplayPanel.vue",
+      "role": "adaptation-reference",
+      "gitBlob": "3cd202161c4265913f0c778195f77417e8ec3dda",
+      "sha256": "91354b04942faf67ad4c22814be76833e9794830fa36cdd85e3232f05bab50ac"
+    },
+    {
+      "sourcePath": "src/ui/styles/command-dock.css",
+      "localPath": "original/src/ui/styles/command-dock.css",
+      "role": "adaptation-reference",
+      "gitBlob": "3c6c8e531e3becf467fd0d6631c5d4a48a6a5ff9",
+      "sha256": "43315bd762eeb4f49e3f11f5d1c5b1cb0528ca937df2d4a6246a501e62c8266d"
+    },
+    {
+      "sourcePath": "src/ui/styles/command-dock-trays.css",
+      "localPath": "original/src/ui/styles/command-dock-trays.css",
+      "role": "adaptation-reference",
+      "gitBlob": "fb41acb8e253fe2afb34a61e42b0ae5e5bddb6f2",
+      "sha256": "77fc50ceac82c7c1c0f614e6eae7712b66eb63cd1355198ecefc80fd2a316377"
+    },
+    {
+      "sourcePath": "src/ui/styles/panel-surfaces.css",
+      "localPath": "original/src/ui/styles/panel-surfaces.css",
+      "role": "adaptation-reference",
+      "gitBlob": "1f79bcbf7bc7f3c028588ed111bf9e24c9180b22",
+      "sha256": "ccd1e4e41e2f0ff6f8fe0e22a2d923c52b3c041a271bdb0fd292def6c42b556f"
+    },
+    {
+      "sourcePath": "src/ui/styles/controls.css",
+      "localPath": "original/src/ui/styles/controls.css",
+      "role": "adaptation-reference",
+      "gitBlob": "a7138b9b31a244b8a540418f794421575ba30ee6",
+      "sha256": "c2cead271c43f2a51df87c39eefce48b60e43282bff84602b1fcd4ad831d9318"
+    },
+    {
+      "sourcePath": "src/ui/styles/slider.css",
+      "localPath": "original/src/ui/styles/slider.css",
+      "role": "adaptation-reference",
+      "gitBlob": "4a5ee2ba2dce0a067b9559765f1827dea09f897f",
+      "sha256": "fa10907188ef10dfa697c241693f0389b212d9a43a696a719ef97fef38590bd3"
+    },
+    {
+      "sourcePath": "src/ui/styles/location.css",
+      "localPath": "original/src/ui/styles/location.css",
+      "role": "adaptation-reference",
+      "gitBlob": "5c10f20b5c65dd6ccacdea9400fb96a2890cffe0",
+      "sha256": "bc457dea1b39507fb6dd9948fe978940bca8226545e83e17b40a22596512bfdf"
+    },
+    {
+      "sourcePath": "src/ui/styles/action-button.css",
+      "localPath": "original/src/ui/styles/action-button.css",
+      "role": "adaptation-reference",
+      "gitBlob": "4da40cdb178f2f7c0ca47304099370552e0ec074",
+      "sha256": "15f9a8123a5fc42eb804e98687781d6f4281f784b434cf11aae42d9e96ae234c"
+    },
+    {
+      "sourcePath": "public/location.svg",
+      "localPath": "icons/location.svg",
+      "role": "runtime",
+      "gitBlob": "5f77aa3f624d45f945f9795b8db092c1aad2a0b4",
+      "sha256": "3d4472c928f7d01afb121ad7fcd949f516b7ea9e8125d9e63fd2c6abec3df74b"
+    },
+    {
+      "sourcePath": "public/visual-presets.svg",
+      "localPath": "icons/visual-presets.svg",
+      "role": "runtime",
+      "gitBlob": "192c961b02f9c0b349b2de8bae77b0ae38c2f3d3",
+      "sha256": "bcab34a5a2b20c958a1c2bfbafe6344feb2595da9d338431036cf002009d5177"
+    },
+    {
+      "sourcePath": "public/pin.svg",
+      "localPath": "icons/pin.svg",
+      "role": "runtime",
+      "gitBlob": "06408fc324bdafb11ce996dd1b2db64ace8cad24",
+      "sha256": "01184acd8cc80fc19525b3b1bbd4904c77cac38cc43329a8ed0e861e74fcfa62"
+    },
+    {
+      "sourcePath": "src/ui/styles/status.css",
+      "localPath": "original/src/ui/styles/status.css",
+      "role": "adaptation-reference",
+      "gitBlob": "bba1ef788ac5b376ca363ca5e75f02ce1acb849b",
+      "sha256": "ed26091d9616d3c8ca8f6d94da01c62259fd86d44cfe9665f1d502efde292415"
+    },
+    {
+      "sourcePath": "src/ui/styles/locale-picker.css",
+      "localPath": "original/src/ui/styles/locale-picker.css",
+      "role": "adaptation-reference",
+      "gitBlob": "418997c9d83850cb21b7357b23a82778068418fd",
+      "sha256": "c4469adc78b729f43851f9fcc0218d6df7d7fd89dfeb55b03fd939e20fdbb82a"
+    }
+  ],
+  "integration": {
+    "runtimeModules": [
+      "panelDisclosure.js",
+      "bloom.js",
+      "i18n/marker.js",
+      "ui/visualPresets.js",
+      "styles/retro.js",
+      "styles/surveillance.js",
+      "styles/thermal.js",
+      "styles/anime.js",
+      "styles/noir.js"
+    ],
+    "adaptedRelicFiles": [
+      "src/ui/inspection-shell.js",
+      "src/ui/inspection-shell.css",
+      "src/ui/visual-effects.js",
+      "src/worlds/inspection-effects.js",
+      "src/atlas/inspection-effects.js"
+    ],
+    "notes": [
+      "The upstream native panel disclosure controller and visual shader/preset modules are copied byte-for-byte at the pinned commit.",
+      "The Vue view sources and selected CSS are retained unchanged as comparison sources for RELIC's adapted DOM view and styles. Vue/Pinia application stores are not imported.",
+      "RELIC's planet navigation, data organization, renderer adapters and starfield are separate integration code.",
+      "No upstream third-party datasets, 3D models, credentials, provider configuration, or node_modules are included.",
+      "Visual shader stylization is illustrative; FLIR and night-vision modes do not provide measured thermal or low-light sensor data.",
+      "The RELIC shader adapter omits the decorative NVG and FLIR HUD blocks when compiling the original sources, including simulated temperatures, counters and recording markers."
+    ],
+    "runtimeAssets": [
+      "icons/location.svg",
+      "icons/visual-presets.svg",
+      "icons/pin.svg"
+    ]
+  }
+}

@@ -10,12 +10,14 @@ import { configureWorldPerformance, cameraDuration, flyToLocation, createOvervie
 import { createViewLoading } from '../ui/view-loading.js';
 import { initializeProviderCredits } from '../ui/provider-credits.js?v=14';
 import { observeSceneTheme } from '../ui/scene-theme.js';
+import { createStandaloneInspectionControls } from './inspection-controls.js';
 
 const $ = selector => document.querySelector(selector);
 const viewLoading = createViewLoading({ element:$('#earth-loading'), errorElement:$('#earth-error'), getLanguage });
 const input = $('#place-input');
 
 let viewer;
+let inspection;
 let disposeSceneTheme = () => {};
 let overviewFraming;
 let currentLayer;
@@ -139,7 +141,7 @@ async function start() {
       loading:viewLoading,
       isReady:() => baseImageryReady && viewer.scene.globe.tilesLoaded,
       onReady:() => { setLayer('satellite'); google3D.enable(); },
-      onSuspend:() => { siteFocusSerial++; viewer.camera.cancelFlight(); },
+      onSuspend:() => { inspection?.pause(); siteFocusSerial++; viewer.camera.cancelFlight(); },
     });
     viewer.scene.canvas.addEventListener('pointerdown', () => { siteFocusSerial++; }, { passive:true });
     viewer.scene.canvas.addEventListener('wheel', () => { siteFocusSerial++; }, { passive:true });
@@ -151,13 +153,19 @@ async function start() {
     disposeSceneTheme = observeSceneTheme(palette => {
       if (viewer.isDestroyed()) return;
       viewer.scene.backgroundColor = Cesium.Color.fromCssColorString(palette.background);
-      if (viewer.scene.skyBox) viewer.scene.skyBox.show = !palette.light;
+      inspection?.setTheme(palette.light?'day':'night');
       viewer.scene.requestRender();
     });
     viewer.scene.screenSpaceCameraController.minimumZoomDistance = 100;
     viewer.scene.screenSpaceCameraController.maximumZoomDistance = 55000000;
     overviewFraming = createOverviewFraming(viewer, Cesium, { ellipsoid:Cesium.Ellipsoid.WGS84, longitude:12, latitude:25 });
     overviewFraming.show();
+    inspection=createStandaloneInspectionControls({Cesium,viewer,body:'earth',ellipsoid:Cesium.Ellipsoid.WGS84,getLanguage,
+      beforeOrientation:()=>overviewFraming?.stop(),
+      onReset:()=>$('#reset-view').click(),
+      onLocate:value=>selectSite({...value,name:value.name||value.label||`${value.lat}, ${value.lon}`}),
+    });
+    inspection.setTheme(document.documentElement.dataset.theme);
     google3D = createGoogle3D(viewer, showGoogleState);
 
     // Render the packaged NASA base first; live layers and optional 3D tiles
@@ -219,7 +227,7 @@ $('#google3d-toggle').addEventListener('click', async () => {
   await google3D.enable();
 });
 start();
-window.addEventListener('pagehide', event => { if (!event.persisted) disposeSceneTheme(); });
+window.addEventListener('pagehide', event => { if (!event.persisted) { disposeSceneTheme(); inspection?.destroy(); } });
 startLiveData($('#earth-live-data'), () => 'earth');
 onLanguageChange(lang => {
   viewLoading.refresh();
