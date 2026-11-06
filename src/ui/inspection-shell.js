@@ -42,7 +42,7 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  if(!dashboard)return null;
  command ||= document.querySelector('.pd-command');inspector ||= dashboard.querySelector('.pd-inspector');
  if(!command||!inspector)return null;
- if(!document.querySelector('link[href*="inspection-shell.css"]')){const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('./inspection-shell.css?v=23',import.meta.url).href;document.head.append(link);}
+ if(!document.querySelector('link[href*="inspection-shell.css"]')){const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('./inspection-shell.css?v=24',import.meta.url).href;document.head.append(link);}
  const markers=new Map();
  for(const item of [command,inspector].filter(Boolean)){const marker=document.createComment('RELIC inspection return slot');item.before(marker);markers.set(item,marker);}
  const root=node('div','relic-inspection-shell');root.id='relic-inspection-shell';root.hidden=true;root.inert=true;
@@ -97,11 +97,14 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  const locale=node('details','locale-picker inspection-locale');
  const localeToggle=node('summary','locale-picker-button');
  const localeCode=node('span','locale-picker-code');
- const caret=node('span','inspection-language-caret');caret.textContent='▾';caret.setAttribute('aria-hidden','true');
+ const caret=node('i','inspection-language-caret');caret.innerHTML=glyph('chevron');caret.setAttribute('aria-hidden','true');
  localeToggle.append(localeCode,caret);
  const localeOptions=node('div','inspection-language-options');
  for(const [code,name] of [['en','English'],['fr','Français']]){
-  const option=node('button','inspection-language-option');option.type='button';option.textContent=name;
+  const option=node('button','inspection-language-option');option.type='button';
+  const badge=node('span','inspection-language-badge');badge.textContent=code.toUpperCase();badge.setAttribute('aria-hidden','true');
+  const title=node('span','inspection-language-name');title.textContent=name;
+  option.append(badge,title);
   option.lang=code;option.dataset.language=code;
   option.addEventListener('click',()=>{setLanguage(code);locale.open=false;localeToggle.focus();});
   localeOptions.append(option);

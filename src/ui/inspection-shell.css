@@ -648,23 +648,6 @@ html[data-theme=day] .inspection-range input::-moz-range-track { background: var
   border-color: rgba(54, 220, 255, 0.7);
   outline: none;
 }
-.inspection-locale .locale-picker-globe {
-  flex: none;
-  width: 0.95rem;
-  height: 0.95rem;
-  color: #55dff5;
-}
-.inspection-locale .locale-picker-caret {
-  flex: none;
-  width: 0.62rem;
-  height: 0.62rem;
-  margin-inline-start: -0.1rem;
-  opacity: 0.75;
-  transition: transform var(--transition-fast);
-}
-.inspection-locale :is(.locale-picker-globe,.locale-picker-caret) svg { width: 100%; height: 100%; display: block; }
-.inspection-locale .locale-picker-caret svg { transform: rotate(90deg); }
-.inspection-locale .locale-picker-button span:not(.locale-picker-code) { display: none !important; }
 html[data-theme=day] .relic-inspection-shell .inspection-locale .locale-picker-button {
   background: var(--glass-bg);
   border-color: var(--glass-border-hover);
@@ -692,7 +675,6 @@ html[data-theme=day] body.has-inspection-shell #relic-action-rail .rail-button:i
   .inspection-home img { width: 31px; height: 28px; }
   .inspection-locale { right: max(10px, env(safe-area-inset-right, 0px)); }
   .relic-inspection-shell .inspection-locale .locale-picker-button { width: 44px !important; min-height: 44px !important; padding: 0; }
-  .inspection-locale :is(.locale-picker-globe,.locale-picker-caret) { display: none; }
   .inspection-location-row { flex-direction: column; }
   .inspection-location-search { flex-basis: auto; width: 100%; }
   .inspection-location-pills { width: 100%; }
@@ -765,10 +747,30 @@ html[data-theme=day] body.has-inspection-shell #relic-action-rail .rail-button:i
   .inspection-preset .btn-label { padding-top: 10px; font-size: .56rem; }
 }
 
-.relic-inspection-shell .inspection-locale {pointer-events:auto}
+.relic-inspection-shell .inspection-locale {pointer-events:auto;z-index:2}
 .relic-inspection-shell .inspection-locale summary {list-style:none}
 .relic-inspection-shell .inspection-locale summary::-webkit-details-marker {display:none}
-.inspection-language-options {position:absolute;right:0;bottom:calc(100% + 8px);display:grid;gap:4px;min-width:128px;padding:5px;border:1px solid var(--inspection-border-hover);border-radius:10px;background:var(--inspection-popover);box-shadow:var(--inspection-shadow)}
-.relic-inspection-shell .inspection-language-option {min-height:42px;padding:6px 10px;text-align:left;border-radius:6px}
-.relic-inspection-shell .inspection-language-option:is(:hover,:focus-visible,[aria-pressed=true]) {background:var(--inspection-highlight);color:var(--inspection-accent)}
+.inspection-language-caret {display:grid;place-items:center;width:10px;height:10px;color:var(--inspection-accent)}
+.relic-inspection-shell .inspection-language-caret svg {
+  display:block;width:10px;height:10px;transform:rotate(90deg);transition:transform var(--transition-fast);
+}
+.inspection-locale[open] .inspection-language-caret svg {transform:rotate(-90deg)}
+.inspection-locale[open] .locale-picker-button {border-color:var(--inspection-accent)}
+.inspection-language-options {
+  position:absolute;right:0;bottom:calc(100% + 8px);display:grid;gap:4px;min-width:160px;padding:6px;
+  border:1px solid var(--inspection-border-hover);border-radius:12px;background:var(--inspection-popover);
+  box-shadow:var(--inspection-shadow);
+}
+.inspection-locale[open] .inspection-language-options {animation:command-dock-reveal 220ms ease-out both}
+.relic-inspection-shell .inspection-language-option {
+  display:grid;grid-template-columns:24px 1fr 14px;align-items:center;gap:8px;min-height:42px;
+  padding:6px 8px;text-align:left;border-radius:7px;font-size:13px;white-space:nowrap;
+}
+.inspection-language-badge {color:var(--inspection-muted);font:600 10px/1 var(--inspection-mono)}
+.relic-inspection-shell .inspection-language-option:is(:hover,:focus-visible,[aria-pressed=true]) {
+  background:var(--inspection-highlight);color:var(--inspection-accent);
+}
+.inspection-language-option[aria-pressed=true]::after {
+  content:'';justify-self:center;width:5px;height:9px;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg);
+}
 .inspection-top-actions [data-inspection-action=tilt] svg {width:26px;height:26px;flex-basis:26px}
