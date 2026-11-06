@@ -1,0 +1,41 @@
+@import url('./mascot-sprite.css');
+
+.relic-exploration-mascot {
+  --mascot-height: 78px;
+  position: fixed;
+  z-index: 18;
+  inset: auto auto calc(24px + env(safe-area-inset-bottom, 0px) + var(--provider-credits-height, 0px) + var(--detailed-credits-height, 0px))
+    max(14px, env(safe-area-inset-left, 0px));
+  display: grid;
+  place-items: end center;
+  min-width: 44px;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  box-shadow: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.relic-exploration-mascot[hidden] {display: none}
+.relic-exploration-mascot:focus-visible {outline: 2px solid #00bddf;outline-offset: 4px}
+body:has(#relic-action-panel:not([hidden])) .relic-exploration-mascot {visibility: hidden}
+
+@media (max-width: 700px) {
+  .relic-exploration-mascot {
+    --mascot-height: 61px;
+    bottom: calc(98px + env(safe-area-inset-bottom, 0px) + var(--provider-credits-height, 0px) + var(--detailed-credits-height, 0px));
+  }
+  body:has(.inspection-module-toggle[aria-expanded=true], .inspection-tray-toggle[aria-expanded=true]) .relic-exploration-mascot {
+    visibility: hidden;
+  }
+}
+@media (max-height: 560px) {
+  .relic-exploration-mascot {--mascot-height: 55px}
+}
+@media (max-height: 560px) and (orientation: landscape) {
+  body.has-inspection-shell .relic-exploration-mascot {left: max(78px, env(safe-area-inset-left, 0px))}
+}

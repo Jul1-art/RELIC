@@ -5,6 +5,7 @@ import { PLANET_SITES, NASA_IMAGERY } from './nasa-worlds.js';
 import { startLiveData, getLanguage, onLanguageChange } from './atlas-live.js?v=3';
 import { initializePlanetDashboard, setDashboardBody } from '../ui/planet-dashboard.js';
 import { createViewLoading } from '../ui/view-loading.js';
+import { createExplorationMascot } from '../ui/exploration-mascot.js';
 import { approximateOrbit } from './orbital-data.js';
 import { createNaturalSystems } from './natural-system.js';
 import { createSmallBodyBelts } from './small-body-belts.js';
@@ -119,6 +120,7 @@ try {
   throw new Error('The 3D renderer could not start.');
 }
 
+const mascot=createExplorationMascot({loading,getLanguage,onLanguageChange});
 const scene = new THREE.Scene();
 scene.background = sky;
 const camera = new THREE.PerspectiveCamera(40, viewportSize().width / viewportSize().height, .0000001, 150000);
@@ -740,6 +742,7 @@ function selectBody(id,recenter=false,{preserveCamera=false}={}) {
   detailedGlobe?.hide();
   simulationClock.setInspection(id!=='overview');simulationControls.refresh(true);
   selected=id;lastZoomInAt=lastZoomOutAt=-Infinity;pendingInspectionOrientation=null;
+  mascot.explore(id);
   setDashboardBody(['overview','sun','moon','67p',...planets.map(p=>p.id)].includes(id)?id:parentBodyId(id));
   applyFocusVisibility();
   const stateURL=new URL(location.href);
@@ -1181,6 +1184,7 @@ function requestSceneFrame() {
 }
 function syncSceneActivity() {
   const shouldSuspend = filmActive || document.hidden || pageInactive || navigationActive || graphicsInterrupted;
+  mascot.setSuspended(shouldSuspend);
   if (shouldSuspend) viewLoading.pause(); else viewLoading.resume();
   if(shouldSuspend){globeNavigation?.reset();solarNavigation?.cancel();}
   controls.enabled=!shouldSuspend&&!detailedGlobe?.active;
@@ -1226,7 +1230,7 @@ window.addEventListener('relic-navigation-state', event => { navigationActive = 
 window.addEventListener('pagehide', event => {
   pageInactive = true;
   syncSceneActivity();
-  if(!event.persisted){stopSceneTheme();projectionObserver.disconnect();naturalSystems?.dispose();comet?.dispose();cometOrbitDirections?.dispose();orbitDirections.dispose();simulationControls.dispose();solarNavigation.dispose();globeNavigation.dispose();inspectionControls.dispose();inspectionEffects.destroy();detailedGlobe.dispose();planetaryEphemeris.dispose();scaleReadout.dispose();surfaceDetail.dispose();solarIllumination.dispose();belts.dispose();viewLoading.dispose();controls.dispose();renderer.dispose();}
+  if(!event.persisted){mascot.dispose();stopSceneTheme();projectionObserver.disconnect();naturalSystems?.dispose();comet?.dispose();cometOrbitDirections?.dispose();orbitDirections.dispose();simulationControls.dispose();solarNavigation.dispose();globeNavigation.dispose();inspectionControls.dispose();inspectionEffects.destroy();detailedGlobe.dispose();planetaryEphemeris.dispose();scaleReadout.dispose();surfaceDetail.dispose();solarIllumination.dispose();belts.dispose();viewLoading.dispose();controls.dispose();renderer.dispose();}
 });
 window.addEventListener('pageshow', () => { pageInactive = false; navigationActive = false; syncSceneActivity(); });
 let cameraMotionOnPreviousFrame=false;
