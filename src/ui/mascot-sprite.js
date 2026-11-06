@@ -11,7 +11,7 @@ const DIRECTIONS = {
 const FRAME_COUNT = 8;
 const CELL_WIDTH = 172;
 const FRAME_WIDTH = 118;
-const FRAME_HEIGHT = 184;
+const FRAME_HEIGHT = 188;
 const spriteURL = name => new URL(`../../assets/mascot/${name}.png`, import.meta.url).href;
 let walkAtlas;
 
@@ -22,52 +22,8 @@ async function decode(name) {
   return image;
 }
 
-// Key out the pale background connected to the crop edges. Enclosed white
-// details on the helmet and suit remain opaque. The supplied sheet stays intact.
-function removeBackground(context, width, height) {
-  const image = context.getImageData(0, 0, width, height);
-  const rgba = image.data;
-  const queue = new Int32Array(width * height);
-  let tail = 0;
-  function visit(index) {
-    const i = index * 4;
-    if (!rgba[i + 3]) return;
-    const min = Math.min(rgba[i], rgba[i + 1], rgba[i + 2]);
-    const max = Math.max(rgba[i], rgba[i + 1], rgba[i + 2]);
-    if (min < 230 || max - min > 18) return;
-    rgba[i + 3] = 0;
-    queue[tail++] = index;
-  }
-  for (let x = 0; x < width; x++) {
-    visit(x);
-    visit((height - 1) * width + x);
-  }
-  for (let y = 1; y < height - 1; y++) {
-    visit(y * width);
-    visit(y * width + width - 1);
-  }
-  for (let head = 0; head < tail; head++) {
-    const index = queue[head];
-    const x = index % width;
-    if (x > 0) visit(index - 1);
-    if (x < width - 1) visit(index + 1);
-    if (index >= width) visit(index - width);
-    if (index + width < queue.length) visit(index + width);
-  }
-  context.putImageData(image, 0, 0);
-}
-
 function loadWalkAtlas() {
-  walkAtlas ??= decode('walk-sheet').then(image => {
-    const atlas = document.createElement('canvas');
-    atlas.width = image.width;
-    atlas.height = FRAME_HEIGHT;
-    const context = atlas.getContext('2d');
-    // The second row is the complete lateral walk. All eight poses share a baseline.
-    context.drawImage(image, 0, 201, atlas.width, atlas.height, 0, 0, atlas.width, atlas.height);
-    removeBackground(context, atlas.width, atlas.height);
-    return atlas;
-  }).catch(() => {
+  walkAtlas ??= decode('walk-sheet-transparent').catch(() => {
     walkAtlas = undefined;
     return null;
   });
@@ -122,8 +78,9 @@ export function createMascotSprite() {
     frame = next;
     const context = walk.getContext('2d');
     context.clearRect(0, 0, FRAME_WIDTH, FRAME_HEIGHT);
-    const sourceX = next * CELL_WIDTH + (CELL_WIDTH - FRAME_WIDTH) / 2;
-    context.drawImage(atlas, sourceX, 0, FRAME_WIDTH, FRAME_HEIGHT, 0, 0, FRAME_WIDTH, FRAME_HEIGHT);
+    // This sheet has an alpha channel and a shared boot baseline on row two.
+    const sourceX = next * CELL_WIDTH + 12;
+    context.drawImage(atlas, sourceX, 187, FRAME_WIDTH, FRAME_HEIGHT, 0, 0, FRAME_WIDTH, FRAME_HEIGHT);
   }
 
   async function prepareWalk(right) {

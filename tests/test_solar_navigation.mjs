@@ -90,8 +90,13 @@ test('leaving overview cancels queued motion and never reconfigures the focused 
   f.setActive(true);f.tick(2);assert.ok(f.camera.position.distanceTo(before)<1e-9);assert.equal(f.controls.enablePan,true);f.cleanup();assert.equal(f.element.tabIndex,-1);
 });
 
-test('keyboard pan and zoom scale with the view, Home delegates framing, and invalid camera state recovers',()=>{
-  const f=fixture(),target=f.controls.target.clone();f.element.emit('keydown',{key:'ArrowRight'});assert.ok(f.controls.target.distanceTo(target)>10);
+test('arrows leave the camera alone, keyboard zoom and Home work, and invalid camera state recovers',()=>{
+  const f=fixture(),target=f.controls.target.clone(),position=f.camera.position.clone();
+  for(const key of ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown']){
+    const event=f.element.emit('keydown',{key});
+    assert.notEqual(event.defaultPrevented,true);
+  }
+  assert.deepEqual(f.controls.target,target);assert.deepEqual(f.camera.position,position);
   const distance=f.controls.getDistance();f.element.emit('keydown',{key:'+'});f.tick(180);assert.ok(f.controls.getDistance()<distance);f.element.emit('keydown',{key:'Home'});assert.equal(f.intents.at(-1).type,'home');
   f.camera.position.x=NaN;f.tick();assert.ok([...f.camera.position.toArray(),...f.controls.target.toArray()].every(Number.isFinite));f.cleanup();
 });

@@ -25,6 +25,7 @@ let sourceCredit;
 let viewer,tileset,buildings,celestial,effects,disposed=false,ready=false,paused=false,focus={id:body},sourceMode='imagery',sourceLabel='',ionStatus='loading';
 let lastState=0,lastFrame=null,globalGrid=null,geography={lat:18,lon:0},lastHeading=0;
 let cameraMotion,lastCameraAction=null,arrivalPlayed=false;
+let disposeMascotKeys;
 let defaultFov=Math.PI/3;
 let earth3D=null,earthTerrainReady=false,earthBuildingsRequested=false;
 const adaptiveImagery=[];
@@ -317,7 +318,35 @@ function receive(event){
   else if(action==='northUp')northUp();
   else if(action==='reveal')reveal();
 }
-function dispose(){if(disposed)return;disposed=true;cameraMotion?.cancel();creditObserver.disconnect();window.removeEventListener('message',receive);earth3D?.destroy();effects?.destroy();celestial?.dispose();if(viewer&&!viewer.isDestroyed())viewer.destroy();}
+function bindMascotKeys(){
+  if(parent===window)return;
+  const arrows=new Set(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown']);
+  const held=new Set();
+  const lifecycle=new AbortController();
+  const options={signal:lifecycle.signal};
+  const reset=()=>{
+    if(!held.size)return;
+    held.clear();
+    post('mascot-key-reset');
+  };
+  window.addEventListener('keydown',event=>{
+    if(paused||!ready||event.defaultPrevented||!arrows.has(event.key)||event.isComposing||
+      event.altKey||event.ctrlKey||event.metaKey||event.shiftKey||
+      event.target.closest?.('input,textarea,select,button,a,[contenteditable],dialog,[role=dialog],[role=listbox]'))return;
+    held.add(event.key);
+    event.preventDefault();
+    post('mascot-key',{key:event.key,pressed:true,repeat:event.repeat});
+  },options);
+  window.addEventListener('keyup',event=>{
+    if(!held.delete(event.key))return;
+    event.preventDefault();
+    post('mascot-key',{key:event.key,pressed:false});
+  },options);
+  window.addEventListener('blur',reset,options);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)reset();},options);
+  return ()=>{reset();lifecycle.abort();};
+}
+function dispose(){if(disposed)return;disposed=true;disposeMascotKeys?.();cameraMotion?.cancel();creditObserver.disconnect();window.removeEventListener('message',receive);earth3D?.destroy();effects?.destroy();celestial?.dispose();if(viewer&&!viewer.isDestroyed())viewer.destroy();}
 async function start(){
   try{
     viewer=new Cesium.Viewer('globe',{ellipsoid,globe:new Cesium.Globe(ellipsoid),mapProjection:new Cesium.GeographicProjection(ellipsoid),
@@ -364,11 +393,12 @@ async function start(){
     scene.canvas.addEventListener('wheel',event=>{if(paused||!ready)return;event.preventDefault();interaction();zoom(wheelZoomFactor(event.deltaY,event.deltaMode,scene.canvas.clientHeight));},{passive:false});
     scene.canvas.tabIndex=0;
     scene.canvas.addEventListener('keydown',event=>{
-      const moves={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',s:'down',a:'left',d:'right'};
-      if(moves[event.key]){if(event.shiftKey&&event.key.startsWith('Arrow'))lookAround(event.key==='ArrowLeft'?-5:event.key==='ArrowRight'?5:0,event.key==='ArrowUp'?5:event.key==='ArrowDown'?-5:0);else move(moves[event.key]);}
+      const moves={w:'up',s:'down',a:'left',d:'right'};
+      if(moves[event.key])move(moves[event.key]);
       else if(event.key==='+'||event.key==='=')zoom(.8);else if(event.key==='-')zoom(1.25);else if(['n','Home'].includes(event.key))orient(0,0,0);else if(event.key.toLowerCase()==='q')orient(0,-5);else if(event.key.toLowerCase()==='e')orient(0,5);else if(event.key.toLowerCase()==='r')resetView(true);else return;
       event.preventDefault();post('interaction');
     });
+    disposeMascotKeys=bindMascotKeys();
     const handler=new Cesium.ScreenSpaceEventHandler(scene.canvas);
     handler.setInputAction(event=>{if(celestial?.handleClick(event.position,{pixels:compact?22:13}))interaction();},Cesium.ScreenSpaceEventType.LEFT_CLICK);
     handler.setInputAction(event=>{const hit=pickTarget(event.position);if(!hit)return;const cart=ellipsoid.cartesianToCartographic(hit),frame=cameraFrame();goTo(cart.latitude/DEG,cart.longitude/DEG,Math.max(50,(frame?.range||radius*.1)*.3),frame?.heading/DEG||0,frame?90+frame.pitch/DEG:0);interaction();},Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);

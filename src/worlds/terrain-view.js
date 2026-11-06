@@ -26,6 +26,7 @@ const pointer = new THREE.Vector2();
 const textureLoader = new THREE.TextureLoader();
 const siteCache = new Map();
 const pressed = new Set();
+const movementKeys = { w:'up', s:'down', a:'left', d:'right' };
 const forward = new THREE.Vector3();
 const right = new THREE.Vector3();
 
@@ -363,14 +364,14 @@ document.querySelectorAll('[data-move]').forEach(button => {
 });
 window.addEventListener('keydown', event => {
   if (event.target instanceof HTMLElement && /INPUT|TEXTAREA|SELECT/.test(event.target.tagName)) return;
-  const direction = { ArrowUp:'up', ArrowDown:'down', ArrowLeft:'left', ArrowRight:'right', w:'up', s:'down', a:'left', d:'right' }[event.key];
+  const direction = movementKeys[event.key];
   if (!direction) return;
   event.preventDefault();
   pressed.add(direction);
   invalidate();
 });
 window.addEventListener('keyup', event => {
-  const direction = { ArrowUp:'up', ArrowDown:'down', ArrowLeft:'left', ArrowRight:'right', w:'up', s:'down', a:'left', d:'right' }[event.key];
+  const direction = movementKeys[event.key];
   if (direction) pressed.delete(direction);
 });
 window.addEventListener('blur', () => pressed.clear());

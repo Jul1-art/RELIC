@@ -3,7 +3,7 @@ import {wheelZoomFactor,finiteCameraState} from './orbital-navigation.js';
 /** Overview gestures share OrbitControls' rotation/pan state. Wheel and pinch
  * zoom are coalesced here so a trackpad burst cannot skip the useful scales. */
 export function createSolarNavigation({THREE,camera,controls,element,isActive=()=>true,onIntent=()=>{},now=()=>performance.now()}){
-  const pointers=new Map(),offset=new THREE.Vector3(),normal=new THREE.Vector3(),right=new THREE.Vector3(),up=new THREE.Vector3();
+  const pointers=new Map(),offset=new THREE.Vector3(),normal=new THREE.Vector3();
   const raycaster=new THREE.Raycaster(),plane=new THREE.Plane(),before=new THREE.Vector3(),after=new THREE.Vector3(),anchor=new THREE.Vector2();
   const lastPosition=camera.position.clone(),lastTarget=controls.target.clone();
   const originalTabIndex=element.tabIndex;
@@ -56,14 +56,6 @@ export function createSolarNavigation({THREE,camera,controls,element,isActive=()
     }
     camera.lookAt(controls.target);camera.updateMatrixWorld(true);return true;
   }
-  function panByPixels(x,y){
-    const box=rect(),units=2*distance()*Math.tan(camera.fov*Math.PI/360)/Math.max(1,box.height);
-    camera.updateMatrixWorld(true);right.setFromMatrixColumn(camera.matrixWorld,0);up.setFromMatrixColumn(camera.matrixWorld,1);
-    offset.copy(right).multiplyScalar(x*units).addScaledVector(up,y*units);
-    before.copy(controls.target);controls.target.add(offset);
-    if(Number.isFinite(controls.maxTargetRadius))controls.target.sub(controls.cursor||new THREE.Vector3()).clampLength(0,controls.maxTargetRadius).add(controls.cursor||new THREE.Vector3());
-    offset.copy(controls.target).sub(before);camera.position.add(offset);camera.updateMatrixWorld(true);
-  }
   function update(dt=1/60){
     if(!active()){if(wasActive)refresh();return;}
     if(!wasActive)refresh();
@@ -114,9 +106,7 @@ export function createSolarNavigation({THREE,camera,controls,element,isActive=()
   }
   function keydown(event){
     if(!active()||event.defaultPrevented||event.ctrlKey||event.metaKey||event.altKey)return;
-    const moves={ArrowLeft:[-42,0],ArrowRight:[42,0],ArrowUp:[0,42],ArrowDown:[0,-42]};
-    if(moves[event.key]){cancel();panByPixels(...moves[event.key]);onIntent({type:'interaction',source:'keyboard'});}
-    else if(event.key==='+'||event.key==='=')queueZoom(.8,{x:0,y:0},'keyboard');
+    if(event.key==='+'||event.key==='=')queueZoom(.8,{x:0,y:0},'keyboard');
     else if(event.key==='-')queueZoom(1.25,{x:0,y:0},'keyboard');
     else if(event.key==='Home'){cancel();onIntent({type:'home',source:'keyboard'});}
     else return;

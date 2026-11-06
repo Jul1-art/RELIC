@@ -879,10 +879,7 @@ controls.addEventListener('change', () => {
 document.addEventListener('keydown',event=>{
   if(filmActive||selected==='overview'||selected==='sun'||COMET_IDS.includes(selected)||event.defaultPrevented||event.ctrlKey||event.metaKey||event.altKey||event.target.closest?.('input,textarea,select,button,[contenteditable=true],dialog,[role=listbox]'))return;
   const nav=detailedGlobe.active?detailedGlobe:globeNavigation;
-  const moves={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right'};
-  if(event.shiftKey&&moves[event.key])nav.lookAround?.(event.key==='ArrowLeft'?-5:event.key==='ArrowRight'?5:0,event.key==='ArrowUp'?5:event.key==='ArrowDown'?-5:0);
-  else if(moves[event.key])nav.move(moves[event.key]);
-  else if(event.key==='+'||event.key==='=')nav.zoom(.85);
+  if(event.key==='+'||event.key==='=')nav.zoom(.85);
   else if(event.key==='-')nav.zoom(1/.85);
   else if(event.key.toLowerCase()==='q')nav.turn(-5);
   else if(event.key.toLowerCase()==='e')nav.turn(5);

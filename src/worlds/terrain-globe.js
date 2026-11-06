@@ -424,7 +424,7 @@ function setUpControls() {
     await google3D.enable();
   });
   $('#reset-button').addEventListener('click', () => resetView());
-  const keys = { ArrowUp:'up', ArrowDown:'down', ArrowLeft:'left', ArrowRight:'right', w:'up', s:'down', a:'left', d:'right' };
+  const keys = { w:'up', s:'down', a:'left', d:'right' };
   window.addEventListener('keydown', event => {
     if (event.defaultPrevented || event.target instanceof HTMLElement && event.target.closest('input,textarea,select,button,dialog,[role=dialog],[role=listbox],[role=option]')) return;
     const direction = keys[event.key];
