@@ -8,7 +8,7 @@ const CHANNEL='relic-detailed-globe-v15';
  */
 export function createDetailedGlobe({host,onState=()=>{},onInteraction=()=>{},onSelect=()=>{}}){
   if(!document.querySelector('link[href*="detailed-globe.css"]')){
-    const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('./detailed-globe.css?v=22',import.meta.url).href;document.head.append(link);
+    const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('./detailed-globe.css?v=25',import.meta.url).href;document.head.append(link);
   }
   let visualSettings=null;
   let frame=null,current=null,ready=false,active=false,timer=0,state={},disposed=false,loading=false;
