@@ -8,6 +8,7 @@ import * as navigation from '../src/atlas/orbital-navigation.js';
 import * as sceneTheme from '../src/ui/scene-theme.js';
 import * as ionEarth from '../src/worlds/ion-earth.js';
 import * as inspectionEffects from '../src/worlds/inspection-effects.js';
+import * as inspectionCameraMotion from '../src/worlds/inspection-camera-motion.js';
 
 // Execute the native renderer's actual navigation functions without booting a
 // WebGL widget. Only its final browser bootstrap is replaced by test accessors.
@@ -40,6 +41,7 @@ async function fixture(body){
     '../ui/scene-theme.js':sceneTheme,
     './ion-earth.js':ionEarth,
     './inspection-effects.js':inspectionEffects,
+    './inspection-camera-motion.js':inspectionCameraMotion,
   };
   const module=new vm.SourceTextModule(instrumented,{context});
   await module.link(name=>{

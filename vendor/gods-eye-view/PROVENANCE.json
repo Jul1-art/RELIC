@@ -201,6 +201,20 @@
       "role": "adaptation-reference",
       "gitBlob": "418997c9d83850cb21b7357b23a82778068418fd",
       "sha256": "c4469adc78b729f43851f9fcc0218d6df7d7fd89dfeb55b03fd939e20fdbb82a"
+    },
+    {
+      "sourcePath": "src/ui/cameraOrientationControls.js",
+      "localPath": "original/src/ui/cameraOrientationControls.js",
+      "role": "original motion reference",
+      "gitBlob": "8b7857784fb64a288f12d1a0322bca0b471f7aee",
+      "sha256": "64a02324df82a579cf9f6a2b585d22e5c875768b86a63cde0cac65c89c6e3e8c"
+    },
+    {
+      "sourcePath": "src/camera.js",
+      "localPath": "original/src/camera.js",
+      "role": "original motion reference",
+      "gitBlob": "3fd49b58c077011a18ed4bfc72b4d9e2f9901609",
+      "sha256": "9410707f51ea9f2c4998cdc854089edfecc7ecaed43e1ec4054b26fbae192570"
     }
   ],
   "integration": {

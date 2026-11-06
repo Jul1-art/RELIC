@@ -6,7 +6,7 @@ import {normalizeVisualSettings} from '../src/ui/visual-effects.js';
 
 async function fixture(){
   const messages=[],states=[],listeners=new Map(),frames=[];
-  const document={documentElement:{dataset:{theme:'night'}},querySelector:()=>true,createElement(tag){
+  const document={documentElement:{dataset:{theme:'night',motion:'full'}},querySelector:()=>true,createElement(tag){
     const value={tag,classList:{add(){}},setAttribute(){},remove(){this.removed=true;},contentWindow:{postMessage:(message,origin)=>messages.push({message,origin})}};
     if(tag==='iframe')frames.push(value);return value;
   }};
@@ -28,11 +28,13 @@ test('lazy detail view accepts only the current same-origin frame and releases r
   const first=f.frames[0];assert.equal(first.src,'https://example.invalid/RELIC/pages/globe.html?body=earth&theme=night');
   f.receive(first,'ready',{},'https://untrusted.invalid');assert.equal(f.globe.active,false);
   f.receive(first,'boot');assert.equal(f.messages.at(-1).message.action,'focus');
-  f.receive(first,'ready',{latitude:40,longitude:2,rangeMeters:1000});assert.equal(f.globe.active,true);
+  f.receive(first,'ready',{latitude:40,longitude:2,rangeMeters:1000});
+  assert.equal(f.globe.active,false,'A ready frame waits for the approach to finish');
+  f.globe.reveal();assert.equal(f.globe.active,true);
   f.globe.zoom(.5);assert.equal(f.messages.at(-1).message.action,'zoom');
   f.globe.setFocus({id:'moon'});assert.equal(first.removed,true);assert.equal(f.globe.active,false);
   f.receive(first,'ready',{});assert.equal(f.globe.active,false,'A late replaced frame cannot reclaim the viewport');
-  const second=f.frames[1];f.receive(second,'ready',{latitude:0,longitude:0});assert.equal(f.globe.active,true);
+  const second=f.frames[1];f.receive(second,'ready',{latitude:0,longitude:0});f.globe.reveal();assert.equal(f.globe.active,true);
   f.globe.hide();assert.equal(second.removed,true);assert.equal(f.globe.active,false);assert.equal(f.globe.getViewState(),null);
   f.globe.dispose();assert.equal(f.listeners.size,0);
 });
@@ -69,5 +71,21 @@ test('the current safe visual settings reach every newly booted detail frame',as
   f.globe.setFocus({id:'mars'});f.receive(f.frames[1],'boot');
   message=f.messages.at(-1).message;
   assert.equal(message.value.style,'nvg');assert.equal(message.value.styleParams.gain,.7);
+  f.globe.dispose();
+});
+
+
+test('replacing a globe cancels its blend and discards its pending arrival flight',async()=>{
+  const f=await fixture();f.globe.setFocus({id:'earth'},{animateArrival:true});
+  const first=f.frames[0];let finish,cancelled=false;
+  first.animate=()=>({finished:new Promise(resolve=>{finish=resolve;}),cancel(){cancelled=true;}});
+  f.receive(first,'ready');f.globe.reveal();
+  assert.equal(f.states.at(-1).transitioning,true);
+  f.globe.setFocus({id:'mars'});
+  assert.equal(cancelled,true);
+  finish();
+  await Promise.resolve();
+  assert.equal(f.globe.active,false);
+  assert.ok(!f.messages.some(row=>row.message.action==='reveal'));
   f.globe.dispose();
 });

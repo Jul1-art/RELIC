@@ -8,7 +8,9 @@ License: MIT; the full upstream LICENSE is included beside this notice.
 Native disclosure and range controls, visual shaders, preset metadata, bloom
 helpers and three interface icons are reused in RELIC. The dock, panels and
 presets use upstream motion declarations and the preset crossfade timing.
-Original Vue views and selected CSS are included as unchanged source files.
+The globe orientation and Earth arrival use upstream camera easing and the
+original orientation timing. Original Vue views, camera modules and selected
+CSS are included as unchanged source files.
 RELIC supplies its own planet data, navigation and renderer integration.
 See PROVENANCE.json for exact paths and SHA-256 hashes.
 

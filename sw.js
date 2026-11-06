@@ -1,8 +1,8 @@
 /* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'inspection-20261106-v21-public';
-const INTERFACE_RELEASE = 'inspection-20261106-v21';
+const VERSION = 'inspection-20261106-v22-public';
+const INTERFACE_RELEASE = 'inspection-20261106-v22';
 const CLIENT_VERSION_TIMEOUT = 650;
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
@@ -33,6 +33,7 @@ const OFFLINE_CORE = [
   'src/ui/inspection-shell.js','src/ui/inspection-shell.css','src/ui/inspection-controls.js','src/ui/visual-effects.js',
   'src/ui/inspection-motion.js','src/ui/inspection-motion.css',
   'src/atlas/inspection-effects.js','src/worlds/inspection-effects.js','src/worlds/inspection-controls.js',
+  'src/worlds/inspection-camera-motion.js',
   'vendor/gods-eye-view/panelDisclosure.js','vendor/gods-eye-view/bloom.js','vendor/gods-eye-view/i18n/marker.js',
   'vendor/gods-eye-view/ui/visualPresets.js','vendor/gods-eye-view/PROVENANCE.json',
   'vendor/gods-eye-view/ui/rail/rangeValue.js','vendor/gods-eye-view/original/src/ui/styles/slider.css',

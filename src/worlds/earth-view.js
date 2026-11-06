@@ -161,7 +161,7 @@ async function start() {
     overviewFraming = createOverviewFraming(viewer, Cesium, { ellipsoid:Cesium.Ellipsoid.WGS84, longitude:12, latitude:25 });
     overviewFraming.show();
     inspection=createStandaloneInspectionControls({Cesium,viewer,body:'earth',ellipsoid:Cesium.Ellipsoid.WGS84,getLanguage,
-      beforeOrientation:()=>overviewFraming?.stop(),
+      beforeOrientation:()=>{siteFocusSerial++;overviewFraming?.stop();},
       onReset:()=>$('#reset-view').click(),
       onLocate:value=>selectSite({...value,name:value.name||value.label||`${value.lat}, ${value.lon}`}),
     });

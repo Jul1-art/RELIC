@@ -138,7 +138,7 @@ export function createOverviewFraming(viewer, Cesium, {
     };
     viewer.camera.cancelFlight();
     const seconds = cameraDuration(duration);
-    if (seconds) viewer.camera.flyTo({ ...options, duration:seconds });
+    if (seconds) viewer.camera.flyTo({ ...options, duration:seconds, easingFunction:Cesium.EasingFunction.CUBIC_IN_OUT });
     else viewer.camera.setView(options);
     viewer.scene.requestRender();
   }

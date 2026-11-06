@@ -33,12 +33,22 @@ export function readInspectionLink(url){
 /** One adapter per top-level renderer. The shell only sends semantic commands;
  * cameras and scientific scene objects remain owned by their renderer. */
 export function connectInspectionControls({getState,execute,applySettings=()=>{},getLanguage=()=> 'en',events=window,documentRef=document,clipboard=globalThis.navigator?.clipboard,initialSettings={}}){
-  let settings=normalizeVisualSettings(initialSettings),disposed=false,last='';
+  let settings=normalizeVisualSettings(initialSettings),disposed=false,last='',lastCamera='';
+  function publishCamera(state){
+    if(disposed||documentRef.hidden)return;
+    const {body,headingDeg,tiltDeg,orientationTargetTiltDeg,cameraMotion,cameraAction}=state||getState()||{};
+    const detail={body,headingDeg,tiltDeg,orientationTargetTiltDeg,cameraMotion,cameraAction};
+    const signature=JSON.stringify(detail);
+    if(signature===lastCamera)return;
+    lastCamera=signature;
+    events.dispatchEvent(new CustomEvent('relic-inspection-camera',{detail}));
+  }
   const feedback=(message,extra={})=>events.dispatchEvent(new CustomEvent('relic-inspection-feedback',{detail:{message,...extra}}));
   function publish(force=false){
     if(disposed||documentRef.hidden)return;
     const state={...getState(),settings};const signature=JSON.stringify(state);
     if(force||signature!==last){last=signature;events.dispatchEvent(new CustomEvent('relic-inspection-state',{detail:state}));}
+    publishCamera(state);
     return state;
   }
   function setSettings(patch){
@@ -71,5 +81,5 @@ export function connectInspectionControls({getState,execute,applySettings=()=>{}
   const ready=()=>publish(true);events.addEventListener('relic-inspection-mounted',ready);
   const timer=setInterval(publish,500);
   applySettings(settings);publish(true);
-  return {publish,setSettings,get settings(){return settings;},dispose(){if(disposed)return;disposed=true;clearInterval(timer);events.removeEventListener('relic-inspection-command',receive);events.removeEventListener('relic-inspection-mounted',ready);}};
+  return {publish,publishCamera,setSettings,get settings(){return settings;},dispose(){if(disposed)return;disposed=true;clearInterval(timer);events.removeEventListener('relic-inspection-command',receive);events.removeEventListener('relic-inspection-mounted',ready);}};
 }

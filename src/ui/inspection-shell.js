@@ -42,7 +42,7 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  if(!dashboard)return null;
  command ||= document.querySelector('.pd-command');inspector ||= dashboard.querySelector('.pd-inspector');
  if(!command||!inspector)return null;
- if(!document.querySelector('link[href*="inspection-shell.css"]')){const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('./inspection-shell.css?v=21',import.meta.url).href;document.head.append(link);}
+ if(!document.querySelector('link[href*="inspection-shell.css"]')){const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('./inspection-shell.css?v=22',import.meta.url).href;document.head.append(link);}
  const languageButton=document.querySelector('[data-language-toggle]');
  const originalLanguageClass=languageButton?.classList.contains('header-language');
  const markers=new Map();
@@ -50,7 +50,22 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  const root=node('div','relic-inspection-shell');root.id='relic-inspection-shell';root.hidden=true;root.inert=true;
  const top=node('nav','inspection-top-actions');top.id='inspection-top-actions';
  const actions=new Map();
- for(const key of ['share','tilt','north','reset']){const button=node('button','inspection-round');button.type='button';button.dataset.inspectionAction=key;button.innerHTML=glyph(key);if(key==='north'){const n=node('span','inspection-compass-n');n.textContent='N';button.prepend(n);}button.addEventListener('click',()=>emit(key));top.append(button);actions.set(key,button);}
+ for(const key of ['share','tilt','north','reset']){
+  const button=node('button','inspection-round');button.type='button';button.dataset.inspectionAction=key;button.innerHTML=glyph(key);
+  if(key==='north'){const n=node('span','inspection-compass-n');n.textContent='N';n.setAttribute('aria-hidden','true');button.prepend(n);}
+  const icon=button.querySelector('svg');
+  let press;
+  button.addEventListener('click',()=>{
+   press?.cancel();
+   const motion=document.documentElement.dataset.motion;
+   if(icon.animate&&motion!=='reduced'&&(motion==='full'||!matchMedia('(prefers-reduced-motion: reduce)').matches)){
+    // Use the press and hover scales from God's Eye View's status.css.
+    press=icon.animate([{scale:.95},{scale:1.1,offset:.42},{scale:1}],{duration:220,easing:'cubic-bezier(.4,0,.2,1)'});
+   }
+   emit(key);
+  });
+  top.append(button);actions.set(key,button);
+ }
  const modules=node('aside','inspection-modules');
  const display=makeModule('display'),data=makeModule('data');modules.append(display.element,data.element);
  const settingsForm=node('div','inspection-display-controls');display.body.append(settingsForm);
@@ -91,6 +106,7 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  let dashboardBody=dashboard.dataset.dashboardBody,publishedBody;
  let state={body:dashboardBody,settings:{...DEFAULTS,style:'normal'},capabilities:{}};
  let active=false,disposed=false,focusFrame=0,feedbackTimer=0;
+ let compassBody,compassHeading=0,cameraState={};
  const panelOpeners=new Map();
  const disclosures=[],openPanels=new Set(),pinned=new Set(),removers=[];
  const compact=matchMedia('(max-width:700px)');
@@ -108,6 +124,11 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  }
  const listen=(target,type,handler,options)=>{target.addEventListener(type,handler,options);removers.push(()=>target.removeEventListener(type,handler,options));};
  listen(events,'relic-inspection-state',event=>update(event.detail||{}));
+ listen(events,'relic-inspection-camera',event=>{
+  if(event.detail?.body!==state.body)return;
+  cameraState=event.detail;
+  syncCamera();
+ });
  listen(events,'relic-film-state',refresh);
  listen(narrow,'change',()=>{
   if(!narrow.matches||openPanels.size<2)return;
@@ -237,6 +258,7 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  }
  function update(next){
   publishedBody=next.body;
+  cameraState=next;
   const previousBody=state.body;state={...state,...next,settings:{...state.settings,...next.settings},capabilities:next.capabilities||state.capabilities};
   if(previousBody!==state.body){selectDataTab('overview');renderDestinations();}
   refresh();
@@ -279,9 +301,26 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
   syncSettings();selectDataTab(dataTab);
  }
  function syncCamera(){
-  actions.get('tilt').setAttribute('aria-pressed',String(Number(state.tiltDeg)>15));
-  actions.get('north').style.setProperty('--camera-heading',`${Number(state.headingDeg)||0}deg`);
-  for(const [key,control] of actions)control.disabled=state.capabilities[key]===false;
+  const camera=cameraState.body===state.body?cameraState:{};
+  const tilt=Number(camera.orientationTargetTiltDeg??camera.tiltDeg)>30;
+  const tiltButton=actions.get('tilt');
+  tiltButton.setAttribute('aria-pressed',String(tilt));
+  const fr=getLanguage()==='fr';
+  tiltButton.setAttribute('aria-label',tilt?(fr?'Revenir à la vue verticale':'Return to vertical view'):(fr?'Incliner la vue':'Tilt to oblique view'));
+  const north=actions.get('north');
+  const heading=Number(camera.headingDeg)||0;
+  if(compassBody!==state.body){compassBody=state.body;compassHeading=heading;}
+  else compassHeading+=((heading-compassHeading)%360+540)%360-180;
+  north.style.setProperty('--camera-heading',`${compassHeading}deg`);
+  const bearing=Math.round((heading%360+360)%360)%360;
+  const label=copy().north;
+  north.setAttribute('aria-label',Number.isFinite(camera.headingDeg)?`${label}. ${fr?'Cap':'Heading'} ${bearing}°`:label);
+  north.dataset.northUp=String(bearing===0);
+  top.dataset.cameraMotion=String(Boolean(camera.cameraMotion));
+  for(const [key,control] of actions){
+   control.disabled=state.capabilities[key]===false;
+   control.setAttribute('aria-busy',String(Boolean(camera.cameraMotion&&camera.cameraAction===key)));
+  }
  }
  function syncSettings(){
   const style=state.settings.style||'normal',language=getLanguage()==='fr'?'fr':'en';

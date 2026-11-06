@@ -3,17 +3,17 @@ import assert from 'node:assert/strict';
 import * as THREE from '../vendor/three.module.js';
 import {createGlobeNavigation,intersectGlobeRay,minimumGlobeAltitude} from '../src/atlas/globe-navigation.js';
 
-function fixture({id='earth',radius=1,radiusKm=6371}={}){
+function fixture({id='earth',radius=1,radiusKm=6371,motion='full'}={}){
   const camera=new THREE.PerspectiveCamera(40,1.5,.0000001,10000);camera.position.set(0,0,3*radius);camera.lookAt(0,0,0);camera.updateMatrixWorld(true);
   const mesh=new THREE.Mesh(new THREE.SphereGeometry(radius),new THREE.MeshBasicMaterial());mesh.updateMatrixWorld(true);
-  const handlers=new Map(),domElement={getBoundingClientRect:()=>({left:0,top:0,width:960,height:640}),addEventListener:(type,fn)=>handlers.set(type,fn),removeEventListener:type=>handlers.delete(type),setPointerCapture(){},releasePointerCapture(){}};
+  const handlers=new Map(),domElement={ownerDocument:{documentElement:{dataset:{motion}}},getBoundingClientRect:()=>({left:0,top:0,width:960,height:640}),addEventListener:(type,fn)=>handlers.set(type,fn),removeEventListener:type=>handlers.delete(type),setPointerCapture(){},releasePointerCapture(){}};
   const controls={target:new THREE.Vector3(),enabled:true,enableDamping:false,minDistance:radius*1.0002,maxDistance:1000,update(){camera.lookAt(this.target);camera.updateMatrixWorld(true);}};
   const focus={id,mesh,center:new THREE.Vector3(),radius,radiusKm};
-  let requested=null;
-  const nav=createGlobeNavigation({THREE,camera,controls,domElement,getFocus:()=>focus,onNavigate:(target,position)=>{requested={target,position};}});
+  let requested=null,time=0;
+  const nav=createGlobeNavigation({THREE,camera,controls,domElement,getFocus:()=>focus,now:()=>time,onNavigate:(target,position)=>{requested={target,position};}});
   const point=ndc=>{camera.updateMatrixWorld(true);const ray=new THREE.Raycaster();ray.setFromCamera(ndc,camera);return intersectGlobeRay(ray.ray.origin,ray.ray.direction,focus.center,radius);};
   const event=(x,y,overrides={})=>({clientX:x,clientY:y,pointerId:1,pointerType:'mouse',button:0,preventDefault(){},stopImmediatePropagation(){},...overrides});
-  return {nav,camera,controls,mesh,focus,handlers,point,event,request:()=>requested};
+  return {nav,camera,controls,mesh,focus,handlers,point,event,request:()=>requested,frameAt(ms){time=ms;controls.update();nav.enforce(time);}};
 }
 
 test('sphere picking chooses the visible surface and rejects rays pointing into space',()=>{
@@ -85,6 +85,57 @@ test('heading rotation retains the same surface pivot and physical camera cleara
   assert.ok(new THREE.Vector3(before.x,before.y,before.z).distanceTo(new THREE.Vector3(after.x,after.y,after.z))<1e-11);
   assert.ok(Math.abs(f.nav.getViewState().headingDeg-90)<1e-10);assert.ok(Math.abs((f.camera.position.length()-1)-altitude)<1e-10);
   f.nav.dispose();
+});
+
+test('the orientation button eases toward the oblique view around the original surface point',()=>{
+  const f=fixture(),pivot=f.point(new THREE.Vector2()),position=f.camera.position.clone();
+  assert.equal(f.nav.toggleViewTilt(),true);
+  assert.equal(f.nav.getViewState().cameraAction,'tilt');
+  assert.equal(f.nav.getViewState().orientationTargetTiltDeg,55);
+  assert.ok(f.camera.position.equals(position));
+  f.frameAt(162.5);
+  assert.ok(Math.abs(f.nav.getViewState().tiltDeg-3.4375)<1e-10);
+  assert.ok(f.camera.position.distanceTo(position)>0);
+  f.frameAt(650);
+  assert.ok(Math.abs(f.nav.getViewState().tiltDeg-55)<1e-10);
+  assert.equal(f.nav.cameraMotion,false);
+  const final=f.point(new THREE.Vector2());
+  assert.ok(Math.hypot(final.x-pivot.x,final.y-pivot.y,final.z-pivot.z)<1e-10);
+  f.nav.dispose();
+});
+
+test('rapid tilt reversal uses the requested view and a pointer gesture cancels its motion',()=>{
+  const f=fixture();
+  f.nav.toggleViewTilt();
+  f.frameAt(100);
+  assert.ok(f.nav.getViewState().tiltDeg<30);
+  f.nav.toggleViewTilt();
+  assert.equal(f.nav.getViewState().orientationTargetTiltDeg,1);
+  f.frameAt(300);
+  f.handlers.get('pointerdown')(f.event(480,320));
+  const interrupted=f.camera.position.clone();
+  f.frameAt(800);
+  assert.ok(f.camera.position.equals(interrupted));
+  assert.equal(f.nav.cameraMotion,false);
+  f.handlers.get('pointerup')(f.event(480,320));
+  f.nav.dispose();
+});
+
+test('north-up takes the shortest arc and reduced motion moves immediately',()=>{
+  const f=fixture();
+  f.nav.setTilt(55);f.nav.turn(350);
+  f.nav.northUp();
+  f.frameAt(325);
+  assert.ok(Math.abs(f.nav.getViewState().headingDeg-355)<1e-10);
+  assert.equal(f.nav.getViewState().orientationTargetHeadingDeg,0);
+  f.frameAt(650);
+  assert.equal(f.nav.getViewState().headingDeg,0);
+  f.nav.dispose();
+  const reduced=fixture({motion:'reduced'});
+  assert.equal(reduced.nav.toggleViewTilt(),true);
+  assert.equal(reduced.nav.getViewState().tiltDeg,55);
+  assert.equal(reduced.nav.cameraMotion,false);
+  reduced.nav.dispose();
 });
 
 test('tilted zoom respects one metre clearance and an idle oblique view has no camera or orientation drift',()=>{

@@ -9,6 +9,7 @@ import {wheelZoomFactor} from '../atlas/orbital-navigation.js';
 import {scenePalette} from '../ui/scene-theme.js';
 import {createIonEarthTiles} from './ion-earth.js';
 import {createCesiumInspectionEffects} from './inspection-effects.js';
+import {createInspectionCameraMotion,OBLIQUE_PITCH,STRAIGHT_DOWN_PITCH,OBLIQUE_THRESHOLD} from './inspection-camera-motion.js';
 
 Cesium.Ion.defaultAccessToken='';
 const CHANNEL='relic-detailed-globe-v15';
@@ -22,6 +23,7 @@ const radius=ellipsoid.maximumRadius,DEG=Math.PI/180;
 const credits=document.querySelector('#credits'),sourceCredit=document.querySelector('#source-credit');
 let viewer,tileset,buildings,celestial,effects,disposed=false,ready=false,paused=false,focus={id:body},sourceMode='imagery',sourceLabel='',ionStatus='loading';
 let lastState=0,lastFrame=null,globalGrid=null,geography={lat:18,lon:0},lastHeading=0;
+let cameraMotion,lastCameraAction=null,arrivalPlayed=false;
 let defaultFov=Math.PI/3;
 let earth3D=null,earthTerrainReady=false,earthBuildingsRequested=false;
 const adaptiveImagery=[];
@@ -64,14 +66,16 @@ function cameraFrame(){
   const heading=pitch< -89.5*DEG?lastHeading:Math.atan2(-local.x,-local.y);
   lastFrame={target,range,pitch,heading};return lastFrame;
 }
-function applyFrame(frame){
+function applyFrame(frame,{motion=false}={}){
   if(!frame||disposed)return;
+  if(!motion)cameraMotion?.cancel();
+  if(finite(frame.fov))viewer.camera.frustum.fov=frame.fov;
   const range=clamp(frame.range,10,radius*12),pitch=clamp(frame.pitch,-Math.PI/2+.0002,-5*DEG);
   viewer.camera.cancelFlight();
   viewer.camera.lookAt(frame.target,new Cesium.HeadingPitchRange(frame.heading,pitch,range));
   const destination=Cesium.Cartesian3.clone(viewer.camera.positionWC),direction=Cesium.Cartesian3.clone(viewer.camera.directionWC),up=Cesium.Cartesian3.clone(viewer.camera.upWC);
   viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);viewer.camera.setView({destination,orientation:{direction,up}});
-  lastHeading=frame.heading;lastFrame={...frame,range,pitch};requestRender();state(true);
+  lastHeading=frame.heading;lastFrame={...frame,range,pitch};requestRender();if(!motion)state(true);
 }
 function groundHeight(lat,lon){
   const point=new Cesium.Cartographic(lon*DEG,lat*DEG);
@@ -86,21 +90,60 @@ function goTo(lat,lon,range,heading=0,tilt=0){
   const target=Cesium.Cartesian3.fromDegrees(geography.lon,geography.lat,groundHeight(geography.lat,geography.lon),ellipsoid);
   applyFrame({target,range:clamp(range,20,radius*12),heading:heading*DEG,pitch:(clamp(tilt,0,85)-90)*DEG});
 }
-function resetView(){
+function animateView(frame,destination,duration){
+  if(!frame||disposed)return;
+  viewer.camera.cancelFlight();
+  cameraMotion.animate({...frame,fov:viewer.camera.frustum.fov},destination,duration);
+  state(true);
+}
+function wholeGlobeRange(){
+  const aspect=viewer.camera.frustum.aspectRatio||1;
+  const otherFov=2*Math.atan(Math.tan(defaultFov/2)*Math.min(aspect,1/aspect));
+  const halfFov=Math.max(.08,Math.min(defaultFov,otherFov)/2);
+  return radius*1.12/Math.sin(halfFov)-radius;
+}
+function resetView(animate=false){
+  const range=wholeGlobeRange();
+  if(animate){
+    const frame=cameraFrame();
+    if(frame){
+      animateView(frame,{heading:0,pitch:STRAIGHT_DOWN_PITCH,range,fov:defaultFov,action:'reset'},900);
+      return;
+    }
+  }
   viewer.camera.frustum.fov=defaultFov;
-  const halfFov=Math.max(.08,Math.min(viewer.camera.frustum.fovy||Math.PI/3,viewer.camera.frustum.fov||Math.PI/3)/2);
-  const range=radius*1.12/Math.sin(halfFov)-radius;
   goTo(geography.lat,geography.lon,range);
+}
+function reveal(){
+  if(body!=='earth'||arrivalPlayed||cameraMotion.destination)return;
+  arrivalPlayed=true;
+  const frame=cameraFrame();
+  if(!frame)return;
+  // Keep the incoming globe fully readable, then approach its current center.
+  // God's Eye View src/camera.js uses this same cubic ease for the startup fly-in.
+  const range=Math.min(frame.range,Math.max(wholeGlobeRange(),frame.range*.64));
+  animateView(frame,{range,pitch:Math.max(frame.pitch,-79*DEG),action:'arrival'},1300);
+}
+function toggleViewTilt(){
+  const frame=cameraFrame();if(!frame)return;
+  const pending=cameraMotion.destination;
+  const pitch=(pending?.pitch??frame.pitch)>OBLIQUE_THRESHOLD?STRAIGHT_DOWN_PITCH:OBLIQUE_PITCH;
+  animateView(frame,{heading:pending?.heading??frame.heading,pitch,action:'tilt'});
+}
+function northUp(){
+  const frame=cameraFrame();if(!frame)return;
+  animateView(frame,{heading:0,pitch:cameraMotion.destination?.pitch??frame.pitch,action:'north'});
 }
 function zoom(factor){
   if(!finite(factor)||factor<=0)return;
+  cameraMotion?.cancel();
   const hit=pickTarget(),distance=hit?Cesium.Cartesian3.distance(hit,viewer.camera.positionWC):Infinity;
   if(distance>radius*25){viewer.camera.frustum.fov=clamp(viewer.camera.frustum.fov*factor,.25*DEG,Math.PI/2);requestRender();state(true);return;}
   const frame=cameraFrame();if(frame)applyFrame({...frame,range:frame.range*clamp(factor,.1,10)});
 }
 function lookAround(yaw=0,pitch=0){
   if(!finite(yaw)||!finite(pitch)||disposed)return;
-  viewer.camera.cancelFlight();viewer.camera.lookRight(yaw*DEG);viewer.camera.lookUp(pitch*DEG);requestRender();state(true);
+  cameraMotion?.cancel();viewer.camera.cancelFlight();viewer.camera.lookRight(yaw*DEG);viewer.camera.lookUp(pitch*DEG);requestRender();state(true);
 }
 function orient(tiltDelta=0,headingDelta=0,absoluteTilt){
   const frame=cameraFrame();if(!frame)return;
@@ -119,8 +162,10 @@ function move(direction){
   applyFrame({...frame,target});
 }
 function state(force=false){
-  if(disposed||!viewer||!ready||(!force&&performance.now()-lastState<250))return;
-  lastState=performance.now();const frame=cameraFrame();if(!frame)return;
+  const target=cameraMotion?.destination,action=target?.action??null;
+  if(disposed||!viewer||!ready||(!force&&action===lastCameraAction&&performance.now()-lastState<(action?64:250)))return;
+  lastState=performance.now();lastCameraAction=action;
+  const frame=(action?lastFrame:cameraFrame())||lastFrame;if(!frame)return;
   const point=ellipsoid.cartesianToCartographic(frame.target),cameraPoint=ellipsoid.cartesianToCartographic(viewer.camera.positionWC);
   const latitude=point.latitude/DEG,longitude=point.longitude/DEG;
   const groundUnderCamera=surfaceHeight(cameraPoint);
@@ -137,6 +182,9 @@ function state(force=false){
   const metersPerPixel=Number.isFinite(viewRange)?2*viewRange*Math.tan((viewer.camera.frustum.fovy||Math.PI/3)/2)/Math.max(1,viewer.canvas.clientHeight):null;
   post('state',{state:{id:body,latitude,longitude,altitudeKm:Math.max(0,cameraPoint.height-groundUnderCamera)/1000,rangeMeters:frame.range,
     tiltDeg:clamp(90+frame.pitch/DEG,0,85),headingDeg:((frame.heading/DEG)%360+360)%360,
+    cameraAction:action,cameraMotion:Boolean(target),
+    orientationTargetTiltDeg:target?clamp(90+target.pitch/DEG,0,85):null,
+    orientationTargetHeadingDeg:target?((target.heading/DEG)%360+360)%360:null,
     metersPerPixel,scaleReference,
     sourceMode,sourceLabel,ionStatus,creditHeight:Math.ceil(credits.getBoundingClientRect().height),globalResolutionMeters:globalGrid?.nativeEquatorialSpacingMeters||null,
     contextBodies:(focus.context||[]).map(row=>row.id),cameraPosition:{x:viewer.camera.positionWC.x,y:viewer.camera.positionWC.y,z:viewer.camera.positionWC.z},cameraDirection:{x:viewer.camera.directionWC.x,y:viewer.camera.directionWC.y,z:viewer.camera.directionWC.z}}});
@@ -236,7 +284,7 @@ async function addEarthBuildings(token){
     buildings=viewer.scene.primitives.add(value);sourceLabel='Cesium ion · World Terrain + OSM Buildings · photorealistic tiles unavailable';updateCredits();state(true);requestRender();
   }catch{/* Keep measured world terrain if the optional OSM asset is unavailable. */}
 }
-function suspend(value){paused=Boolean(value);if(disposed||!viewer||viewer.isDestroyed())return;viewer.useDefaultRenderLoop=(!paused||!ready)&&!document.hidden;effects?.pause(paused||document.hidden);if(!paused||!ready){viewer.resize();requestRender();}}
+function suspend(value){paused=Boolean(value);if(disposed||!viewer||viewer.isDestroyed())return;if(paused||document.hidden)cameraMotion?.cancel();viewer.useDefaultRenderLoop=(!paused||!ready)&&!document.hidden;effects?.pause(paused||document.hidden);if(!paused||!ready){viewer.resize();requestRender();}}
 function applyViewTheme(value){
   const theme=value==='day'?'day':'night',palette=scenePalette(theme);
   document.documentElement.dataset.theme=theme;document.documentElement.style.colorScheme=palette.light?'light':'dark';
@@ -253,7 +301,7 @@ function receive(event){
   else if(action==='visualSettings'){effects?.setSettings(value);document.documentElement.dataset.visualPreset=effects?.settings.style||'normal';celestial?.setLabelsVisible?.(effects?.settings.labels!==false);state(true);}
   else if(action==='focus')setFocus(event.data.focus);
   else if(action==='context'){focus.context=event.data.context||[];celestial?.setBodies(focus.context);state(true);}
-  else if(action==='lookAt'&&typeof value==='string'){celestial?.lookAt(value);state(true);}
+  else if(action==='lookAt'&&typeof value==='string'){cameraMotion?.cancel();celestial?.lookAt(value);state(true);}
   else if(action==='look'&&value)lookAround(value.yaw,value.pitch);
   else if(action==='pause')suspend(value);
   else if(action==='dispose')dispose();
@@ -263,15 +311,19 @@ function receive(event){
   else if(action==='turn'&&finite(value))orient(0,value);
   else if(action==='move')move(value);
   else if(action==='topDown')orient(0,0,0);
-  else if(action==='resetView')resetView();
+  else if(action==='resetView')resetView(true);
+  else if(action==='toggleViewTilt')toggleViewTilt();
+  else if(action==='northUp')northUp();
+  else if(action==='reveal')reveal();
 }
-function dispose(){if(disposed)return;disposed=true;creditObserver.disconnect();window.removeEventListener('message',receive);earth3D?.destroy();effects?.destroy();celestial?.dispose();if(viewer&&!viewer.isDestroyed())viewer.destroy();}
+function dispose(){if(disposed)return;disposed=true;cameraMotion?.cancel();creditObserver.disconnect();window.removeEventListener('message',receive);earth3D?.destroy();effects?.destroy();celestial?.dispose();if(viewer&&!viewer.isDestroyed())viewer.destroy();}
 async function start(){
   try{
     viewer=new Cesium.Viewer('globe',{ellipsoid,globe:new Cesium.Globe(ellipsoid),mapProjection:new Cesium.GeographicProjection(ellipsoid),
       baseLayer:false,timeline:false,animation:false,baseLayerPicker:false,geocoder:false,homeButton:false,sceneModePicker:false,
       navigationHelpButton:false,fullscreenButton:false,vrButton:false,selectionIndicator:false,infoBox:false,creditContainer:document.querySelector('#cesium-credit'),showRenderLoopErrors:false,msaaSamples:1});
     const scene=viewer.scene,controller=scene.screenSpaceCameraController;
+    cameraMotion=createInspectionCameraMotion({Cesium,viewer,applyFrame:frame=>applyFrame(frame,{motion:true})});
     defaultFov=viewer.camera.frustum.fov;
     viewer.clock.shouldAnimate=false;scene.requestRenderMode=true;scene.maximumRenderTimeChange=Infinity;
     scene.backgroundColor=Cesium.Color.BLACK;scene.highDynamicRange=false;scene.verticalExaggeration=1;
@@ -290,7 +342,7 @@ async function start(){
     controller.zoomEventTypes=[];
     viewer.resolutionScale=Math.min(devicePixelRatio||1,compact?1.35:1.8);viewer.targetFrameRate=compact?45:60;
     viewer.camera.percentageChanged=.002;
-    const interaction=()=>{viewer.camera.cancelFlight();post('interaction');};
+    const interaction=()=>{cameraMotion.cancel();viewer.camera.cancelFlight();post('interaction');};
     const touchPoints=new Map();let touchLook=null;
     const touchMetrics=()=>{const points=[...touchPoints.values()].slice(0,2);return points.length===2?{x:(points[0].x+points[1].x)/2,y:(points[0].y+points[1].y)/2,spread:Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y)}:null;};
     scene.canvas.addEventListener('pointerdown',event=>{
@@ -313,15 +365,15 @@ async function start(){
     scene.canvas.addEventListener('keydown',event=>{
       const moves={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',s:'down',a:'left',d:'right'};
       if(moves[event.key]){if(event.shiftKey&&event.key.startsWith('Arrow'))lookAround(event.key==='ArrowLeft'?-5:event.key==='ArrowRight'?5:0,event.key==='ArrowUp'?5:event.key==='ArrowDown'?-5:0);else move(moves[event.key]);}
-      else if(event.key==='+'||event.key==='=')zoom(.8);else if(event.key==='-')zoom(1.25);else if(['n','Home'].includes(event.key))orient(0,0,0);else if(event.key.toLowerCase()==='q')orient(0,-5);else if(event.key.toLowerCase()==='e')orient(0,5);else if(event.key.toLowerCase()==='r')resetView();else return;
-      event.preventDefault();interaction();
+      else if(event.key==='+'||event.key==='=')zoom(.8);else if(event.key==='-')zoom(1.25);else if(['n','Home'].includes(event.key))orient(0,0,0);else if(event.key.toLowerCase()==='q')orient(0,-5);else if(event.key.toLowerCase()==='e')orient(0,5);else if(event.key.toLowerCase()==='r')resetView(true);else return;
+      event.preventDefault();post('interaction');
     });
     const handler=new Cesium.ScreenSpaceEventHandler(scene.canvas);
     handler.setInputAction(event=>{if(celestial?.handleClick(event.position,{pixels:compact?22:13}))interaction();},Cesium.ScreenSpaceEventType.LEFT_CLICK);
     handler.setInputAction(event=>{const hit=pickTarget(event.position);if(!hit)return;const cart=ellipsoid.cartesianToCartographic(hit),frame=cameraFrame();goTo(cart.latitude/DEG,cart.longitude/DEG,Math.max(50,(frame?.range||radius*.1)*.3),frame?.heading/DEG||0,frame?90+frame.pitch/DEG:0);interaction();},Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
     scene.renderError.addEventListener(()=>{post('error');dispose();});
     scene.postRender.addEventListener(()=>state());
-    viewer.camera.changed.addEventListener(()=>state(true));
+    viewer.camera.changed.addEventListener(()=>{if(!cameraMotion.destination)state(true);});
     window.addEventListener('message',receive);
     document.addEventListener('visibilitychange',()=>suspend(paused));
     window.addEventListener('pagehide',dispose,{once:true});

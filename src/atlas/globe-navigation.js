@@ -24,17 +24,20 @@ export function minimumGlobeAltitude({radius,radiusKm,minAltitudeKm=.001}) {
  * free-look quaternion survives OrbitControls.update(), while controls.target
  * stays at the body centre for the atlas tracking and exit-distance code.
  */
-export function createGlobeNavigation({THREE,camera,controls,domElement,getFocus,onInteraction=()=>{},onNavigate}) {
+export function createGlobeNavigation({THREE,camera,controls,domElement,getFocus,onInteraction=()=>{},onNavigate,now=()=>performance.now()}) {
   const raycaster=new THREE.Raycaster(),ndc=new THREE.Vector2();
   const quaternion=new THREE.Quaternion(),offset=new THREE.Vector3(),a=new THREE.Vector3(),b=new THREE.Vector3();
   const originalUp=camera.up.clone(),originalNear=camera.near,pointers=new Map();
   const radians=Math.PI/180;
+  // Port of God's Eye View's cameraOrientationControls.js orbit motion (MIT, a33bc379).
+  const orientationDuration=650,obliqueTilt=55*radians,straightDownTilt=1*radians,obliqueThreshold=30*radians;
+  let orientation=null;
   let anchor=null,previousCentroid=null,previousSpread=0,previousAngle=0,dragId=null,dragMode='grab',savedEnabled=true,disposed=false,frame=null,freeLook=null;
   const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
   function focus(){
     const value=getFocus?.();
-    if(!value?.mesh?.isMesh||!(value.radius>0)||!value.center){if(freeLook)camera.up.copy(originalUp);freeLook=null;frame=null;return null;}
-    if(frame&&frame.id!==value.id)frame=null;
+    if(!value?.mesh?.isMesh||!(value.radius>0)||!value.center){if(freeLook)camera.up.copy(originalUp);freeLook=null;frame=null;orientation=null;return null;}
+    if(frame&&frame.id!==value.id){frame=null;orientation=null;}
     if(freeLook&&freeLook.id!==value.id){freeLook=null;camera.up.copy(originalUp);}
     return value;
   }
@@ -64,7 +67,10 @@ export function createGlobeNavigation({THREE,camera,controls,domElement,getFocus
     const {normal,north,east}=frameBasis(pivot,value),relative=camera.position.clone().sub(pivot),range=relative.length();
     const tangent=relative.clone().addScaledVector(normal,-relative.dot(normal));
     const tilt=range>0?Math.acos(clamp(relative.dot(normal)/range,-1,1)):0;
-    const heading=tangent.lengthSq()>1e-14?Math.atan2(tangent.dot(east),-tangent.dot(north)):0;
+    const up=new THREE.Vector3(0,1,0).applyQuaternion(camera.quaternion);
+    const heading=tilt>1.5*radians&&tangent.lengthSq()>1e-14
+      ?Math.atan2(tangent.dot(east),-tangent.dot(north))
+      :Math.atan2(-up.dot(east),up.dot(north));
     frame={id:value.id,pivot,normal,north,east,range:Math.max(minimumGlobeAltitude(value),range),tilt:clamp(tilt,0,85*radians),heading,position:camera.position.clone()};
     return frame;
   }
@@ -89,7 +95,49 @@ export function createGlobeNavigation({THREE,camera,controls,domElement,getFocus
     const minimumRange=-value.radius*c+Math.sqrt(value.radius*value.radius*c*c+2*value.radius*minimum+minimum*minimum);
     f.range=Math.max(minimumRange,f.range);
     offset.copy(f.normal).multiplyScalar(c).addScaledVector(f.north,-s*Math.cos(f.heading)).addScaledVector(f.east,s*Math.sin(f.heading));
-    camera.position.copy(f.pivot).addScaledVector(offset,f.range);changed(value);enforce();
+    camera.position.copy(f.pivot).addScaledVector(offset,f.range);changed(value);
+  }
+  function reducedMotion(){
+    const motion=domElement.ownerDocument?.documentElement.dataset.motion;
+    return motion==='reduced'||(!motion&&globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches);
+  }
+  function interact(){
+    orientation=null;
+    onInteraction();
+  }
+  function orient(action){
+    const value=focus();if(!value)return false;
+    if(freeLook){
+      // As in God's Eye View, leave the camera alone when it points into space.
+      if(!hit(new THREE.Vector2(),value))return false;
+      frame=null;freeLook=null;
+    }
+    const current=ensureFrame(value),pending=orientation?.destination??current;
+    const destination={
+      tilt:action==='tilt'?(pending.tilt>obliqueThreshold?straightDownTilt:obliqueTilt):pending.tilt,
+      heading:action==='north'?0:pending.heading,
+    };
+    onInteraction();
+    if(reducedMotion()){
+      orientation=null;
+      current.tilt=destination.tilt;current.heading=destination.heading;
+      placeFrame(value);enforce();return true;
+    }
+    const headingDelta=destination.heading-current.heading;
+    orientation={action,start:now(),tilt:current.tilt,heading:current.heading,
+      headingDelta:Math.atan2(Math.sin(headingDelta),Math.cos(headingDelta)),destination};
+    return true;
+  }
+  function advanceOrientation(time,value){
+    const {start,tilt,heading,headingDelta,destination}=orientation;
+    const progress=reducedMotion()?1:clamp((time-start)/orientationDuration,0,1);
+    // Cesium.EasingFunction.CUBIC_IN_OUT, used by God's Eye View.
+    const t=progress*2;
+    const eased=t<1?.5*t*t*t:.5*((t-2)**3+2);
+    frame.tilt=THREE.MathUtils.lerp(tilt,destination.tilt,eased);
+    frame.heading=progress===1?destination.heading:heading+headingDelta*eased;
+    if(progress===1)orientation=null;
+    placeFrame(value);
   }
   function rotateCamera(q,value){
     offset.copy(camera.position).sub(value.center).applyQuaternion(q);
@@ -108,8 +156,9 @@ export function createGlobeNavigation({THREE,camera,controls,domElement,getFocus
     controls.minDistance=minimum;
     return {minimum,maximum:Math.max(minimum,Number.isFinite(controls.maxDistance)?controls.maxDistance:minimum*10000)};
   }
-  function enforce(){
+  function enforce(time){
     const value=focus();if(!value)return false;
+    if(orientation&&Number.isFinite(time))advanceOrientation(time,value);
     const {minimum}=limits(value);offset.copy(camera.position).sub(value.center);
     const distance=offset.length(),epsilon=Math.max(value.radius*1e-12,1e-13);
     if(!Number.isFinite(distance))return false;
@@ -132,7 +181,7 @@ export function createGlobeNavigation({THREE,camera,controls,domElement,getFocus
   }
   function zoom(factor,pointer){
     const value=focus();if(!value||!Number.isFinite(factor)||factor<=0)return false;
-    onInteraction();const grabbed=pointer?hit(pointer,value):null;
+    interact();const grabbed=pointer?hit(pointer,value):null;
     const {minimum,maximum}=limits(value);
     if(frame?.id===value.id){frame.range=Math.min(maximum,frame.range*factor);placeFrame(value);}
     else{
@@ -146,7 +195,7 @@ export function createGlobeNavigation({THREE,camera,controls,domElement,getFocus
   }
   function focusPoint(pointer,factor=.28){
     const value=focus(),point=hit(pointer,value);if(!value||!point)return false;
-    onInteraction();frame=null;freeLook=null;const {minimum,maximum}=limits(value);
+    interact();frame=null;freeLook=null;const {minimum,maximum}=limits(value);
     const altitude=Math.max(minimum-value.radius,(camera.position.distanceTo(value.center)-value.radius)*factor);
     const position=point.sub(value.center).normalize().multiplyScalar(Math.min(maximum,value.radius+altitude)).add(value.center);
     if(onNavigate)onNavigate(value.center.clone(),position,550);
@@ -154,17 +203,17 @@ export function createGlobeNavigation({THREE,camera,controls,domElement,getFocus
     return true;
   }
   function tilt(degrees){
-    const value=focus();if(!value||!Number.isFinite(degrees))return false;onInteraction();
+    const value=focus();if(!value||!Number.isFinite(degrees))return false;interact();
     freeLook=null;
-    const f=ensureFrame(value);f.tilt=clamp(f.tilt+degrees*radians,0,85*radians);placeFrame(value);return true;
+    const f=ensureFrame(value);f.tilt=clamp(f.tilt+degrees*radians,0,85*radians);placeFrame(value);enforce();return true;
   }
   function setTilt(degrees){const value=focus();if(!value||!Number.isFinite(degrees))return false;const f=ensureFrame(value);return tilt(degrees-f.tilt/radians);}
   function turn(degrees){
-    const value=focus();if(!value||!Number.isFinite(degrees))return false;onInteraction();freeLook=null;const f=ensureFrame(value);
-    f.heading=(f.heading+degrees*radians)%(Math.PI*2);placeFrame(value);return true;
+    const value=focus();if(!value||!Number.isFinite(degrees))return false;interact();freeLook=null;const f=ensureFrame(value);
+    f.heading=(f.heading+degrees*radians)%(Math.PI*2);placeFrame(value);enforce();return true;
   }
   function moveSurface(direction,amount=1){
-    const value=focus();if(!value||!['up','down','left','right'].includes(direction)||!Number.isFinite(amount))return false;onInteraction();
+    const value=focus();if(!value||!['up','down','left','right'].includes(direction)||!Number.isFinite(amount))return false;interact();
     const f=ensureFrame(value),height=Math.max(minimumGlobeAltitude(value),camera.position.distanceTo(value.center)-value.radius);
     const step=clamp(height/value.radius*.15,.00000002,.12)*amount;
     const vertical=direction==='up'||direction==='down',sign=direction==='up'||direction==='right'?1:-1;
@@ -172,13 +221,13 @@ export function createGlobeNavigation({THREE,camera,controls,domElement,getFocus
     const axis=new THREE.Vector3().crossVectors(f.normal,tangent).normalize();quaternion.setFromAxisAngle(axis,step*sign);rotateCamera(quaternion,value);enforce();return true;
   }
   function topDown(){
-    const value=focus();if(!value)return false;onInteraction();freeLook=null;const f=ensureFrame(value);
+    const value=focus();if(!value)return false;interact();freeLook=null;const f=ensureFrame(value);
     // Preserve the visible geography and altitude when changing to the nadir.
     const altitude=Math.max(minimumGlobeAltitude(value),camera.position.distanceTo(value.center)-value.radius);
-    f.tilt=0;f.heading=0;f.range=altitude;placeFrame(value);return true;
+    f.tilt=0;f.heading=0;f.range=altitude;placeFrame(value);enforce();return true;
   }
   function resetView(){
-    const value=focus();if(!value)return false;onInteraction();frame=null;freeLook=null;camera.up.copy(originalUp);
+    const value=focus();if(!value)return false;interact();frame=null;freeLook=null;camera.up.copy(originalUp);
     offset.copy(camera.position).sub(value.center);if(offset.lengthSq()<1e-12)offset.set(0,.3,1);
     offset.setLength(value.radius*3.1);camera.position.copy(value.center).add(offset);changed(value);enforce();return true;
   }
@@ -194,14 +243,16 @@ export function createGlobeNavigation({THREE,camera,controls,domElement,getFocus
         rangeWorld:surface?surface.distanceTo(camera.position):Math.max(minimumGlobeAltitude(value),camera.position.distanceTo(value.center)-value.radius),
         tiltDeg:90+elevation,headingDeg:((heading%360)+360)%360};
     }
-    return {id:value.id,rangeWorld:frame?.id===value.id?frame.range:Math.max(minimumGlobeAltitude(value),camera.position.distanceTo(value.center)-value.radius),tiltDeg:frame?.id===value.id?frame.tilt/radians:0,headingDeg:frame?.id===value.id?(frame.heading/radians+360)%360:0};
+    return {id:value.id,rangeWorld:frame?.id===value.id?frame.range:Math.max(minimumGlobeAltitude(value),camera.position.distanceTo(value.center)-value.radius),tiltDeg:frame?.id===value.id?frame.tilt/radians:0,headingDeg:frame?.id===value.id?(frame.heading/radians+360)%360:0,
+      cameraAction:orientation?.action,orientationTargetTiltDeg:orientation?orientation.destination.tilt/radians:undefined,
+      orientationTargetHeadingDeg:orientation?(orientation.destination.heading/radians+360)%360:undefined};
   }
   /** Rotate the sightline without translating the observer. Positive yaw turns
    * right, positive pitch looks up; roll supports a two-finger twist.
    */
   function lookAround(yawDegrees=0,pitchDegrees=0,rollDegrees=0){
     const value=focus();if(!value||![yawDegrees,pitchDegrees,rollDegrees].every(Number.isFinite))return false;
-    onInteraction();
+    interact();
     if(freeLook?.id!==value.id)freeLook={id:value.id,quaternion:camera.quaternion.clone(),up:camera.up.clone(),position:camera.position.clone()};
     const orientation=freeLook.quaternion;
     if(yawDegrees){a.set(0,1,0).applyQuaternion(orientation).normalize();quaternion.setFromAxisAngle(a,-yawDegrees*radians);orientation.premultiply(quaternion);}
@@ -217,6 +268,7 @@ export function createGlobeNavigation({THREE,camera,controls,domElement,getFocus
   function consume(event){event.preventDefault();event.stopImmediatePropagation();}
   function down(event){
     const value=focus();if(!value||event.pointerType!=='touch'&&![0,1,2].includes(event.button))return;
+    orientation=null;
     const point={x:event.clientX,y:event.clientY},orient=event.button===2||event.shiftKey,orbit=event.button===1||event.ctrlKey;
     const onSurface=hit(toNdc(point),value);
     if(!pointers.size&&!orient&&!orbit&&!onSurface&&event.pointerType!=='touch'&&!freeLook)return;
@@ -260,7 +312,7 @@ export function createGlobeNavigation({THREE,camera,controls,domElement,getFocus
   function reset(){
     if(pointers.size)controls.enabled=savedEnabled;
     for(const id of pointers.keys())try{domElement.releasePointerCapture?.(id);}catch{}
-    pointers.clear();frame=null;freeLook=null;anchor=null;previousCentroid=null;previousSpread=0;dragId=null;
+    pointers.clear();frame=null;freeLook=null;orientation=null;anchor=null;previousCentroid=null;previousSpread=0;dragId=null;
     camera.up.copy(originalUp);camera.near=originalNear;camera.updateProjectionMatrix();
   }
   function getSurfaceCoordinates(){
@@ -273,6 +325,8 @@ export function createGlobeNavigation({THREE,camera,controls,domElement,getFocus
     return {id:value.id,latitude,longitude,altitudeRatio,altitudeKm:Number.isFinite(value.radiusKm)?altitudeRatio*value.radiusKm:null};
   }
   return {zoom,focusPoint,enforce,reset,getSurfaceCoordinates,tilt,tiltBy:tilt,setTilt,turn,rotateHeading:turn,move:moveSurface,moveSurface,topDown,resetView,getViewState,lookAround,
+    toggleViewTilt:()=>orient('tilt'),northUp:()=>orient('north'),
+    get cameraMotion(){return Boolean(orientation);},
     get isFreeLook(){const value=focus();return Boolean(value&&freeLook?.id===value.id);},
     dispose(){if(disposed)return;disposed=true;reset();for(const [type,handler] of Object.entries(listeners))domElement.removeEventListener(type,handler,{capture:true});}
   };

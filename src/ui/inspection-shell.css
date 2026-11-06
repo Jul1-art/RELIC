@@ -138,6 +138,12 @@ html[data-theme=day] .relic-inspection-shell {
   color: var(--accent);
   box-shadow: 0 0 14px rgba(0, 212, 255, 0.18);
 }
+.relic-inspection-shell .inspection-top-actions > button[aria-busy=true] {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
+  box-shadow: 0 0 14px var(--accent-glow);
+}
 .inspection-compass-n {
   position: absolute;
   top: 2px;
@@ -154,6 +160,10 @@ html[data-theme=day] .relic-inspection-shell {
   transform: translateY(4px) rotate(calc(-1 * var(--camera-heading, 0deg)));
   transition: transform var(--transition-fast);
 }
+.inspection-top-actions[data-camera-motion=true] [data-inspection-action=north] svg {
+  transition: none;
+}
+
 .relic-inspection-shell .inspection-icon-button {
   display: inline-grid;
   place-items: center;

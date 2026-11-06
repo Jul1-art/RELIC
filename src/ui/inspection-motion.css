@@ -159,6 +159,8 @@ html[data-motion=reduced] .relic-inspection-shell *::after {
   }
   html[data-motion=full] .relic-inspection-shell .inspection-preset::before,
   html[data-motion=full] .relic-inspection-shell :is(
+    .inspection-top-actions > button,
+    .inspection-top-actions:not([data-camera-motion=true]) [data-inspection-action=north] svg,
     .inspection-module-toggle svg,
     .inspection-preset,
     .inspection-preset .btn-icon,
