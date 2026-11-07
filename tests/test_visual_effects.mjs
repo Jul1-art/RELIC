@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {createStyleTransition} from '../src/ui/visual-effects.js';
+import {createStyleTransition,createScopeTransition} from '../src/ui/visual-effects.js';
 
 test('visual presets use the original 500 ms quadratic crossfade',()=>{
   let time=0;
@@ -50,4 +50,29 @@ test('reduced motion settles a running fade and switches styles immediately',()=
   fade.setStyle('normal');
   assert.equal(fade.intensities.anime,0);
   assert.equal(fade.active,false);
+});
+
+
+test('scope opens and closes smoothly, including reversal before completion',()=>{
+  let time=0;
+  const scope=createScopeTransition({now:()=>time,reducedMotion:()=>false});
+  scope.setEnabled(true);
+  assert.equal(scope.update(),0);
+  time=175;
+  assert.equal(scope.update(),.5);
+  scope.setEnabled(false);
+  time=350;
+  assert.equal(scope.update(),.25);
+  time=525;
+  assert.equal(scope.update(),0);
+  assert.equal(scope.active,false);
+});
+
+test('scope honors reduced motion for both directions',()=>{
+  const scope=createScopeTransition({now:()=>0,reducedMotion:()=>true});
+  scope.setEnabled(true);
+  assert.equal(scope.update(),1);
+  scope.setEnabled(false);
+  assert.equal(scope.update(),0);
+  assert.equal(scope.active,false);
 });

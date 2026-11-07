@@ -1,5 +1,5 @@
 import { bloomStrengthFromIntensity } from '../../vendor/gods-eye-view/bloom.js';
-import { STYLE_PARAMETERS, SHARPEN_SHADER, TONE_SCOPE_SHADER, createStyleTransition, normalizeVisualSettings, visualStyleShader } from '../ui/visual-effects.js';
+import { STYLE_PARAMETERS, SHARPEN_SHADER, TONE_SCOPE_SHADER, createStyleTransition, createScopeTransition, normalizeVisualSettings, visualStyleShader } from '../ui/visual-effects.js';
 
 /** A stable sky with small neutral stars. A cube map keeps the stars
  * behind the world and rotates naturally with the camera. */
@@ -53,12 +53,15 @@ export function createCesiumInspectionEffects({Cesium,viewer}) {
   const tone=addStage('tone',TONE_SCOPE_SHADER,{exposure:1,contrast:1,scopeEnabled:0,feather:1,background:new Cesium.Cartesian3()});
   let settings=normalizeVisualSettings(), theme='night', frame=null, paused=false, destroyed=false;
   const transition=createStyleTransition();
+  const scope=createScopeTransition();
   const start=performance.now();
   const requestRender=()=>{if(!viewer.isDestroyed())scene.requestRender();};
 
   function syncStyles(time) {
     transition.update();
-    let animated=transition.active;
+    tone.uniforms.scopeEnabled=scope.update();
+    tone.enabled=scope.value>0||scope.active||settings.exposure!==1||settings.contrast!==1;
+    let animated=transition.active||scope.active;
     for(const [id,stage] of presets){
       const intensity=transition.intensities[id];
       stage.uniforms.intensity=intensity;
@@ -103,10 +106,9 @@ export function createCesiumInspectionEffects({Cesium,viewer}) {
     if(stage)Object.assign(stage.uniforms,settings.styleParams);
     sharpen.enabled=settings.sharpen&&settings.sharpenIntensity>0;
     sharpen.uniforms.amount=.1+settings.sharpenIntensity*.02;
-    tone.enabled=settings.scope||settings.exposure!==1||settings.contrast!==1;
+    scope.setEnabled(settings.scope);
     tone.uniforms.exposure=settings.exposure;
     tone.uniforms.contrast=settings.contrast;
-    tone.uniforms.scopeEnabled=Number(settings.scope);
     tone.uniforms.feather=settings.scopeFeather/100;
     // Same intensity curve as God's Eye View, using Cesium's native bloom.
     const raw=bloomStrengthFromIntensity(settings.bloomIntensity);

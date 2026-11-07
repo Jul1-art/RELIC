@@ -1,5 +1,5 @@
 import { bloomStrengthFromIntensity } from '../../vendor/gods-eye-view/bloom.js';
-import { STYLE_PARAMETERS, SHARPEN_SHADER, TONE_SCOPE_SHADER, createStyleTransition, normalizeVisualSettings, visualStyleShader } from '../ui/visual-effects.js';
+import { STYLE_PARAMETERS, SHARPEN_SHADER, TONE_SCOPE_SHADER, createStyleTransition, createScopeTransition, normalizeVisualSettings, visualStyleShader } from '../ui/visual-effects.js';
 
 const FULLSCREEN_VERTEX=`
   precision highp float;
@@ -33,6 +33,7 @@ export function createThreeInspectionEffects({THREE,renderer,scene,camera}) {
   let settings=normalizeVisualSettings(), theme='night', resources, destroyed=false;
   const start=performance.now();
   const transition=createStyleTransition();
+  const scope=createScopeTransition();
   const styleParams=new Map();
   const size=new THREE.Vector2();
   const toneFunctions=new Map([
@@ -89,6 +90,7 @@ export function createThreeInspectionEffects({THREE,renderer,scene,camera}) {
   function setSettings(patch) {
     settings=normalizeVisualSettings(patch,settings);
     transition.setStyle(settings.style);
+    scope.setEnabled(settings.scope);
     styleParams.set(settings.style,settings.styleParams);
   }
   function setTheme(value) {theme=value==='day'?'day':'night';}
@@ -96,7 +98,8 @@ export function createThreeInspectionEffects({THREE,renderer,scene,camera}) {
     const bloomStrength=bloomStrengthFromIntensity(settings.bloomIntensity);
     const needsBloom=settings.bloom&&bloomStrength>.06;
     const needsSharpen=settings.sharpen&&settings.sharpenIntensity>0;
-    const needsTone=settings.scope||settings.exposure!==1||settings.contrast!==1;
+    const scopeAmount=scope.update();
+    const needsTone=scopeAmount>0||scope.active||settings.exposure!==1||settings.contrast!==1;
     transition.update();
     if(destroyed||renderer.capabilities.isWebGL2===false||(!needsBloom&&!needsSharpen&&!needsTone&&!transition.active&&settings.style==='normal')){
       renderer.render(scene,camera);return;
@@ -123,7 +126,7 @@ export function createThreeInspectionEffects({THREE,renderer,scene,camera}) {
     if(needsTone){
       adjustments.uniforms.exposure.value=settings.exposure;
       adjustments.uniforms.contrast.value=settings.contrast;
-      adjustments.uniforms.scopeEnabled.value=Number(settings.scope);
+      adjustments.uniforms.scopeEnabled.value=scopeAmount;
       adjustments.uniforms.feather.value=settings.scopeFeather/100;
       adjustments.uniforms.background.value.setScalar(theme==='day'?1:0);
       passes.push(adjustments);

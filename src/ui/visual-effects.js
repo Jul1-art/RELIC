@@ -25,7 +25,7 @@ export const VISUAL_SETTINGS=Object.freeze({
   scope:{type:'boolean',default:false,label:'Scope',fr:'Vue circulaire'},
   bloomIntensity:{type:'range',default:36,min:0,max:200,step:1,label:'Bloom intensity',fr:'Intensité du halo'},
   sharpenIntensity:{type:'range',default:49,min:0,max:100,step:1,label:'Sharpen intensity',fr:'Intensité de la netteté'},
-  scopeFeather:{type:'range',default:100,min:0,max:100,step:1,label:'Scope feather',fr:'Douceur du contour'},
+  scopeFeather:{type:'range',default:100,min:0,max:200,step:1,label:'Scope feather',fr:'Douceur du contour'},
   exposure:{type:'range',default:1,min:.5,max:2,step:.05,label:'Exposure',fr:'Exposition'},
   contrast:{type:'range',default:1,min:.5,max:2,step:.05,label:'Contrast',fr:'Contraste'},
 });
@@ -102,6 +102,27 @@ export function createStyleTransition({now=()=>performance.now(),reducedMotion=p
   return {intensities,setStyle,update,get active(){return transitions.size>0;}};
 }
 
+export function createScopeTransition({now=()=>performance.now(),reducedMotion=prefersReducedMotion}={}){
+  let value=0,target=0,from=0,start=0;
+  function update(){
+    const t=reducedMotion()?1:Math.max(0,Math.min(1,(now()-start)/350));
+    const eased=t*t*(3-2*t);
+    value=from+(target-from)*eased;
+    return value;
+  }
+  return {
+    setEnabled(enabled){
+      const next=Number(Boolean(enabled));
+      if(next===target)return;
+      update();from=value;target=next;start=now();
+      if(reducedMotion())value=target;
+    },
+    update,
+    get active(){return value!==target;},
+    get value(){return value;},
+  };
+}
+
 export const TONE_SCOPE_SHADER=`
   uniform sampler2D colorTexture;
   uniform vec2 colorTextureDimensions;
@@ -115,14 +136,12 @@ export const TONE_SCOPE_SHADER=`
     vec4 source=texture(colorTexture,v_textureCoordinates);
     vec3 color=clamp((source.rgb*exposure-.5)*contrast+.5,0.,1.);
     vec2 p=(v_textureCoordinates-.5)*vec2(colorTextureDimensions.x/colorTextureDimensions.y,1.);
-    float radius=.47;
-    float edge=max(.001,feather*.30);
-    float distanceFromCenter=length(p);
-    float mask=1.-smoothstep(radius-edge,radius,distanceFromCenter);
-    // The aperture remains visible against empty sky in either theme.
-    float pixel=1./colorTextureDimensions.y;
-    float rim=1.-smoothstep(pixel*.5,pixel*1.5,abs(distanceFromCenter-radius));
-    vec3 scoped=mix(mix(background,color,mask),1.-background,rim*.22);
+    // God's Eye View keyhole is 1.05 times half the viewport height.
+    // Feather straddles its edge and spans up to 200% of the radius.
+    float radius=mix(length(vec2(colorTextureDimensions.x/colorTextureDimensions.y,1.))*.5+.01,.525,scopeEnabled);
+    float halfEdge=max(.0005,.525*feather*.5);
+    float mask=1.-smoothstep(max(0.,radius-halfEdge),radius+halfEdge,length(p));
+    vec3 scoped=mix(background,color,mask);
     out_FragColor=vec4(mix(color,scoped,scopeEnabled),source.a);
   }
 `;
