@@ -28,6 +28,7 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
     frame=0;
     resolveMovement?.();
     resolveMovement=null;
+    sprite.element.style.opacity='';
   }
   function moveTo(target) {
     cancelMovement();
@@ -35,25 +36,34 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
     const destinationX=x+Math.max(8,Math.min(innerWidth-box.width-8,target.x))-box.left;
     const destinationY=y+Math.max(8,Math.min(innerHeight-box.height-8,target.y))-box.top;
     const originX=x,originY=y,distance=Math.hypot(destinationX-x,destinationY-y);
-    if(reducedMotion()||distance<2){
+    if(reducedMotion()||distance<8){
       place(destinationX,destinationY);
       return Promise.resolve();
     }
-    const walking=distance<180&&Math.abs(destinationY-y)<45;
-    sprite.setPose(destinationX>x?'front_right':'front_left',walking?'walking':'idle');
-    const duration=Math.min(1000,Math.max(280,distance*4));
+    const walking=distance<box.height*1.7&&Math.abs(destinationY-y)<18&&Math.abs(destinationX-x)>8;
+    sprite.setPose(walking?(destinationX>x?'right_profile':'left_profile'):'front',walking?'walking':'idle');
+    const duration=walking?Math.min(1400,Math.max(320,distance/(box.height*.9)*1000)):260;
     let start;
+    let relocated=false;
     return new Promise(resolve=>{
       resolveMovement=resolve;
       function advance(time) {
         start??=time;
         const progress=Math.min(1,(time-start)/duration);
-        const eased=progress*progress*(3-2*progress);
-        place(originX+(destinationX-originX)*eased,originY+(destinationY-originY)*eased);
-        if(walking)sprite.drawWalk(eased*distance/(box.height*.6));
+        const eased=progress**3*(10-15*progress+6*progress**2);
+        if(walking){
+          place(originX+(destinationX-originX)*eased,originY+(destinationY-originY)*eased);
+          sprite.drawWalk(eased*distance/(box.height*.48),Math.sin(Math.PI*progress));
+        }else{
+          // A viewport change relocates the companion without flying it across the scene.
+          sprite.element.style.opacity=String(Math.abs(1-progress*2));
+          if(progress>=.5&&!relocated){place(destinationX,destinationY);relocated=true;}
+        }
         if(progress<1)frame=requestAnimationFrame(advance);
         else{
           frame=0;resolveMovement=null;
+          place(destinationX,destinationY);
+          sprite.element.style.opacity='';
           sprite.setPose('front','idle');
           resolve();
         }
@@ -67,9 +77,13 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
     setPose:(direction,state)=>sprite.setPose(direction,state),
     moveTo,
     onActiveChange(active){
+      const before=button.getBoundingClientRect();
       guiding=active;
       button.classList.toggle('spacey-guiding',active);
-      if(!active){
+      if(active){
+        const after=button.getBoundingClientRect();
+        place(x+before.left-after.left,y+before.top-after.top);
+      }else{
         cancelMovement();
         place(0,0);
         sprite.setPose('front','idle');

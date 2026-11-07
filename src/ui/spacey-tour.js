@@ -2,7 +2,7 @@ import {getLanguage,setLanguage} from '../atlas/atlas-live.js?v=3';
 
 const STORAGE_KEY='relic.spacey-tour.v1';
 const STEP_COPY=[
-  ['welcome','Welcome aboard',"Hi, I'm Spacey, your guide to RELIC. Let me show you the main controls, then you can explore at your own pace."],
+  ['welcome','Welcome aboard',"Let me show you the main controls, then you can explore at your own pace."],
   ['worlds','Choose a world','Open Worlds to choose a planet, moon, or comet. You can also select a world directly in the solar system.'],
   ['earth','A closer look',"Let's visit Earth. I'll lock the view onto the planet so we can explore its surface and its nearby worlds."],
   ['camera','Your view controls','These four buttons share your view, switch between vertical and tilted views, turn north upward, and recenter the whole planet.'],
@@ -74,16 +74,14 @@ function iconChip(source,label,action){
 export function createSpaceyTour({mascot,setPose,moveTo,onActiveChange=()=>{}}){
   const style=document.createElement('link');style.rel='stylesheet';style.href=new URL('./spacey-tour.css',import.meta.url).href;document.head.append(style);
   const layer=document.createElement('div');layer.className='spacey-tour';layer.hidden=true;
-  layer.innerHTML=`<svg class="spacey-tour-dimmer" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd"/></svg><section class="spacey-tour-bubble" role="dialog" aria-labelledby="spacey-tour-title" aria-describedby="spacey-tour-text" lang="en"><header><span class="spacey-tour-name">Spacey</span><span class="spacey-tour-progress"></span><button type="button" class="spacey-tour-close" aria-label="Close tour">×</button></header><h2 id="spacey-tour-title"></h2><p id="spacey-tour-text" aria-live="polite"></p><div class="spacey-tour-chips"></div><p class="spacey-tour-audio-status" role="status" hidden></p><footer><div class="spacey-tour-audio"><button type="button" data-tour-action="mute" aria-label="Mute Spacey" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M11 4 6 8H3v8h3l5 4Z"/><path d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></svg></button><button type="button" data-tour-action="replay" aria-label="Replay voice"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10a8 8 0 1 1 1 7M4 4v6h6"/></svg></button></div><button type="button" data-tour-action="back">Back</button><button type="button" data-tour-action="next">Next</button></footer><button type="button" class="spacey-tour-skip">Skip tour</button></section>`;
+  layer.innerHTML=`<svg class="spacey-tour-dimmer" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd"/></svg><section class="spacey-tour-bubble" role="dialog" aria-label="Guided tour" aria-describedby="spacey-tour-text" lang="en"><p id="spacey-tour-text" aria-live="polite"></p><div class="spacey-tour-chips"></div><footer><span class="spacey-tour-progress"></span><button type="button" class="spacey-tour-skip">Skip</button><button type="button" data-tour-action="next">Continue</button></footer></section>`;
   document.body.append(layer);
   const bubble=layer.querySelector('.spacey-tour-bubble'),dimmer=layer.querySelector('.spacey-tour-dimmer');
-  const shade=dimmer.querySelector('path'),title=layer.querySelector('h2'),text=layer.querySelector('#spacey-tour-text');
+  const shade=dimmer.querySelector('path'),text=layer.querySelector('#spacey-tour-text');
   const progress=layer.querySelector('.spacey-tour-progress'),chips=layer.querySelector('.spacey-tour-chips');
-  const audioStatus=layer.querySelector('.spacey-tour-audio-status');
-  const next=layer.querySelector('[data-tour-action=next]'),back=layer.querySelector('[data-tour-action=back]');
-  const mute=layer.querySelector('[data-tour-action=mute]'),voiceReplay=layer.querySelector('[data-tour-action=replay]');
+  const next=layer.querySelector('[data-tour-action=next]');
   const audio=new Audio();audio.preload='metadata';
-  let active=false,invited=false,suspended=false,disposed=false,step=0,version=0,muted=false,layoutFrame=0,shadeFrame=0;
+  let active=false,invited=false,suspended=false,disposed=false,step=0,version=0,layoutFrame=0,shadeFrame=0;
   let targets=[],previousLanguage,previousWorld,opener,waiting=false,movement;
   const readSaved=()=>{try{return localStorage.getItem(STORAGE_KEY);}catch{return null;}};
   const save=value=>{try{localStorage.setItem(STORAGE_KEY,value);}catch{}};
@@ -91,15 +89,11 @@ export function createSpaceyTour({mascot,setPose,moveTo,onActiveChange=()=>{}}){
 
   function stopAudio(){audio.pause();audio.removeAttribute('src');audio.load();}
   function playVoice(allowWaiting=false){
-    if(!active||suspended||(waiting&&!allowWaiting)||muted)return;
+    if(!active||suspended||(waiting&&!allowWaiting))return;
     const id=STEP_COPY[step][0];
     audio.src=new URL(`../../assets/spacey/audio/${id}.mp3`,import.meta.url).href;
-    audio.currentTime=0;audio.muted=muted;
-    const current=version;
-    audio.play().then(()=>{if(version===current)audioStatus.hidden=true;},()=>{
-      if(version!==current||muted)return;
-      audioStatus.textContent='You can read along, or select Replay voice to try the audio again.';audioStatus.hidden=false;
-    });
+    audio.currentTime=0;
+    audio.play().catch(()=>{});
   }
   function rects(){return targets.filter(visible).map(element=>element.getBoundingClientRect());}
   function paintShade(){
@@ -118,24 +112,21 @@ export function createSpaceyTour({mascot,setPose,moveTo,onActiveChange=()=>{}}){
   async function layout(){
     layoutFrame=0;
     if(layer.hidden||disposed)return;
-    const width=Math.min(354,innerWidth-28);
+    const width=Math.min(300,innerWidth-28);
     bubble.style.width=`${width}px`;
-    const target=rects()[0];
     const mascotHeight=mascot.getBoundingClientRect().height||76;
-    const bottomReserve=innerWidth<=700&&innerHeight>540?120:16;
-    const mascotBottom=innerHeight-mascotHeight-bottomReserve;
-    const minimumTop=innerHeight<=540?14:78;
-    const availableHeight=Math.max(60,mascotBottom-minimumTop-9);
-    bubble.style.maxHeight=innerHeight<=540?`${Math.min(innerHeight*.68,availableHeight)}px`:'';
-    const height=bubble.offsetHeight;
-    const maximumTop=Math.max(minimumTop,mascotBottom-height-9);
-    let left=innerWidth<=700?14:Math.min(innerWidth-width-24,Math.max(96,(target?.left??innerWidth*.5)-width-28));
-    let top=innerWidth<=700?Math.max(132,maximumTop):Math.max(96,Math.min(innerHeight-height-130,(target?.top??innerHeight*.5)-70));
-    if(target&&innerWidth>700&&target.left<innerWidth*.45)left=Math.min(innerWidth-width-24,target.right+26);
-    left=clamp(left,14,innerWidth-width-14);top=clamp(top,minimumTop,maximumTop);
-    bubble.style.width=`${width}px`;bubble.style.left=`${left}px`;bubble.style.top=`${top}px`;
+    const bodyStyle=getComputedStyle(document.body);
+    const credits=(parseFloat(bodyStyle.getPropertyValue('--provider-credits-height'))||0)+(parseFloat(bodyStyle.getPropertyValue('--detailed-credits-height'))||0);
+    const safeBottom=parseFloat(getComputedStyle(layer).getPropertyValue('--spacey-safe-bottom'))||0;
+    const short=innerHeight<=540;
+    const bottomReserve=(short?20:innerWidth>=900?24:116)+credits+safeBottom;
+    const y=Math.max(100,innerHeight-mascotHeight-bottomReserve);
+    const left=clamp(innerWidth>=900?112:innerWidth>700||short?88:14,14,innerWidth-width-14);
+    const gap=12;
+    bubble.style.maxHeight=`${Math.max(60,y-gap-14)}px`;
+    bubble.style.left=`${left}px`;bubble.style.top=`${Math.max(14,y-gap-bubble.offsetHeight)}px`;
     const current=version;
-    const x=left+18,y=Math.min(mascotBottom,top+bubble.offsetHeight+9);
+    const x=left+20;
     if(!movement||Math.abs(movement.x-x)>.5||Math.abs(movement.y-y)>.5){
       movement={x,y,promise:moveTo({x,y})};
     }
@@ -203,11 +194,11 @@ export function createSpaceyTour({mascot,setPose,moveTo,onActiveChange=()=>{}}){
   async function go(index){
     if(disposed||!active)return;
     step=clamp(index,0,STEP_COPY.length-1);const current=++version;
-    stopAudio();chips.replaceChildren();audioStatus.hidden=true;
-    const [id,heading,line]=STEP_COPY[step];
-    layer.dataset.step=id;title.textContent=heading;text.textContent=line;
+    stopAudio();chips.replaceChildren();
+    const [id,,line]=STEP_COPY[step];
+    layer.dataset.step=id;text.textContent=line;
     progress.textContent=`${step+1} / ${STEP_COPY.length}`;
-    back.hidden=false;back.disabled=step===0;next.textContent=step===STEP_COPY.length-1?'Start exploring':'Next';
+    next.textContent=step===STEP_COPY.length-1?'Explore':'Continue';
     waiting=true;next.disabled=true;bubble.setAttribute('aria-busy','true');
     // Start the welcome line inside the user's gesture, including on mobile.
     if(id==='welcome')playVoice(true);
@@ -237,8 +228,7 @@ export function createSpaceyTour({mascot,setPose,moveTo,onActiveChange=()=>{}}){
     active=true;invited=false;layer.hidden=false;setLanguage('en');
     startShadeTracking();
     document.body.classList.add('spacey-guiding');onActiveChange(true);
-    layer.querySelector('.spacey-tour-skip').textContent='Skip tour';
-    mute.hidden=false;voiceReplay.hidden=false;
+    layer.querySelector('.spacey-tour-skip').textContent='Skip';
     go(0);
   }
   async function placeInvite(){
@@ -254,22 +244,16 @@ export function createSpaceyTour({mascot,setPose,moveTo,onActiveChange=()=>{}}){
     invited=true;layer.hidden=false;layer.dataset.step='invite';targets=[];
     startShadeTracking();
     document.body.classList.add('spacey-guiding');onActiveChange(true);
-    title.textContent="I'm Spacey";text.textContent='Your exploration companion. Take a short guided tour of RELIC, with English narration.';
-    progress.textContent='Welcome aboard';chips.replaceChildren();back.hidden=true;next.disabled=true;next.textContent='Meet Spacey';bubble.setAttribute('aria-busy','true');
-    mute.hidden=true;voiceReplay.hidden=true;layer.querySelector('.spacey-tour-skip').textContent='Not now';
+    text.textContent='Take a quick tour of RELIC, then explore at your own pace.';
+    progress.textContent='';chips.replaceChildren();next.disabled=true;next.textContent='Start tour';bubble.setAttribute('aria-busy','true');
+    layer.querySelector('.spacey-tour-skip').textContent='Skip';
     setPose('front','idle');
     placeInvite();
   }
   const nextStep=()=>{if(invited)start();else if(step===STEP_COPY.length-1)close({completed:true});else go(step+1);};
-  next.addEventListener('click',nextStep);back.addEventListener('click',()=>go(step-1));
+  next.addEventListener('click',nextStep);
   const dismiss=()=>close({declined:true});
-  layer.querySelector('.spacey-tour-close').addEventListener('click',dismiss);
   layer.querySelector('.spacey-tour-skip').addEventListener('click',dismiss);
-  mute.addEventListener('click',()=>{
-    muted=!muted;audio.muted=muted;mute.setAttribute('aria-pressed',String(muted));mute.setAttribute('aria-label',muted?'Unmute Spacey':'Mute Spacey');
-    if(muted)audio.pause();else playVoice();
-  });
-  voiceReplay.addEventListener('click',()=>playVoice());
   const keydown=event=>{
     if(layer.hidden)return;
     if(event.key==='Escape'){event.preventDefault();event.stopPropagation();dismiss();return;}
@@ -287,6 +271,8 @@ export function createSpaceyTour({mascot,setPose,moveTo,onActiveChange=()=>{}}){
   window.addEventListener('resize',scheduleLayout);
   const viewport=window.visualViewport;viewport?.addEventListener('resize',scheduleLayout);
   const observer=new ResizeObserver(scheduleLayout);observer.observe(bubble);observer.observe(mascot);
+  const footerObserver=new MutationObserver(scheduleLayout);
+  footerObserver.observe(document.body,{attributes:true,attributeFilter:['style']});
   return {
     showInvite,
     replay(){if(active||invited)close({restore:false});start();},
@@ -306,7 +292,7 @@ export function createSpaceyTour({mascot,setPose,moveTo,onActiveChange=()=>{}}){
     },
     dispose(){
       if(disposed)return;close({restore:false});disposed=true;
-      observer.disconnect();document.removeEventListener('keydown',keydown,true);window.removeEventListener('resize',scheduleLayout);viewport?.removeEventListener('resize',scheduleLayout);layer.remove();style.remove();
+      observer.disconnect();footerObserver.disconnect();document.removeEventListener('keydown',keydown,true);window.removeEventListener('resize',scheduleLayout);viewport?.removeEventListener('resize',scheduleLayout);layer.remove();style.remove();
     },
     get active(){return active||invited;},
   };

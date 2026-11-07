@@ -121,12 +121,13 @@ export function createMascotSprite() {
   const farArm = element.querySelector('[data-far-arm]');
   let pose;
 
-  function drawWalk(cycles) {
+  function drawWalk(cycles, weight = 1) {
+    weight = Math.max(0, Math.min(1, weight));
     const phase = cycles * Math.PI * 2;
-    const stride = Math.cos(phase);
-    const nearLift = Math.max(0, Math.sin(phase)) * 3.8;
-    const farLift = Math.max(0, -Math.sin(phase)) * 3.8;
-    const bob = (1 - Math.cos(phase * 2)) * .47;
+    const stride = Math.sin(phase) * weight;
+    const nearLift = Math.max(0, Math.cos(phase)) * 2.6 * weight;
+    const farLift = Math.max(0, -Math.cos(phase)) * 2.6 * weight;
+    const bob = (1 - Math.cos(phase * 2)) * .3 * weight;
     const amplitude = pose === 'side' ? 14 : 7;
     body.setAttribute('transform', `translate(0 ${-bob})`);
     nearLeg.setAttribute('transform', `translate(0 ${-nearLift}) rotate(${amplitude * stride} 34 78)`);
@@ -144,7 +145,7 @@ export function createMascotSprite() {
     facing.setAttribute('transform', mirrored ? 'translate(84 0) scale(-1 1)' : '');
     helmet.setAttribute('transform', state === 'resting' ? 'translate(0 1.5) rotate(-2 42 57)' : '');
     if (state === 'walking') {
-      drawWalk(0);
+      drawWalk(0, 0);
       return;
     }
     for (const joint of [body, nearLeg, farLeg, nearArm, farArm]) joint.removeAttribute('transform');
