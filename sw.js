@@ -1,8 +1,8 @@
 /* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'inspection-20261106-v28-public';
-const INTERFACE_RELEASE = 'inspection-20261106-v28';
+const VERSION = 'inspection-20261106-v29-public';
+const INTERFACE_RELEASE = 'inspection-20261106-v29';
 const CLIENT_VERSION_TIMEOUT = 650;
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
@@ -33,9 +33,6 @@ const OFFLINE_CORE = [
   'src/ui/inspection-shell.js','src/ui/inspection-shell.css','src/ui/inspection-controls.js','src/ui/visual-effects.js',
   'src/ui/inspection-motion.js','src/ui/inspection-motion.css',
   'src/ui/exploration-mascot.js','src/ui/exploration-mascot.css','src/ui/mascot-sprite.js','src/ui/mascot-sprite.css',
-  'assets/mascot/front.png','assets/mascot/front_left.png','assets/mascot/front_right.png',
-  'assets/mascot/left_profile.png','assets/mascot/right_profile.png','assets/mascot/back.png',
-  'assets/mascot/back_left.png','assets/mascot/back_right.png','assets/mascot/walk-sheet-transparent.png',
   'src/atlas/inspection-effects.js','src/worlds/inspection-effects.js','src/worlds/inspection-controls.js',
   'src/worlds/inspection-camera-motion.js',
   'vendor/gods-eye-view/panelDisclosure.js','vendor/gods-eye-view/bloom.js','vendor/gods-eye-view/i18n/marker.js',

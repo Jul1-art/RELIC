@@ -1,70 +1,38 @@
 .relic-mascot-sprite {
-  position: relative;
   display: block;
   height: var(--mascot-height, 86px);
-  aspect-ratio: 320 / 500;
+  aspect-ratio: 84 / 110;
   isolation: isolate;
   pointer-events: none;
 }
 
-.relic-mascot-sprite::before {
-  position: absolute;
-  right: 13%;
-  bottom: 2%;
-  left: 13%;
-  height: 8%;
-  border-radius: 50%;
-  background: #03080dd9;
-  filter: blur(2px);
-  content: "";
+.mascot-suit { display: block; width: 100%; height: 100%; overflow: visible; }
+
+.mascot-suit :is(.mascot-suit-side, .mascot-suit-pack, .mascot-suit-rear, .mascot-suit-ear-side) { display: none; }
+.relic-mascot-sprite[data-view=side] :is(.mascot-suit-side, .mascot-suit-ear-side),
+.relic-mascot-sprite[data-view=back] :is(.mascot-suit-pack, .mascot-suit-rear) { display: inline; }
+.relic-mascot-sprite[data-view=side] :is(.mascot-suit-eye-far, .mascot-suit-ear-far),
+.relic-mascot-sprite[data-view=back] :is(.mascot-suit-window, .mascot-suit-chest) { display: none; }
+
+.relic-mascot-sprite[data-view=side] .mascot-suit-face { transform: translateX(3px); }
+.relic-mascot-sprite[data-view=side] [data-far-leg] { opacity: .82; }
+
+.relic-mascot-sprite[data-state=idle] [data-helmet] {
+  animation: relic-mascot-breathe 3.2s ease-in-out infinite;
 }
 
-.mascot-sprite-figure {
-  position: absolute;
-  inset: 0;
-  transform-origin: 50% 96%;
-}
-
-.mascot-sprite-still {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  height: 100%;
-  translate: -50% 0;
-  background: center / contain no-repeat;
-  image-rendering: pixelated;
-}
-
-.mascot-sprite-walk {
-  width: 100%;
-  height: 100%;
-  display: none;
-  image-rendering: pixelated;
-}
-
-.relic-mascot-sprite[data-state="walking"] .mascot-sprite-still { display: none; }
-.relic-mascot-sprite[data-state="walking"] .mascot-sprite-walk { display: block; }
-
-.relic-mascot-sprite[data-state="idle"] .mascot-sprite-figure {
-  animation: relic-mascot-breathe 3.4s ease-in-out infinite;
-}
-
-.relic-mascot-sprite[data-state="resting"] .mascot-sprite-figure {
-  transform: rotate(-1.5deg) scaleY(.94);
-  filter: brightness(.88);
+/* The controller positions joints every frame while walking. Ease only the
+   release into the standing pose. */
+.relic-mascot-sprite:not([data-state=walking]) :is([data-body],[data-near-arm],[data-far-arm],[data-near-leg],[data-far-leg]) {
+  transition: transform 120ms ease-out;
 }
 
 @keyframes relic-mascot-breathe {
-  0%, 100% { transform: scaleY(1); }
-  50% { transform: scaleY(.983); }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(.85px); }
 }
 
-html[data-motion="reduced"] .relic-mascot-sprite * {
-  animation: none !important;
-}
-
+html[data-motion=reduced] .relic-mascot-sprite g { animation: none !important; transition: none !important; }
 @media (prefers-reduced-motion: reduce) {
-  html:not([data-motion="full"]) .relic-mascot-sprite * {
-    animation: none !important;
-  }
+  html:not([data-motion=full]) .relic-mascot-sprite g { animation: none !important; transition: none !important; }
 }
