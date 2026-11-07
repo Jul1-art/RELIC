@@ -22,14 +22,14 @@
 }
 .relic-exploration-mascot[hidden] {display: none}
 .relic-exploration-mascot:focus-visible {outline: 2px solid #00bddf;outline-offset: 4px}
-body:has(#relic-action-panel:not([hidden])) .relic-exploration-mascot {visibility: hidden}
+body:has(#relic-action-panel:not([hidden])) .relic-exploration-mascot:not(.spacey-guiding) {visibility: hidden}
 
 @media (max-width: 700px) {
   .relic-exploration-mascot {
     --mascot-height: 70px;
     bottom: calc(98px + env(safe-area-inset-bottom, 0px) + var(--provider-credits-height, 0px) + var(--detailed-credits-height, 0px));
   }
-  body:has(.inspection-module-toggle[aria-expanded=true], .inspection-tray-toggle[aria-expanded=true]) .relic-exploration-mascot {
+  body:has(.inspection-module-toggle[aria-expanded=true], .inspection-tray-toggle[aria-expanded=true]) .relic-exploration-mascot:not(.spacey-guiding) {
     visibility: hidden;
   }
 }
@@ -38,4 +38,11 @@ body:has(#relic-action-panel:not([hidden])) .relic-exploration-mascot {visibilit
 }
 @media (max-height: 560px) and (orientation: landscape) {
   body.has-inspection-shell .relic-exploration-mascot {left: max(78px, env(safe-area-inset-left, 0px))}
+}
+
+body .relic-exploration-mascot.spacey-guiding {
+  inset: 0 auto auto 0;
+  z-index: 1201;
+  visibility: visible;
+  cursor: default;
 }

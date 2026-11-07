@@ -1,0 +1,39 @@
+{
+  "voice": "af_heart",
+  "locale": "en-us",
+  "speed": 0.98,
+  "lines": [
+    {
+      "id": "welcome",
+      "text": "Hi, I'm Spacey, your guide to RELIC. Let me show you the main controls, then you can explore at your own pace."
+    },
+    {
+      "id": "worlds",
+      "text": "Open Worlds to choose a planet, moon, or comet. You can also select a world directly in the solar system."
+    },
+    {
+      "id": "earth",
+      "text": "Let's visit Earth. I'll lock the view onto the planet so we can explore its surface and its nearby worlds."
+    },
+    {
+      "id": "camera",
+      "text": "These four buttons share your view, switch between vertical and tilted views, turn north upward, and recenter the whole planet."
+    },
+    {
+      "id": "data",
+      "text": "World Data brings together the planet's key facts, its moons and orbits, and exploration sites and missions."
+    },
+    {
+      "id": "display",
+      "text": "Display controls the scene and image. Adjust stars, lighting, labels, and visual effects here. Available controls depend on the current world."
+    },
+    {
+      "id": "destinations",
+      "text": "Location finds a place or coordinates on this world. Visual Presets changes the image style. You can return to Normal at any time."
+    },
+    {
+      "id": "finish",
+      "text": "Select the RELIC logo to return to the solar system. You're ready to explore. Select me whenever you'd like to replay this tour."
+    }
+  ]
+}

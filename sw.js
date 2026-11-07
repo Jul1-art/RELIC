@@ -1,8 +1,8 @@
 /* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'inspection-20261107-v30-public';
-const INTERFACE_RELEASE = 'inspection-20261107-v30';
+const VERSION = 'inspection-20261107-v31-public';
+const INTERFACE_RELEASE = 'inspection-20261107-v31';
 const CLIENT_VERSION_TIMEOUT = 650;
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
@@ -16,7 +16,7 @@ const MAX_ASSET_BYTES = 16 * 1024 * 1024;
 const FETCH_CONCURRENCY = 3;
 const EXCLUDED_PATH = /\/(?:api|auth|_auth|oauth|login|logout|signin|signout|\.netlify)(?:\/|$)/i;
 const PRIVATE_QUERY = /^(?:access[_-]?token|api[_-]?key|token|key|authorization|auth|signature|secret|password)$/i;
-const STATIC = /\.(?:html|css|js|mjs|json|obj|gz|webmanifest|jpe?g|png|svg|webp|avif|woff2?|wasm)$/i;
+const STATIC = /\.(?:html|css|js|mjs|json|obj|gz|webmanifest|mp3|jpe?g|png|svg|webp|avif|woff2?|wasm)$/i;
 
 // First install warms only navigation documents and install identity. The
 // already-open page continues loading its own resources normally, without a
@@ -33,6 +33,10 @@ const OFFLINE_CORE = [
   'src/ui/inspection-shell.js','src/ui/inspection-shell.css','src/ui/inspection-controls.js','src/ui/visual-effects.js',
   'src/ui/inspection-motion.js','src/ui/inspection-motion.css',
   'src/ui/exploration-mascot.js','src/ui/exploration-mascot.css','src/ui/mascot-sprite.js','src/ui/mascot-sprite.css',
+  'src/ui/spacey-tour.js','src/ui/spacey-tour.css',
+  'assets/spacey/audio/welcome.mp3','assets/spacey/audio/worlds.mp3','assets/spacey/audio/earth.mp3',
+  'assets/spacey/audio/camera.mp3','assets/spacey/audio/data.mp3','assets/spacey/audio/display.mp3',
+  'assets/spacey/audio/destinations.mp3','assets/spacey/audio/finish.mp3',
   'src/atlas/inspection-effects.js','src/worlds/inspection-effects.js','src/worlds/inspection-controls.js',
   'src/worlds/inspection-camera-motion.js',
   'vendor/gods-eye-view/panelDisclosure.js','vendor/gods-eye-view/bloom.js','vendor/gods-eye-view/i18n/marker.js',

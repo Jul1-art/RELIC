@@ -1,0 +1,95 @@
+{
+  "schema": "relic.spacey.narration.v1",
+  "language": "en-US",
+  "synthetic": true,
+  "voice": "af_heart",
+  "speed": 0.98,
+  "sameVoiceAs": "English intro narration",
+  "namePronunciation": "Spacey /speɪsi/",
+  "runtime": {
+    "name": "kokoro-onnx",
+    "version": "0.6.1",
+    "license": "MIT"
+  },
+  "model": {
+    "name": "Kokoro-82M v1.0 INT8 ONNX",
+    "license": "Apache-2.0",
+    "source": "https://huggingface.co/hexgrad/Kokoro-82M",
+    "sha256": "6e742170d309016e5891a994e1ce1559c702a2ccd0075e67ef7157974f6406cb",
+    "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d"
+  },
+  "lines": [
+    {
+      "id": "welcome",
+      "text": "Hi, I'm Spacey, your guide to RELIC. Let me show you the main controls, then you can explore at your own pace.",
+      "file": "welcome.mp3",
+      "duration": 6.456,
+      "peak": 0.75873,
+      "bytes": 52268,
+      "sha256": "3a3c1b21ad69fa1780695ddb52a0e912bd6268a81c6f91b2fd01f5f12d62ec19"
+    },
+    {
+      "id": "worlds",
+      "text": "Open Worlds to choose a planet, moon, or comet. You can also select a world directly in the solar system.",
+      "file": "worlds.mp3",
+      "duration": 6.819,
+      "peak": 0.7372,
+      "bytes": 55340,
+      "sha256": "6f734b348f2915fd5d5ff2515cd9dff7e0c87cc825dc5cabad3df660e0485a89"
+    },
+    {
+      "id": "earth",
+      "text": "Let's visit Earth. I'll lock the view onto the planet so we can explore its surface and its nearby worlds.",
+      "file": "earth.mp3",
+      "duration": 6.221,
+      "peak": 0.76492,
+      "bytes": 50540,
+      "sha256": "7e7a01d4fa95835c525af9d6d2236a6d1c1ad3a5e49a66de0f4b231c47f1fabe"
+    },
+    {
+      "id": "camera",
+      "text": "These four buttons share your view, switch between vertical and tilted views, turn north upward, and recenter the whole planet.",
+      "file": "camera.mp3",
+      "duration": 7.459,
+      "peak": 0.75692,
+      "bytes": 60332,
+      "sha256": "e079a1fdff812c59a4fb2be91d7b08e7a5a7a219b335bd7451e7c496c245cdc1"
+    },
+    {
+      "id": "data",
+      "text": "World Data brings together the planet's key facts, its moons and orbits, and exploration sites and missions.",
+      "file": "data.mp3",
+      "duration": 6.669,
+      "peak": 0.75483,
+      "bytes": 53996,
+      "sha256": "ddeee59cbda476629edb383d8d22d72a272201c614dace139b8ae58d44bf4867"
+    },
+    {
+      "id": "display",
+      "text": "Display controls the scene and image. Adjust stars, lighting, labels, and visual effects here. Available controls depend on the current world.",
+      "file": "display.mp3",
+      "duration": 9.528,
+      "peak": 0.75591,
+      "bytes": 76844,
+      "sha256": "ae91bf17ca746431df9c09885141a5eefb5aecd46d2e513525ba510f2619f654"
+    },
+    {
+      "id": "destinations",
+      "text": "Location finds a place or coordinates on this world. Visual Presets changes the image style. You can return to Normal at any time.",
+      "file": "destinations.mp3",
+      "duration": 8.547,
+      "peak": 0.75121,
+      "bytes": 69164,
+      "sha256": "63bce0714090473a4738ed8ebfbb87adc47162b43a4f232ee80b92d7a354c78e"
+    },
+    {
+      "id": "finish",
+      "text": "Select the RELIC logo to return to the solar system. You're ready to explore. Select me whenever you'd like to replay this tour.",
+      "file": "finish.mp3",
+      "duration": 7.587,
+      "peak": 0.75872,
+      "bytes": 61484,
+      "sha256": "2d9f6004d5dcb9a5d75c1d3c7550e3e8d7f5ed1363c13adcc01ba3d2356e2325"
+    }
+  ]
+}

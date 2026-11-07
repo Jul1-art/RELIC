@@ -1,0 +1,143 @@
+.spacey-tour {
+  --spacey-surface: rgba(11, 17, 25, .98);
+  --spacey-ink: #f2f6fa;
+  --spacey-muted: #a6b5c5;
+  --spacey-border: rgba(132, 190, 212, .26);
+  --spacey-accent: #41d5f2;
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  pointer-events: none;
+  color: var(--spacey-ink);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+.spacey-tour[hidden] { display: none !important; }
+.spacey-tour-dimmer { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.spacey-tour-dimmer path { fill: rgba(0, 0, 0, .79); pointer-events: fill; }
+.spacey-tour[data-step=earth] .spacey-tour-dimmer path { fill: rgba(0, 0, 0, .30); }
+.spacey-guiding .relic-exploration-mascot,
+.relic-exploration-mascot.spacey-guiding { z-index: 1201; visibility: visible !important; }
+.spacey-tour-bubble {
+  position: fixed;
+  z-index: 1202;
+  pointer-events: auto;
+  box-sizing: border-box;
+  width: min(354px, calc(100vw - 28px));
+  max-height: min(560px, 65dvh);
+  padding: 18px 18px 12px;
+  border: 1px solid var(--spacey-border);
+  border-radius: 20px;
+  background: var(--spacey-surface);
+  box-shadow: 0 24px 80px #0008, 0 0 0 1px #ffffff05 inset;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  animation: spacey-tour-appear 220ms ease-out both;
+}
+.spacey-tour-bubble::after {
+  content: '';
+  position: absolute;
+  left: 41px;
+  bottom: -6px;
+  width: 12px;
+  height: 12px;
+  transform: rotate(45deg);
+  background: var(--spacey-surface);
+  border-right: 1px solid var(--spacey-border);
+  border-bottom: 1px solid var(--spacey-border);
+}
+.spacey-tour-bubble header { display: flex; align-items: center; gap: 10px; min-height: 25px; }
+.spacey-tour-name { font-size: 12px; font-weight: 650; color: var(--spacey-accent); letter-spacing: .035em; }
+.spacey-tour-progress { margin-left: auto; font-size: 11px; color: var(--spacey-muted); font-variant-numeric: tabular-nums; }
+html body .spacey-tour button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: 0;
+  letter-spacing: 0;
+  text-transform: none;
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+html body .spacey-tour .spacey-tour-close {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  min-height: 28px;
+  padding: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--spacey-muted);
+  font-size: 22px;
+  line-height: 1;
+}
+.spacey-tour-bubble h2 { margin: 13px 0 8px; font-size: 21px; line-height: 1.2; font-weight: 600; letter-spacing: -.035em; color: var(--spacey-ink); }
+#spacey-tour-text { margin: 0; font-size: 14px; line-height: 1.6; color: var(--spacey-ink); }
+.spacey-tour-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 13px; }
+.spacey-tour-chips:empty { display: none; }
+.spacey-tour-control-chip,
+html body .spacey-tour button.spacey-tour-control-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 6px 9px;
+  border: 1px solid var(--spacey-border);
+  border-radius: 8px;
+  background: #ffffff06;
+  color: var(--spacey-ink);
+  font-size: 11px;
+  line-height: 1.3;
+}
+.spacey-tour-control-chip :is(svg,img,.world-icon) { flex: none; width: 19px; height: 19px; max-width: 23px; object-fit: contain; }
+.spacey-tour-control-chip svg[viewBox='0 0 48 48'] { width: 23px; height: 23px; }
+.spacey-tour-bubble footer { display: flex; align-items: center; gap: 7px; margin-top: 18px; }
+.spacey-tour-audio { display: flex; gap: 3px; margin-right: auto; }
+html body .spacey-tour [data-tour-action] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 8px 12px;
+  border: 1px solid var(--spacey-border);
+  border-radius: 10px;
+  background: #ffffff05;
+  font-size: 12px;
+  font-weight: 550;
+}
+html body .spacey-tour .spacey-tour-audio button { width: 33px; min-height: 36px; padding: 7px; border-color: transparent; background: transparent; color: var(--spacey-muted); }
+.spacey-tour-audio svg { display: block; width: 18px; height: 18px; }
+html body .spacey-tour [data-tour-action=next] { background: var(--spacey-accent); border-color: var(--spacey-accent); color: #07171d; }
+html body .spacey-tour button:is(:hover,:focus-visible) { background: #ffffff12; }
+html body .spacey-tour [data-tour-action=next]:is(:hover,:focus-visible) { background: #77e3f7; }
+html body .spacey-tour button:focus-visible { outline: 2px solid var(--spacey-accent); outline-offset: 3px; }
+html body .spacey-tour button:disabled { opacity: .45; cursor: wait; }
+html body .spacey-tour .spacey-tour-skip { display: block; margin: 10px auto 0; min-height: 26px; padding: 4px 8px; border-radius: 6px; color: var(--spacey-muted); background: transparent; font-size: 11px; }
+.spacey-tour-audio-status { margin: 11px 0 0; font-size: 11px; line-height: 1.4; color: var(--spacey-muted); }
+.spacey-tour [hidden] { display: none !important; }
+html[data-theme=day] .spacey-tour {
+  --spacey-surface: rgba(252, 254, 255, .99);
+  --spacey-ink: #14242d;
+  --spacey-muted: #506773;
+  --spacey-border: #b9d6df;
+  --spacey-accent: #087b96;
+}
+html[data-theme=day] .spacey-tour [data-tour-action=next] { color: #fff; }
+@keyframes spacey-tour-appear { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 700px) {
+  .spacey-tour-bubble { padding: 14px 14px 10px; border-radius: 17px; max-height: 57dvh; }
+  .spacey-tour-bubble h2 { font-size: 19px; }
+  #spacey-tour-text { font-size: 13px; line-height: 1.5; }
+  .spacey-tour-bubble footer { gap: 5px; margin-top: 14px; }
+  html body .spacey-tour [data-tour-action] { min-height: 40px; padding: 8px 10px; }
+  html body .spacey-tour .spacey-tour-audio button { width: 31px; padding: 6px; }
+}
+@media (max-height: 540px) {
+  .spacey-tour-bubble { max-height: 68dvh; }
+  .spacey-tour-bubble h2 { margin-top: 7px; font-size: 17px; }
+  #spacey-tour-text { font-size: 12px; line-height: 1.4; }
+  .spacey-tour-bubble footer { margin-top: 10px; }
+}
+html[data-motion=reduced] .spacey-tour-bubble { animation: none; }
+@media (prefers-reduced-motion: reduce) { html:not([data-motion=full]) .spacey-tour-bubble { animation: none; } }
