@@ -63,7 +63,7 @@ export function initializeActionRail() {
   view.append(viewTitle);
   const menuActions = element('div','rail-menu-actions');
   const menuViews = {worlds,search:command,more:menu};
-  let active = '', opener, closeTimer=0, revealFrame=0, focusFrame=0;
+  let active = '', opener, closeTimer=0, revealFrame=0, focusFrame=0, disclosureMotion;
   let inspection=null,inspectionPromise=null;
   const worldButton = iconButton('rail-worlds','globe','worlds');
   const searchButton = iconButton('rail-search','magnifying-glass','search');
@@ -291,6 +291,11 @@ export function initializeActionRail() {
     if(name&&inspectionActive())for(const key of ['location','presets','display','data'])inspection.close(key);
     if (name && active!==name) setInformation(false);
     if (trigger) opener = trigger;
+    const wasHidden=panel.hidden;
+    const interrupted=disclosureMotion?.playState==='running';
+    const previousClip=interrupted?getComputedStyle(panel).clipPath:null;
+    const previousOpacity=interrupted?getComputedStyle(panel).opacity:null;
+    disclosureMotion?.cancel();
     clearTimeout(closeTimer);cancelAnimationFrame(revealFrame);cancelAnimationFrame(focusFrame);
     panel.scrollTop=0;
     active = name;
@@ -301,13 +306,13 @@ export function initializeActionRail() {
       const entering=panel.hidden||panel.dataset.phase==='closing';
       panel.hidden=false;alignPanel();panel.dataset.phase=entering?'entering':'open';
       for (const [key,region] of Object.entries(menuViews)) if(panel.contains(region)){region.hidden=key!==name;region.inert=key!==name;}
-      if(entering){panel.getBoundingClientRect();revealFrame=requestAnimationFrame(()=>{if(active)panel.dataset.phase='open';});}
+      if(entering){panel.getBoundingClientRect();animateDisclosure(true,wasHidden,previousClip,previousOpacity);revealFrame=requestAnimationFrame(()=>{if(active)panel.dataset.phase='open';});}
     }else{
       panel.dataset.phase='closing';
       const reduced=document.documentElement.dataset.motion==='reduced'
         ||(!document.documentElement.dataset.motion&&matchMedia('(prefers-reduced-motion:reduce)').matches);
       const finish=()=>{if(active)return;panel.hidden=true;delete panel.dataset.phase;for(const region of Object.values(menuViews))if(panel.contains(region)){region.hidden=true;region.inert=true;}};
-      if(reduced)finish();else closeTimer=setTimeout(finish,320);
+      if(reduced)finish();else{animateDisclosure(false,false,previousClip,previousOpacity);closeTimer=setTimeout(finish,panel.dataset.attached==='true'?430:320);}
     }
     for (const [key,button] of Object.entries(triggers)) button.setAttribute('aria-expanded',String(key===name));
     if (name==='worlds') {
@@ -321,6 +326,20 @@ export function initializeActionRail() {
       else close.focus({preventScroll:true});
     });
     if (!name && restoreFocus) opener?.focus({preventScroll:true});
+  }
+  function animateDisclosure(open,wasHidden,previousClip,previousOpacity){
+    const reduced=document.documentElement.dataset.motion==='reduced'||(!document.documentElement.dataset.motion&&matchMedia('(prefers-reduced-motion:reduce)').matches);
+    if(reduced||panel.dataset.attached!=='true'||!panel.animate)return;
+    const full=getComputedStyle(panel).clipPath;
+    const height=panel.getBoundingClientRect().height,radius=parseFloat(panel.style.getPropertyValue('--attached-radius'))+1;
+    const edge=radius,corner=Math.min(14,edge/2);
+    const closed=`path("M0 0H${edge-corner}Q${edge} 0 ${edge} ${corner}V${height-corner}Q${edge} ${height} ${edge-corner} ${height}H0Q${radius} ${height} ${radius} ${height-radius+1}V${radius-1}Q${radius} 0 0 0Z")`;
+    const motion=panel.animate([
+      {clipPath:previousClip||(open&&wasHidden?closed:full),opacity:previousOpacity||(open&&wasHidden?0:1)},
+      {clipPath:open?full:closed,opacity:open?1:0},
+    ],{duration:open?420:360,easing:open?'cubic-bezier(.16,1,.3,1)':'cubic-bezier(.4,0,.6,1)',fill:'both'});
+    disclosureMotion=motion;
+    motion.onfinish=()=>{if(disclosureMotion===motion&&open&&active){motion.cancel();disclosureMotion=undefined;}};
   }
   function alignPanel(){
     const box=rail.getBoundingClientRect();

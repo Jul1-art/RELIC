@@ -284,3 +284,7 @@ html[data-theme=day] body.has-action-rail #relic-action-rail .rail-button{color:
 html[data-theme=day] body.has-action-rail #relic-action-rail .rail-button:not(:disabled):hover{background:#00000007!important;color:#000!important}
 html[data-theme=day] body.has-action-rail #relic-action-rail .rail-button:is([aria-expanded=true],[aria-current=true]){background:#00000007!important;color:#00798c!important}
 html[data-theme=day] #relic-action-rail .rail-utility::before{background:#00000016}
+
+/* Reveal the panel from its attached edge; the rail contour stays stationary. */
+html body.has-action-rail section#relic-action-panel.relic-action-panel[data-attached=true],
+html body.has-action-rail section#relic-action-panel.relic-action-panel[data-attached=true]:is([data-phase=entering],[data-phase=closing]){transform:none;transition:none;opacity:1}
