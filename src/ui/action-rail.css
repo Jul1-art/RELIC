@@ -27,7 +27,7 @@
 }
 .has-action-rail .planet-dashboard #planet-dashboard-inspector.pd-inspector[hidden]{display:none!important}
 .relic-action-shell{
-  position:fixed;inset:0;z-index:60;pointer-events:none;color:var(--rail-ink);
+  position:fixed;inset:0;z-index:90;pointer-events:none;color:var(--rail-ink);
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Arial,sans-serif;
 }
 .relic-action-shell *{box-sizing:border-box}

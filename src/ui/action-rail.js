@@ -68,10 +68,14 @@ export function initializeActionRail() {
   const worldButton = iconButton('rail-worlds','globe','worlds');
   const searchButton = iconButton('rail-search','magnifying-glass','search');
   const moreButton = iconButton('rail-more','gear','settings');
+  moreButton.dataset.appSettings='';
+  moreButton.setAttribute('aria-haspopup','dialog');
+  moreButton.setAttribute('aria-controls','relic-app-settings');
+  moreButton.addEventListener('click',()=>show(''));
   const themeButton = element('button','rail-button rail-theme-action');
   themeButton.type = 'button';themeButton.id = 'rail-theme';themeButton.dataset.themeToggle = '';
   themeButton.innerHTML = railGlyph('sun')+railGlyph('moon')+'<span class="rail-button-label"></span>';
-  for (const button of [worldButton,searchButton,moreButton]) {
+  for (const button of [worldButton,searchButton]) {
     button.setAttribute('aria-controls',panel.id);
     button.setAttribute('aria-expanded','false');
   }
@@ -101,6 +105,7 @@ export function initializeActionRail() {
   if (contextControls?.children.length) view.append(contextControls);
   const earth3D = dashboard.querySelector('.google3d-control');
   if (earth3D) view.append(earth3D);
+  view.hidden=true;view.inert=true;
   if (view.children.length > 1) menu.append(view);
   if (actions) { menuActions.append(actions); menu.append(menuActions); }
   if (!atlas) {
@@ -128,7 +133,7 @@ export function initializeActionRail() {
   inspectorClose.classList.add('rail-inspector-close');
   inspector.prepend(inspectorClose);
   inspectorClose.addEventListener('click',()=>{setInformation(false); information.focus({preventScroll:true});});
-  const triggers = {worlds:worldButton,search:searchButton,more:moreButton};
+  const triggers = {worlds:worldButton,search:searchButton};
   for (const [name,button] of Object.entries(triggers)) button.addEventListener('click',()=>show(active===name?'':name,button));
   close.addEventListener('click',()=>show('',null,true));
   information.addEventListener('click',()=>show(''));
