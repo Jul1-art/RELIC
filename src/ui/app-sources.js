@@ -42,7 +42,7 @@ function createDialog(trigger) {
   const dialog = document.createElement('dialog'); dialog.className = 'relic-sources-dialog';
   dialog.id = 'relic-app-sources'; dialog.setAttribute('aria-labelledby', 'relic-sources-title');
   dialog.innerHTML = `<header class="relic-sources-header"><div><p class="relic-sources-eyebrow"><img class="relic-dialog-logo" src="${new URL('../../assets/relic-logo-v1.png', import.meta.url).href}" alt="" width="26" height="23">RELIC</p><h2 id="relic-sources-title"></h2></div><button type="button" class="relic-sources-close">${worldIcon('xmark')}</button></header><div class="relic-sources-content"></div>`;
-  dialog.querySelector('h2').textContent = french() ? 'Sources et créateurs' : 'Sources and creators';
+  dialog.querySelector('h2').textContent = french() ? 'Crédits' : 'Credits';
   const close = dialog.querySelector('.relic-sources-close');
   close.setAttribute('aria-label', french() ? 'Fermer les sources' : 'Close sources');
   close.addEventListener('click', () => dialog.close());
@@ -62,6 +62,83 @@ function createDialog(trigger) {
   }, {once:true});
   document.body.append(dialog); activeDialog = dialog; dialog.showModal(); close.focus({preventScroll:true});
   return {dialog, content:dialog.querySelector('.relic-sources-content'), signal:request.signal};
+}
+
+
+/** Keep attribution content intact while separating the project from its references. */
+function organizeCredits(dialog, content) {
+  const nodes = [...content.children];
+  const lead = content.querySelector('.relic-sources-lead');
+  const people = content.querySelector('.relic-sources-people');
+  const repository = [...content.children].find(node => node.tagName === 'A' && node.href === 'https://github.com/Jul1-art/RELIC');
+  const groups = [];
+  let group = null;
+  for (const node of nodes) {
+    if (node.tagName === 'H3') { group = {title:node.textContent, nodes:[]}; groups.push(group); }
+    else if (group && node !== lead && node !== people) group.nodes.push(node);
+  }
+  content.replaceChildren();
+  const tabs = document.createElement('div');
+  tabs.className = 'relic-sources-tabs'; tabs.setAttribute('role','tablist');
+  tabs.setAttribute('aria-label', french() ? 'Sections des crédits' : 'Credit sections');
+  content.before(tabs);
+  const labels = french() ? ['Projet','Sources','Film'] : ['Project','Sources','Film'];
+  const panels = labels.map((label,index) => {
+    const button = document.createElement('button'); button.type = 'button';
+    button.id = `relic-credit-tab-${index}`; button.textContent = label;
+    button.setAttribute('role','tab'); button.setAttribute('aria-controls',`relic-credit-panel-${index}`);
+    const panel = document.createElement('section'); panel.id = `relic-credit-panel-${index}`;
+    panel.className = 'relic-credit-panel'; panel.setAttribute('role','tabpanel');
+    panel.setAttribute('aria-labelledby',button.id); panel.tabIndex = 0;
+    tabs.append(button); content.append(panel);
+    return {button,panel};
+  });
+  function select(index, focus=false) {
+    panels.forEach(({button,panel},i) => {
+      button.setAttribute('aria-selected',String(i===index)); button.tabIndex=i===index?0:-1;
+      panel.hidden=i!==index;
+    });
+    content.scrollTop=0;
+    if(focus) panels[index].button.focus();
+  }
+  panels.forEach(({button},index) => {
+    button.addEventListener('click',()=>select(index));
+    button.addEventListener('keydown',event=>{
+      const next = {ArrowRight:(index+1)%3,ArrowLeft:(index+2)%3,Home:0,End:2}[event.key];
+      if(next===undefined)return; event.preventDefault(); select(next,true);
+    });
+  });
+  const project=panels[0].panel, sources=panels[1].panel, film=panels[2].panel;
+  project.append(lead);
+  heading(project,french()?'Les créateurs':'The creators'); project.append(people);
+  repository.className='relic-source-repository'; repository.replaceChildren();
+  const repoCopy=document.createElement('span');
+  paragraph(repoCopy,french()?'Code source ouvert':'Open-source code','relic-repo-label');
+  const repoName=document.createElement('strong'); repoName.textContent='Jul1-art / RELIC'; repoCopy.append(repoName);
+  const arrow=document.createElement('span'); arrow.innerHTML=worldIcon('arrow-up-right-from-square'); arrow.setAttribute('aria-hidden','true');
+  repository.append(repoCopy,arrow); project.append(repository);
+  paragraph(project,french()?'Un projet indépendant, porté par la curiosité spatiale.':'An independent project, driven by curiosity about space.','relic-sources-project-note');
+  heading(sources,french()?'Les références de notre univers':'The references behind our universe');
+  paragraph(sources,french()?'Données, images et outils. Retrouvez les origines et les limites de chaque représentation.':'Data, imagery and tools. Explore the origins and limitations of each representation.');
+  for(const {title,nodes:items} of groups){
+    if(title===(french()?'Code source ouvert':'Open-source code')){
+      const thumbnails=items.filter(node=>node!==repository);
+      const details=document.createElement('details'); details.className='relic-credit-section';
+      const summary=document.createElement('summary'); summary.textContent=french()?'Miniatures des mondes':'World thumbnails';
+      details.append(summary,...thumbnails); sources.append(details); continue;
+    }
+    if(title===(french()?'Le film':'The film')){
+      heading(film,french()?'Le film d’introduction':'The introduction film');
+      const production=document.createElement('details'); production.className='relic-credit-section';
+      const summary=document.createElement('summary'); summary.textContent=french()?'Production et narration':'Production and narration';
+      production.append(summary,items[0]);
+      film.append(...items.slice(1),production); continue;
+    }
+    const details=document.createElement('details'); details.className='relic-credit-section';
+    const summary=document.createElement('summary'); summary.textContent=title;
+    details.append(summary,...items); sources.append(details);
+  }
+  select(0);
 }
 
 /** Opens inside the current document. Planet renderers and the film are untouched. */
@@ -122,6 +199,7 @@ export async function openSources(trigger) {
   sourceLink(content, '67P · provenance et crédits / provenance and credits', new URL('../../assets/comets/67p/provenance.json', import.meta.url).href);
   sourceLink(content, 'NASA/JPL Horizons', 'https://ssd.jpl.nasa.gov/horizons/');
   sourceLink(content, 'ESA / NAIF · Rosetta scientific archive', 'https://naif.jpl.nasa.gov/pub/naif/ROSETTA/');
+  heading(content, french() ? 'Éclairage et rotation' : 'Illumination and rotation');
   paragraph(content, french()
     ? 'L’éclairage suit la direction du Soleil à la date affichée. Les huit planètes utilisent les orientations cartographiques IAU du noyau NAIF PCK, à leur vitesse physique réelle en mode temps réel. Les textures sont des images d’archives ; elles ne donnent pas la météo actuelle. L’accélération est optionnelle ; les traînées bleues suivent les mêmes positions que les planètes. La vue verrouillée fige le temps pendant l’exploration, puis le mode temps réel retrouve l’heure actuelle au retour au système solaire. Une faible lumière nocturne facilite la lecture ; les éclipses et ombres portées des anneaux ne sont pas simulées.'
     : 'Illumination follows the Sun’s direction at the displayed date. The eight planets use IAU cartographic orientations from the NAIF PCK kernel at their actual physical rate in real-time mode. Textures are archival imagery, not current weather. Acceleration is optional; blue trails follow the same positions as the planets. Locked views hold model time still while exploring; returning to the solar system resynchronizes real-time mode to now. Faint night-side fill aids readability; eclipses and cast ring shadows are not simulated.');
@@ -165,6 +243,7 @@ export async function openSources(trigger) {
   paragraph(content,french()
     ? 'RELIC est un projet indépendant. Le code de l’application et les médias possèdent leurs propres licences ; les images et archives ne sont pas toutes sous licence Apache 2.0.'
     : 'RELIC is an independent project. Application code and media have separate licenses; imagery and archive footage are not all licensed under Apache 2.0.','relic-sources-note');
+  organizeCredits(dialog, content);
   try {
     if (!provenanceCache) {
       const response = await fetch(new URL('assets/prologue/sources-v9.json',INTRO_ROOT), {signal});

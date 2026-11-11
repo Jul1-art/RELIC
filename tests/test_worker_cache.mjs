@@ -19,7 +19,7 @@ async function worker({windows=[]}={}) {
   return{stores,events,requests,networkPolicies,request,dispatch,peak:()=>peak,advance:ms=>{time+=ms;},setServe:fn=>{serve=fn;},async message(type){let reply;await dispatch('message',{data:{type},ports:[{postMessage(value){reply=value;}}]});return reply;}};
 }
 
-function applicationClient({id='current',url=origin+'index.html?body=moon#surface',frameType='top-level',release='inspection-20261111-v51'}={}) {
+function applicationClient({id='current',url=origin+'index.html?body=moon#surface',frameType='top-level',release='inspection-20261111-v52'}={}) {
   const posts=[],navigations=[];
   return {id,url,frameType,type:'window',posts,navigations,
     postMessage(message,ports){posts.push(message);assert.equal(ports.length,1);if(release!==null)ports[0].postMessage({release});},
