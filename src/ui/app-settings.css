@@ -10,7 +10,7 @@
   --settings-button-ink:#171718;
   box-sizing:border-box;
   width:min(700px,calc(100vw - 48px));
-  height:550px;
+  height:480px;
   max-height:calc(100dvh - 48px);
   margin:auto;
   padding:0;
@@ -173,8 +173,6 @@ button[data-app-settings] svg.fas{width:16px;height:16px;min-width:16px;min-heig
 .relic-settings-done{display:inline-flex;align-items:center;justify-content:center;line-height:1.3}
 
 /* Concise preferences: labels and choices carry the interface. */
-.relic-settings-dialog{height:fit-content}
-.relic-settings-dialog[open]{grid-template-rows:auto auto minmax(0,auto) auto}
 .relic-settings-header{padding:20px 24px 16px}
 .relic-settings-header h2{font-size:23px}
 .relic-settings-field>h4{margin-bottom:10px}
