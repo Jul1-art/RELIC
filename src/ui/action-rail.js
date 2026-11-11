@@ -188,7 +188,7 @@ export function initializeActionRail() {
   updateViewport();
   let sheetDrag;
   heading.addEventListener('pointerdown',event=>{
-    if(event.pointerType!=='touch'||event.target.closest('button')||!matchMedia('(max-width:700px) and (min-height:521px)').matches)return;
+    if(panel.dataset.attached==='true'||event.pointerType!=='touch'||event.target.closest('button')||!matchMedia('(max-width:700px) and (min-height:521px)').matches)return;
     sheetDrag={id:event.pointerId,x:event.clientX,y:event.clientY};heading.setPointerCapture?.(event.pointerId);
   });
   heading.addEventListener('pointermove',event=>{
@@ -289,7 +289,7 @@ export function initializeActionRail() {
     panel.inert = !name;
     if(name){
       const entering=panel.hidden||panel.dataset.phase==='closing';
-      panel.hidden=false;panel.dataset.phase=entering?'entering':'open';
+      panel.hidden=false;alignPanel();panel.dataset.phase=entering?'entering':'open';
       for (const [key,region] of Object.entries(menuViews)) if(panel.contains(region)){region.hidden=key!==name;region.inert=key!==name;}
       if(entering){panel.getBoundingClientRect();revealFrame=requestAnimationFrame(()=>{if(active)panel.dataset.phase='open';});}
     }else{
@@ -297,7 +297,7 @@ export function initializeActionRail() {
       const reduced=document.documentElement.dataset.motion==='reduced'
         ||(!document.documentElement.dataset.motion&&matchMedia('(prefers-reduced-motion:reduce)').matches);
       const finish=()=>{if(active)return;panel.hidden=true;delete panel.dataset.phase;for(const region of Object.values(menuViews))if(panel.contains(region)){region.hidden=true;region.inert=true;}};
-      if(reduced)finish();else closeTimer=setTimeout(finish,180);
+      if(reduced)finish();else closeTimer=setTimeout(finish,320);
     }
     for (const [key,button] of Object.entries(triggers)) button.setAttribute('aria-expanded',String(key===name));
     if (name==='worlds') {
@@ -313,10 +313,14 @@ export function initializeActionRail() {
     if (!name && restoreFocus) opener?.focus({preventScroll:true});
   }
   function alignPanel(){
-    if(innerWidth<=700)return;
     const box=rail.getBoundingClientRect();
-    panel.style.setProperty('--attached-top',`${box.top}px`);
-    panel.style.setProperty('--attached-height',`${box.height}px`);
+    if(box.height<=box.width||shell.dataset.keyboard==='true'){delete panel.dataset.attached;return;}
+    const radius=Math.min(parseFloat(getComputedStyle(rail).borderTopRightRadius)||0,box.height/2,box.width/2);
+    const left=box.right-radius-1,height=box.height,width=Math.min(368+radius,innerWidth-left-12);
+    const outline=`M0 0H${width-14}Q${width} 0 ${width} 14V${height-14}Q${width} ${height} ${width-14} ${height}H0Q${radius+1} ${height} ${radius+1} ${height-radius}V${radius}Q${radius+1} 0 0 0Z`;
+    panel.dataset.attached='true';
+    for(const [key,value] of Object.entries({top:box.top,left,height,width,radius}))panel.style.setProperty(`--attached-${key}`,`${value}px`);
+    panel.style.setProperty('--attached-outline',`"${outline}"`);
   }
   function render() {
     requestAnimationFrame(alignPanel);

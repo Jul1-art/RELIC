@@ -250,13 +250,22 @@ html[data-relic-film=active] .relic-action-shell,.intro-active .relic-action-she
 html[data-motion=reduced] :is(.relic-action-rail,.relic-action-panel,.pd-inspector){animation:none!important;transition:none!important}
 @media(prefers-reduced-motion:reduce){html:not([data-motion=full]) :is(.relic-action-rail,.relic-action-panel,.pd-inspector){animation:none!important;transition:none!important}}
 
-@media(min-width:701px){
-html body.has-action-rail section#relic-action-panel.relic-action-panel{left:calc(var(--rail-edge) + var(--rail-width) - 1px);border-radius:0 14px 14px 0;background:#191919;box-shadow:12px 12px 32px #0005;border-left:0}
 
-.relic-action-panel .rail-panel-heading{background:#191919}
-html[data-theme=day] body.has-action-rail section#relic-action-panel.relic-action-panel,html[data-theme=day] .relic-action-panel .rail-panel-heading{background:#e5e5e5}
+/* The panel follows the rail's actual rounded edge, including compact layouts. */
+html body.has-action-rail section#relic-action-panel.relic-action-panel[data-attached=true]{
+ left:var(--attached-left);right:auto;top:var(--attached-top);bottom:auto!important;
+ width:var(--attached-width);height:var(--attached-height);max-height:var(--attached-height);
+ padding-left:calc(20px + var(--attached-radius));border:0;border-radius:0;
+ clip-path:path(var(--attached-outline));background:var(--attached-surface,#191919);
+ transform:translateX(0);transform-origin:left center;opacity:1;
+ transition:transform 320ms cubic-bezier(.16,1,.3,1),opacity 220ms ease;
+ box-shadow:none;z-index:1;
 }
+html body.has-action-rail section#relic-action-panel.relic-action-panel[data-attached=true][data-phase=entering],
+html body.has-action-rail section#relic-action-panel.relic-action-panel[data-attached=true][data-phase=closing]{transform:translateX(-14px);opacity:0;pointer-events:none}
+#relic-action-panel[data-attached=true] .rail-panel-heading{background:var(--attached-surface,#191919)}
+.relic-action-shell:has(#relic-action-panel[data-attached=true]:not([hidden])) #relic-action-rail{z-index:2;box-shadow:none}
+html[data-theme=day] .relic-action-shell{--attached-surface:#e5e5e5}
+.relic-action-shell[data-open]:not([data-open=none]),.relic-action-shell:has(#relic-action-panel[data-phase=closing]){z-index:90}
 
-@media(min-width:701px){html body.has-action-rail section#relic-action-panel.relic-action-panel{top:var(--attached-top);height:var(--attached-height);max-height:var(--attached-height);transform:none;border-radius:0 14px 14px 0}html body.has-action-rail section#relic-action-panel.relic-action-panel:is([data-phase=entering],[data-phase=closing]){transform:translateX(-10px)}}
-
-.relic-action-shell[data-open]:not([data-open=none]){z-index:90}
+#relic-action-panel[data-attached=true] .rail-sheet-handle{display:none}
