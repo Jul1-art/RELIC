@@ -1,5 +1,6 @@
 import {createMascotSprite} from './mascot-sprite.js';
 import {createSpaceyTour} from './spacey-tour.js';
+import {createMascotArrival} from './mascot-arrival.js';
 
 export function createExplorationMascot({loading,getLanguage,onLanguageChange}) {
   const sprite=createMascotSprite();
@@ -14,6 +15,7 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
   const systemMotion=matchMedia('(prefers-reduced-motion: reduce)');
   let styled=false,suspended=false,disposed=false,guiding=false;
   let x=0,y=0,frame=0,resolveMovement;
+  let arrived=false,arriving=false,arrivalVersion=0;
 
   function reducedMotion() {
     const motion=document.documentElement.dataset.motion;
@@ -91,6 +93,7 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
       updateLabel();
     },
   });
+  const arrival=createMascotArrival({host:button,sprite:sprite.element,reducedMotion});
   function updateLabel() {
     const fr=getLanguage()==='fr';
     button.setAttribute('aria-label',fr?'Spacey · Visite guidée':'Spacey · Guided tour');
@@ -100,10 +103,21 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
     if(disposed)return;
     const ready=styled&&!suspended&&loading.dataset.viewLoading==='ready';
     button.hidden=!ready;
-    tour.suspend(!ready);
-    if(ready)tour.showInvite();
+    if(!ready){
+      ++arrivalVersion;arriving=false;arrival.cancel();tour.suspend(true);return;
+    }
+    if(arrived){tour.suspend(false);tour.showInvite();return;}
+    if(arriving)return;
+    arriving=true;tour.suspend(true);
+    const current=++arrivalVersion;
+    arrival.play().then(completed=>{
+      if(disposed||current!==arrivalVersion)return;
+      arriving=false;
+      if(!completed)return;
+      arrived=true;tour.suspend(false);tour.showInvite();
+    });
   }
-  button.addEventListener('click',()=>{if(!guiding)tour.replay();});
+  button.addEventListener('click',()=>{if(!guiding&&!arriving)tour.replay();});
   styles.addEventListener('load',()=>{styled=true;refresh();},{once:true});
   document.head.append(styles);
   document.body.append(button);
@@ -123,6 +137,7 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
     },
     dispose(){
       disposed=true;
+      ++arrivalVersion;arrival.dispose();
       cancelMovement();
       tour.dispose();
       observer.disconnect();
