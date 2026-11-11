@@ -1,8 +1,8 @@
 /* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'inspection-20261111-v37-public';
-const INTERFACE_RELEASE = 'inspection-20261111-v37';
+const VERSION = 'inspection-20261111-v38-public';
+const INTERFACE_RELEASE = 'inspection-20261111-v38';
 const CLIENT_VERSION_TIMEOUT = 650;
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;

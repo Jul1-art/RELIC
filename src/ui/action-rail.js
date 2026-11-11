@@ -67,7 +67,7 @@ export function initializeActionRail() {
   let inspection=null,inspectionPromise=null;
   const worldButton = iconButton('rail-worlds','globe','worlds');
   const searchButton = iconButton('rail-search','magnifying-glass','search');
-  const moreButton = iconButton('rail-more','sliders','more');
+  const moreButton = iconButton('rail-more','gear','settings');
   const themeButton = element('button','rail-button rail-theme-action');
   themeButton.type = 'button';themeButton.id = 'rail-theme';themeButton.dataset.themeToggle = '';
   themeButton.innerHTML = railGlyph('sun')+railGlyph('moon')+'<span class="rail-button-label"></span>';
@@ -77,13 +77,13 @@ export function initializeActionRail() {
   }
   if (brand) { brand.classList.add('rail-brand'); brand.dataset.railLabel=COPY[getLanguage()==='fr'?'fr':'en'].home;rail.append(brand); }
   rail.append(primary,utility);
-  primary.append(worldButton,searchButton);
+  primary.append(worldButton);
   information.classList.add('rail-button');
   information.dataset.railCopy = 'information';
   information.querySelector('span:not(.world-icon)')?.classList.add('rail-button-label');
   information.querySelector('svg')?.remove();
   information.insertAdjacentHTML('afterbegin',railGlyph('circle-info'));
-  primary.append(information);
+  information.hidden=true;
   const reset = dashboard.querySelector(atlas ? '#overview-button' : '#reset-view,#reset-button');
   if (reset) {
     reset.classList.add('rail-button');
@@ -111,6 +111,16 @@ export function initializeActionRail() {
     replay.innerHTML = worldIcon('film')+'<span></span>';
     menuActions.prepend(replay);
   }
+  let credits=document.getElementById('relic-credits');
+  if(!credits){
+    credits=iconButton('relic-credits','circle-info','sources');
+    credits.addEventListener('click',()=>{void import('./app-sources.js').then(({openSources})=>openSources(credits));});
+  }
+  credits.classList.add('rail-button');credits.dataset.railCopy='sources';
+  credits.innerHTML=worldIcon('circle-info')+'<span class="rail-button-label"></span>';
+  credits.hidden=false;
+  credits.addEventListener('click',()=>show(''));
+  primary.append(credits);
   panel.append(heading,worlds,command,menu);
   shell.append(rail,panel);
   document.body.append(shell);
@@ -351,7 +361,7 @@ export function initializeActionRail() {
     inspectorClose.setAttribute('aria-label',copy.closeInformation);
     inspectorClose.removeAttribute('title');
     if(atlas&&reset)reset.hidden=!hasWorld;
-    information.hidden=false;
+    information.hidden=true;
     information.disabled=!hasWorld;
     information.setAttribute('aria-disabled',String(!hasWorld));
     information.setAttribute('aria-expanded',String(informationOpen));
