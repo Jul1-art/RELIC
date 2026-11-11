@@ -312,4 +312,4 @@ html:root body.has-action-rail #relic-action-panel .pd-world-option .pd-world-di
 
 html:root body.has-action-rail #relic-action-panel .pd-world-option .pd-world-disc:has(.pd-world-mini){background:none!important;border:0!important;box-shadow:none!important;border-radius:0!important}
 #relic-action-panel .pd-world-mini{display:block;width:30px!important;height:30px!important;max-height:none!important;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);overflow:visible;pointer-events:none}
-#relic-action-panel .pd-world-disc[data-world=saturn] .pd-world-mini{width:38px!important;height:30px!important}
+#relic-action-panel .pd-world-disc[data-world=saturn] .pd-world-mini{width:44px!important;height:32px!important}

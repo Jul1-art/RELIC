@@ -1,0 +1,16 @@
+[
+  {
+    "file": "earth-apollo17.jpg",
+    "source": "https://svs.gsfc.nasa.gov/30613",
+    "credit": "NASA Johnson Space Center / Apollo 17",
+    "processing": "Original downloaded JPEG unchanged; display crop in SVG.",
+    "sha256": "13419b34c17722be52b4a71a7f0beb3ecc8673183c8a2cee8572d5cd9bbe3f93"
+  },
+  {
+    "file": "saturn-cassini.jpg",
+    "source": "https://science.nasa.gov/photojournal/saturn-four-years-on/",
+    "credit": "NASA/JPL/Space Science Institute / Cassini / PIA11141",
+    "processing": "Original downloaded JPEG unchanged; display crop in SVG.",
+    "sha256": "70c10211c535c21d44a6ab1d5c92bd4942aeff9f84762a27ed9736902189811d"
+  }
+]

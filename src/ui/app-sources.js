@@ -92,6 +92,8 @@ export async function openSources(trigger) {
   }
   heading(content, french() ? 'Code source ouvert' : 'Open-source code');
   sourceLink(content, 'RELIC · GitHub', 'https://github.com/Jul1-art/RELIC');
+  sourceLink(content, 'Earth thumbnail · NASA / Apollo 17', 'https://svs.gsfc.nasa.gov/30613');
+  sourceLink(content, 'Saturn thumbnail · NASA/JPL/Space Science Institute · Cassini', 'https://science.nasa.gov/photojournal/saturn-four-years-on/');
   heading(content, french() ? 'Positions et échelle' : 'Positions and scale');
   paragraph(content, french()
     ? 'Le mode par défaut suit l’heure UTC réelle, à une seconde par seconde. Les centres des huit planètes utilisent les vecteurs géométriques héliocentriques NASA/JPL Horizons, interpolés avec leurs vitesses : éphémérides 2025–2033 fournies avec l’application et fenêtres actualisées par le serveur lorsqu’il est disponible. Il s’agit de positions calculées pour la date affichée, pas de télémétrie. Les courbes sont les ellipses osculatrices à cette date. Si les éphémérides sont indisponibles, le modèle approché est explicitement indiqué.'
