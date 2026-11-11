@@ -2,8 +2,8 @@ import { getLanguage, onLanguageChange } from '../atlas/atlas-live.js?v=3';
 import { worldIcon } from './world-icons.js';
 
 const COPY = {
-  en: {navigation:'Exploration',worlds:'Worlds',search:'Search',information:'View information',reset:'Reset view',more:'More actions',close:'Close',menu:'Controls',view:'View',replay:'Watch the film',sources:'Sources and creators',settings:'Settings',language:'Language',searchTitle:'Search',worldsTitle:'Worlds',closeInformation:'Close information',selectWorld:'Select a world to see its information',light:'Switch to light mode',dark:'Switch to dark mode',home:'Solar system',tiltAction:'Change viewing angle',heightAction:'Change terrain exaggeration',northAction:'North up',worldsDescription:'',searchPlaces:'Find a place on Earth, or enter coordinates.',searchCoordinates:'Enter coordinates to explore this world.',searchSites:'Find a NASA site or enter coordinates.',moreDescription:'Your view, time and preferences.',worldsShort:'Worlds',searchShort:'Search',informationShort:'Info',moreShort:'More',lightShort:'Light',darkShort:'Dark'},
-  fr: {navigation:'Exploration',worlds:'Mondes',search:'Rechercher',information:'Informations de la vue',reset:'Recentrer la vue',more:'Autres actions',close:'Fermer',menu:'Commandes',view:'Vue',replay:'Revoir le film',sources:'Sources et créateurs',settings:'Réglages',language:'Langue',searchTitle:'Rechercher',worldsTitle:'Mondes',closeInformation:'Fermer les informations',selectWorld:'Sélectionner un monde pour voir ses informations',light:'Passer en mode clair',dark:'Passer en mode sombre',home:'Système solaire',tiltAction:'Changer l’angle de vue',heightAction:'Changer l’amplification du relief',northAction:'Orienter le nord en haut',worldsDescription:'',searchPlaces:'Trouvez un lieu sur Terre ou saisissez des coordonnées.',searchCoordinates:'Saisissez des coordonnées pour explorer ce monde.',searchSites:'Trouvez un site NASA ou saisissez des coordonnées.',moreDescription:'La vue, le temps et vos préférences.',worldsShort:'Mondes',searchShort:'Recherche',informationShort:'Infos',moreShort:'Plus',lightShort:'Clair',darkShort:'Sombre'},
+  en: {navigation:'Exploration',worlds:'Worlds',search:'Search',information:'View information',reset:'Reset view',more:'More actions',close:'Close',menu:'Settings',view:'View',replay:'Watch the film',sources:'Sources and creators',settings:'Settings',language:'Language',searchTitle:'Search',worldsTitle:'Worlds',closeInformation:'Close information',selectWorld:'Select a world to see its information',light:'Switch to light mode',dark:'Switch to dark mode',home:'Solar system',tiltAction:'Change viewing angle',heightAction:'Change terrain exaggeration',northAction:'North up',worldsDescription:'',searchPlaces:'Find a place on Earth, or enter coordinates.',searchCoordinates:'Enter coordinates to explore this world.',searchSites:'Find a NASA site or enter coordinates.',moreDescription:'',worldsShort:'Worlds',searchShort:'Search',informationShort:'Info',moreShort:'More',lightShort:'Light',darkShort:'Dark'},
+  fr: {navigation:'Exploration',worlds:'Mondes',search:'Rechercher',information:'Informations de la vue',reset:'Recentrer la vue',more:'Autres actions',close:'Fermer',menu:'Réglages',view:'Vue',replay:'Revoir le film',sources:'Sources et créateurs',settings:'Réglages',language:'Langue',searchTitle:'Rechercher',worldsTitle:'Mondes',closeInformation:'Fermer les informations',selectWorld:'Sélectionner un monde pour voir ses informations',light:'Passer en mode clair',dark:'Passer en mode sombre',home:'Système solaire',tiltAction:'Changer l’angle de vue',heightAction:'Changer l’amplification du relief',northAction:'Orienter le nord en haut',worldsDescription:'',searchPlaces:'Trouvez un lieu sur Terre ou saisissez des coordonnées.',searchCoordinates:'Saisissez des coordonnées pour explorer ce monde.',searchSites:'Trouvez un site NASA ou saisissez des coordonnées.',moreDescription:'',worldsShort:'Mondes',searchShort:'Recherche',informationShort:'Infos',moreShort:'Plus',lightShort:'Clair',darkShort:'Sombre'},
 };
 let instance;
 const element = (tag, className) => Object.assign(document.createElement(tag), {className});
@@ -51,8 +51,7 @@ export function initializeActionRail() {
   panel.setAttribute('aria-labelledby',title.id);
   const description=element('p','rail-panel-description');description.id='rail-panel-description';
   panel.setAttribute('aria-describedby',description.id);
-  const shortcut=element('kbd','rail-shortcut');shortcut.textContent='esc';shortcut.setAttribute('aria-hidden','true');
-  headingCopy.append(title,description);heading.append(handle,headingCopy,shortcut);
+  headingCopy.append(title,description);heading.append(handle,headingCopy);
   const worlds = element('div','rail-worlds');
   worlds.append(picker);
   const menu = element('div','rail-menu');
@@ -303,7 +302,7 @@ export function initializeActionRail() {
     panel.scrollTop=0;
     active = name;
     shell.dataset.open = name || 'none';
-    panel.dataset.panelKind=name||'none';
+    if(name)panel.dataset.panelKind=name;
     panel.inert = !name;
     if(name){
       const entering=panel.hidden||panel.dataset.phase==='closing';
@@ -314,7 +313,7 @@ export function initializeActionRail() {
       panel.dataset.phase='closing';
       const reduced=document.documentElement.dataset.motion==='reduced'
         ||(!document.documentElement.dataset.motion&&matchMedia('(prefers-reduced-motion:reduce)').matches);
-      const finish=()=>{if(active)return;panel.hidden=true;delete panel.dataset.phase;for(const region of Object.values(menuViews))if(panel.contains(region)){region.hidden=true;region.inert=true;}};
+      const finish=()=>{if(active)return;panel.hidden=true;delete panel.dataset.phase;delete panel.dataset.panelKind;for(const region of Object.values(menuViews))if(panel.contains(region)){region.hidden=true;region.inert=true;}};
       if(reduced)finish();else{animateDisclosure(false,false,previousClip,previousOpacity);closeTimer=setTimeout(finish,panel.dataset.attached==='true'?430:320);}
     }
     for (const [key,button] of Object.entries(triggers)) button.setAttribute('aria-expanded',String(key===name));
@@ -361,8 +360,10 @@ export function initializeActionRail() {
     const informationOpen=dashboard.dataset.panelOpen==='true';
     const hasWorld=Boolean(dashboard.dataset.dashboardBody&&dashboard.dataset.dashboardBody!=='overview');
     rail.setAttribute('aria-label',copy.navigation);
-    title.textContent = copy[active==='worlds'?'worldsTitle':active==='search'?'searchTitle':'menu'];
-    description.textContent=copy[active==='worlds'?'worldsDescription':active==='search'?(['overview','earth'].includes(currentBody)?'searchPlaces':atlas?'searchCoordinates':'searchSites'):'moreDescription'];
+    const panelKind=active||panel.dataset.panelKind;
+    title.textContent = copy[panelKind==='worlds'?'worldsTitle':panelKind==='search'?'searchTitle':'menu'];
+    description.textContent=copy[panelKind==='worlds'?'worldsDescription':panelKind==='search'?(['overview','earth'].includes(currentBody)?'searchPlaces':atlas?'searchCoordinates':'searchSites'):'moreDescription'];
+    description.hidden=!description.textContent;
     for (const target of shell.querySelectorAll('[data-rail-copy]')) {
       const label = target===information?(hasWorld?(informationOpen?copy.closeInformation:copy.information):copy.selectWorld):copy[target.dataset.railCopy];
       target.dataset.railLabel = label;
