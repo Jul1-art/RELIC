@@ -1,5 +1,6 @@
 import { getLanguage, onLanguageChange } from '../atlas/atlas-live.js?v=3';
 import { worldIcon } from './world-icons.js';
+import { worldThumbnail } from './world-thumbnails.js';
 import { parseCoordinateQuery } from '../search/coordinateParser.js';
 import { searchPlaces } from '../search/place-search.js';
 import { navigateTo } from './navigation.js';
@@ -60,7 +61,7 @@ export function initializePlanetDashboard(options = {}) {
   const worldOptions=new Map();
   for(const id of BODIES){
     const option=node('button','pd-world-option');option.type='button';option.id='dashboard-world-option-'+id;option.dataset.world=id;option.tabIndex=-1;option.setAttribute('role','option');
-    const disc=node('span','pd-world-disc');disc.dataset.world=id;disc.setAttribute('aria-hidden','true');
+    const disc=node('span','pd-world-disc');disc.dataset.world=id;disc.setAttribute('aria-hidden','true');disc.innerHTML=worldThumbnail(id);
     const name=node('span','pd-world-name');const selected=node('span','pd-world-selected');selected.setAttribute('aria-hidden','true');
     option.append(disc,name,selected);pickerList.append(option);worldOptions.set(id,option);
   }

@@ -308,4 +308,8 @@ html:root body.has-action-rail #relic-action-panel .pd-world-option .pd-world-di
 .pd-world-disc[data-world=neptune]{--world-thumbnail:url("../../assets/neptune-scope.webp")}
 
 html:root body.has-action-rail #relic-action-panel .pd-world-option .pd-world-disc[data-world=overview]{background-color:transparent!important;background-image:none!important;border:1px solid currentColor!important;box-shadow:none!important}
-.pd-world-disc[data-world=saturn]::after{content:'';position:absolute;inset:7px -5px;border:2px solid #caba94;border-radius:50%;transform:rotate(-25deg);pointer-events:none}
+
+
+html:root body.has-action-rail #relic-action-panel .pd-world-option .pd-world-disc:has(.pd-world-mini){background:none!important;border:0!important;box-shadow:none!important;border-radius:0!important}
+#relic-action-panel .pd-world-mini{display:block;width:30px!important;height:30px!important;max-height:none!important;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);overflow:visible;pointer-events:none}
+#relic-action-panel .pd-world-disc[data-world=saturn] .pd-world-mini{width:38px!important;height:30px!important}

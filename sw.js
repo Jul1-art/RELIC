@@ -1,8 +1,8 @@
 /* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'inspection-20261111-v47-public';
-const INTERFACE_RELEASE = 'inspection-20261111-v47';
+const VERSION = 'inspection-20261111-v48-public';
+const INTERFACE_RELEASE = 'inspection-20261111-v48';
 const CLIENT_VERSION_TIMEOUT = 650;
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
@@ -30,7 +30,7 @@ const CORE = [
 // This also covers a first visit whose early imports preceded worker control.
 const OFFLINE_CORE = [
   ...CORE,
-  'src/ui/inspection-shell.js','src/ui/inspection-shell.css','src/ui/inspection-controls.js','src/ui/visual-effects.js',
+  'src/ui/world-thumbnails.js','src/ui/inspection-shell.js','src/ui/inspection-shell.css','src/ui/inspection-controls.js','src/ui/visual-effects.js',
   'src/ui/inspection-motion.js','src/ui/inspection-motion.css',
   'src/ui/mascot-arrival.js','src/ui/exploration-mascot.js','src/ui/exploration-mascot.css','src/ui/mascot-sprite.js','src/ui/mascot-sprite.css',
   'src/ui/spacey-tour.js','src/ui/spacey-tour.css','src/ui/narration-clock.js','assets/spacey/audio/destinations-timeline.json',
