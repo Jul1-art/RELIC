@@ -656,8 +656,8 @@ html[data-theme=day] .relic-inspection-shell .inspection-locale .locale-picker-b
 
 .inspection-feedback { position: absolute; left: 50%; bottom: calc(var(--inspection-bottom) + 84px); transform: translateX(-50%); max-width: calc(100vw - 24px); padding: 9px 12px; border: 1px solid var(--inspection-border); border-radius: 11px; background: var(--inspection-surface); box-shadow: var(--inspection-shadow); pointer-events: auto; }
 .inspection-feedback input { display: block; width: min(520px, 76vw); margin-top: 7px; padding: 8px; border: 1px solid var(--inspection-border); border-radius: 7px; background: var(--inspection-raise); color: inherit; }
-html body.has-inspection-shell nav#relic-action-rail.relic-action-rail[data-compact] { border-color: #7bbdd34a; background: #09121be8; box-shadow: 0 12px 36px #0008, 0 0 24px #00d4ff0d; }
-html[data-theme=day] body.has-inspection-shell nav#relic-action-rail.relic-action-rail[data-compact] { background: #f8fcfef2; box-shadow: 0 10px 34px #243b4926; }
+html body.has-inspection-shell nav#relic-action-rail.relic-action-rail[data-compact] { border-color: #ffffff16; background: #050505; box-shadow: 0 8px 24px #0003; }
+html[data-theme=day] body.has-inspection-shell nav#relic-action-rail.relic-action-rail[data-compact] { background: #fff; border-color:#00000014; box-shadow:0 8px 24px #00000008; }
 body.has-inspection-shell #relic-action-rail .rail-button:is([aria-expanded=true], [aria-current=true]) { color: #00d4ff !important; background: #00d4ff12 !important; }
 html[data-theme=day] body.has-inspection-shell #relic-action-rail .rail-button:is([aria-expanded=true], [aria-current=true]) { color: #00708c !important; }
 @media (max-width: 900px) {

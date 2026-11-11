@@ -37,8 +37,8 @@ html body.has-action-rail nav#relic-action-rail.relic-action-rail[data-compact]{
   top:calc((100dvh + var(--rail-safe-top) - var(--rail-safe-bottom))/2);
   display:flex;flex-direction:column;align-items:center;gap:30px;
   width:var(--rail-width);height:auto;max-height:var(--rail-available);
-  margin:0;padding:22px 9px;border:1px solid var(--rail-line);border-radius:25px;
-  background:var(--rail-panel);box-shadow:var(--chrome-shadow);
+  margin:0;padding:22px 9px;border:1px solid #ffffff16;border-radius:18px;
+  background:#050505;box-shadow:0 8px 24px #0003;
   pointer-events:auto;transform:translateY(-50%);isolation:isolate;overflow:visible;
 }
 .rail-primary,.rail-utility{position:relative;display:flex;flex-direction:column;align-items:center;gap:24px;min-height:0;width:100%}
@@ -269,3 +269,18 @@ html[data-theme=day] .relic-action-shell{--attached-surface:#e5e5e5}
 .relic-action-shell[data-open]:not([data-open=none]),.relic-action-shell:has(#relic-action-panel[data-phase=closing]){z-index:90}
 
 #relic-action-panel[data-attached=true] .rail-sheet-handle{display:none}
+
+/* Neutral, consistent materials for the persistent navigation. */
+html body.has-action-rail #relic-action-rail .rail-brand{border-radius:10px;background:transparent!important}
+html body.has-action-rail #relic-action-rail .rail-button{border-radius:10px!important;color:#d9d9d9!important;transition:background-color 160ms ease,color 160ms ease,transform 180ms cubic-bezier(.2,.8,.2,1)}
+html body.has-action-rail #relic-action-rail .rail-button:not(:disabled):hover{background:#ffffff0d!important;color:#fff!important}
+html body.has-action-rail #relic-action-rail .rail-button:is([aria-expanded=true],[aria-current=true]){background:#ffffff0d!important;color:#40d8ee!important}
+html body.has-action-rail #relic-action-rail .rail-button::before{left:-10px;width:2px;height:14px;top:calc(50% - 7px);border-radius:2px;background:#40d8ee}
+html body.has-action-rail #relic-action-rail .rail-button:focus-visible{outline:2px solid #40d8ee;outline-offset:2px}
+html body.has-action-rail #relic-action-rail .rail-button::after{border-radius:8px;padding:9px 12px;background:#111;border-color:#ffffff16;color:#fff;box-shadow:0 4px 16px #0004}
+#relic-action-rail .rail-utility::before{left:calc(50% - 12px);right:auto;width:24px;background:#ffffff1a}
+html[data-theme=day] body.has-action-rail #relic-action-rail{background:#fff;border-color:#00000014;box-shadow:0 8px 24px #00000008}
+html[data-theme=day] body.has-action-rail #relic-action-rail .rail-button{color:#333!important}
+html[data-theme=day] body.has-action-rail #relic-action-rail .rail-button:not(:disabled):hover{background:#00000007!important;color:#000!important}
+html[data-theme=day] body.has-action-rail #relic-action-rail .rail-button:is([aria-expanded=true],[aria-current=true]){background:#00000007!important;color:#00798c!important}
+html[data-theme=day] #relic-action-rail .rail-utility::before{background:#00000016}
