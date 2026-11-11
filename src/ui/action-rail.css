@@ -288,3 +288,24 @@ html[data-theme=day] #relic-action-rail .rail-utility::before{background:#000000
 /* Reveal the panel from its attached edge; the rail contour stays stationary. */
 html body.has-action-rail section#relic-action-panel.relic-action-panel[data-attached=true],
 html body.has-action-rail section#relic-action-panel.relic-action-panel[data-attached=true]:is([data-phase=entering],[data-phase=closing]){transform:none;transition:none;opacity:1}
+
+#relic-action-panel[data-panel-kind=worlds] :is(.rail-panel-description,.rail-shortcut){display:none}
+html:root body.has-action-rail #relic-action-panel .pd-world-option .pd-world-disc{
+ position:relative;flex:0 0 26px;width:26px;height:26px;border:0!important;
+ background-color:#888!important;background-image:radial-gradient(circle at 30% 25%,#ffffff18 0%,transparent 42%,#0009 100%),var(--world-thumbnail,none)!important;
+ background-size:100% 100%,auto 100%!important;background-position:center!important;
+ box-shadow:inset -3px -1px 5px #0007,0 1px 3px #0003!important;
+}
+.pd-world-disc[data-world=sun]{--world-thumbnail:url("../../assets/sun-scope.webp")}
+.pd-world-disc[data-world=mercury]{--world-thumbnail:url("../../assets/mercury-scope.webp")}
+.pd-world-disc[data-world=venus]{--world-thumbnail:url("../../assets/venus-scope.webp")}
+.pd-world-disc[data-world=earth]{--world-thumbnail:url("../../assets/earth-blue-marble-4k.webp")}
+.pd-world-disc[data-world=moon]{--world-thumbnail:url("../../assets/moons/moon-lroc-2k.webp")}
+.pd-world-disc[data-world=mars]{--world-thumbnail:url("../../assets/mars-viking-global.webp")}
+.pd-world-disc[data-world=jupiter]{--world-thumbnail:url("../../assets/jupiter-scope.webp")}
+.pd-world-disc[data-world=saturn]{--world-thumbnail:url("../../assets/saturn-scope.webp")}
+.pd-world-disc[data-world=uranus]{--world-thumbnail:url("../../assets/uranus-scope.webp")}
+.pd-world-disc[data-world=neptune]{--world-thumbnail:url("../../assets/neptune-scope.webp")}
+
+html:root body.has-action-rail #relic-action-panel .pd-world-option .pd-world-disc[data-world=overview]{background-color:transparent!important;background-image:none!important;border:1px solid currentColor!important;box-shadow:none!important}
+.pd-world-disc[data-world=saturn]::after{content:'';position:absolute;inset:7px -5px;border:2px solid #caba94;border-radius:50%;transform:rotate(-25deg);pointer-events:none}
