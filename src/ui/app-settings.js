@@ -8,34 +8,34 @@ const choices = Object.freeze({ language:['en','fr'], theme:['night','day'], acc
 const sections = ['general','display','experience'];
 const COPY = {
   en:{
-    settings:'Settings', subtitle:'Viewing preferences', general:'General', display:'Display', experience:'Experience',
+    settings:'Settings', subtitle:'Viewing preferences', general:'General', display:'Display', experience:'Motion',
     generalTitle:'Language & appearance', generalHint:'',
     displayTitle:'Rendering', displayHint:'',
     experienceTitle:'Motion', experienceHint:'Transitions and camera journeys.',
     language:'Language', languageHint:'Menus and the introduction.', theme:'Appearance', themeHint:'A consistent theme across your views.',
     accent:'Accent colour', accentHint:'Monochrome by default. Blue when you want it.', quality:'3D quality', qualityHint:'Applies to the atlas and planetary views.',
     motion:'Animations', motionHint:'Page transitions, interface motion and camera journeys.',
-    night:'Dark', day:'Light', mono:'Monochrome', nasa:'NASA blue', system:'Use device setting', full:'Full motion', reduced:'Reduced motion',
+    night:'Dark', day:'Light', mono:'Monochrome', nasa:'NASA blue', system:'Auto', full:'On', reduced:'Reduced',
     systemHint:'Follows your device’s motion preference.', fullHint:'Smooth transitions and camera movement.', reducedHint:'Keeps movement brief and direct.',
-    adaptive:'Adaptive', high:'High detail', adaptiveHint:'Balances detail and battery.', highHint:'Sharper rendering.',
+    adaptive:'Adaptive', high:'High', adaptiveHint:'Balances detail and battery.', highHint:'Sharper rendering.',
     motionNote:'Reduced motion keeps exploration fully interactive.',
-    reset:'Reset preferences', done:'Done', close:'Close settings', ready:'Changes apply immediately.', saved:'Saved on this device.',
+    reset:'Reset', done:'Done', close:'Close settings', ready:'', saved:'Saved',
     temporary:'Applied for this visit. Device storage is unavailable.', resetDone:'Default preferences restored.',
     providers:'Map access', providersHint:'Manage your optional map provider.', unavailable:'This action is unavailable right now.',
   },
   fr:{
-    settings:'Réglages', subtitle:'Préférences d’affichage', general:'Général', display:'Affichage', experience:'Interaction',
+    settings:'Réglages', subtitle:'Préférences d’affichage', general:'Général', display:'Affichage', experience:'Animations',
     generalTitle:'Langue et apparence', generalHint:'',
     displayTitle:'Rendu', displayHint:'',
     experienceTitle:'Animations', experienceHint:'Transitions et mouvements de caméra.',
     language:'Langue', languageHint:'Les menus et l’introduction.', theme:'Apparence', themeHint:'Un thème commun à toutes vos vues.',
     accent:'Couleur d’accent', accentHint:'Monochrome par défaut. Bleu, si vous le souhaitez.', quality:'Qualité 3D', qualityHint:'Pour l’atlas et les vues des planètes.',
     motion:'Animations', motionHint:'Transitions de page, interface et mouvements de caméra.',
-    night:'Sombre', day:'Clair', mono:'Monochrome', nasa:'Bleu NASA', system:'Réglage de l’appareil', full:'Complètes', reduced:'Réduites',
+    night:'Sombre', day:'Clair', mono:'Monochrome', nasa:'Bleu NASA', system:'Auto', full:'Activées', reduced:'Réduites',
     systemHint:'Suit la préférence de mouvement de votre appareil.', fullHint:'Transitions et mouvements de caméra fluides.', reducedHint:'Des mouvements brefs et directs.',
-    adaptive:'Adaptatif', high:'Détails élevés', adaptiveHint:'Équilibre détail et autonomie.', highHint:'Un rendu plus précis.',
+    adaptive:'Adaptatif', high:'Élevée', adaptiveHint:'Équilibre détail et autonomie.', highHint:'Un rendu plus précis.',
     motionNote:'Les animations réduites conservent toute l’interactivité.',
-    reset:'Réinitialiser', done:'Terminé', close:'Fermer les réglages', ready:'Les changements sont immédiats.', saved:'Enregistré sur cet appareil.',
+    reset:'Réinitialiser', done:'Terminé', close:'Fermer les réglages', ready:'', saved:'Enregistré',
     temporary:'Appliqué pour cette visite. Le stockage est indisponible.', resetDone:'Préférences par défaut restaurées.',
     providers:'Accès aux cartes', providersHint:'Gérer votre fournisseur de cartes facultatif.', unavailable:'Cette action est momentanément indisponible.',
   },
@@ -111,16 +111,13 @@ function option(key, value, icon, hint = '') {
   const preview = key === 'accent' ? `<span class="relic-settings-swatch" data-swatch="${value}" aria-hidden="true"></span>`
     : key === 'theme' ? `<span class="relic-settings-preview" data-preview="${value}" aria-hidden="true">${worldIcon(icon)}</span>`
     : icon ? `<span class="relic-settings-option-icon" aria-hidden="true">${worldIcon(icon)}</span>` : '';
-  return `<button type="button" class="relic-settings-option" role="radio" data-setting="${key}" data-value="${value}" aria-checked="false" tabindex="-1">${preview}<span class="relic-settings-option-copy">${label}${hint ? `<small data-settings-copy="${hint}"></small>` : ''}</span><span class="relic-settings-selected" aria-hidden="true"></span></button>`;
+  return `<button type="button" class="relic-settings-option" role="radio" data-setting="${key}" data-value="${value}" aria-checked="false" tabindex="-1">${preview}<span class="relic-settings-option-copy">${label}</span><span class="relic-settings-selected" aria-hidden="true"></span></button>`;
 }
 
 function field(key, values) {
-  return `<div class="relic-settings-field" data-settings-field="${key}"><h4 id="settings-label-${key}" data-settings-copy="${key}"></h4><p id="settings-hint-${key}" class="relic-settings-hint" data-settings-copy="${key}Hint"></p><div class="relic-settings-options" role="radiogroup" aria-labelledby="settings-label-${key}" aria-describedby="settings-hint-${key}">${values.map(value => option(key, ...value)).join('')}</div></div>`;
+  return `<div class="relic-settings-field" data-settings-field="${key}"><h4 id="settings-label-${key}" data-settings-copy="${key}"></h4><div class="relic-settings-options" role="radiogroup" aria-labelledby="settings-label-${key}">${values.map(value => option(key, ...value)).join('')}</div></div>`;
 }
 
-function sectionHeading(section) {
-  return `<div class="relic-settings-section-heading"><h3 data-settings-copy="${section}Title"></h3><p data-settings-copy="${section}Hint"></p></div>`;
-}
 
 function buildDialog() {
   ensureStyles();
@@ -128,13 +125,13 @@ function buildDialog() {
   dialog.className = 'relic-settings-dialog';
   dialog.id = 'relic-app-settings';
   dialog.setAttribute('aria-labelledby','relic-settings-title');
-  dialog.setAttribute('aria-describedby','relic-settings-subtitle');
-  dialog.innerHTML = `<header class="relic-settings-header"><div><p class="relic-settings-eyebrow"><img class="relic-dialog-logo" src="${new URL('../../assets/relic-logo-v1.png', import.meta.url).href}" alt="" width="26" height="23">RELIC <span aria-hidden="true">/</span> <span data-settings-copy="settings"></span></p><h2 id="relic-settings-title" data-settings-copy="settings"></h2><p id="relic-settings-subtitle" class="relic-settings-intro" data-settings-copy="subtitle"></p></div><button class="relic-settings-close" type="button" data-settings-close>${worldIcon('xmark')}</button></header>
+
+  dialog.innerHTML = `<header class="relic-settings-header"><div><p class="relic-settings-eyebrow"><img class="relic-dialog-logo" src="${new URL('../../assets/relic-logo-v1.png', import.meta.url).href}" alt="" width="26" height="23">RELIC <span aria-hidden="true">/</span> <span data-settings-copy="settings"></span></p><h2 id="relic-settings-title" data-settings-copy="settings"></h2></div><button class="relic-settings-close" type="button" data-settings-close>${worldIcon('xmark')}</button></header>
     <nav class="relic-settings-tabs" role="tablist" aria-label="Settings sections">${sections.map((section, index) => `<button type="button" role="tab" id="settings-tab-${section}" data-settings-tab="${section}" aria-controls="settings-panel-${section}" aria-selected="${index === 0}" tabindex="${index === 0 ? '0' : '-1'}">${worldIcon(['globe','sliders','compass'][index])}<span data-settings-copy="${section}"></span></button>`).join('')}</nav>
     <div class="relic-settings-content">
-      <section class="relic-settings-section" id="settings-panel-general" data-settings-panel="general" role="tabpanel" aria-labelledby="settings-tab-general">${sectionHeading('general')}${field('language', [['en'],['fr']])}${field('theme', [['night','moon'],['day','sun']])}</section>
-      <section class="relic-settings-section" id="settings-panel-display" data-settings-panel="display" role="tabpanel" aria-labelledby="settings-tab-display" hidden>${sectionHeading('display')}${field('quality', [['adaptive','globe','adaptiveHint'],['high','cube','highHint']])}<button class="relic-settings-provider" type="button" data-settings-provider hidden><span>${worldIcon('layer-group')}</span><span><strong data-settings-copy="providers"></strong><small data-settings-copy="providersHint"></small></span>${worldIcon('arrow-up-right-from-square')}</button></section>
-      <section class="relic-settings-section" id="settings-panel-experience" data-settings-panel="experience" role="tabpanel" aria-labelledby="settings-tab-experience" hidden>${sectionHeading('experience')}${field('motion', [['system','sliders','systemHint'],['full','play','fullHint'],['reduced','pause','reducedHint']])}</section>
+      <section class="relic-settings-section" id="settings-panel-general" data-settings-panel="general" role="tabpanel" aria-labelledby="settings-tab-general">${field('language', [['en'],['fr']])}${field('theme', [['night','moon'],['day','sun']])}</section>
+      <section class="relic-settings-section" id="settings-panel-display" data-settings-panel="display" role="tabpanel" aria-labelledby="settings-tab-display" hidden>${field('quality', [['adaptive','globe','adaptiveHint'],['high','cube','highHint']])}<button class="relic-settings-provider" type="button" data-settings-provider hidden><span>${worldIcon('layer-group')}</span><span><strong data-settings-copy="providers"></strong></span>${worldIcon('arrow-up-right-from-square')}</button></section>
+      <section class="relic-settings-section" id="settings-panel-experience" data-settings-panel="experience" role="tabpanel" aria-labelledby="settings-tab-experience" hidden>${field('motion', [['system','sliders','systemHint'],['full','play','fullHint'],['reduced','pause','reducedHint']])}</section>
     </div>
     <footer class="relic-settings-footer"><p class="relic-settings-status" role="status" aria-live="polite"></p><div class="relic-settings-footer-actions"><button type="button" class="relic-settings-reset" data-settings-reset>${worldIcon('rotate')}<span data-settings-copy="reset"></span></button><button type="button" class="relic-settings-done" data-settings-close data-settings-copy="done"></button></div></footer>`;
   document.body.appendChild(dialog);
