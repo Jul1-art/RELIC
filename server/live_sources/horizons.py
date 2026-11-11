@@ -112,7 +112,7 @@ def fetch(body: str, at: datetime | None = None) -> dict:
     contact = os.environ.get("NASA_ATLAS_CONTACT", "").strip()
     if not re.fullmatch(r"(?:[^@\s]+@[^@\s]+\.[^@\s]+|https://\S+)", contact):
         raise ValueError("NASA_ATLAS_CONTACT must contain a valid email or public HTTPS contact URL")
-    headers = {"User-Agent": f"RELICNASAAtlas/2.0 (contact: {contact})"}
+    headers = {"User-Agent": f"HackathonNASAAtlas/2.0 (contact: {contact})"}
     at = (at or datetime.now(timezone.utc)).astimezone(timezone.utc).replace(second=0, microsecond=0)
     instant = at.strftime("%Y-%m-%d %H:%M")
     params = {

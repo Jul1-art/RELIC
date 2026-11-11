@@ -193,7 +193,7 @@ export function createPrologue({
       <button class="prologue-reveal prologue-visually-hidden" type="button" hidden></button>
       <div class="prologue-caption"><img class="prologue-endmark" src="${BRAND_ASSET}" alt="" width="128" height="112" aria-hidden="true"><h1 id="intro-line"></h1><span class="prologue-visually-hidden" id="intro-transcript" aria-live="polite" aria-atomic="true"></span></div>
       <div class="prologue-gate" hidden><p id="intro-status" role="status"></p><div class="prologue-gate-actions"><button class="prologue-play-film" type="button">${icon('play')}</button><button class="prologue-enter" type="button"><span></span></button></div></div>
-      <p class="prologue-loading" role="status" hidden></p><span class="prologue-buffer-meter" aria-hidden="true" hidden></span>
+      <p class="prologue-loading" role="status" hidden></p>
       <p class="prologue-feedback" role="status" aria-live="polite" hidden></p>
       <footer class="prologue-controls">
         <label class="prologue-scrubber"><span class="prologue-visually-hidden"></span><input type="range" min="0" max="1" step="0.01" value="0" disabled></label>
@@ -217,6 +217,7 @@ export function createPrologue({
     const caption = element.querySelector('.prologue-caption');
     const title = element.querySelector('#intro-line');
     const gate = element.querySelector('.prologue-gate');
+    const gateActions = element.querySelector('.prologue-gate-actions');
     const status = element.querySelector('#intro-status');
     const play = element.querySelector('.prologue-play-film');
     const enter = element.querySelector('.prologue-enter');
@@ -226,7 +227,6 @@ export function createPrologue({
     const range = element.querySelector('.prologue-scrubber input');
     const time = element.querySelector('.prologue-time');
     const loading = element.querySelector('.prologue-loading');
-    const bufferMeter = element.querySelector('.prologue-buffer-meter');
     const header = element.querySelector('.prologue-header');
     const preview = element.querySelector('.prologue-preview');
     const languageButton = element.querySelector('.prologue-language');
@@ -424,19 +424,6 @@ export function createPrologue({
     function renderBuffer(state = bufferState) {
       if (!current()) return;
       bufferState = state;
-      const preparing = Boolean(preparation);
-      const show = Boolean(state) && !failed && !cueEnding && (gateReason === 'ready' || preparing);
-      bufferMeter.hidden = !show;
-      bufferMeter.style.setProperty('--buffer-progress', `${Math.min(100,Math.round((state?.ahead || 0)/Math.max(.01,(preparing?state?.required:state?.preloadTarget)||8)*100))}%`);
-      element.classList.toggle('prologue-buffering', preparing);
-      element.dataset.bufferAhead = String(Math.floor(state?.ahead || 0));
-      if (!show) return;
-      const label = state.networkRecovering || state.networkFailed ? copy().bufferRetry
-        : !preparing && state.ready ? copy().bufferReady : copy().loading;
-      const text = `${label} · ${Math.floor(state.ahead)} ${copy().buffered}`;
-      if (gateReason === 'ready') {status.hidden=false;status.textContent=text;}
-      loading.hidden = !preparing || gateReason === 'ready';
-      if (!loading.hidden) loading.textContent=text;
     }
     function cancelPreparation() {
       const pending = preparation;
@@ -592,6 +579,7 @@ export function createPrologue({
       element.classList.toggle('prologue-paused', paused && !gateReason);
       if (ending) {
         if (gate.parentElement !== caption) caption.append(gate);
+        if (enter.parentElement !== gateActions) gateActions.append(enter);
         gate.hidden = false;
         const enterReady = staticEnding || endTime >= 2.8;
         gate.inert = !enterReady;
@@ -600,6 +588,9 @@ export function createPrologue({
         play.hidden = true;
       } else {
         if (gate.parentElement !== element) element.insertBefore(gate, loading);
+        // Outside the end card the explore action lives in the header's top
+        // right, as plain text without any button chrome.
+        if (enter.parentElement !== header) header.append(enter);
         gate.inert = false;
         gate.removeAttribute('aria-hidden');
         gate.hidden = !gateReason && !(hasSource && paused);

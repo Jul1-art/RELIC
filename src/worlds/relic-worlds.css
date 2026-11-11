@@ -1,6 +1,6 @@
 /* RELIC world controls share the atlas's quiet monochrome glass language.
    Scientific imagery and all provider attributions remain intact. */
-html[data-theme] body.relic-world{
+html[data-theme] body.relic-world {
   --ui-ink:#f5f5f3;
   --ui-muted:#b1b1b0;
   --ui-soft:#818180;
@@ -20,7 +20,7 @@ html[data-theme] body.relic-world{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
   -webkit-font-smoothing:antialiased;
 }
-html[data-theme="day"] body.relic-world{
+html[data-theme="day"] body.relic-world {
   --ui-ink:#202020;
   --ui-muted:#616160;
   --ui-soft:#747473;
@@ -33,16 +33,16 @@ html[data-theme="day"] body.relic-world{
   --compact-active:#ffffffd9;
   --compact-popup:#f3f3f2;
 }
-html[data-accent="nasa"] body.relic-world{--ui-blue:#9dbaff;--ui-blue-hover:#b9ceff}
-:is(body.relic-world) :is(button,a,input,select){font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-:is(body.relic-world) :is(button,a,select){transition:background .18s ease,color .18s ease,border-color .18s ease,transform .18s var(--world-ease)}
-:is(body.relic-world) :is(button,a,input,select):focus-visible{outline:2px solid var(--ui-blue);outline-offset:4px}
-:is(body.relic-world) [hidden]{display:none!important}
-:is(body.relic-world) button:disabled{cursor:default;opacity:.42}
-:is(body.relic-world) button:active:not(:disabled){transform:scale(.96)}
-:is(body.relic-world) .world-icon{display:inline-grid;place-items:center;flex:0 0 18px;width:18px;height:18px;font-style:normal;line-height:1;pointer-events:none}
-:is(body.relic-world) svg.fas{display:block;width:100%;height:100%;fill:currentColor;stroke:none}
-:is(body.relic-world) svg.fas path{fill:currentColor;stroke:none}
+html[data-accent="nasa"] body.relic-world {--ui-blue:#9dbaff;--ui-blue-hover:#b9ceff}
+body.relic-world :is(button,a,input,select){font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+body.relic-world :is(button,a,select){transition:background .18s ease,color .18s ease,border-color .18s ease,transform .18s var(--world-ease)}
+body.relic-world :is(button,a,input,select):focus-visible{outline:2px solid var(--ui-blue);outline-offset:4px}
+body.relic-world [hidden]{display:none!important}
+body.relic-world button:disabled{cursor:default;opacity:.42}
+body.relic-world button:active:not(:disabled){transform:scale(.96)}
+body.relic-world .world-icon{display:inline-grid;place-items:center;flex:0 0 18px;width:18px;height:18px;font-style:normal;line-height:1;pointer-events:none}
+body.relic-world svg.fas{display:block;width:100%;height:100%;fill:currentColor;stroke:none}
+body.relic-world svg.fas path{fill:currentColor;stroke:none}
 .relic-brand-mark{display:block;width:30px;height:30px;fill:none;stroke:currentColor;stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 .relic-brand-mark .relic-mark-orbit{stroke-width:2}
 .relic-brand-mark circle{fill:currentColor;stroke:none}
@@ -195,6 +195,7 @@ html[data-theme] body.relic-world :is(.earth-attribution a,.cesium-credits a,.es
 html[data-theme] body.relic-world :is(.loading,.earth-loading,.error,.earth-error){background:#080808ed;color:#f4f4f2;font-size:11px;font-weight:400;letter-spacing:.04em;line-height:1.7}
 html[data-theme] body.relic-world .loading-orbit{border-color:#ffffff1d;border-top-color:#fff;box-shadow:none}
 html[data-theme] body.relic-world :is(.vignette,.scene-vignette){background:linear-gradient(180deg,#0005,transparent 18%),linear-gradient(0deg,#0005,transparent 19%)}
+
 @keyframes world-drawer-in{from{opacity:0;transform:translateY(-7px)}to{opacity:1;transform:translateY(0)}}
 @keyframes world-drawer-rise{from{opacity:0;transform:translate(-50%,7px)}to{opacity:1;transform:translate(-50%,0)}}
 
@@ -273,10 +274,10 @@ html[data-theme] body.relic-world :is(.vignette,.scene-vignette){background:line
   html[data-theme] body.relic-world :is(.earth-attribution,.cesium-credits,.esri-attribution,.scene-credit){bottom:5px;font-size:7px}
 }
 @media(prefers-reduced-transparency:reduce){
-  :is(body.relic-world) :is(.world-nav,.header-actions,.place-search,.explorer-panel,.site-panel,.view-card,.map-options,.view-controls,.earth-controls){background:var(--compact-popup)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  body.relic-world :is(.world-nav,.header-actions,.place-search,.explorer-panel,.site-panel,.view-card,.map-options,.view-controls,.earth-controls){background:var(--compact-popup)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 }
 @media(prefers-reduced-motion:reduce){
-  :is(body.relic-world) *,:is(body.relic-world) *::before,:is(body.relic-world) *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+  body.relic-world *,body.relic-world *::before,body.relic-world *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
 }
 
 /* Match the home atlas until the optional NASA accent is selected. */

@@ -48,7 +48,7 @@ test('an aborted query does not poison a later request for the same query', asyn
 });
 
 test('GitHub Pages is recognized before API requests and Photon coordinates are validated', () => {
-  assert.equal(isStaticHost('https://jul1-art.github.io/RELIC/'),true);
+  assert.equal(isStaticHost('https://jul1-art.github.io/Hackathon_NASA/'),true);
   assert.equal(isStaticHost('http://localhost:8000/'),false);
   const place=normalizePhotonFeature({geometry:{type:'Point',coordinates:[2.35,48.86]},properties:{name:'Paris',country:'France',osm_value:'city'}});
   assert.equal(place.lat,48.86);assert.equal(place.lon,2.35);assert.equal(place.name,'Paris');assert(place.range>=35000);

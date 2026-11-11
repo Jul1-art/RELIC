@@ -8,60 +8,84 @@
         8192,
         4096
       ],
-      "bytes": 6488608,
-      "sha256": "429740c38660fe1be6fe6b387b83be497420e3e9f6b076d6473698cfbbf4e386",
-      "git_blob_sha1": "b3510c4ce20823af269f8fcef006a67f5831e623",
-      "source": {
-        "provider": "NASA Scientific Visualization Studio; NASA/GSFC/Arizona State University",
-        "title": "CGI Moon Kit: 2019 LROC WAC color map with poles",
-        "page": "https://svs.gsfc.nasa.gov/4720/",
-        "download_url": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_poles_8k.tif",
-        "source_dimensions": [
+      "bytes": 8345538,
+      "sha256": "b9c314ff38755579f92ccc7d55b911e9c39167618df345ceaf198ff038f5b62a",
+      "git_blob_sha1": "9f4b22ff3c643cdced92bc721d8e4bf88f9c687e",
+      "provenance_status": "Imported from the owner-approved local project snapshot. The previous public asset source and conversion metadata below describe the replaced file, not this imported binary.",
+      "previous_public_version": {
+        "path": "assets/moon-wac-8k.webp",
+        "format": "WEBP",
+        "dimensions": [
           8192,
           4096
         ],
-        "source_sha256": "4af8b0cd4d50c30851359d98e7e72040240dd8d03256b58b345b5b76e9edb4ef",
-        "credits": "NASA’s Scientific Visualization Studio; Ernie Wright (USRA); NASA/GSFC/Arizona State University",
-        "terms": "NASA media usage guidelines; preserve attribution and do not imply NASA endorsement.",
-        "terms_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
-      },
-      "processing": {
-        "mode": "RGB",
-        "webp_quality": 90,
-        "webp_method": 6,
-        "orientation": "north up; longitude -180 degrees at left edge, +180 at right, 0 at center; no horizontal flip, rotation or meridian shift"
+        "bytes": 6488608,
+        "sha256": "429740c38660fe1be6fe6b387b83be497420e3e9f6b076d6473698cfbbf4e386",
+        "git_blob_sha1": "b3510c4ce20823af269f8fcef006a67f5831e623",
+        "source": {
+          "provider": "NASA Scientific Visualization Studio; NASA/GSFC/Arizona State University",
+          "title": "CGI Moon Kit: 2019 LROC WAC color map with poles",
+          "page": "https://svs.gsfc.nasa.gov/4720/",
+          "download_url": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_poles_8k.tif",
+          "source_dimensions": [
+            8192,
+            4096
+          ],
+          "source_sha256": "4af8b0cd4d50c30851359d98e7e72040240dd8d03256b58b345b5b76e9edb4ef",
+          "credits": "NASA’s Scientific Visualization Studio; Ernie Wright (USRA); NASA/GSFC/Arizona State University",
+          "terms": "NASA media usage guidelines; preserve attribution and do not imply NASA endorsement.",
+          "terms_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+        },
+        "processing": {
+          "mode": "RGB",
+          "webp_quality": 90,
+          "webp_method": 6,
+          "orientation": "north up; longitude -180 degrees at left edge, +180 at right, 0 at center; no horizontal flip, rotation or meridian shift"
+        }
       }
     },
     {
       "path": "assets/mars-viking-global.webp",
       "format": "WEBP",
       "dimensions": [
-        8192,
-        4096
+        4096,
+        2048
       ],
-      "bytes": 8764892,
-      "sha256": "8bcf9ebe254696074a7e9b6166df6649676c01a1770ed54bbeddb44e11b2cd7d",
-      "git_blob_sha1": "c5256ead13f1f438b92e3daf8fbac8b74db4f038",
-      "source": {
-        "provider": "NASA Mars Trek / USGS",
-        "title": "Mars Viking MDIM 2.1 global color mosaic, 232 m source product",
-        "page": "https://trek.nasa.gov/tiles/apidoc/trekAPI.html?body=mars",
-        "download_url_template": "https://trek.nasa.gov/tiles/Mars/EQ/Mars_Viking_MDIM21_ClrMosaic_global_232m/1.0.0/default/default028mm/{z}/{y}/{x}.jpg",
-        "zoom": 4,
-        "tile_size": 256,
-        "matrix_columns": 32,
-        "matrix_rows": 16,
-        "tile_count": 512,
-        "tile_sha256_manifest": "/workspace/github-transfer/mars-restoration-tiles.json",
-        "credits": "NASA Mars Trek; NASA Viking; USGS Astrogeology",
-        "terms": "NASA media usage guidelines; preserve attribution and do not imply NASA endorsement.",
-        "terms_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
-      },
-      "processing": {
-        "mode": "RGB",
-        "webp_quality": 90,
-        "webp_method": 6,
-        "orientation": "north up; longitude -180 degrees at left edge, +180 at right, 0 at center; no horizontal flip, rotation or meridian shift"
+      "bytes": 2553544,
+      "sha256": "5d06074054c7405a444ca1824acfc8f64589a2a65efcb986a2a9a31d3dbbe5df",
+      "git_blob_sha1": "81326b94df63cabe5529465053e293623af39b63",
+      "provenance_status": "Imported from the owner-approved local project snapshot. The previous public asset source and conversion metadata below describe the replaced file, not this imported binary.",
+      "previous_public_version": {
+        "path": "assets/mars-viking-global.webp",
+        "format": "WEBP",
+        "dimensions": [
+          8192,
+          4096
+        ],
+        "bytes": 8764892,
+        "sha256": "8bcf9ebe254696074a7e9b6166df6649676c01a1770ed54bbeddb44e11b2cd7d",
+        "git_blob_sha1": "c5256ead13f1f438b92e3daf8fbac8b74db4f038",
+        "source": {
+          "provider": "NASA Mars Trek / USGS",
+          "title": "Mars Viking MDIM 2.1 global color mosaic, 232 m source product",
+          "page": "https://trek.nasa.gov/tiles/apidoc/trekAPI.html?body=mars",
+          "download_url_template": "https://trek.nasa.gov/tiles/Mars/EQ/Mars_Viking_MDIM21_ClrMosaic_global_232m/1.0.0/default/default028mm/{z}/{y}/{x}.jpg",
+          "zoom": 4,
+          "tile_size": 256,
+          "matrix_columns": 32,
+          "matrix_rows": 16,
+          "tile_count": 512,
+          "tile_sha256_manifest": "/workspace/github-transfer/mars-restoration-tiles.json",
+          "credits": "NASA Mars Trek; NASA Viking; USGS Astrogeology",
+          "terms": "NASA media usage guidelines; preserve attribution and do not imply NASA endorsement.",
+          "terms_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+        },
+        "processing": {
+          "mode": "RGB",
+          "webp_quality": 90,
+          "webp_method": 6,
+          "orientation": "north up; longitude -180 degrees at left edge, +180 at right, 0 at center; no horizontal flip, rotation or meridian shift"
+        }
       }
     },
     {
@@ -71,29 +95,41 @@
         4096,
         2048
       ],
-      "bytes": 3417698,
-      "sha256": "1bef14b2ba93cc3bcfd7e53d19685c2a478601ddb6077d5e3b76ae24ac288def",
-      "git_blob_sha1": "3f1b991bc392b96b6c7430f5aaaddb133998d071",
-      "source": {
-        "provider": "Solar System Scope / INOVE",
-        "title": "Mercury 8K texture",
-        "page": "https://www.solarsystemscope.com/textures/",
-        "download_url": "https://www.solarsystemscope.com/textures/download/8k_mercury.jpg",
-        "source_dimensions": [
-          8192,
-          4096
+      "bytes": 1869942,
+      "sha256": "0bc56dcfbc146454bc57ff648e6685487ee255a1c402bb1d6cb33e3ac1a914e1",
+      "git_blob_sha1": "bd3e3d145058f1d2845d9db78bad94203b5992a1",
+      "provenance_status": "Imported from the owner-approved local project snapshot. The previous public asset source and conversion metadata below describe the replaced file, not this imported binary.",
+      "previous_public_version": {
+        "path": "assets/mercury-scope.webp",
+        "format": "WEBP",
+        "dimensions": [
+          4096,
+          2048
         ],
-        "source_sha256": "5c8bd885ae3571c6ba2cd34b3446b9c6d767e314bf0ee8c1d5c147cadd388fc3",
-        "credits": "Solar System Scope / INOVE — https://www.solarsystemscope.com/textures/",
-        "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
-        "license_url": "https://creativecommons.org/licenses/by/4.0/",
-        "modifications": "Resized from 8192×4096 to 4096×2048 using Lanczos and converted from JPEG to WebP."
-      },
-      "processing": {
-        "mode": "RGB",
-        "webp_quality": 94,
-        "webp_method": 6,
-        "orientation": "north up; longitude -180 degrees at left edge, +180 at right, 0 at center; no horizontal flip, rotation or meridian shift"
+        "bytes": 3417698,
+        "sha256": "1bef14b2ba93cc3bcfd7e53d19685c2a478601ddb6077d5e3b76ae24ac288def",
+        "git_blob_sha1": "3f1b991bc392b96b6c7430f5aaaddb133998d071",
+        "source": {
+          "provider": "Solar System Scope / INOVE",
+          "title": "Mercury 8K texture",
+          "page": "https://www.solarsystemscope.com/textures/",
+          "download_url": "https://www.solarsystemscope.com/textures/download/8k_mercury.jpg",
+          "source_dimensions": [
+            8192,
+            4096
+          ],
+          "source_sha256": "5c8bd885ae3571c6ba2cd34b3446b9c6d767e314bf0ee8c1d5c147cadd388fc3",
+          "credits": "Solar System Scope / INOVE — https://www.solarsystemscope.com/textures/",
+          "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "modifications": "Resized from 8192×4096 to 4096×2048 using Lanczos and converted from JPEG to WebP."
+        },
+        "processing": {
+          "mode": "RGB",
+          "webp_quality": 94,
+          "webp_method": 6,
+          "orientation": "north up; longitude -180 degrees at left edge, +180 at right, 0 at center; no horizontal flip, rotation or meridian shift"
+        }
       }
     }
   ]

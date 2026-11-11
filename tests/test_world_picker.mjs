@@ -5,7 +5,7 @@ import {readFile} from 'node:fs/promises';
 
 const context=vm.createContext({URL,setTimeout,clearTimeout});
 const source=await readFile(new URL('../src/ui/planet-dashboard.js',import.meta.url),'utf8');
-const services={getLanguage:()=> 'en',onLanguageChange:()=>{},worldIcon:()=>'',parseCoordinateQuery:()=>null,searchPlaces:async()=>[],navigateTo:()=>{}};
+const services={getLanguage:()=> 'en',onLanguageChange:()=>{},worldIcon:()=>'',worldThumbnail:()=>'',parseCoordinateQuery:()=>null,searchPlaces:async()=>[],navigateTo:()=>{}};
 const imports=new vm.SyntheticModule(Object.keys(services),function(){for(const [name,value]of Object.entries(services))this.setExport(name,value);},{context});
 const module=new vm.SourceTextModule(source,{context,initializeImportMeta(meta){meta.url='https://example.invalid/RELIC/src/ui/planet-dashboard.js';}});
 await module.link(()=>imports);await module.evaluate();

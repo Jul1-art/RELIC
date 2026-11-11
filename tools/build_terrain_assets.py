@@ -24,7 +24,7 @@ CACHE = Path(os.environ.get("NASA_TERRAIN_CACHE", "/tmp/nasa-terrain"))
 OUT.mkdir(parents=True, exist_ok=True)
 CACHE.mkdir(parents=True, exist_ok=True)
 SESSION = requests.Session()
-SESSION.headers.update({"User-Agent": "NASA-RELIC-Terrain-Builder/1.0"})
+SESSION.headers.update({"User-Agent": "NASA-Hackathon-Terrain-Builder/1.0"})
 GRID = 257
 IMAGE = 1024
 

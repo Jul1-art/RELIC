@@ -1,4 +1,4 @@
-import {createMascotSprite} from './mascot-sprite.js';
+import {createMascotSprite} from './mascot-sprite.js?v=pixel-5';
 import {createSpaceyTour} from './spacey-tour.js';
 import {createMascotArrival} from './mascot-arrival.js';
 
@@ -78,9 +78,17 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
     mascot:button,
     setPose:(direction,state)=>sprite.setPose(direction,state),
     moveTo,
-    onActiveChange(active){
+    onActiveChange(active,tourRunning=active){
+      if(tourRunning){
+        if(activePointerId!==null){
+          try{button.releasePointerCapture(activePointerId);}catch{}
+          activePointerId=null;
+        }
+        hasDragged=false;
+        button.classList.remove('mascot-dragging');
+      }
       const before=button.getBoundingClientRect();
-      guiding=active;
+      guiding=tourRunning;
       button.classList.toggle('spacey-guiding',active);
       if(active){
         const after=button.getBoundingClientRect();
@@ -117,6 +125,75 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
       arrived=true;tour.suspend(false);tour.showInvite();
     });
   }
+
+  let activePointerId=null;
+  let dragStartX=0,dragStartY=0;
+  let dragOffsetLeft=0,dragOffsetTop=0;
+  let hasDragged=false;
+
+  function onPointerDown(event) {
+    if(guiding||arriving||disposed||(event.button!==undefined&&event.button!==0))return;
+    activePointerId=event.pointerId;
+    dragStartX=event.clientX;
+    dragStartY=event.clientY;
+    hasDragged=false;
+    const box=button.getBoundingClientRect();
+    dragOffsetLeft=event.clientX-box.left;
+    dragOffsetTop=event.clientY-box.top;
+    try{button.setPointerCapture(event.pointerId);}catch{}
+  }
+
+  function onPointerMove(event) {
+    if(activePointerId!==event.pointerId||guiding)return;
+    const dx=event.clientX-dragStartX;
+    const dy=event.clientY-dragStartY;
+    if(!hasDragged&&Math.hypot(dx,dy)>=5){
+      hasDragged=true;
+      cancelMovement();
+      button.classList.add('mascot-dragging');
+    }
+    if(hasDragged){
+      const box=button.getBoundingClientRect();
+      const targetLeft=Math.max(8,Math.min(innerWidth-box.width-8,event.clientX-dragOffsetLeft));
+      const targetTop=Math.max(8,Math.min(innerHeight-box.height-8,event.clientY-dragOffsetTop));
+      place(x+(targetLeft-box.left),y+(targetTop-box.top));
+      if(dx>2)sprite.setPose('front_right','walking');
+      else if(dx<-2)sprite.setPose('front_left','walking');
+    }
+  }
+
+  function onPointerUp(event) {
+    if(activePointerId!==event.pointerId)return;
+    activePointerId=null;
+    try{button.releasePointerCapture(event.pointerId);}catch{}
+    if(hasDragged){
+      button.classList.remove('mascot-dragging');
+      sprite.setPose('front','idle');
+      const suppressClick=(e)=>{
+        e.preventDefault();
+        e.stopPropagation();
+      };
+      button.addEventListener('click',suppressClick,{capture:true,once:true});
+      setTimeout(()=>button.removeEventListener('click',suppressClick,{capture:true}),50);
+    }
+  }
+
+  function onResize() {
+    if(guiding||disposed)return;
+    const box=button.getBoundingClientRect();
+    const clampedX=Math.max(8,Math.min(innerWidth-box.width-8,box.left));
+    const clampedY=Math.max(8,Math.min(innerHeight-box.height-8,box.top));
+    if(clampedX!==box.left||clampedY!==box.top){
+      place(x+(clampedX-box.left),y+(clampedY-box.top));
+    }
+  }
+
+  button.addEventListener('pointerdown',onPointerDown);
+  button.addEventListener('pointermove',onPointerMove);
+  button.addEventListener('pointerup',onPointerUp);
+  button.addEventListener('pointercancel',onPointerUp);
+  window.addEventListener('resize',onResize);
+
   button.addEventListener('click',()=>{if(!guiding&&!arriving)tour.replay();});
   styles.addEventListener('load',()=>{styled=true;refresh();},{once:true});
   document.head.append(styles);
@@ -127,7 +204,7 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
 
   return {
     explore(body){
-      if(!guiding&&!button.hidden)sprite.setPose(body==='overview'?'back_right':'front_right','idle');
+      if(!guiding&&!button.hidden)sprite.setPose('front_right','idle');
     },
     setSuspended(value){
       if(suspended===value)return;
@@ -139,6 +216,15 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
       disposed=true;
       ++arrivalVersion;arrival.dispose();
       cancelMovement();
+      if(activePointerId!==null){
+        try{button.releasePointerCapture(activePointerId);}catch{}
+        activePointerId=null;
+      }
+      button.removeEventListener('pointerdown',onPointerDown);
+      button.removeEventListener('pointermove',onPointerMove);
+      button.removeEventListener('pointerup',onPointerUp);
+      button.removeEventListener('pointercancel',onPointerUp);
+      window.removeEventListener('resize',onResize);
       tour.dispose();
       observer.disconnect();
       unsubscribe();
