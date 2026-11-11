@@ -691,7 +691,7 @@ html[data-theme=day] body.has-inspection-shell #relic-action-rail .rail-button:i
   .inspection-preset-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
   .relic-inspection-shell .inspection-preset { min-height: 44px; }
   .inspection-preset .btn-key { display: none; }
-  html body.has-inspection-shell nav#relic-action-rail.relic-action-rail[data-compact] { top: 48%; left: max(8px, env(safe-area-inset-left, 0px)); right: auto; bottom: auto !important; flex-direction: column; width: 60px; height: auto; padding: 7px; gap: 10px; border-radius: 16px; transform: translateY(-50%); }
+  html body.has-inspection-shell nav#relic-action-rail.relic-action-rail[data-compact] { top: 48%; left: max(8px, env(safe-area-inset-left, 0px)); right: auto; bottom: auto !important; flex-direction: column; width: 52px; height: auto; padding: 14px 3px; gap: 16px; border-radius: 16px; transform: translateY(-50%); }
   body.has-inspection-shell #relic-action-rail .rail-button { flex: 0 0 44px; width: 44px; min-height: 44px; height: 44px; padding: 10px !important; border-radius: 12px !important; }
   body.has-inspection-shell #relic-action-rail .rail-button-label { display: none !important; }
   body.has-inspection-shell #relic-action-rail .rail-button::before { display: none; }
