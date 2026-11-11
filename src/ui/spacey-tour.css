@@ -16,6 +16,7 @@
 .spacey-tour-dimmer { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .spacey-tour-dimmer path { fill: rgba(0, 0, 0, .79); pointer-events: fill; }
 .spacey-tour[data-step=earth] .spacey-tour-dimmer path { fill: rgba(0, 0, 0, .30); }
+.spacey-tour[data-demo=styles] .spacey-tour-dimmer path { fill: rgba(0, 0, 0, .06); }
 .spacey-guiding .relic-exploration-mascot,
 .relic-exploration-mascot.spacey-guiding { z-index: 1201; visibility: visible !important; }
 .spacey-tour-bubble {

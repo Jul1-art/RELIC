@@ -75,12 +75,12 @@
     },
     {
       "id": "destinations",
-      "text": "Location finds a place or coordinates on this world. Visual Presets changes the image style. You can return to Normal at any time.",
+      "text": "Location finds a place or coordinates on this world. Visual Presets changes the image style. Let me show you. Normal keeps the natural colors. CRT adds a retro screen effect. NVG simulates night vision. FLIR uses simulated thermal colors. Anime adds illustrated edges and colors. Noir creates a black and white view. And back to Normal. You can return to it at any time.",
       "file": "destinations.mp3",
-      "duration": 8.547,
-      "peak": 0.75121,
-      "bytes": 69164,
-      "sha256": "63bce0714090473a4738ed8ebfbb87adc47162b43a4f232ee80b92d7a354c78e"
+      "duration": 28.913333,
+      "peak": 0.77762,
+      "bytes": 231980,
+      "sha256": "bb4b18c47855ab76a2cd0180fd5caaad08995d01fd9295b8cb16e194807afca3"
     },
     {
       "id": "finish",

@@ -1,4 +1,5 @@
 import {getLanguage,setLanguage} from '../atlas/atlas-live.js?v=3';
+import {createNarrationClock} from './narration-clock.js';
 
 const STORAGE_KEY='relic.spacey-tour.v1';
 const STEP_COPY=[
@@ -44,7 +45,7 @@ function iconChip(source,label,action){
   const chip=document.createElement(action?'button':'span');
   chip.className='spacey-tour-control-chip';
   if(action){chip.type='button';chip.addEventListener('click',action);}
-  const icon=source.querySelector('svg,img,.fas,.world-icon')||source.querySelector('.dock-label-icon');
+  const icon=source.querySelector('svg,img,.fas,.world-icon')||source.querySelector('.dock-label-icon,.btn-icon');
   if(icon){
     const clone=icon.cloneNode(true);
     for(const node of [clone,...clone.querySelectorAll('*')]){
@@ -80,20 +81,42 @@ export function createSpaceyTour({mascot,setPose,moveTo,onActiveChange=()=>{}}){
   const shade=dimmer.querySelector('path'),text=layer.querySelector('#spacey-tour-text');
   const progress=layer.querySelector('.spacey-tour-progress'),chips=layer.querySelector('.spacey-tour-chips');
   const next=layer.querySelector('[data-tour-action=next]');
-  const audio=new Audio();audio.preload='metadata';
+  const audio=new Audio();audio.preload='auto';
+  const timelineURL=new URL('../../assets/spacey/audio/destinations-timeline.json',import.meta.url);
+  const timelineReady=fetch(timelineURL).then(response=>response.ok?response.json():null).catch(()=>null);
+  const preloads=new Map();
+  let narrationClock,demoActive=false,demoTimeline;
   let active=false,invited=false,suspended=false,disposed=false,step=0,version=0,layoutFrame=0,shadeFrame=0;
   let targets=[],previousLanguage,previousWorld,opener,waiting=false,movement;
   const readSaved=()=>{try{return localStorage.getItem(STORAGE_KEY);}catch{return null;}};
   const save=value=>{try{localStorage.setItem(STORAGE_KEY,value);}catch{}};
   const restoreLanguage=()=>{if(previousLanguage){setLanguage(previousLanguage);previousLanguage=undefined;}};
 
-  function stopAudio(){audio.pause();audio.removeAttribute('src');audio.load();}
-  function playVoice(allowWaiting=false){
+  const currentRun=current=>!disposed&&active&&!suspended&&version===current;
+  function stopAudio(){
+    narrationClock?.dispose();narrationClock=undefined;
+    audio.pause();audio.removeAttribute('src');audio.load();
+    if(demoActive){
+      demoActive=false;delete layer.dataset.demo;
+      emit('relic-inspection-command',{action:'preset',value:'normal'});
+    }
+  }
+  function preloadVoice(id){
+    if(preloads.has(id))return;
+    const clip=new Audio(new URL(`../../assets/spacey/audio/${id}.mp3`,import.meta.url).href);
+    clip.preload='auto';preloads.set(id,clip);clip.load();
+  }
+  function playVoice(allowWaiting=false,{cues,onCue,onUnavailable=()=>{}}={}){
     if(!active||suspended||(waiting&&!allowWaiting))return;
     const id=STEP_COPY[step][0];
     audio.src=new URL(`../../assets/spacey/audio/${id}.mp3`,import.meta.url).href;
     audio.currentTime=0;
-    audio.play().catch(()=>{});
+    const current=version;
+    if(cues)narrationClock=createNarrationClock({audio,cues,
+      onCue:cue=>{if(currentRun(current))onCue(cue);},
+      onUnavailable:()=>{if(currentRun(current))onUnavailable();},
+    });
+    audio.play().catch(()=>{if(currentRun(current))onUnavailable();});
   }
   function rects(){return targets.filter(visible).map(element=>element.getBoundingClientRect());}
   function paintShade(){
@@ -155,9 +178,26 @@ export function createSpaceyTour({mascot,setPose,moveTo,onActiveChange=()=>{}}){
   }
   function openPanel(selector){const toggle=$(selector);if(toggle?.getAttribute('aria-expanded')!=='true')toggle?.click();return toggle;}
   function addChip(selector,label,action){const chip=iconChip($(selector),label,action);if(chip)chips.append(chip);}
+  function demoCue(cue){
+    text.textContent=cue.text;chips.replaceChildren();
+    const panel=cue.kind==='location'?'location':'presets';
+    openPanel(`#inspection-${panel} .inspection-tray-toggle`);
+    targets=[$('.inspection-command-dock'),$(`#inspection-${panel}-popover`)].filter(Boolean);
+    if(cue.kind==='style'){
+      layer.dataset.demo='styles';
+      emit('relic-inspection-command',{action:'preset',value:cue.style});
+      const selector=`#inspection-presets [data-style="${cue.style}"]`;
+      addChip(selector,$(selector)?.querySelector('.btn-label')?.textContent||cue.style);
+    }else{
+      delete layer.dataset.demo;
+      addChip(`#inspection-${panel} .inspection-tray-toggle`,panel==='location'?'Location':'Visual Presets');
+    }
+    scheduleLayout();
+  }
   async function prepare(id,current){
     closePanels();targets=[];
     if(id==='worlds'){
+      preloadVoice('earth');preloadVoice('destinations');
       selectWorld('overview');
       const worlds=await waitFor(()=>$('#rail-worlds'),current);
       if(version!==current||disposed||suspended)return;
@@ -165,7 +205,14 @@ export function createSpaceyTour({mascot,setPose,moveTo,onActiveChange=()=>{}}){
       targets=[worlds,$('#relic-action-panel')];
       addChip('#rail-worlds','Worlds');
     }else if(id!=='welcome'){
-      if(document.body.dataset.dashboardBody!=='earth')selectWorld('earth');
+      if(id==='earth'){
+        let began=false;
+        const arrive=()=>{if(!began&&currentRun(current)){began=true;selectWorld('earth');}};
+        playVoice(true,{cues:[{time:0}],onCue:arrive,onUnavailable:arrive});
+        await waitFor(()=>began,current,12000);
+        if(!currentRun(current))return;
+        if(!began){stopAudio();arrive();}
+      }else if(document.body.dataset.dashboardBody!=='earth')selectWorld('earth');
       await waitFor(()=>!$('#relic-inspection-shell')?.hidden&&$('#relic-inspection-shell')?.dataset.world==='earth',current,35000);
       if(version!==current||disposed||suspended)return;
       if(id==='earth'){
@@ -181,6 +228,10 @@ export function createSpaceyTour({mascot,setPose,moveTo,onActiveChange=()=>{}}){
         targets=[openPanel('#inspection-display .inspection-module-toggle'),$('#inspection-display-body')];
         addChip('#inspection-display .inspection-module-toggle','Display');
       }else if(id==='destinations'){
+        const timeline=await timelineReady;
+        if(!currentRun(current))return;
+        const styles=new Set(['normal','crt','nvg','flir','anime','noir']);
+        demoTimeline=timeline?.cues?.length&&timeline.cues.every(cue=>Number.isFinite(cue.time)&&typeof cue.text==='string'&&['location','presets','style'].includes(cue.kind)&&(cue.kind!=='style'||styles.has(cue.style)))?timeline:null;
         openPanel('#inspection-location .inspection-tray-toggle');
         targets=[$('.inspection-command-dock')];
         addChip('#inspection-location .inspection-tray-toggle','Location',()=>{openPanel('#inspection-location .inspection-tray-toggle');scheduleLayout();});
@@ -208,7 +259,11 @@ export function createSpaceyTour({mascot,setPose,moveTo,onActiveChange=()=>{}}){
     setPose('front','idle');await layout();
     if(current!==version||disposed||suspended)return;
     waiting=false;next.disabled=false;bubble.setAttribute('aria-busy','false');
-    next.focus({preventScroll:true});if(id!=='welcome')playVoice();
+    next.focus({preventScroll:true});
+    if(id==='destinations'&&demoTimeline){
+      demoActive=true;
+      playVoice(false,{cues:demoTimeline.cues,onCue:demoCue});
+    }else if(!['welcome','earth'].includes(id))playVoice();
   }
   function close({completed=false,declined=false,restore=true}={}){
     ++version;active=false;invited=false;waiting=false;movement=undefined;stopAudio();
@@ -243,7 +298,7 @@ export function createSpaceyTour({mascot,setPose,moveTo,onActiveChange=()=>{}}){
     if(disposed||suspended||active||invited||readSaved())return;
     invited=true;layer.hidden=false;layer.dataset.step='invite';targets=[];
     startShadeTracking();
-    document.body.classList.add('spacey-guiding');onActiveChange(true);
+    document.body.classList.add('spacey-guiding');onActiveChange(true,false);
     text.textContent='Take a quick tour of RELIC, then explore at your own pace.';
     progress.textContent='';chips.replaceChildren();next.disabled=true;next.textContent='Start tour';bubble.setAttribute('aria-busy','true');
     layer.querySelector('.spacey-tour-skip').textContent='Skip';
@@ -282,7 +337,7 @@ export function createSpaceyTour({mascot,setPose,moveTo,onActiveChange=()=>{}}){
       suspended=nextSuspended;
       if(!active&&!invited)return;
       if(suspended){
-        ++version;movement=undefined;audio.pause();cancelAnimationFrame(layoutFrame);layoutFrame=0;stopShadeTracking();
+        ++version;movement=undefined;stopAudio();cancelAnimationFrame(layoutFrame);layoutFrame=0;stopShadeTracking();
         layer.hidden=true;document.body.classList.remove('spacey-guiding');onActiveChange(false);
       }else{
         layer.hidden=false;document.body.classList.add('spacey-guiding');onActiveChange(true);
@@ -292,6 +347,7 @@ export function createSpaceyTour({mascot,setPose,moveTo,onActiveChange=()=>{}}){
     },
     dispose(){
       if(disposed)return;close({restore:false});disposed=true;
+      for(const clip of preloads.values()){clip.removeAttribute('src');clip.load();}preloads.clear();
       observer.disconnect();footerObserver.disconnect();document.removeEventListener('keydown',keydown,true);window.removeEventListener('resize',scheduleLayout);viewport?.removeEventListener('resize',scheduleLayout);layer.remove();style.remove();
     },
     get active(){return active||invited;},

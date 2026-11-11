@@ -1,0 +1,57 @@
+{
+  "duration": 28.913333,
+  "cues": [
+    {
+      "time": 0.04,
+      "kind": "location",
+      "text": "Location finds a place or coordinates on this world."
+    },
+    {
+      "time": 3.504,
+      "kind": "presets",
+      "text": "Visual Presets changes the image style. Let me show you."
+    },
+    {
+      "time": 7.138667,
+      "kind": "style",
+      "text": "Normal keeps the natural colors.",
+      "style": "normal"
+    },
+    {
+      "time": 9.716,
+      "kind": "style",
+      "text": "CRT adds a retro screen effect.",
+      "style": "crt"
+    },
+    {
+      "time": 12.954667,
+      "kind": "style",
+      "text": "NVG simulates night vision.",
+      "style": "nvg"
+    },
+    {
+      "time": 15.830667,
+      "kind": "style",
+      "text": "FLIR uses simulated thermal colors.",
+      "style": "flir"
+    },
+    {
+      "time": 19.368,
+      "kind": "style",
+      "text": "Anime adds illustrated edges and colors.",
+      "style": "anime"
+    },
+    {
+      "time": 22.649333,
+      "kind": "style",
+      "text": "Noir creates a black and white view.",
+      "style": "noir"
+    },
+    {
+      "time": 25.248,
+      "kind": "style",
+      "text": "And back to Normal. You can return to it at any time.",
+      "style": "normal"
+    }
+  ]
+}

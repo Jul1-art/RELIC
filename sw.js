@@ -1,8 +1,8 @@
 /* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'inspection-20261107-v32-public';
-const INTERFACE_RELEASE = 'inspection-20261107-v32';
+const VERSION = 'inspection-20261111-v35-public';
+const INTERFACE_RELEASE = 'inspection-20261111-v35';
 const CLIENT_VERSION_TIMEOUT = 650;
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
@@ -33,7 +33,7 @@ const OFFLINE_CORE = [
   'src/ui/inspection-shell.js','src/ui/inspection-shell.css','src/ui/inspection-controls.js','src/ui/visual-effects.js',
   'src/ui/inspection-motion.js','src/ui/inspection-motion.css',
   'src/ui/exploration-mascot.js','src/ui/exploration-mascot.css','src/ui/mascot-sprite.js','src/ui/mascot-sprite.css',
-  'src/ui/spacey-tour.js','src/ui/spacey-tour.css',
+  'src/ui/spacey-tour.js','src/ui/spacey-tour.css','src/ui/narration-clock.js','assets/spacey/audio/destinations-timeline.json',
   'assets/spacey/audio/welcome.mp3','assets/spacey/audio/worlds.mp3','assets/spacey/audio/earth.mp3',
   'assets/spacey/audio/camera.mp3','assets/spacey/audio/data.mp3','assets/spacey/audio/display.mp3',
   'assets/spacey/audio/destinations.mp3','assets/spacey/audio/finish.mp3',
