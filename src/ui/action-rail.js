@@ -49,11 +49,10 @@ export function initializeActionRail() {
   const title = element('h2','rail-panel-title');
   title.id = 'rail-panel-title';
   panel.setAttribute('aria-labelledby',title.id);
-  const close = iconButton('rail-close','xmark','close');
   const description=element('p','rail-panel-description');description.id='rail-panel-description';
   panel.setAttribute('aria-describedby',description.id);
   const shortcut=element('kbd','rail-shortcut');shortcut.textContent='esc';shortcut.setAttribute('aria-hidden','true');
-  headingCopy.append(title,description);heading.append(handle,headingCopy,shortcut,close);
+  headingCopy.append(title,description);heading.append(handle,headingCopy,shortcut);
   const worlds = element('div','rail-worlds');
   worlds.append(picker);
   const menu = element('div','rail-menu');
@@ -135,7 +134,6 @@ export function initializeActionRail() {
   inspectorClose.addEventListener('click',()=>{setInformation(false); information.focus({preventScroll:true});});
   const triggers = {worlds:worldButton,search:searchButton};
   for (const [name,button] of Object.entries(triggers)) button.addEventListener('click',()=>show(active===name?'':name,button));
-  close.addEventListener('click',()=>show('',null,true));
   information.addEventListener('click',()=>show(''));
   reset?.addEventListener('click',()=>show(''));
   rail.addEventListener('keydown',event=>{
@@ -328,7 +326,7 @@ export function initializeActionRail() {
       if(active!==name||filmActive()||panel.inert||panel.hidden)return;
       if(name==='worlds')picker.dispatchEvent(new CustomEvent('planet-dashboard-picker',{detail:{inline:true,focus:true}}));
       else if(name==='search')command.querySelector('input')?.focus({preventScroll:true});
-      else close.focus({preventScroll:true});
+      else (triggers[name]||worldButton).focus({preventScroll:true});
     });
     if (!name && restoreFocus) opener?.focus({preventScroll:true});
   }
