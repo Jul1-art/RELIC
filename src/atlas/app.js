@@ -610,7 +610,7 @@ function syncInspectionScene(){
   comet?.setLabels(showLabels);
 }
 function getInspectionState(){
-  if(!isWorldInspection())return {body:selected};
+  if(!isWorldInspection())return {body:selected,capabilities:{tilt:true,north:true}};
   const detail=bodyData(selected);
   const native=detailedGlobe?.getViewState();
   const navigation=native||globeNavigation?.getViewState();
@@ -631,6 +631,13 @@ function getInspectionState(){
   };
 }
 function executeInspectionCommand(action,value){
+  if(selected==='overview'&&['tilt','north'].includes(action)){
+    const offset=camera.position.clone().sub(controls.target),range=offset.length();
+    if(action==='north')offset.set(0,Math.abs(offset.y),Math.hypot(offset.x,offset.z));
+    else offset.set(offset.x,range*(Math.abs(offset.y)/range>.6?.25:.9),offset.z).normalize().multiplyScalar(range);
+    flyTo(controls.target.clone(),controls.target.clone().add(offset),650);return true;
+  }
+
   if(action==='home'){selectBody('overview');return true;}
   if(action==='reset'){selectBody(selected,true);return true;}
   if(action==='locate'){
@@ -1340,7 +1347,7 @@ function animate(time) {
   positionLabels();
   previousNavigationCamera.copy(camera.position);
   if(!detailedGlobe.active){
-    if(isWorldInspection())inspectionEffects.render(time);else renderer.render(scene,camera);
+    if(isWorldInspection()||inspectionSettings.style!=='normal')inspectionEffects.render(time);else renderer.render(scene,camera);
     if(!flight)detailedGlobe.reveal();
     if(wasFlying||globeNavigation.cameraMotion||cameraMotionOnPreviousFrame)inspectionControls?.publishCamera();
     cameraMotionOnPreviousFrame=Boolean(flight||globeNavigation.cameraMotion);

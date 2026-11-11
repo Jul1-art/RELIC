@@ -10,7 +10,7 @@ const number=value=>typeof value==='number'&&Number.isFinite(value);
  * arbitrary query parameters, user preferences, provider settings or tokens. */
 export function createInspectionLink(state,baseURL=new URL('../../index.html',import.meta.url)){
   const url=new URL(baseURL);url.search='';url.hash='';
-  if(typeof state.body!=='string'||!state.body||state.body==='overview')return url.href;
+  if(typeof state.body!=='string'||!state.body)return url.href;
   url.searchParams.set('body',state.body.slice(0,100));
   url.searchParams.set('view','inspection');
   for(const [key,value,min,max] of [
@@ -58,7 +58,7 @@ export function connectInspectionControls({getState,execute,applySettings=()=>{}
   async function receive(event){
     if(disposed)return;
     const state=getState(),{action,value}=event.detail||{};
-    if(!state?.body||state.body==='overview'||typeof action!=='string')return;
+    if(!state?.body||typeof action!=='string')return;
     if(action==='share'){
       const url=createInspectionLink({...state,settings});let copied=false;
       try{if(clipboard?.writeText){await clipboard.writeText(url);copied=true;}}catch{}

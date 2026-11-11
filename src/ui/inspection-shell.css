@@ -774,3 +774,5 @@ html[data-theme=day] body.has-inspection-shell #relic-action-rail .rail-button:i
   content:'';justify-self:center;width:5px;height:9px;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg);
 }
 .inspection-top-actions [data-inspection-action=tilt] svg {width:26px;height:26px;flex-basis:26px}
+
+.relic-inspection-shell.is-solar-overview .inspection-modules{display:none}

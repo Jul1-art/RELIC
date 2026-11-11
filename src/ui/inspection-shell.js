@@ -34,7 +34,7 @@ const AVAILABILITY={
  fr:{loading:'Chargement du moteur de rendu',lighting:'L’éclairage est intégré à ces tuiles',labels:'Cette vue n’affiche aucun nom d’objet',moons:'Cette vue n’affiche aucune couche de lunes',orbits:'Cette vue n’affiche aucune couche d’orbites lunaires'},
 };
 
-export function inspectionActive({body,film=false}={}){return Boolean(body&&body!=='overview'&&body!=='sun'&&!film);}
+export function inspectionActive({body,film=false}={}){return Boolean(body&&body!=='sun'&&!film);}
 
 /** One focus-only shell; moving existing nodes retains their adapters/listeners. */
 export function createInspectionShell({dashboard=document.querySelector('.planet-dashboard'),command,inspector,
@@ -257,7 +257,7 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
    if(narrow.matches){close('location');close('presets');}
    openPanel('data');
   }else if(dashboard.dataset.panelOpen!=='true')close('data');
-  root.dataset.world=state.body;organizeData();syncCamera();syncSettings();
+  root.dataset.world=dashboard.dataset.dashboardBody;root.classList.toggle('is-solar-overview',dashboard.dataset.dashboardBody==='overview');organizeData();syncCamera();syncSettings();
  }
  function update(next){
   publishedBody=next.body;
@@ -269,6 +269,7 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  function openPanel(key){const panel=panels[key];if(!panel||openPanels.has(key))return;openPanels.add(key);setInspectionPanelExpanded(panel,true);}
  function show(name,opener,{focus=true}={}){
   if(!active||!panels[name])return;
+  if(name==='location'&&dashboard.dataset.dashboardBody==='overview'){document.querySelector('#rail-worlds')?.click();return;}
   if(opener)panelOpeners.set(name,opener);
   // The trays share one popover position, including when one is pinned.
   if(name==='location'||name==='presets')for(const key of ['location','presets'])if(key!==name)close(key);

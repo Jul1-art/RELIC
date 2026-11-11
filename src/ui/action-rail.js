@@ -218,6 +218,8 @@ export function initializeActionRail() {
     if(!filmActive())void mountInspection();
   });
   shell.inert = filmActive();
+  new ResizeObserver(alignPanel).observe(rail);
+  window.addEventListener('resize',alignPanel);
   document.body.classList.add('has-action-rail');
   setInformation(false);
   onLanguageChange(()=>{if(active)setInformation(false);render();});
@@ -241,9 +243,9 @@ export function initializeActionRail() {
   }
   function inspectionActive(){return Boolean(inspection&&!inspection.element.hidden&&!filmActive());}
   function mountInspection(){
-    if(inspection||inspectionPromise||filmActive()||!currentBody||['overview','sun'].includes(currentBody))return inspectionPromise;
+    if(inspection||inspectionPromise||filmActive()||!currentBody||currentBody==='sun')return inspectionPromise;
     inspectionPromise=import('./inspection-shell.js').then(({createInspectionShell})=>{
-      if(filmActive()||['overview','sun'].includes(currentBody))return;
+      if(filmActive()||currentBody==='sun')return;
       const searchWasOpen=active==='search';
       if(searchWasOpen)show('');
       inspection=createInspectionShell({dashboard,command,inspector,getLanguage,onLanguageChange});
@@ -310,7 +312,15 @@ export function initializeActionRail() {
     });
     if (!name && restoreFocus) opener?.focus({preventScroll:true});
   }
+  function alignPanel(){
+    if(innerWidth<=700)return;
+    const box=rail.getBoundingClientRect();
+    panel.style.setProperty('--attached-top',`${box.top}px`);
+    panel.style.setProperty('--attached-height',`${box.height}px`);
+  }
   function render() {
+    requestAnimationFrame(alignPanel);
+
     const copy = COPY[getLanguage()==='fr'?'fr':'en'];
     const informationOpen=dashboard.dataset.panelOpen==='true';
     const hasWorld=Boolean(dashboard.dataset.dashboardBody&&dashboard.dataset.dashboardBody!=='overview');
