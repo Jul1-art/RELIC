@@ -4,8 +4,7 @@
   --mascot-height: 88px;
   position: fixed;
   z-index: 18;
-  inset: auto auto calc(24px + env(safe-area-inset-bottom, 0px) + var(--provider-credits-height, 0px) + var(--detailed-credits-height, 0px))
-    max(132px, env(safe-area-inset-left, 0px));
+  inset: auto auto calc(24px + env(safe-area-inset-bottom, 0px) + var(--provider-credits-height, 0px) + var(--detailed-credits-height, 0px)) max(132px, env(safe-area-inset-left, 0px));
   display: grid;
   place-items: end center;
   min-width: 44px;
@@ -16,13 +15,36 @@
   border-radius: 10px;
   background: transparent !important;
   box-shadow: none;
-  cursor: pointer;
-  touch-action: manipulation;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
-.relic-exploration-mascot[hidden] {display: none}
-.relic-exploration-mascot:focus-visible {outline: 2px solid #00bddf;outline-offset: 4px}
-body:has(#relic-action-panel:not([hidden])) .relic-exploration-mascot:not(.spacey-guiding) {visibility: hidden}
+
+.relic-exploration-mascot:active:not(.spacey-guiding),
+.relic-exploration-mascot.mascot-dragging {
+  cursor: grabbing !important;
+}
+
+.relic-exploration-mascot.mascot-dragging .relic-mascot-sprite {
+  transform: scale(1.08);
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.45));
+  transition: transform 120ms ease-out, filter 120ms ease-out;
+}
+
+.relic-exploration-mascot[hidden] {
+  display: none
+}
+
+.relic-exploration-mascot:focus-visible {
+  outline: 2px solid #00bddf;
+  outline-offset: 4px
+}
+
+body:has(#relic-action-panel:not([hidden])) .relic-exploration-mascot:not(.spacey-guiding) {
+  visibility: hidden
+}
 
 @media (max-width: 899px) {
   .relic-exploration-mascot {
@@ -30,34 +52,43 @@ body:has(#relic-action-panel:not([hidden])) .relic-exploration-mascot:not(.space
     bottom: calc(116px + env(safe-area-inset-bottom, 0px) + var(--provider-credits-height, 0px) + var(--detailed-credits-height, 0px));
   }
 }
+
 @media (max-width: 700px) {
   .relic-exploration-mascot {
     --mascot-height: 70px;
     left: max(34px, env(safe-area-inset-left, 0px));
   }
+
   body:has(.inspection-module-toggle[aria-expanded=true], .inspection-tray-toggle[aria-expanded=true]) .relic-exploration-mascot:not(.spacey-guiding) {
     visibility: hidden;
   }
 }
+
 @media (max-height: 560px) {
-  .relic-exploration-mascot {--mascot-height: 60px}
+  .relic-exploration-mascot {
+    --mascot-height: 60px
+  }
 }
+
 @media (max-height: 540px) {
   .relic-exploration-mascot {
     bottom: calc(20px + env(safe-area-inset-bottom, 0px) + var(--provider-credits-height, 0px) + var(--detailed-credits-height, 0px));
   }
 }
+
 @media (max-width: 899px) and (max-height: 540px) {
-  .relic-exploration-mascot {left: clamp(34px, calc(100vw - 294px), 108px)}
+  .relic-exploration-mascot {
+    left: clamp(34px, calc(100vw - 294px), 108px)
+  }
 }
 
 body .relic-exploration-mascot.spacey-guiding {
   inset: 0 auto auto 0;
   z-index: 1201;
   visibility: visible;
-  cursor: default;
+  cursor: default !important;
+  touch-action: manipulation;
 }
-
 /* Spacey's arrival: a floor portal behind the body and a rim in front. */
 .mascot-emergence{display:block;padding-top:4px;margin-top:-4px}
 .relic-exploration-mascot:is([data-arrival=preparing],[data-arrival=entering]) .mascot-emergence{overflow:clip}

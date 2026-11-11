@@ -1,0 +1,33 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "server": {
+      "root": "server",
+      "runtime": "python",
+      "buildCommand": "pip install -r requirements.txt",
+      "entrypoint": "python terrain_server.py",
+      "bindings": [
+        {
+          "type": "service",
+          "service": "film",
+          "format": "url",
+          "env": "FILM_SERVICE_URL"
+        }
+      ]
+    },
+    "film": {
+      "root": "tools/film",
+      "runtime": "python",
+      "buildCommand": "pip install -r requirements.txt",
+      "entrypoint": "python film_server.py"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "server"
+      }
+    }
+  ]
+}

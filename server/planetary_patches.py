@@ -65,7 +65,7 @@ def _download(path: Path, url: str, expected: int):
         if path.exists() and path.stat().st_size == expected:
             return
         partial = path.with_suffix(path.suffix + ".part")
-        with requests.get(url, headers={"User-Agent": "relic-Atlas/2.0"}, stream=True, timeout=120) as response:
+        with requests.get(url, headers={"User-Agent": "Hackathon-NASA-Atlas/2.0"}, stream=True, timeout=120) as response:
             response.raise_for_status()
             with partial.open("wb") as target:
                 for chunk in response.iter_content(1024 * 1024):

@@ -1,16 +1,18 @@
 """Serve the atlas and NASA heightmap tiles generated on demand.
 
-Downloaded source data stays in ~/.cache/relic. NASA elevation
+Downloaded source data stays in ~/.cache/hackathon-nasa. NASA elevation
 reaches the browser as small 65×65 float32 tiles.
 """
 
 from __future__ import annotations
 
+import contextlib
 import io
 import json
 import math
 import os
 import re
+import socket
 import threading
 import zipfile
 from concurrent.futures import ThreadPoolExecutor
@@ -32,7 +34,7 @@ from .planetary_patches import JEZERO, TYCHO, blend_patch, tycho_image_tile
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CACHE = Path(os.environ.get("NASA_ATLAS_CACHE", Path.home() / ".cache/relic"))
+CACHE = Path(os.environ.get("NASA_ATLAS_CACHE", Path.home() / ".cache/hackathon-nasa"))
 CACHE.mkdir(parents=True, exist_ok=True)
 TILES = CACHE / "height-tiles-v2"
 TILES.mkdir(exist_ok=True)
@@ -50,7 +52,7 @@ SRTM = "https://step.esa.int/auxdata/dem/SRTMGL1"
 LOLA64 = "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/ldem_64_uint.tif"
 MOLA16 = "https://pds-geosciences.wustl.edu/mgs/urn-nasa-pds-mgs_mola_topography_derived/meg016/megt90n000eb.img"
 APOLLO = "https://pds.lroc.im-ldi.com/data/LRO-L-LROC-5-RDR-V1.0/LROLRC_2001/DATA/SDP/NAC_DTM/APOLLO11/NAC_DTM_APOLLO11.TIF"
-HEADERS = {"User-Agent": "relic-Atlas/2.0"}
+HEADERS = {"User-Agent": "Hackathon-NASA-Atlas/2.0"}
 SOURCE_LOCKS = {name: threading.Lock() for name in ("moon", "mars", "apollo")}
 
 
@@ -497,10 +499,51 @@ class Handler(SimpleHTTPRequestHandler):
 
 
 def main():
-    from tools.restore_film import restore_films
-    if not (ROOT / "intro/assets/prologue/encoding-v9-hd50.json").is_file():
-        restore_films(ROOT)
-    ThreadingHTTPServer(("0.0.0.0", int(os.environ.get("NASA_ATLAS_PORT", "8000"))), Handler).serve_forever()
+    import os
+    import json
+
+    film_url = os.environ.get("FILM_SERVICE_URL")
+
+    if film_url and not (ROOT / "intro/assets/prologue/encoding-v9-hd50.json").is_file():
+        try:
+            import urllib.request
+            data = json.dumps({"root": str(ROOT)}).encode("utf-8")
+            req = urllib.request.Request(
+                f"{film_url}/restore",
+                data=data,
+                headers={"Content-Type": "application/json"},
+                method="POST"
+            )
+            with urllib.request.urlopen(req, timeout=30) as response:
+                result = json.loads(response.read())
+        except Exception:
+            pass
+    else:
+        try:
+            from tools.restore_film import restore_films
+            if not (ROOT / "intro/assets/prologue/encoding-v9-hd50.json").is_file():
+                restore_films(ROOT)
+        except ImportError:
+            pass
+
+    port = int(os.environ.get("NASA_ATLAS_PORT", "8000"))
+    server = None
+    if getattr(socket, "has_ipv6", False):
+        try:
+            class DualStackServer(ThreadingHTTPServer):
+                address_family = socket.AF_INET6
+
+                def server_bind(self):
+                    with contextlib.suppress(Exception):
+                        self.socket.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 0)
+                    super().server_bind()
+
+            server = DualStackServer(("::", port), Handler)
+        except Exception:
+            server = None
+    if server is None:
+        server = ThreadingHTTPServer(("0.0.0.0", port), Handler)
+    server.serve_forever()
 
 
 if __name__ == "__main__":

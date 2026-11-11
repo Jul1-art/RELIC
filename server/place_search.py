@@ -107,7 +107,7 @@ def search_places(query: str, lang: str = "fr", lat: float | None = None, lon: f
             PHOTON_URL,
             params=params,
             timeout=7,
-            headers={"User-Agent": "relic-Atlas/2.0 (interactive place search)"},
+            headers={"User-Agent": "Hackathon-NASA-Atlas/2.0 (interactive place search)"},
         )
         response.raise_for_status()
         features = response.json().get("features")
