@@ -1,6 +1,6 @@
 /* The navigation is one compact dock and one contextual, scrollable surface. */
 .has-action-rail{
-  --rail-width:68px;
+  --rail-width:76px;
   --rail-edge:16px;
   --rail-left:calc(var(--rail-edge) + var(--rail-width) + 14px);
   --rail-credits:calc(var(--provider-credits-height,0px) + var(--detailed-credits-height,0px));
@@ -35,14 +35,14 @@
 html body.has-action-rail nav#relic-action-rail.relic-action-rail[data-compact]{
   position:absolute;left:var(--rail-edge);right:auto;bottom:auto!important;
   top:calc((100dvh + var(--rail-safe-top) - var(--rail-safe-bottom))/2);
-  display:flex;flex-direction:column;align-items:center;gap:12px;
+  display:flex;flex-direction:column;align-items:center;gap:22px;
   width:var(--rail-width);height:auto;max-height:var(--rail-available);
-  margin:0;padding:9px;border:1px solid var(--rail-line);border-radius:25px;
+  margin:0;padding:13px 12px;border:1px solid var(--rail-line);border-radius:25px;
   background:var(--rail-panel);box-shadow:var(--chrome-shadow);
   pointer-events:auto;transform:translateY(-50%);isolation:isolate;overflow:visible;
 }
-.rail-primary,.rail-utility{position:relative;display:flex;flex-direction:column;align-items:center;gap:5px;min-height:0;width:100%}
-.rail-utility{padding-top:13px}
+.rail-primary,.rail-utility{position:relative;display:flex;flex-direction:column;align-items:center;gap:16px;min-height:0;width:100%}
+.rail-utility{padding-top:20px}
 .rail-utility::before{content:"";position:absolute;top:0;left:10px;right:10px;height:1px;background:var(--rail-line)}
 .relic-action-rail .rail-brand{
   display:flex!important;align-items:center;justify-content:center;flex:0 0 48px;

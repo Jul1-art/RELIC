@@ -113,7 +113,7 @@ export function initializeActionRail() {
   }
   let credits=document.getElementById('relic-credits');
   if(!credits){
-    credits=iconButton('relic-credits','circle-info','sources');
+    credits=iconButton('rail-credits','circle-info','sources');
     credits.addEventListener('click',()=>{void import('./app-sources.js').then(({openSources})=>openSources(credits));});
   }
   credits.classList.add('rail-button');credits.dataset.railCopy='sources';

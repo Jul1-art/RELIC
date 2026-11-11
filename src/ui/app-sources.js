@@ -87,8 +87,11 @@ export async function openSources(trigger) {
       image.addEventListener('error', () => image.remove(), {once:true}); avatar.append(image);
     }
     const identity = document.createElement('div'); identity.className = 'relic-creator-identity'; heading(identity,name); paragraph(identity,role);
+    sourceLink(identity, 'GitHub · '+(name==='Hugo'?'SkyFlySim':'Jul1-art'),name==='Hugo'?'https://github.com/SkyFlySim':'https://github.com/Jul1-art');
     card.append(avatar,identity); people.append(card);
   }
+  heading(content, french() ? 'Code source ouvert' : 'Open-source code');
+  sourceLink(content, 'RELIC · GitHub', 'https://github.com/Jul1-art/RELIC');
   heading(content, french() ? 'Positions et échelle' : 'Positions and scale');
   paragraph(content, french()
     ? 'Le mode par défaut suit l’heure UTC réelle, à une seconde par seconde. Les centres des huit planètes utilisent les vecteurs géométriques héliocentriques NASA/JPL Horizons, interpolés avec leurs vitesses : éphémérides 2025–2033 fournies avec l’application et fenêtres actualisées par le serveur lorsqu’il est disponible. Il s’agit de positions calculées pour la date affichée, pas de télémétrie. Les courbes sont les ellipses osculatrices à cette date. Si les éphémérides sont indisponibles, le modèle approché est explicitement indiqué.'

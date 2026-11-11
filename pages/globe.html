@@ -10,7 +10,7 @@
   <script>window.CESIUM_BASE_URL=new URL('../vendor/cesium/',document.baseURI).href;</script>
   <link rel="stylesheet" href="../src/ui/monochrome.css?v=17">
   <script>(()=>{let theme='night';try{theme=JSON.parse(localStorage.getItem('relic.preferences.v1')||'{}').theme||localStorage.getItem('nasa-atlas-theme')||theme;}catch{}const requested=new URLSearchParams(location.search).get('theme');if(requested==='day'||requested==='night')theme=requested;document.documentElement.dataset.theme=theme==='day'?'day':'night';document.documentElement.dataset.accent='mono';document.documentElement.style.colorScheme=theme==='day'?'light':'dark';})();</script>
-  <script>if('serviceWorker' in navigator)navigator.serviceWorker.addEventListener('message',event=>{if(event.data?.type==='RELIC_INTERFACE_VERSION')event.ports?.[0]?.postMessage({release:'inspection-20261111-v38'});});</script>
+  <script>if('serviceWorker' in navigator)navigator.serviceWorker.addEventListener('message',event=>{if(event.data?.type==='RELIC_INTERFACE_VERSION')event.ports?.[0]?.postMessage({release:'inspection-20261111-v39'});});</script>
 </head>
 <body>
   <main id="globe" aria-label="Detailed 3D planetary globe"></main>
