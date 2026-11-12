@@ -9,8 +9,8 @@ import {bindInspectionMotion,setInspectionPanelExpanded} from './inspection-moti
  * CommandDockView.vue and DisplayPanel.vue. Original sources and license are
  * retained in vendor/gods-eye-view. Renderers remain owned by RELIC. */
 const COPY={
- en:{actions:'Planet view actions',share:'Copy view link',tilt:'Switch vertical / oblique view',north:'North up',reset:'Recenter this world',home:'Return to the solar system',location:'Location',presets:'Visual presets',display:'Display',data:'World data',close:'Close',pin:'Keep this tray open',overview:'Overview',moons:'Moons & orbits',missions:'Sites & missions',satellites:'Satellites',scene:'Scene',image:'Image',style:'Style parameters',labels:'Labels',orbits:'Moon orbits',moonsSetting:'Natural moons',noMoons:'The moon catalogue is available in the solar system view.',noSites:'No landing-site catalogue is available for this world yet.',coordinates:'Explore latitude and longitude on this world.',siteHelp:'Choose a destination, or use the search field.',planetData:'Measured properties, current position and exploration sites.',unsupported:'Unavailable in this view',shareHint:'Copy this view link',copy:'Copy',copied:'View link copied',language:'Switch language',styleSimulated:'Simulated sensor styles.'},
- fr:{actions:'Actions de la vue planétaire',share:'Copier le lien de la vue',tilt:'Basculer entre vue verticale et oblique',north:'Nord en haut',reset:'Recentrer ce monde',home:'Revenir au système solaire',location:'Localisation',presets:'Préréglages visuels',display:'Affichage',data:'Données du monde',close:'Fermer',pin:'Garder ce panneau ouvert',overview:'Vue générale',moons:'Lunes et orbites',missions:'Sites et missions',satellites:'Satellites',scene:'Scène',image:'Image',style:'Paramètres du style',labels:'Noms des objets',orbits:'Orbites des lunes',moonsSetting:'Lunes naturelles',noMoons:'Le catalogue des lunes est disponible dans la vue du système solaire.',noSites:'Aucun catalogue de sites d’atterrissage n’est encore disponible pour ce monde.',coordinates:'Explorez la latitude et la longitude de ce monde.',siteHelp:'Choisissez une destination ou utilisez la recherche.',planetData:'Dimensions mesurées, position et sites d’exploration.',unsupported:'Indisponible dans cette vue',shareHint:'Copiez le lien de cette vue',copy:'Copier',copied:'Lien de la vue copié',language:'Changer la langue',styleSimulated:'Simulation du rendu des capteurs.'},
+ en:{detection:'Detection',actions:'Planet view actions',share:'Copy view link',tilt:'Switch vertical / oblique view',north:'North up',reset:'Recenter this world',home:'Return to the solar system',location:'Location',presets:'Visual presets',display:'Display',data:'World data',close:'Close',pin:'Keep this tray open',overview:'Overview',moons:'Moons & orbits',missions:'Sites & missions',satellites:'Satellites',scene:'Scene',image:'Image',style:'Style parameters',labels:'Labels',orbits:'Moon orbits',moonsSetting:'Natural moons',noMoons:'The moon catalogue is available in the solar system view.',noSites:'No landing-site catalogue is available for this world yet.',coordinates:'Explore latitude and longitude on this world.',siteHelp:'Choose a destination, or use the search field.',planetData:'Measured properties, current position and exploration sites.',unsupported:'Unavailable in this view',shareHint:'Copy this view link',copy:'Copy',copied:'View link copied',language:'Switch language',styleSimulated:'Simulated sensor styles.'},
+ fr:{detection:'Détection',actions:'Actions de la vue planétaire',share:'Copier le lien de la vue',tilt:'Basculer entre vue verticale et oblique',north:'Nord en haut',reset:'Recentrer ce monde',home:'Revenir au système solaire',location:'Localisation',presets:'Préréglages visuels',display:'Affichage',data:'Données du monde',close:'Fermer',pin:'Garder ce panneau ouvert',overview:'Vue générale',moons:'Lunes et orbites',missions:'Sites et missions',satellites:'Satellites',scene:'Scène',image:'Image',style:'Paramètres du style',labels:'Noms des objets',orbits:'Orbites des lunes',moonsSetting:'Lunes naturelles',noMoons:'Le catalogue des lunes est disponible dans la vue du système solaire.',noSites:'Aucun catalogue de sites d’atterrissage n’est encore disponible pour ce monde.',coordinates:'Explorez la latitude et la longitude de ce monde.',siteHelp:'Choisissez une destination ou utilisez la recherche.',planetData:'Dimensions mesurées, position et sites d’exploration.',unsupported:'Indisponible dans cette vue',shareHint:'Copiez le lien de cette vue',copy:'Copier',copied:'Lien de la vue copié',language:'Changer la langue',styleSimulated:'Simulation du rendu des capteurs.'},
 };
 const GLYPHS={
  share:'<svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24" aria-hidden="true"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>',
@@ -65,21 +65,22 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
   top.append(button);actions.set(key,button);
  }
  const modules=node('aside','inspection-modules');
- const display=makeModule('display'),data=makeModule('data');modules.append(display.element,data.element);
+ const display=makeModule('display'),data=makeModule('data'),satellites=makeModule('satellites');modules.append(display.element,data.element,satellites.element);
  const settingsForm=node('div','inspection-display-controls');display.body.append(settingsForm);
  const controls=new Map(),styleControls=new Map();
- const sceneGroup=makeGroup('scene'),satelliteGroup=makeGroup('satellites'),imageGroup=makeGroup('image'),styleGroup=makeGroup('style');
+ const sceneGroup=makeGroup('scene'),satelliteGroup=makeGroup('detection'),imageGroup=makeGroup('image'),styleGroup=makeGroup('style');
  const satelliteSlot=node('div','inspection-satellite-controls');satelliteSlot.id='inspection-satellite-controls';
  controls.set('detection',makeSetting('detection',VISUAL_SETTINGS.detection,satelliteGroup.body));
  for(const key of ['detectionDensity','detectionFade','detectionOutside']){const control=makeSetting(key,VISUAL_SETTINGS[key],satelliteGroup.body);control.row.classList.add('detection-tuning-row');control.row.insertBefore(control.input,control.output);controls.set(key,control);}
  const allocation=node('div','pp-slider-row visible detection-allocation-row');const allocationLabel=node('span','pp-slider-mini-label');allocationLabel.textContent='Allocation';const segments=node('div','pp-mode-seg detection-allocation-seg');const allocationButtons=new Map();for(const value of ['ELASTIC','WEIGHTED']){const button=node('button','pp-mode-btn');button.type='button';button.textContent=value==='ELASTIC'?'Elastic':'Weighted';button.addEventListener('click',()=>emit('detectionAllocation',value));segments.append(button);allocationButtons.set(value,button);}allocation.append(allocationLabel,segments);satelliteGroup.body.insertBefore(allocation,controls.get('detectionFade').row);
- satelliteGroup.body.append(satelliteSlot);
+ satellites.body.append(satelliteSlot);
  settingsForm.append(satelliteGroup.element,sceneGroup.element,imageGroup.element,styleGroup.element);
  for(const key of ['stars','lighting','labels','moons','orbits']){
   const descriptor=VISUAL_SETTINGS[key]||{type:'boolean',default:true,label:COPY.en[key==='moons'?'moonsSetting':key]||key,fr:COPY.fr[key==='moons'?'moonsSetting':key]||key};
   controls.set(key,makeSetting(key,descriptor,sceneGroup.body));
  }
- for(const key of ['bloom','bloomIntensity','sharpen','sharpenIntensity','scope','scopeFeather','exposure','contrast'])if(VISUAL_SETTINGS[key])controls.set(key,makeSetting(key,VISUAL_SETTINGS[key],imageGroup.body));
+ for(const key of ['bloom','sharpen','scope']){const card=node('div','pp-toggle-group inspection-effect-card');imageGroup.body.append(card);controls.set(key,makeSetting(key,VISUAL_SETTINGS[key],card));const rangeKey={bloom:'bloomIntensity',sharpen:'sharpenIntensity',scope:'scopeFeather'}[key];const control=makeSetting(rangeKey,VISUAL_SETTINGS[rangeKey],card);control.row.classList.add('inspection-effect-slider');control.row.insertBefore(control.input,control.output);controls.set(rangeKey,control);}
+ for(const key of ['exposure','contrast'])controls.set(key,makeSetting(key,VISUAL_SETTINGS[key],imageGroup.body));
  const dataTabs=node('div','inspection-data-tabs');dataTabs.setAttribute('role','tablist');
  const tabButtons=new Map();let dataTab='overview';
  for(const key of ['overview','moons','missions']){const button=node('button','inspection-data-tab');button.type='button';button.id=`inspection-tab-${key}`;button.setAttribute('role','tab');button.setAttribute('aria-controls','inspection-data-content');button.addEventListener('click',()=>selectDataTab(key));dataTabs.append(button);tabButtons.set(key,button);}
@@ -126,7 +127,7 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  const disclosures=[],openPanels=new Set(),pinned=new Set(),removers=[];
  const compact=matchMedia('(max-width:700px)');
  const narrow=matchMedia('(max-width:1180px)');
- const panels={location,presets,display,data};
+ const panels={location,presets,display,data,satellites};
  for(const [key,panel] of Object.entries(panels)){
   const tray=key==='location'||key==='presets';
   disclosures.push(bindInspectionMotion({panel,isActive:()=>active&&!disposed,
@@ -232,6 +233,7 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
    input.min=descriptor.min;input.max=descriptor.max;input.step=descriptor.step||1;input.value=descriptor.default;
    row.append(label,output,input);
   }else{input.checked=Boolean(descriptor.default);row.append(label,input);}
+  if(['scope','sharpen','bloom','detection'].includes(key)){const icon=node('span','pp-icon');icon.setAttribute('aria-hidden','true');icon.textContent={scope:'◉',sharpen:'🔍',bloom:'✧',detection:'▣'}[key];row.prepend(icon);row.classList.add('inspection-effect-toggle');}
   row.append(reason);
   input.addEventListener(range?'input':'change',()=>{
    const value=range?input.valueAsNumber:input.checked;
@@ -280,7 +282,7 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
   // The trays share one popover position, including when one is pinned.
   if(name==='location'||name==='presets')for(const key of ['location','presets'])if(key!==name)close(key);
   if(narrow.matches)for(const key of [...openPanels])if(key!==name)close(key);
-  if(name==='display'||name==='data')for(const key of ['display','data'])if(key!==name)close(key);
+  if(['display','data','satellites'].includes(name))for(const key of ['display','data','satellites'])if(key!==name)close(key);
   openPanel(name);
   if(name==='data')events.dispatchEvent(new CustomEvent('planet-dashboard-panel',{detail:{open:true}}));
   if(name==='location'){command.hidden=false;command.inert=false;}
@@ -336,9 +338,9 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
   }
  }
  function syncSettings(){
-  satelliteGroup.element.hidden=state.body!=='earth';
+  satelliteGroup.element.hidden=state.body!=='earth';satellites.element.hidden=state.body!=='earth';if(state.body!=='earth')close('satellites');
   for(const [value,button]of allocationButtons){button.classList.toggle('active',(state.settings.detectionAllocation||'ELASTIC')===value);button.setAttribute('aria-pressed',String((state.settings.detectionAllocation||'ELASTIC')===value));button.disabled=!state.settings.detection;}
-  const detectionControl=controls.get('detection');detectionControl.descriptor={...VISUAL_SETTINGS.detection,label:'▣ '+(!state.settings.detection?'OFF':(state.settings.detectionDensity??100)>=75?'DENSE':(state.settings.detectionDensity??100)>=50?'BALANCED':'SPARSE'),fr:'▣ '+(!state.settings.detection?'OFF':(state.settings.detectionDensity??100)>=75?'DENSE':(state.settings.detectionDensity??100)>=50?'BALANCED':'SPARSE')};
+  const detectionControl=controls.get('detection');detectionControl.descriptor={...VISUAL_SETTINGS.detection,label:''+(!state.settings.detection?'OFF':(state.settings.detectionDensity??100)>=75?'DENSE':(state.settings.detectionDensity??100)>=50?'BALANCED':'SPARSE'),fr:''+(!state.settings.detection?'OFF':(state.settings.detectionDensity??100)>=75?'DENSE':(state.settings.detectionDensity??100)>=50?'BALANCED':'SPARSE')};
   const style=state.settings.style||'normal',language=getLanguage()==='fr'?'fr':'en';
   const ready=publishedBody===state.body;
   for(const [id,button] of presetButtons){const selected=id===style;button.disabled=!ready;button.classList.toggle('active',selected);button.setAttribute('aria-pressed',String(selected));}
@@ -362,7 +364,8 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
     reason.textContent=AVAILABILITY[language][ready?key:'loading']||copy().unsupported;
     input.setAttribute('aria-describedby',reason.id);
    }
-   label.textContent=(language==='fr'?descriptor.fr:descriptor.label)||key;
+   label.textContent=key==='scopeFeather'?(language==='fr'?'Contour':'Feather'):(language==='fr'?descriptor.fr:descriptor.label)||key;
+   if(key==='sharpenIntensity'||key==='bloomIntensity')label.hidden=true;
    input.setAttribute('aria-label',label.textContent);
    if(input.type==='checkbox'){
     input.checked=Boolean(value);row.classList.toggle('active',input.checked&&supported);

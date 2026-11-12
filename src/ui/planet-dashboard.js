@@ -117,7 +117,7 @@ export function initializePlanetDashboard(options = {}) {
     commandLabel.textContent=atlas&&next==='overview'?text('Choose a world to explore','Choisissez un monde à explorer'):text('Explore your current world','Explorez votre monde');
     panelButton.hidden=next==='overview';
     if(next==='overview')setPanel(false);else if(previous!==next&&!matchMedia('(max-width: 960px)').matches)setPanel(true);
-    if(atlasSearch)atlasSearch.querySelector('input').placeholder=['overview','earth'].includes(next)?text('Search a place or enter coordinates','Rechercher un lieu ou saisir des coordonnées'):text('Enter latitude, longitude','Saisir latitude, longitude');
+    if(atlasSearch)atlasSearch.querySelector('input').placeholder=['overview','earth'].includes(next)?text('Search any location…','Rechercher un lieu…'):text('Enter latitude, longitude','Saisir latitude, longitude');
     render();
   }
   function render(){
@@ -165,7 +165,7 @@ export function initializePlanetDashboard(options = {}) {
   function createAtlasSearch(){
     const form=node('form','pd-atlas-search');form.setAttribute('role','search');form.autocomplete='off';
     const input=document.createElement('input');input.type='search';input.maxLength=120;input.setAttribute('aria-label',text('Search a place or coordinates','Rechercher un lieu ou des coordonnées'));
-    const submit=node('button','pd-locate');submit.type='submit';submit.innerHTML=worldIcon('magnifying-glass');
+    const submit=node('button','pd-locate');submit.type='submit';submit.textContent='🔎';submit.setAttribute('aria-label',text('Go to location','Aller au lieu'));
     const state=node('p','pd-search-state');state.setAttribute('role','status');
     const field=node('div','pd-atlas-field');field.append(submit,input);form.append(field,state);
     let request;
@@ -183,12 +183,12 @@ export function initializePlanetDashboard(options = {}) {
       if(coordinate){choose({...coordinate,range:3000,name:coordinate.label});return;}
       if(!['overview','earth'].includes(body)){state.textContent=text('Enter a latitude and longitude.','Saisissez une latitude et une longitude.');return;}
       if(term.length<3){state.textContent=text('Enter a place or coordinates.','Saisissez un lieu ou des coordonnées.');return;}
-      state.textContent=text('Searching…','Recherche…');
+      state.textContent='';form.setAttribute('aria-busy','true');
       try{
         const searchBody=body;const places=await searchPlaces(term,{language:language(),signal:request.signal});
         if(request!==attempt||attempt.signal.aborted||body!==searchBody)return;
         if(places.length)choose(places[0]);else state.textContent=text('No matching place. Try coordinates.','Aucun lieu correspondant. Essayez des coordonnées.');
-      }catch(error){if(error.name!=='AbortError')state.textContent=text('Try another place or coordinates.','Essayez un autre lieu ou des coordonnées.');}
+      }catch(error){if(error.name!=='AbortError')state.textContent=text('Try another place or coordinates.','Essayez un autre lieu ou des coordonnées.');}finally{if(request===attempt)form.removeAttribute('aria-busy');}
     });
     input.addEventListener('input',()=>{request?.abort();dismiss();state.textContent='';});
     form.addEventListener('dashboard-context-change',()=>{request?.abort();dismiss();state.textContent='';});

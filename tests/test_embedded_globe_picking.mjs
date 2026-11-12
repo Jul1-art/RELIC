@@ -16,7 +16,7 @@ async function fixture(body){
   const source=await readFile(new URL('../src/worlds/embedded-globe.js',import.meta.url),'utf8');
   assert.match(source,/\nstart\(\);\s*$/);
   const instrumented=source.replace(/\nstart\(\);\s*$/,`
-    export {pickTarget,cameraFrame,zoom,state,surfaceHeight};
+    export {pickTarget,cameraFrame,zoom,state,surfaceHeight,goTo};
     export function install(v,options={}){
       viewer=v;buildings=options.buildings;lastFrame=options.frame||null;
       ready=Boolean(options.ready);focus={id:body,context:options.context||[]};
@@ -26,7 +26,7 @@ async function fixture(body){
   const context=vm.createContext({
     URLSearchParams,performance,location:{search:`?body=${body}`,origin:'https://example.invalid'},
     window:{},parent:{postMessage:message=>messages.push(message)},
-    document:{querySelector:()=>element},innerWidth:1200,matchMedia:()=>({matches:false}),
+    document:{querySelector:()=>element,documentElement:{dataset:{}}},innerWidth:1200,matchMedia:()=>({matches:false}),
     ResizeObserver:class{observe(){}},
   });
   const dependencies={
@@ -134,4 +134,18 @@ test('photogrammetric terrain heights remain local while external worlds cannot 
   assert.equal(f.api.surfaceHeight(new Cesium.Cartographic(0,0)),0);
   v.viewer.scene.sampleHeight=()=>undefined;
   assert.equal(f.api.surfaceHeight(new Cesium.Cartographic(0,0)),0);
+});
+
+
+test('location navigation requests a cancellable Cesium flight instead of applying the final camera frame',async t=>{
+ const f=await fixture('earth');t.after(f.restore);const v=viewerFor({body:'earth',globe:true});let cancelled=0,flight;
+ v.viewer.camera.cancelFlight=()=>cancelled++;
+ v.viewer.camera.flyToBoundingSphere=(sphere,options)=>{flight={sphere,options};};
+ v.viewer.camera.setView=()=>assert.fail('Location must not teleport the camera');
+ f.api.install(v.viewer);
+ f.api.goTo(48.8566,2.3522,35000,0,0,true);
+ assert.equal(cancelled,1);assert.equal(flight.options.duration,1.8);assert.equal(flight.options.offset.range,35000);
+ const point=Cesium.Ellipsoid.WGS84.cartesianToCartographic(flight.sphere.center);
+ assert.ok(Math.abs(Cesium.Math.toDegrees(point.latitude)-48.8566)<1e-6);
+ assert.ok(Math.abs(Cesium.Math.toDegrees(point.longitude)-2.3522)<1e-6);
 });

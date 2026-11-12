@@ -88,10 +88,12 @@ function surfaceHeight(point){
   if(viewer.scene.globe.show)return viewer.scene.globe.getHeight(point)||0;
   try{const height=viewer.scene.sampleHeight?.(point);return finite(height)&&Math.abs(height)<radius*.015?height:0;}catch{return 0;}
 }
-function goTo(lat,lon,range,heading=0,tilt=0){
+function goTo(lat,lon,range,heading=0,tilt=0,animate=false){
   geography={lat:clamp(lat,-89.99,89.99),lon:((lon+540)%360)-180};
   const target=Cesium.Cartesian3.fromDegrees(geography.lon,geography.lat,groundHeight(geography.lat,geography.lon),ellipsoid);
-  applyFrame({target,range:clamp(range,20,maximumFrameRange()),heading:heading*DEG,pitch:(clamp(tilt,0,85)-90)*DEG});
+  const destination={target,range:clamp(range,20,maximumFrameRange()),heading:heading*DEG,pitch:(clamp(tilt,0,85)-90)*DEG};
+  if(animate){cameraMotion?.cancel();viewer.camera.cancelFlight();viewer.camera.flyToBoundingSphere(new Cesium.BoundingSphere(target,0),{offset:new Cesium.HeadingPitchRange(destination.heading,destination.pitch,destination.range),duration:document.documentElement.dataset.motion==='reduced'||globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches?0:1.8,complete:()=>state(true),cancel:()=>state(true)});requestRender();}
+  else applyFrame(destination);
 }
 function animateView(frame,destination,duration){
   if(!frame||disposed)return;
@@ -211,7 +213,7 @@ function setLighting(value){
 function setFocus(value){
   if(value?.id!==body)return;focus={...value};setLighting(value);
   celestial?.setBodies(value.context||[]);
-  if(finite(value.lat)&&finite(value.lon))goTo(value.lat,value.lon,finite(value.range)?value.range:radius*.08,finite(value.heading)?value.heading:0,finite(value.tilt)?value.tilt:0);
+  if(finite(value.lat)&&finite(value.lon))goTo(value.lat,value.lon,finite(value.range)?value.range:radius*.08,finite(value.heading)?value.heading:0,finite(value.tilt)?value.tilt:0,ready);
   else resetView();
   state(true);
 }

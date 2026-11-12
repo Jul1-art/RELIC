@@ -67,7 +67,7 @@ export function createPlaceSearch({ world, places, onSelect, getBias, language }
   const en = () => language() === 'en';
   function message(key) {
     return ({
-      searching:en() ? 'Searching places…' : 'Recherche de lieux…',
+      searching:'',
       missing:en() ? 'No place found. Try another name or coordinates.' : 'Aucun lieu trouvé. Essayez un autre nom ou des coordonnées.',
       error:en() ? 'Try a NASA destination or enter latitude, longitude.' : 'Essayez une destination NASA ou indiquez latitude, longitude.',
     })[key] || '';
@@ -223,7 +223,7 @@ export function createPlaceSearch({ world, places, onSelect, getBias, language }
     input.placeholder = world === 'earth'
       ? (en() ? 'Search any location…' : 'Rechercher un lieu…')
       : (en() ? 'NASA site or coordinates…' : 'Site NASA ou coordonnées…');
-    submit.innerHTML = worldIcon('magnifying-glass');
+    submit.textContent = '🔎';
     submit.setAttribute('aria-label',en()?'Go to this location':'Aller à ce lieu');
     form.querySelector('.place-search-credit').textContent = world === 'earth'
       ? (en() ? 'Places © OpenStreetMap contributors · Photon / GeoNames' : 'Lieux © contributeurs OpenStreetMap · Photon / GeoNames')
