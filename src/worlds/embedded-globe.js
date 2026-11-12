@@ -347,7 +347,7 @@ async function start(){
     if(scene.skyAtmosphere)scene.skyAtmosphere.show=false;if(scene.sun)scene.sun.show=false;if(scene.moon)scene.moon.show=false;
     scene.globe.showGroundAtmosphere=false;scene.fog.enabled=false;
     disposeCameraControls=installGlobeCameraControls(viewer,{radius});
-    adaptiveQuality=installAdaptiveWorldQuality(viewer,{compact});
+    adaptiveQuality=installAdaptiveWorldQuality(viewer,{compact,onFPS:fps=>post('fps',{fps})});
     const resizeQuality=()=>adaptiveQuality.resize({compact});window.addEventListener('resize',resizeQuality,{passive:true});const disposeQuality=adaptiveQuality.dispose;adaptiveQuality.dispose=()=>{window.removeEventListener('resize',resizeQuality);disposeQuality();};
     viewer.camera.percentageChanged=.002;
     const interaction=()=>{cameraMotion.cancel();viewer.camera.cancelFlight();post('interaction');};

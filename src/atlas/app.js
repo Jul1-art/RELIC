@@ -1,3 +1,4 @@
+import {createRenderedFrameMeter} from '../worlds/world-performance.js';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { SurfaceDetail } from './surface-detail.js?v=14';
@@ -617,7 +618,7 @@ function getInspectionState(){
   const coordinates=native||globeNavigation?.getSurfaceCoordinates();
   const parent=parentBodyId(selected);
   const satellites=naturalSystems?.getSatellites(parent)||[];
-  return {body:selected,name:displayBody(detail).name,latitude:coordinates?.latitude,longitude:coordinates?.longitude,
+  return {body:selected,name:displayBody(detail).name,loading:Boolean(detailedGlobe.loading||detailedGlobe.transitioning||native?.ionStatus==='loading'),latitude:coordinates?.latitude,longitude:coordinates?.longitude,
     altitudeKm:coordinates?.altitudeKm,headingDeg:navigation?.headingDeg,tiltDeg:navigation?.tiltDeg,
     cameraMotion:Boolean(navigation?.cameraMotion||navigation?.cameraAction||flight),cameraAction:navigation?.cameraAction||flight?.action,
     orientationTargetTiltDeg:navigation?.orientationTargetTiltDeg,orientationTargetHeadingDeg:navigation?.orientationTargetHeadingDeg,
@@ -1237,6 +1238,8 @@ window.addEventListener('pagehide', event => {
   if(!event.persisted){mascot.dispose();stopSceneTheme();projectionObserver.disconnect();naturalSystems?.dispose();comet?.dispose();cometOrbitDirections?.dispose();orbitDirections.dispose();simulationControls.dispose();solarNavigation.dispose();globeNavigation.dispose();inspectionControls.dispose();inspectionEffects.destroy();detailedGlobe.dispose();planetaryEphemeris.dispose();scaleReadout.dispose();surfaceDetail.dispose();solarIllumination.dispose();belts.dispose();viewLoading.dispose();controls.dispose();renderer.dispose();}
 });
 window.addEventListener('pageshow', () => { pageInactive = false; navigationActive = false; syncSceneActivity(); });
+const renderedFPS=createRenderedFrameMeter({windowMs:500,report:fps=>{if(!detailedGlobe.active)window.dispatchEvent(new CustomEvent('relic-render-fps',{detail:{source:'solar',fps}}));}});
+const fpsTimer=setInterval(()=>renderedFPS.sample(),1000);document.addEventListener('visibilitychange',()=>renderedFPS.reset());window.addEventListener('pagehide',event=>{if(!event.persisted)clearInterval(fpsTimer);});
 let cameraMotionOnPreviousFrame=false;
 function animate(time) {
   animationFrame = 0;
@@ -1354,6 +1357,7 @@ function animate(time) {
   previousNavigationCamera.copy(camera.position);
   if(!detailedGlobe.active){
     if(isWorldInspection()||inspectionSettings.style!=='normal')inspectionEffects.render(time);else renderer.render(scene,camera);
+    renderedFPS.frame();
     if(!flight)detailedGlobe.reveal();
     if(wasFlying||globeNavigation.cameraMotion||cameraMotionOnPreviousFrame)inspectionControls?.publishCamera();
     cameraMotionOnPreviousFrame=Boolean(flight||globeNavigation.cameraMotion);

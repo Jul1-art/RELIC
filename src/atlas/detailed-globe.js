@@ -66,6 +66,7 @@ export function createDetailedGlobe({host,onState=()=>{},onInteraction=()=>{},on
   function receive(event){
     if(disposed||event.origin!==origin||event.source!==frame?.contentWindow||event.data?.channel!==CHANNEL)return;
     const data=event.data;
+    if(data.type==='fps'){if(active&&Number.isFinite(data.fps)&&data.fps>=0)window.dispatchEvent(new CustomEvent('relic-render-fps',{detail:{source:'inspection',body:current?.id,fps:data.fps}}));return;}
     if(data.type==='boot'){updateTheme();send('focus',{focus:current});if(visualSettings)send('visualSettings',{value:visualSettings});return;}
     if(data.type==='ready'){clearTimeout(timer);ready=true;state={...state,...data.state};return;}
     if(data.type==='state'){state={...state,...data.state};emit();return;}
@@ -78,7 +79,7 @@ export function createDetailedGlobe({host,onState=()=>{},onInteraction=()=>{},on
   const languageObserver=new MutationObserver(updateTheme);languageObserver.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
   const command=(action,value)=>{if(!active)return false;arrival=false;send(action,{value});return true;};
   return {setFocus,hide,reveal,setVisualSettings(value){visualSettings=normalizeVisualSettings(value,visualSettings);send('visualSettings',{value:visualSettings});},setContext(context){if(current)current.context=context;send('context',{context});},lookAt:id=>command('lookAt',id),lookAround:(yaw,pitch)=>command('look',{yaw,pitch}),
-    get active(){return active;},get loading(){return loading;},
+    get active(){return active;},get transitioning(){return Boolean(blend)||arrival;},get loading(){return loading;},
     getViewState:()=>active?{id:current?.id,...state}:null,
     getSurfaceCoordinates:()=>active?{id:current?.id,latitude:state.latitude,longitude:state.longitude,altitudeKm:state.altitudeKm}:null,
     zoom:factor=>command('zoom',factor),tilt:degrees=>command('tilt',degrees),setTilt:degrees=>command('setTilt',degrees),

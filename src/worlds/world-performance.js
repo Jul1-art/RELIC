@@ -8,7 +8,7 @@ export function configureWorldPerformance(viewer, { onSuspend = () => {}, loadin
   let removeRenderError;
   let viewportObserver;
   const alive = () => !disposed && !viewer.isDestroyed();
-  const adaptive=installAdaptiveWorldQuality(viewer);
+  const adaptive=installAdaptiveWorldQuality(viewer,{onFPS:fps=>window.dispatchEvent(new CustomEvent('relic-render-fps',{detail:{source:'page',fps}}))});
 
   function quality() {
     if (!alive() || graphicsFailed) return;
@@ -206,7 +206,10 @@ export function flyToLocation(viewer, Cesium, { lat, lon, ellipsoid, range, dura
 }
 /** Keep a 60 Hz interaction target while adapting pixel cost, never catalogue
  * completeness. Samples measure actual render work, excluding idle intervals. */
-export function installAdaptiveWorldQuality(viewer,{compact=false,high=false}={}){
+export function installAdaptiveWorldQuality(viewer,{compact=false,high=false,onFPS}={}){
+ const meter=typeof onFPS==='function'?createRenderedFrameMeter({report:onFPS,windowMs:500}):null;
+ const fpsTimer=meter?setInterval(()=>meter.sample(),1000):null;
+ const resetFPS=()=>meter?.reset();if(meter)document.addEventListener('visibilitychange',resetFPS);
  let scale=1,cost=0,count=0,fast=0,start=0,disposed=false,lastFrame=0,slow=0,continuous=0;
  function resize(options={}){
   compact=options.compact??compact;high=options.high??high;
@@ -218,6 +221,7 @@ export function installAdaptiveWorldQuality(viewer,{compact=false,high=false}={}
  resize();
  const before=viewer.scene.preRender.addEventListener(()=>{start=performance.now();});
  const after=viewer.scene.postRender.addEventListener(()=>{
+  meter?.frame();
   if(disposed||!start||document.hidden)return;
   const stamp=performance.now(),elapsed=stamp-start,gap=stamp-lastFrame;lastFrame=stamp;start=0;if(!Number.isFinite(elapsed))return;
   if(gap>0&&gap<100){continuous++;if(gap>22)slow++;}
@@ -227,5 +231,12 @@ export function installAdaptiveWorldQuality(viewer,{compact=false,high=false}={}
   else if(mean<7&&++fast>=6){fast=0;const previous=scale;resize();scale=Math.min(scale,previous*1.05);viewer.resolutionScale=scale;}
   else if(mean>=7)fast=0;
  });
- return {resize,dispose(){disposed=true;before();after();}};
+ return {resize,dispose(){disposed=true;before();after();if(fpsTimer!==null)clearInterval(fpsTimer);if(meter)document.removeEventListener('visibilitychange',resetFPS);}};
+}
+/** Counts completed renderer submissions over wall-clock time. No RAF counter,
+ * smoothing, cap, minimum or target-frame-rate substitution. Idle is real zero. */
+export function createRenderedFrameMeter({now=()=>performance.now(),hidden=()=>document.hidden,report=()=>{},windowMs=1000}={}){
+ let start=now(),frames=0;
+ const reset=()=>{start=now();frames=0;};
+ return {reset,frame(){if(!hidden())frames++;},sample(){const end=now(),elapsed=end-start;if(hidden()){reset();return null;}if(elapsed<windowMs)return null;const fps=frames*1000/elapsed;report(fps);start=end;frames=0;return fps;}};
 }

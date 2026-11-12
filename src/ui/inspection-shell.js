@@ -47,6 +47,10 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  for(const item of [command,inspector].filter(Boolean)){const marker=document.createComment('RELIC inspection return slot');item.before(marker);markers.set(item,marker);}
  const root=node('div','relic-inspection-shell');root.id='relic-inspection-shell';root.hidden=true;root.inert=true;
  const top=node('nav','inspection-top-actions');top.id='inspection-top-actions';
+ const worldName=node('div','inspection-world-name');worldName.hidden=true;
+ const arrival=node('div','inspection-world-arrival');arrival.hidden=true;arrival.setAttribute('role','status');const arrivalName=node('span','inspection-arrival-name');arrival.append(arrivalName);
+ const fps=node('output','inspection-fps');fps.textContent='— FPS';fps.title='Actual 3D frames rendered per second. Idle views render fewer frames.';
+ let arrivalBody=null,waitingArrival=false;
  const actions=new Map();
  for(const key of ['share','tilt','north','reset']){
   const button=node('button','inspection-round');button.type='button';button.dataset.inspectionAction=key;button.innerHTML=glyph(key);
@@ -118,7 +122,7 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  }
  locale.append(localeToggle,localeOptions);
  const feedback=node('div','inspection-feedback');feedback.setAttribute('role','status');feedback.setAttribute('aria-live','polite');feedback.hidden=true;
- root.append(top,modules,dock,locale,feedback);document.body.append(root);
+ root.append(top,worldName,modules,dock,locale,feedback,arrival,fps);document.body.append(root);
  let dashboardBody=dashboard.dataset.dashboardBody,publishedBody;
  let state={body:dashboardBody,settings:{...DEFAULTS,style:'normal'},capabilities:{}};
  let active=false,disposed=false,focusFrame=0,feedbackTimer=0;
@@ -139,6 +143,8 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
   panel.pin?.addEventListener('click',()=>{if(pinned.has(key))pinned.delete(key);else pinned.add(key);panel.pin.setAttribute('aria-pressed',String(pinned.has(key)));panel.element.classList.toggle('dock-pinned',pinned.has(key));});
  }
  const listen=(target,type,handler,options)=>{target.addEventListener(type,handler,options);removers.push(()=>target.removeEventListener(type,handler,options));};
+ listen(events,'relic-render-fps',event=>{const {source,body,fps:value}=event.detail||{};const native=document.body.dataset.detailedGlobe==='active';if((source==='inspection'&&native&&body===state.body)||(source==='solar'&&!native)||source==='page'){if(Number.isFinite(value)&&value>=0)fps.textContent=`${Math.round(value)} FPS`;}});
+ listen(document,'visibilitychange',()=>{fps.textContent='— FPS';});
  listen(events,'relic-inspection-state',event=>update(event.detail||{}));
  listen(events,'relic-inspection-camera',event=>{
   if(event.detail?.body!==state.body)return;
@@ -190,6 +196,7 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  const contentObserver=new MutationObserver(()=>{if(active)organizeData();});contentObserver.observe(inspector,{childList:true,subtree:true});
  const themeObserver=new MutationObserver(render);themeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
  const formObserver=new MutationObserver(()=>{if(active&&openPanels.has('location')){if(command.hidden)command.hidden=false;if(command.inert)command.inert=false;}});formObserver.observe(command,{attributes:true,attributeFilter:['hidden','inert']});
+ arrival.addEventListener('transitionend',event=>{if(event.target===arrival&&!waitingArrival&&arrival.classList.contains('is-leaving'))arrival.hidden=true;});
  const unsubscribe=onLanguageChange(()=>{render();renderDestinations();});
  refresh();render();
  events.dispatchEvent(new CustomEvent('relic-inspection-mounted'));
@@ -272,6 +279,7 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
   cameraState=next;
   const previousBody=state.body;state={...state,...next,settings:{...state.settings,...next.settings},capabilities:next.capabilities||state.capabilities};
   if(previousBody!==state.body){selectDataTab('overview');renderDestinations();}
+  syncWorldName();
   refresh();
  }
  function openPanel(key){const panel=panels[key];if(!panel||openPanels.has(key))return;openPanels.add(key);setInspectionPanelExpanded(panel,true);}
@@ -376,6 +384,15 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
     output.value=PERCENT_SETTINGS.has(key)?`${number}%`:number;
    }
   }
+ }
+ function syncWorldName(){
+  const inspecting=state.body&&state.body!=='overview';const name=state.name||'';
+  worldName.textContent=name;worldName.hidden=!inspecting||!name;
+  if(state.body!==arrivalBody){arrivalBody=state.body;waitingArrival=Boolean(inspecting&&name);fps.textContent='— FPS';arrival.classList.remove('is-leaving');}
+  arrivalName.textContent=name;
+  if(waitingArrival){arrival.hidden=false;arrival.classList.remove('is-leaving');
+   if(!state.loading&&!state.cameraMotion){waitingArrival=false;arrival.classList.add('is-leaving');if(document.documentElement.dataset.motion==='reduced'||matchMedia('(prefers-reduced-motion: reduce)').matches)arrival.hidden=true;}
+  }else if(!inspecting){arrival.hidden=true;arrival.classList.remove('is-leaving');}
  }
  function selectDataTab(key){
   dataTab=key;dataContent.dataset.tab=key;dataContent.setAttribute('aria-labelledby',`inspection-tab-${key}`);
