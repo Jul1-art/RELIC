@@ -4,7 +4,7 @@ import vm from 'node:vm';
 import {readFile} from 'node:fs/promises';
 import * as Cesium from '../vendor/cesium/index.js';
 import * as celestial from '../src/worlds/celestial-scene.js';
-import * as navigation from '../src/atlas/orbital-navigation.js';
+import * as cameraControls from '../src/worlds/globe-camera-controls.js';
 import * as sceneTheme from '../src/ui/scene-theme.js';
 import * as ionEarth from '../src/worlds/ion-earth.js';
 import * as inspectionEffects from '../src/worlds/inspection-effects.js';
@@ -37,7 +37,7 @@ async function fixture(body){
     '../atlas/orbital-data.js':{approximatePosition(){}},
     './global-terrain.js':{loadGlobalHeightGrid(){},createGlobalTerrainProvider(){}},
     './celestial-scene.js':celestial,
-    '../atlas/orbital-navigation.js':navigation,
+    './globe-camera-controls.js':cameraControls,
     '../ui/scene-theme.js':sceneTheme,
     './ion-earth.js':ionEarth,
     './inspection-effects.js':inspectionEffects,

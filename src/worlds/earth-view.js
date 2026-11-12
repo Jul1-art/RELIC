@@ -1,3 +1,4 @@
+import {installGlobeCameraControls} from './globe-camera-controls.js';
 import * as Cesium from '../../vendor/cesium/index.js';
 Cesium.Ion.defaultAccessToken = ''; // RELIC uses only a user-supplied token for optional ion assets.
 import { EARTH_SITES, NASA_IMAGERY } from '../atlas/nasa-worlds.js';
@@ -156,8 +157,8 @@ async function start() {
       inspection?.setTheme(palette.light?'day':'night');
       viewer.scene.requestRender();
     });
-    viewer.scene.screenSpaceCameraController.minimumZoomDistance = 100;
-    viewer.scene.screenSpaceCameraController.maximumZoomDistance = 55000000;
+    const disposeCameraControls=installGlobeCameraControls(viewer,{radius:Cesium.Ellipsoid.WGS84.maximumRadius,minimum:100});
+    window.addEventListener('pagehide',disposeCameraControls,{once:true});
     overviewFraming = createOverviewFraming(viewer, Cesium, { ellipsoid:Cesium.Ellipsoid.WGS84, longitude:12, latitude:25 });
     overviewFraming.show();
     inspection=createStandaloneInspectionControls({Cesium,viewer,body:'earth',ellipsoid:Cesium.Ellipsoid.WGS84,getLanguage,

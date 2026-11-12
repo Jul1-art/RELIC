@@ -1,8 +1,8 @@
 /* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'inspection-20261111-v54-public';
-const INTERFACE_RELEASE = 'inspection-20261111-v54';
+const VERSION = 'inspection-20261112-v59-public';
+const INTERFACE_RELEASE = 'inspection-20261112-v59';
 const CLIENT_VERSION_TIMEOUT = 650;
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
@@ -50,7 +50,7 @@ const OFFLINE_CORE = [
   'src/atlas/boot.js','src/atlas/atlas-bootstrap.js','src/atlas/solar-navigation.js','src/worlds/ion-earth.js','intro/film-buffer-policy.js',
   'src/atlas/celestial-context.js','src/worlds/celestial-scene.js','src/ui/monochrome.css',
   'pages/globe.html','src/atlas/detailed-globe.js','src/atlas/detailed-globe.css',
-  'src/worlds/embedded-globe.js','src/worlds/embedded-globe.css','src/worlds/global-terrain.js',
+  'src/worlds/globe-camera-controls.js','src/worlds/embedded-globe.js','src/worlds/embedded-globe.css','src/worlds/global-terrain.js',
   'src/atlas/solar-scale.js','src/atlas/planetary-ephemeris.js','assets/ephemeris/planets-horizons.json',
   'assets/terrain/global/provenance.json','assets/terrain/global/moon-8ppd.u16.gz','assets/terrain/global/mars-8ppd.u16.gz',
   'src/atlas/simulation-clock.js','src/atlas/simulation-controls.js','src/atlas/simulation-controls.css','src/atlas/globe-navigation.js','src/atlas/surface-imagery.js','src/atlas/surface-tile-cache.js',

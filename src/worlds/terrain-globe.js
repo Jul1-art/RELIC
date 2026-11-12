@@ -1,3 +1,4 @@
+import {installGlobeCameraControls} from './globe-camera-controls.js';
 import { appURL } from '../core/paths.js';
 import * as Cesium from '../../vendor/cesium/index.js';
 Cesium.Ion.defaultAccessToken = ''; // RELIC uses only a user-supplied token for optional ion assets.
@@ -495,11 +496,8 @@ async function start() {
     viewer.scene.globe.baseColor = Cesium.Color.fromCssColorString(body === 'mars' ? '#80503c' : body === 'moon' ? '#686765' : '#102436');
     viewer.scene.globe.enableLighting = false;
     viewer.scene.globe.depthTestAgainstTerrain = true;
-    viewer.scene.screenSpaceCameraController.minimumZoomDistance = 8;
-    viewer.scene.screenSpaceCameraController.maximumZoomDistance = radius * 6;
-    viewer.scene.screenSpaceCameraController.inertiaSpin = .75;
-    viewer.scene.screenSpaceCameraController.inertiaTranslate = .72;
-    viewer.scene.screenSpaceCameraController.inertiaZoom = .72;
+    const disposeCameraControls=installGlobeCameraControls(viewer,{radius,minimum:8});
+    window.addEventListener('pagehide',disposeCameraControls,{once:true});
     initializeProviderCredits({elements:[$('#scene-credit'), $('#esri-attribution'), $('#cesium-credits')]});
     configureWorldPerformance(viewer, {
       loading:viewLoading,

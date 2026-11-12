@@ -5,7 +5,7 @@ import {bodyOrientationBasis,sunDirectionScene} from '../atlas/solar-illuminatio
 import {approximatePosition} from '../atlas/orbital-data.js';
 import {loadGlobalHeightGrid,createGlobalTerrainProvider} from './global-terrain.js';
 import {createCelestialScene,celestialRayDistance,getBodyIdFromPick} from './celestial-scene.js';
-import {wheelZoomFactor} from '../atlas/orbital-navigation.js';
+import {installGlobeCameraControls,globeZoomOutLimit} from './globe-camera-controls.js';
 import {scenePalette} from '../ui/scene-theme.js';
 import {createIonEarthTiles} from './ion-earth.js';
 import {createCesiumInspectionEffects} from './inspection-effects.js';
@@ -25,7 +25,8 @@ let sourceCredit;
 let viewer,tileset,buildings,celestial,effects,disposed=false,ready=false,paused=false,focus={id:body},sourceMode='imagery',sourceLabel='',ionStatus='loading';
 let lastState=0,lastFrame=null,globalGrid=null,geography={lat:18,lon:0},lastHeading=0;
 let cameraMotion,lastCameraAction=null,arrivalPlayed=false;
-let defaultFov=Math.PI/3;
+let defaultFov=Math.PI/3,disposeCameraControls;
+const maximumFrameRange=()=>globeZoomOutLimit(radius,viewer?.camera.frustum.fovy||Math.PI/3)+radius*2;
 let earth3D=null,earthTerrainReady=false,earthBuildingsRequested=false;
 const adaptiveImagery=[];
 const post=(type,payload={})=>{if(parent!==window)parent.postMessage({channel:CHANNEL,type,...payload},location.origin);};
@@ -71,7 +72,7 @@ function applyFrame(frame,{motion=false}={}){
   if(!frame||disposed)return;
   if(!motion)cameraMotion?.cancel();
   if(finite(frame.fov))viewer.camera.frustum.fov=frame.fov;
-  const range=clamp(frame.range,10,radius*12),pitch=clamp(frame.pitch,-Math.PI/2+.0002,-5*DEG);
+  const range=clamp(frame.range,10,maximumFrameRange()),pitch=clamp(frame.pitch,-Math.PI/2+.0002,-5*DEG);
   viewer.camera.cancelFlight();
   viewer.camera.lookAt(frame.target,new Cesium.HeadingPitchRange(frame.heading,pitch,range));
   const destination=Cesium.Cartesian3.clone(viewer.camera.positionWC),direction=Cesium.Cartesian3.clone(viewer.camera.directionWC),up=Cesium.Cartesian3.clone(viewer.camera.upWC);
@@ -89,7 +90,7 @@ function surfaceHeight(point){
 function goTo(lat,lon,range,heading=0,tilt=0){
   geography={lat:clamp(lat,-89.99,89.99),lon:((lon+540)%360)-180};
   const target=Cesium.Cartesian3.fromDegrees(geography.lon,geography.lat,groundHeight(geography.lat,geography.lon),ellipsoid);
-  applyFrame({target,range:clamp(range,20,radius*12),heading:heading*DEG,pitch:(clamp(tilt,0,85)-90)*DEG});
+  applyFrame({target,range:clamp(range,20,maximumFrameRange()),heading:heading*DEG,pitch:(clamp(tilt,0,85)-90)*DEG});
 }
 function animateView(frame,destination,duration){
   if(!frame||disposed)return;
@@ -317,7 +318,7 @@ function receive(event){
   else if(action==='northUp')northUp();
   else if(action==='reveal')reveal();
 }
-function dispose(){if(disposed)return;disposed=true;cameraMotion?.cancel();creditObserver.disconnect();window.removeEventListener('message',receive);earth3D?.destroy();effects?.destroy();celestial?.dispose();if(viewer&&!viewer.isDestroyed())viewer.destroy();}
+function dispose(){if(disposed)return;disposed=true;cameraMotion?.cancel();disposeCameraControls?.();creditObserver.disconnect();window.removeEventListener('message',receive);earth3D?.destroy();effects?.destroy();celestial?.dispose();if(viewer&&!viewer.isDestroyed())viewer.destroy();}
 async function start(){
   try{
     viewer=new Cesium.Viewer('globe',{ellipsoid,globe:new Cesium.Globe(ellipsoid),mapProjection:new Cesium.GeographicProjection(ellipsoid),
@@ -336,32 +337,12 @@ async function start(){
     scene.globe.maximumScreenSpaceError=compact?2.5:1.5;scene.globe.tileCacheSize=compact?72:160;scene.globe.depthTestAgainstTerrain=true;
     if(scene.skyAtmosphere)scene.skyAtmosphere.show=false;if(scene.sun)scene.sun.show=false;if(scene.moon)scene.moon.show=false;
     scene.globe.showGroundAtmosphere=false;scene.fog.enabled=false;
-    controller.inertiaSpin=0;controller.inertiaTranslate=0;controller.inertiaZoom=0;
-    controller.minimumZoomDistance=10;controller.maximumZoomDistance=radius*12;controller.enableCollisionDetection=true;
-    controller.lookEventTypes=[Cesium.CameraEventType.RIGHT_DRAG,{eventType:Cesium.CameraEventType.LEFT_DRAG,modifier:Cesium.KeyboardEventModifier.SHIFT}];
-    controller.tiltEventTypes=[Cesium.CameraEventType.MIDDLE_DRAG,{eventType:Cesium.CameraEventType.LEFT_DRAG,modifier:Cesium.KeyboardEventModifier.CTRL},Cesium.CameraEventType.PINCH];
-    controller.zoomEventTypes=[];
+    disposeCameraControls=installGlobeCameraControls(viewer,{radius});
     viewer.resolutionScale=Math.min(devicePixelRatio||1,compact?1.35:1.8);viewer.targetFrameRate=compact?45:60;
     viewer.camera.percentageChanged=.002;
     const interaction=()=>{cameraMotion.cancel();viewer.camera.cancelFlight();post('interaction');};
-    const touchPoints=new Map();let touchLook=null;
-    const touchMetrics=()=>{const points=[...touchPoints.values()].slice(0,2);return points.length===2?{x:(points[0].x+points[1].x)/2,y:(points[0].y+points[1].y)/2,spread:Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y)}:null;};
-    scene.canvas.addEventListener('pointerdown',event=>{
-      if(event.pointerType!=='touch')return;
-      touchPoints.set(event.pointerId,{x:event.clientX,y:event.clientY});
-      if(touchPoints.size===2){touchLook={...touchMetrics(),enabled:controller.enableInputs};controller.enableInputs=false;interaction();}
-    },{capture:true,passive:true});
-    scene.canvas.addEventListener('pointermove',event=>{
-      if(!touchPoints.has(event.pointerId))return;touchPoints.set(event.pointerId,{x:event.clientX,y:event.clientY});
-      const next=touchMetrics();if(!touchLook||!next)return;
-      lookAround(-(next.x-touchLook.x)/Math.max(1,viewer.canvas.clientWidth)*180,(next.y-touchLook.y)/Math.max(1,viewer.canvas.clientHeight)*180);
-      if(next.spread>8&&touchLook.spread>8)zoom(touchLook.spread/next.spread);
-      touchLook={...next,enabled:touchLook.enabled};event.preventDefault();
-    },{capture:true,passive:false});
-    const endTouch=event=>{touchPoints.delete(event.pointerId);if(touchLook&&touchPoints.size<2){controller.enableInputs=touchLook.enabled;touchLook=null;}};
-    scene.canvas.addEventListener('pointerup',endTouch,{capture:true});scene.canvas.addEventListener('pointercancel',endTouch,{capture:true});
     scene.canvas.addEventListener('pointerdown',interaction,{passive:true});
-    scene.canvas.addEventListener('wheel',event=>{if(paused||!ready)return;event.preventDefault();interaction();zoom(wheelZoomFactor(event.deltaY,event.deltaMode,scene.canvas.clientHeight));},{passive:false});
+    scene.canvas.addEventListener('wheel',interaction,{passive:true});
     scene.canvas.tabIndex=0;
     scene.canvas.addEventListener('keydown',event=>{
       const moves={w:'up',s:'down',a:'left',d:'right'};

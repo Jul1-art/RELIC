@@ -776,3 +776,138 @@ html[data-theme=day] body.has-inspection-shell #relic-action-rail .rail-button:i
 .inspection-top-actions [data-inspection-action=tilt] svg {width:26px;height:26px;flex-basis:26px}
 
 .relic-inspection-shell.is-solar-overview .inspection-modules{display:none}
+
+/* DisplayPanel.vue / controls.css at 10a788db (God’s Eye View, MIT).
+ * Selectors map the original Display surface/header to both RELIC modules.
+ * World data keeps the same frame and typography as Display.
+ */
+.relic-inspection-shell {--display-panel-expanded-width:300px;--right-collapsed-width:176px}
+.relic-inspection-shell .inspection-modules {width:min(300px,35vw)}
+.relic-inspection-shell .inspection-module {border:0;background:none;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+.relic-inspection-shell .inspection-module {
+  --pp-expanded-width: var(--display-panel-expanded-width);
+  position: relative;
+  z-index: 110;
+  width: var(--pp-expanded-width);
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 7px;
+}
+
+.relic-inspection-shell .inspection-module:not(.collapsed) {
+  box-sizing: border-box;
+  padding: 8px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--panel-radius);
+  background: var(--glass-bg);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+}
+
+.relic-inspection-shell .inspection-module:not(.collapsed) > .inspection-module-toggle,
+.relic-inspection-shell .inspection-module:not(.collapsed) > .inspection-module-body > .pp-toggle-group,
+.relic-inspection-shell .inspection-module:not(.collapsed) > .inspection-module-body > #clean-view-toggle {
+  width: 100%;
+}
+
+.relic-inspection-shell .inspection-module .inspection-module-toggle {
+  width: var(--pp-expanded-width);
+  max-width: 100%;
+  min-height: 42px;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-bottom: 0;
+  padding: 8px 10px 8px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--panel-radius);
+  background: var(--glass-bg);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  cursor: default;
+}
+
+/* Expanded Display already owns the glass shell. Keep its header visually
+ * integrated with that container, matching the other expanded panel headers;
+ * the collapsed launcher retains the standalone card treatment above. */
+.relic-inspection-shell .inspection-module:not(.collapsed) > .inspection-module-toggle {
+  min-height: 32px;
+  padding: 0 4px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.relic-inspection-shell .inspection-module .inspection-module-label {
+  color: var(--text-dim);
+}
+
+/* Display's title and toggle sit where the other panels' do: 14px of panel
+   padding plus a 4px header inset. The cyber theme sets its own insets. */
+:root:not([data-ui-theme='cyber']) .relic-inspection-shell .inspection-module.collapsed > .inspection-module-toggle {
+  padding: 8px 18px;
+}
+
+:root:not([data-ui-theme='cyber'])
+  .relic-inspection-shell .inspection-module:not(.collapsed)
+  > .inspection-module-toggle {
+  padding: 0 10px;
+}
+
+.relic-inspection-shell .inspection-module > .inspection-module-toggle svg {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  font-size: 12px;
+  padding: 0;
+}
+
+/* In the default theme Display's toggle matches the other panels' 22px. */
+:root:not([data-ui-theme='cyber'])
+  .relic-inspection-shell .inspection-module
+  > .inspection-module-toggle
+  svg {
+  width: 22px;
+  height: 22px;
+  font-size: 13px;
+}
+
+.relic-inspection-shell .inspection-module.collapsed {
+  gap: 0;
+}
+
+.relic-inspection-shell .inspection-module.collapsed .inspection-module-toggle {
+  width: var(--right-collapsed-width, 132px);
+}
+
+
+.relic-inspection-shell .inspection-module-label {min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:500 10px/1.4 var(--font-mono);letter-spacing:.13em}
+.relic-inspection-shell .inspection-module-toggle .panel-divider {min-width:10px}
+.relic-inspection-shell .inspection-module-body {width:100%;border-top:0;padding:8px 4px 4px}
+.relic-inspection-shell .inspection-group-title {display:flex;align-items:center;gap:10px;font:500 9px/1.4 var(--font-mono);letter-spacing:.13em}
+.relic-inspection-shell .inspection-group-title::after {content:'';flex:1;height:1px;background:var(--glass-border)}
+.relic-inspection-shell .inspection-data-tabs {padding:0 0 10px;border-bottom:1px solid var(--glass-border)}
+@media(max-width:700px){.relic-inspection-shell .inspection-modules {width:min(300px,calc(100vw - 84px))}}
+/* On phones the launchers stay compact; the body is a viewport-owned sheet.
+   A backdrop filter on a launcher would incorrectly capture position:fixed. */
+@media(max-width:700px){
+ .relic-inspection-shell .inspection-modules{left:74px;right:10px;width:auto;justify-content:flex-end;gap:6px}
+ .relic-inspection-shell .inspection-module,.relic-inspection-shell .inspection-module.collapsed,.relic-inspection-shell .inspection-module:not(.collapsed){width:auto;max-width:50%;flex:1 1 0;padding:0;border:0;background:none;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+ .relic-inspection-shell .inspection-module > .inspection-module-toggle,.relic-inspection-shell .inspection-module:not(.collapsed) > .inspection-module-toggle{width:100%;min-height:44px;padding:8px 10px;border:1px solid var(--glass-border);border-radius:12px;background:var(--glass-bg);gap:6px}
+ .relic-inspection-shell .inspection-module-label{flex:1;font-size:9px;letter-spacing:.08em}
+ .relic-inspection-shell .inspection-module .inspection-module-body{position:fixed;left:74px;right:10px;top:calc(var(--inspection-top) + 104px);width:auto;max-height:calc(100dvh - var(--inspection-bottom) - 186px);padding:12px;border:1px solid var(--glass-border);border-radius:16px;background:var(--inspection-popover);box-shadow:var(--inspection-shadow)}
+}
