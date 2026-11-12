@@ -127,4 +127,3 @@ export function installTrackpadPinchZoom(
       controller.zoomEventTypes = originalZoomEventTypes;
   };
 }
-
