@@ -75,7 +75,7 @@ async function layerFixture(){
   './catalog.js':{REFRESH_MS:21600000,createSatelliteCatalog:options=>{onCatalog=options.onChange;return {get records(){return currentRecords;},refresh:async()=>{},dispose(){}};}},
   './orbits.js':{ISS_NORAD:25544,COVERAGE_MS:14*86400000,propagatePosition:satrec=>satrec.position,computeOrbitPath:()=>({points:[]}),orbitRotation:()=>0},
   '../../vendor/gods-eye-view/satellites/classes.js':{SATELLITE_CLASS_IDS,SATELLITE_CLASS_DISPLAY},
-  './panel.js':{createSatellitePanel:options=>{panelHandlers=options;return panel;}},
+  './panel.js?v=63':{createSatellitePanel:options=>{panelHandlers=options;return panel;}},
   './constellation-view.js':{STARLINK_COLOR,STARLINK_POINT_SIZE,constellationRadius,constellationViewDistance},
  };
  const context=vm.createContext({document:{body:{},hidden:false,documentElement:{dataset:{motion:'reduced'}},addEventListener(){},removeEventListener(){}},performance,setTimeout,clearTimeout,setInterval:()=>1,clearInterval(){}});

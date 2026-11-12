@@ -10,15 +10,15 @@ const FEED_NAMES={stations:['Stations','Stations'],starlink:['Starlink','Starlin
 const element=(tag,className,text)=>{const node=document.createElement(tag);node.className=className;if(text)node.textContent=text;return node;};
 export function createSatellitePanel({host=document.body,getLanguage=()=>document.documentElement.lang,onLanguageChange,onSelect,onFollow,onVisibility,onClassChange,onRefresh,onStarlink,onResetFilters=()=>{}}){
  const fr=()=>getLanguage()==='fr',copy=()=>COPY[fr()?'fr':'en'];
- const ensureStyles=doc=>{if(doc.querySelector('link[data-satellite-style]'))return;const link=doc.createElement('link');link.rel='stylesheet';link.dataset.satelliteStyle='';link.href=new URL('./satellites.css',import.meta.url).href;doc.head.append(link);};
+ const ensureStyles=doc=>{const href=new URL('./satellites.css?v=63',import.meta.url).href;let link=doc.querySelector('link[data-satellite-style]');if(link){if(link.href!==href)link.href=href;return;}link=doc.createElement('link');link.rel='stylesheet';link.dataset.satelliteStyle='';link.href=href;doc.head.append(link);};
  ensureStyles(document);
- const root=element('details','relic-satellites'),summary=element('summary','satellite-chip'),title=element('span','satellite-title'),count=element('span','satellite-count','0');
- const starlinkBadge=element('span','satellite-starlink-count');starlinkBadge.hidden=true;summary.append(title,count,starlinkBadge);root.append(summary);
+ const root=element('section','satellite-workspace');root.hidden=true;
+ const starlinkBadge=element('span','satellite-starlink-count');starlinkBadge.hidden=true;
  const body=element('div','satellite-body'),status=element('p','satellite-status'),toolbar=element('div','satellite-toolbar');
  const stats=element('div','satellite-population'),loadedLabel=element('span','satellite-stat-label'),loaded=element('strong','satellite-loaded-total'),enabledLabel=element('span','satellite-stat-label'),enabled=element('strong','satellite-enabled-total');
  for(const [label,value]of [[loadedLabel,loaded],[enabledLabel,enabled]]){const cell=element('div','satellite-stat');cell.append(label,value);stats.append(cell);}
  const iss=element('button','satellite-iss'),visibility=element('button','satellite-visibility'),starlink=element('button','satellite-starlink');
- iss.type=visibility.type=starlink.type='button';iss.addEventListener('click',()=>{onSelect(25544,true);root.open=true;});visibility.addEventListener('click',()=>{shown=!shown;onVisibility(shown);render();});starlink.addEventListener('click',()=>onStarlink?.());toolbar.append(iss,starlink);
+ iss.type=visibility.type=starlink.type='button';iss.addEventListener('click',()=>{onSelect(25544,true);});visibility.addEventListener('click',()=>{shown=!shown;onVisibility(shown);render();});starlink.addEventListener('click',()=>onStarlink?.());toolbar.append(iss,starlink);
  const filterSection=element('details','satellite-filter-section'),filterTitle=element('summary','satellite-filter-title'),resetFilters=element('button','satellite-reset-filters'),filters=element('div','satellite-filters'),inputs=new Map();
  resetFilters.type='button';resetFilters.addEventListener('click',()=>{onResetFilters();filterTitle.focus?.();});
  for(const [index,id]of SATELLITE_CLASS_IDS.entries()){
@@ -33,13 +33,13 @@ export function createSatellitePanel({host=document.body,getLanguage=()=>documen
  const sourceSection=element('details','satellite-source-section'),sourceTitle=element('summary','satellite-source-title'),sourceRows=element('div','satellite-feed-list');sourceSection.append(sourceTitle,sourceRows);
  const foot=element('p','satellite-foot'),credits=element('p','satellite-source');
  for(const [label,url]of [['CelesTrak','https://celestrak.org/'],['God’s Eye View · Bilawal Sidhu','https://github.com/bilawalsidhu/gods-eye-view']]){const a=element('a','',label);a.href=url;a.target='_blank';a.rel='noopener noreferrer';credits.append(a);}
- sourceSection.append(foot,credits);body.append(stats,status,toolbar,visibility,resetFilters,search,results,card,filterSection,sourceSection,refresh);root.append(body);host.append(root);
+ sourceSection.append(foot,credits);body.append(stats,starlinkBadge,status,toolbar,visibility,resetFilters,search,results,card,filterSection,sourceSection,refresh);root.append(body);host.append(root);
  let records=new Map(),state='loading',selected=null,following=false,shown=true,position=null,enabledCount=0,sources=[],inline=false;
  // Same-origin portal: move the live controls without serializing thousands of
  // SGP4 records or recreating their listeners across the renderer boundary.
  let owner=document;
  try{const parent=document.defaultView?.parent;if(parent&&parent!==document.defaultView&&parent.location.origin===document.defaultView.location.origin)owner=parent.document;}catch{}
- function mount(){const slot=owner.querySelector('#inspection-satellite-controls');if(!slot){root.hidden=true;return;}ensureStyles(owner);slot.append(root);root.className='relic-satellites satellite-panel-inline';root.hidden=false;root.open=true;summary.hidden=true;inline=true;}
+ function mount(){const slot=owner.querySelector('#inspection-satellite-controls');if(!slot){root.hidden=true;return;}ensureStyles(owner);slot.append(root);root.hidden=false;inline=true;}
  owner.defaultView?.addEventListener('relic-inspection-mounted',mount);mount();
  function updateFilterState(){const total=inputs.size,active=[...inputs.values()].filter(item=>item.input.checked).length;filterTitle.textContent=copy().filters+(active<total?` · ${active}/${total}`:'');resetFilters.hidden=shown&&active===total;resetFilters.textContent=copy().allClasses;}
  function renderResults(){
@@ -47,9 +47,9 @@ export function createSatellitePanel({host=document.body,getLanguage=()=>documen
    let found=0;for(const row of records.values()){if(!row.name.toLowerCase().includes(query)&&!String(row.id).includes(query))continue;const button=element('button','satellite-result',`${row.name} · ${row.id}`);button.type='button';button.addEventListener('click',()=>onSelect(row.id,true));results.append(button);if(++found===25)break;}
    if(!found)results.append(element('p','',copy().none));
  }
- function population(){const locale=fr()?'fr-FR':'en-GB';loaded.textContent=records.size.toLocaleString(locale);enabled.textContent=enabledCount.toLocaleString(locale);count.textContent=loaded.textContent;}
+ function population(){const locale=fr()?'fr-FR':'en-GB';loaded.textContent=records.size.toLocaleString(locale);enabled.textContent=enabledCount.toLocaleString(locale);}
  function render(){
-   const t=copy();root.setAttribute('aria-label',t.title);title.textContent=t.title;population();loadedLabel.textContent=t.catalogue;enabledLabel.textContent=t.enabled;status.textContent=t[state]||t.unavailable;status.dataset.state=state;
+   const t=copy();root.setAttribute('aria-label',t.title);population();loadedLabel.textContent=t.catalogue;enabledLabel.textContent=t.enabled;status.textContent=t[state]||t.unavailable;status.dataset.state=state;
    iss.textContent=t.iss;iss.disabled=!records.has(25544);visibility.textContent=shown?t.hide:t.all;visibility.setAttribute('aria-pressed',String(shown));search.placeholder=t.search;search.setAttribute('aria-label',t.search);foot.textContent=t.foot;refresh.textContent=t.retry;refresh.hidden=!['unavailable','partial','stale'].includes(state);filterTitle.textContent=t.filters;resetFilters.textContent=t.allClasses;sourceTitle.textContent=t.sources;
    const counts=new Map();for(const row of records.values())counts.set(row.satelliteClass,(counts.get(row.satelliteClass)||0)+1);
    const starlinkCount=counts.get('starlink')||0;starlinkBadge.hidden=!starlinkCount;starlinkBadge.textContent=`Starlink ${starlinkCount.toLocaleString(fr()?'fr-FR':'en-GB')}`;starlink.textContent=t.starlink;starlink.disabled=!starlinkCount;
@@ -66,5 +66,5 @@ export function createSatellitePanel({host=document.body,getLanguage=()=>documen
    metric(t.period,`${(2*Math.PI/row.satrec.no).toFixed(1)} min`);metric(t.epoch,new Date(row.epoch).toISOString().replace('T',' ').slice(0,19)+' UTC');follow.textContent=following?t.stop:t.follow;follow.setAttribute('aria-pressed',String(following));
  }
  search.addEventListener('input',renderResults);const unsubscribe=onLanguageChange?.(render);render();
- return {collapse(){if(!inline)root.open=false;},setPopulation(value){enabledCount=value;population();},setVisibility(value){shown=value;render();},setClasses(values){for(const [id,item]of inputs)item.input.checked=values[id]===true;updateFilterState();},update(value){records=value.records;state=value.status;sources=value.sources||[];render();},select(row){selected=row;position=null;renderCard();},position(value,isFollowing){position=value;following=isFollowing;if(root.open)renderCard();},setFollowing(value){following=value;renderCard();},dispose(){unsubscribe?.();owner.defaultView?.removeEventListener('relic-inspection-mounted',mount);root.remove();}};
+ return {collapse(){},setPopulation(value){enabledCount=value;population();},setVisibility(value){shown=value;render();},setClasses(values){for(const [id,item]of inputs)item.input.checked=values[id]===true;updateFilterState();},update(value){records=value.records;state=value.status;sources=value.sources||[];render();},select(row){selected=row;position=null;renderCard();},position(value,isFollowing){position=value;following=isFollowing;if(inline)renderCard();},setFollowing(value){following=value;renderCard();},dispose(){unsubscribe?.();owner.defaultView?.removeEventListener('relic-inspection-mounted',mount);root.remove();}};
 }

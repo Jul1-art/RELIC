@@ -13,14 +13,14 @@ test('panel exposes the live ISS, class filters, search, and follow commands wit
  try{
   let selected,followed,visibility,filter,disposed=false,starlinkRequested=false;
   const panel=createSatellitePanel({getLanguage:()=> 'fr',onLanguageChange:()=>()=>{disposed=true;},onStarlink:()=>starlinkRequested=true,onSelect:(...value)=>selected=value,onFollow:value=>followed=value,onVisibility:value=>visibility=value,onClassChange:(...value)=>filter=value,onRefresh(){}});
-  const root=body.children[0];root.open=true;panel.update({records:new Map([[25544,row],[45544,{...row,id:45544,name:'STARLINK-TEST',satelliteClass:'starlink'}]]),status:'ready'});
-  assert.equal(find(root,'satellite-count').textContent,'2');assert.match(find(root,'satellite-starlink-count').textContent,/Starlink 1/);find(root,'satellite-starlink').emit('click');assert.equal(starlinkRequested,true);find(root,'satellite-iss').emit('click');assert.deepEqual(selected,[25544,true]);
+  const root=body.children[0];assert.equal(root.tag,'section');assert.equal(root.hidden,true,'controls wait for Display instead of exposing a floating launcher');panel.update({records:new Map([[25544,row],[45544,{...row,id:45544,name:'STARLINK-TEST',satelliteClass:'starlink'}]]),status:'ready'});
+  assert.equal(find(root,'satellite-loaded-total').textContent,'2');assert.match(find(root,'satellite-starlink-count').textContent,/Starlink 1/);find(root,'satellite-starlink').emit('click');assert.equal(starlinkRequested,true);find(root,'satellite-iss').emit('click');assert.deepEqual(selected,[25544,true]);
   panel.select(row);panel.position({latitude:1,longitude:2,altitude:410000,speedMps:7700,at:Date.parse('2026-11-12T12:00:00Z')},true);
   find(root,'satellite-follow').emit('click');assert.equal(followed,false);
   find(root,'satellite-visibility').emit('click');assert.equal(visibility,false);
   const search=find(root,'satellite-search');search.value='25544';search.emit('input');assert.equal(find(root,'satellite-results').children.length,1);
   const input=find(root,'satellite-filters').children[0].children[0];input.checked=false;input.emit('change');assert.deepEqual(filter,['stations',false]);
-  panel.setClasses({stations:true});assert.equal(input.checked,true);panel.collapse();assert.equal(root.open,false);panel.dispose();assert.equal(root.removed,true);assert.equal(disposed,true);
+  panel.setClasses({stations:true});assert.equal(input.checked,true);panel.collapse();assert.equal(root.hidden,true);panel.dispose();assert.equal(root.removed,true);assert.equal(disposed,true);
  }finally{globalThis.document=previous;}
 });
 
@@ -31,12 +31,12 @@ test('satellite controls mount inside the parent Display section with distinct c
  globalThis.document={body,head:new Node('head'),documentElement:{lang:'en'},defaultView:{location:{origin:'https://relic.test'},parent:ownerWindow},createElement:tag=>new Node(tag),querySelector:()=>null};
  try{
   let resets=0;const panel=createSatellitePanel({getLanguage:()=> 'en',onResetFilters:()=>resets++});
-  const root=slot.children[0];assert.ok(root.className.includes('satellite-panel-inline'));assert.equal(root.hidden,false);assert.equal(root.open,true);assert.equal(root.children[0].hidden,true);
+  const root=slot.children[0];assert.equal(root.className,'satellite-workspace');assert.equal(root.hidden,false);assert.equal(root.tag,'section');assert.ok(root.children.every(child=>child.tag!=='summary'),'there is no legacy Satellites launcher');
   panel.update({records:new Map([[25544,row],[45544,{...row,id:45544,satelliteClass:'starlink'}]]),status:'partial',sources:[{id:'active',status:'retained',received:2,accepted:2}]});panel.setPopulation(1);
   assert.equal(find(root,'satellite-loaded-total').textContent,'2');assert.equal(find(root,'satellite-enabled-total').textContent,'1');
   assert.equal(find(root,'satellite-feed-status').textContent,'Previous data retained');
   find(root,'satellite-reset-filters').emit('click');assert.equal(resets,1);
-  panel.collapse();assert.equal(root.open,true,'inline controls cannot collapse behind a hidden launcher');
+  panel.collapse();assert.equal(root.hidden,false,'Display exclusively owns the controls visibility');
   panel.dispose();assert.equal(root.removed,true);
  }finally{globalThis.document=previous;}
 });

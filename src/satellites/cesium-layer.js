@@ -6,7 +6,7 @@ import {createSatelliteDetection,createSatelliteBrackets} from './detection.js';
 import {createSatelliteCatalog,REFRESH_MS} from './catalog.js';
 import {ISS_NORAD,COVERAGE_MS,propagatePosition,computeOrbitPath,orbitRotation} from './orbits.js';
 import {SATELLITE_CLASS_IDS,SATELLITE_CLASS_DISPLAY} from '../../vendor/gods-eye-view/satellites/classes.js';
-import {createSatellitePanel} from './panel.js';
+import {createSatellitePanel} from './panel.js?v=63';
 import {STARLINK_COLOR,STARLINK_POINT_SIZE,constellationRadius,constellationViewDistance} from './constellation-view.js';
 export function createEarthSatellites({Cesium:C,viewer,host=document.body,getLanguage,onLanguageChange,onInteraction=()=>{},now=()=>Date.now()}){
  const scene=viewer.scene,points=scene.primitives.add(new C.PointPrimitiveCollection()),labels=scene.primitives.add(new C.LabelCollection());
