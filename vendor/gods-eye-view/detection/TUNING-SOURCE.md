@@ -1,0 +1,1 @@
+Detection policy and label arbiter copied unchanged from bilawalsidhu/gods-eye-view at 10a788db78f0657e2eb5f8cdd830e6417aed354d (MIT). keyhole.js extracts the original pure radial fade functions; initial values follow RELIC user preferences. UI rows and location styles adapted from DisplayPanel.vue, controls.css and location.css at the same commit.

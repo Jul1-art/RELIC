@@ -3,7 +3,7 @@ import {normalizeVisualSettings} from './visual-effects.js';
 const MODES=new Set(['normal','crt','nvg','flir','anime','noir']);
 const CAMERA=new Set(['tilt','north','reset','home','locate']);
 const FLAGS=new Set(['stars','lighting','detection','moons','orbits','labels','bloom','sharpen','scope']);
-const NUMBERS=new Set(['bloomIntensity','sharpenIntensity','scopeFeather','exposure','contrast']);
+const NUMBERS=new Set(['bloomIntensity','sharpenIntensity','scopeFeather','exposure','contrast','detectionDensity','detectionFade','detectionOutside']);
 const number=value=>typeof value==='number'&&Number.isFinite(value);
 
 /** Deliberately serialize only public view coordinates, never the current URL's
@@ -71,6 +71,7 @@ export function connectInspectionControls({getState,execute,applySettings=()=>{}
     if(action==='preset'&&MODES.has(value)){setSettings({style:value,styleParams:{}});return;}
     if(FLAGS.has(action)&&typeof value==='boolean'){setSettings({[action]:value});return;}
     if(NUMBERS.has(action)&&number(value)){setSettings({[action]:value});return;}
+    if(action==='detectionAllocation'&&['ELASTIC','WEIGHTED'].includes(value)){setSettings({detectionAllocation:value});return;}
     if(action==='styleParams'&&value&&typeof value==='object'&&!Array.isArray(value)){setSettings({styleParams:value});return;}
     if(CAMERA.has(action)){
       try{const handled=await execute(action,value);if(handled===false)feedback(getLanguage()==='fr'?'Cette action est indisponible dans cette vue.':'This action is unavailable in this view.');publish(true);}

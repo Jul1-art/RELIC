@@ -174,6 +174,7 @@ export function createEarthSatellites({Cesium:C,viewer,host=document.body,getLan
  const visibility=()=>{if(!document.hidden)request();};document.addEventListener('visibilitychange',visibility);
  void catalog.refresh();
  return {select,stopFollowing,showStarlinkConstellation,
+   setDetectionSettings(value){detection.setSettings(value);request();},
    setDetection(value){detectionShown=Boolean(value);detection.setEnabled(value);brackets.setEnabled(value&&!paused);syncLabels();request();},
    handleClick(position){
      const id=scene.pick(position)?.id;

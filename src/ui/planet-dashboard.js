@@ -164,13 +164,12 @@ export function initializePlanetDashboard(options = {}) {
 
   function createAtlasSearch(){
     const form=node('form','pd-atlas-search');form.setAttribute('role','search');form.autocomplete='off';
-    const input=document.createElement('input');input.type='search';input.maxLength=120;input.setAttribute('role','combobox');input.setAttribute('aria-autocomplete','list');input.setAttribute('aria-expanded','false');input.setAttribute('aria-controls','dashboard-search-results');input.setAttribute('aria-label',text('Search a place or coordinates','Rechercher un lieu ou des coordonnées'));
+    const input=document.createElement('input');input.type='search';input.maxLength=120;input.setAttribute('aria-label',text('Search a place or coordinates','Rechercher un lieu ou des coordonnées'));
     const submit=node('button','pd-locate');submit.type='submit';submit.innerHTML=worldIcon('magnifying-glass');
     const state=node('p','pd-search-state');state.setAttribute('role','status');
-    const results=node('div','pd-search-results');results.id='dashboard-search-results';results.setAttribute('role','listbox');results.hidden=true;
-    const field=node('div','pd-atlas-field');field.append(input,submit);form.append(field,state,results);
-    let request,active=-1;
-    function dismiss(){results.hidden=true;input.setAttribute('aria-expanded','false');input.removeAttribute('aria-activedescendant');active=-1;}
+    const field=node('div','pd-atlas-field');field.append(submit,input);form.append(field,state);
+    let request;
+    function dismiss(){request?.abort();}
     function choose(place){
       const targetBody=body==='overview'?'earth':body;
       const event=new CustomEvent('planet-dashboard-location',{detail:{body:targetBody,...place},cancelable:true});window.dispatchEvent(event);
@@ -188,20 +187,8 @@ export function initializePlanetDashboard(options = {}) {
       try{
         const searchBody=body;const places=await searchPlaces(term,{language:language(),signal:request.signal});
         if(request!==attempt||attempt.signal.aborted||body!==searchBody)return;
-        results.replaceChildren();
-        for(const place of places){const button=document.createElement('button');button.type='button';button.id='dashboard-place-'+results.children.length;button.setAttribute('role','option');button.setAttribute('aria-selected','false');button.textContent=place.name+(place.detail?' · '+place.detail:'');button.addEventListener('click',()=>choose(place));results.append(button);}
-        active=-1;results.hidden=!places.length;input.setAttribute('aria-expanded',String(Boolean(places.length)));input.removeAttribute('aria-activedescendant');state.textContent=places.length?'':text('No matching place. Try coordinates.','Aucun lieu correspondant. Essayez des coordonnées.');
+        if(places.length)choose(places[0]);else state.textContent=text('No matching place. Try coordinates.','Aucun lieu correspondant. Essayez des coordonnées.');
       }catch(error){if(error.name!=='AbortError')state.textContent=text('Try another place or coordinates.','Essayez un autre lieu ou des coordonnées.');}
-    });
-    form.addEventListener('keydown',event=>{
-      if(event.key==='Escape'){event.preventDefault();event.stopPropagation();dismiss();state.textContent='';}
-      if(event.target!==input||results.hidden)return;
-      const items=[...results.querySelectorAll('button')];if(!items.length)return;
-      if(['ArrowDown','ArrowUp'].includes(event.key)){
-        event.preventDefault();active=(active+(event.key==='ArrowDown'?1:-1)+items.length)%items.length;
-        items.forEach((item,index)=>item.setAttribute('aria-selected',String(index===active)));
-        input.setAttribute('aria-activedescendant',items[active].id);items[active].scrollIntoView({block:'nearest'});
-      }else if(event.key==='Enter'&&active>=0){event.preventDefault();items[active].click();}
     });
     input.addEventListener('input',()=>{request?.abort();dismiss();state.textContent='';});
     form.addEventListener('dashboard-context-change',()=>{request?.abort();dismiss();state.textContent='';});

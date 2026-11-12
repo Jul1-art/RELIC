@@ -912,3 +912,24 @@ html[data-theme=day] body.has-inspection-shell #relic-action-rail .rail-button:i
  .relic-inspection-shell .inspection-module .inspection-module-body{position:fixed;left:74px;right:10px;top:calc(var(--inspection-top) + 104px);width:auto;max-height:calc(100dvh - var(--inspection-bottom) - 186px);padding:12px;border:1px solid var(--glass-border);border-radius:16px;background:var(--inspection-popover);box-shadow:var(--inspection-shadow)}
 }
 .inspection-setting-group[hidden]+.inspection-setting-group{margin-top:0;padding-top:0;border-top:0}
+/* GEV DisplayPanel compact detection rows; adapted selectors for RELIC. */
+#inspection-display .detection-tuning-row,#inspection-display .detection-allocation-row{display:flex;align-items:center;flex-direction:row;gap:6px;min-width:170px;padding:5px 8px 6px;margin:0;border:1px solid var(--glass-border);border-top:0;border-radius:0;background:var(--glass-bg)}
+#inspection-display .detection-tuning-row .pp-slider-mini-label,#inspection-display .detection-allocation-row .pp-slider-mini-label{font-family:var(--font-mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;flex:0 0 62px}
+#inspection-display .detection-tuning-row .pp-slider{flex:1;min-width:0;width:auto;grid-column:auto}
+#inspection-display .detection-tuning-row output{font-family:var(--font-mono);font-size:9px;min-width:30px;text-align:right}
+#inspection-display .detection-tuning-row small[hidden]{display:none}
+#inspection-display .detection-allocation-seg{display:flex;flex:1;gap:2px;padding:2px;border:1px solid var(--glass-border);border-radius:4px}
+#inspection-display .detection-allocation-seg button{flex:1;padding:4px 6px;border:0;border-radius:3px;background:transparent;color:var(--text-secondary);font-family:var(--font-mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
+#inspection-display .detection-allocation-seg button.active{background:rgba(0,212,255,.12);color:var(--accent)}
+/* Original location.css search field and circular trigger, dock-scoped. */
+.inspection-location-search :is(.pd-atlas-field,.place-search-field){display:flex!important;align-items:center;gap:0!important;background:none!important;border:none!important;box-shadow:none!important;height:32px!important}
+.inspection-location-search :is(.pd-atlas-field,.place-search-field) input{order:2;width:180px!important;padding:6px 10px!important;border:none!important;background:none!important;outline:none;color:var(--text-primary);font-family:var(--font-sans);font-size:13px!important;letter-spacing:.3px;caret-color:var(--accent)}
+.inspection-location-search input::placeholder{color:var(--text-dim);font-style:italic}
+.inspection-location-search :is(.pd-atlas-field,.place-search-field) button{order:1;display:flex;align-items:center;justify-content:center;width:32px!important;height:32px!important;flex-shrink:0;background:rgba(255,255,255,.04)!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:50%!important;cursor:pointer;transition:background-color .2s,border-color .2s,box-shadow .2s,color .2s}
+.inspection-location-search :is(.pd-atlas-field,.place-search-field) button:hover{background:rgba(255,255,255,.08)!important;border-color:var(--glass-border-hover)!important}
+.inspection-location-search :is(.pd-search-state,#search-state):empty{display:none}
+@media(max-width:600px){.inspection-location-search :is(.pd-atlas-field,.place-search-field) input{font-size:16px!important;width:100%!important;min-width:0}}
+#inspection-display .inspection-setting-group:has(.detection-tuning-row)>.inspection-setting-group-body{gap:0}
+#inspection-display .detection-tuning-row:last-of-type{border-radius:0 0 8px 8px}
+#inspection-display [data-setting=detection]{border-radius:8px 8px 0 0;margin-bottom:0}
+#inspection-display .inspection-satellite-controls{margin-top:12px}

@@ -28,7 +28,7 @@ const node=(tag,className)=>Object.assign(document.createElement(tag),{className
 const DEFAULTS=Object.fromEntries(Object.entries(VISUAL_SETTINGS).map(([key,value])=>[key,value.default]));
 const CITIES=[['Austin',30.2672,-97.7431],['San Francisco',37.7749,-122.4194],['New York',40.7128,-74.006],['Tokyo',35.6762,139.6503],['London',51.5074,-.1278]];
 const SYMBOLS={normal:'◯',crt:'▦',nvg:'🌙',flir:'🌡️',anime:'✦',noir:'◐'};
-const PERCENT_SETTINGS=new Set(['bloomIntensity','sharpenIntensity','scopeFeather']);
+const PERCENT_SETTINGS=new Set(['bloomIntensity','sharpenIntensity','scopeFeather','detectionDensity','detectionFade','detectionOutside']);
 const AVAILABILITY={
  en:{loading:'Waiting for the renderer',lighting:'Sunlight is baked into these tiles',labels:'This view has no object labels',moons:'This view has no natural moon layer',orbits:'This view has no moon orbit layer'},
  fr:{loading:'Chargement du moteur de rendu',lighting:'L’éclairage est intégré à ces tuiles',labels:'Cette vue n’affiche aucun nom d’objet',moons:'Cette vue n’affiche aucune couche de lunes',orbits:'Cette vue n’affiche aucune couche d’orbites lunaires'},
@@ -71,6 +71,8 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  const sceneGroup=makeGroup('scene'),satelliteGroup=makeGroup('satellites'),imageGroup=makeGroup('image'),styleGroup=makeGroup('style');
  const satelliteSlot=node('div','inspection-satellite-controls');satelliteSlot.id='inspection-satellite-controls';
  controls.set('detection',makeSetting('detection',VISUAL_SETTINGS.detection,satelliteGroup.body));
+ for(const key of ['detectionDensity','detectionFade','detectionOutside']){const control=makeSetting(key,VISUAL_SETTINGS[key],satelliteGroup.body);control.row.classList.add('detection-tuning-row');control.row.insertBefore(control.input,control.output);controls.set(key,control);}
+ const allocation=node('div','pp-slider-row visible detection-allocation-row');const allocationLabel=node('span','pp-slider-mini-label');allocationLabel.textContent='Allocation';const segments=node('div','pp-mode-seg detection-allocation-seg');const allocationButtons=new Map();for(const value of ['ELASTIC','WEIGHTED']){const button=node('button','pp-mode-btn');button.type='button';button.textContent=value==='ELASTIC'?'Elastic':'Weighted';button.addEventListener('click',()=>emit('detectionAllocation',value));segments.append(button);allocationButtons.set(value,button);}allocation.append(allocationLabel,segments);satelliteGroup.body.insertBefore(allocation,controls.get('detectionFade').row);
  satelliteGroup.body.append(satelliteSlot);
  settingsForm.append(satelliteGroup.element,sceneGroup.element,imageGroup.element,styleGroup.element);
  for(const key of ['stars','lighting','labels','moons','orbits']){
@@ -335,6 +337,8 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  }
  function syncSettings(){
   satelliteGroup.element.hidden=state.body!=='earth';
+  for(const [value,button]of allocationButtons){button.classList.toggle('active',(state.settings.detectionAllocation||'ELASTIC')===value);button.setAttribute('aria-pressed',String((state.settings.detectionAllocation||'ELASTIC')===value));button.disabled=!state.settings.detection;}
+  const detectionControl=controls.get('detection');detectionControl.descriptor={...VISUAL_SETTINGS.detection,label:'▣ '+(!state.settings.detection?'OFF':(state.settings.detectionDensity??100)>=75?'DENSE':(state.settings.detectionDensity??100)>=50?'BALANCED':'SPARSE'),fr:'▣ '+(!state.settings.detection?'OFF':(state.settings.detectionDensity??100)>=75?'DENSE':(state.settings.detectionDensity??100)>=50?'BALANCED':'SPARSE')};
   const style=state.settings.style||'normal',language=getLanguage()==='fr'?'fr':'en';
   const ready=publishedBody===state.body;
   for(const [id,button] of presetButtons){const selected=id===style;button.disabled=!ready;button.classList.toggle('active',selected);button.setAttribute('aria-pressed',String(selected));}

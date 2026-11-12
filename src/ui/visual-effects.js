@@ -19,6 +19,10 @@ export const VISUAL_SETTINGS=Object.freeze({
   lighting:{type:'boolean',default:true,label:'Sunlight',fr:'Éclairage solaire'},
   moons:{type:'boolean',default:true,label:'Moons',fr:'Lunes'},
   orbits:{type:'boolean',default:true,label:'Orbits',fr:'Orbites'},
+  detectionDensity:{type:'range',default:100,min:0,max:100,step:25,label:'Density',fr:'Densité'},
+  detectionFade:{type:'range',default:40,min:0,max:40,step:1,label:'Fade',fr:'Fondu'},
+  detectionOutside:{type:'range',default:100,min:0,max:100,step:1,label:'Outside',fr:'Extérieur'},
+  detectionAllocation:{type:'enum',default:'ELASTIC',values:['ELASTIC','WEIGHTED'],label:'Allocation',fr:'Répartition'},
   detection:{type:'boolean',default:true,label:'Satellite detection',fr:'Détection des satellites'},
   labels:{type:'boolean',default:true,label:'Labels',fr:'Noms'},
   bloom:{type:'boolean',default:false,label:'Bloom',fr:'Halo lumineux'},
@@ -47,6 +51,7 @@ export function normalizeVisualSettings(patch={},previous){
   for(const [key,meta] of Object.entries(VISUAL_SETTINGS)){
     const value=patch[key];
     if(meta.type==='boolean'){if(typeof value==='boolean')next[key]=value;}
+    else if(meta.type==='enum'){if(meta.values.includes(value))next[key]=value;}
     else if(typeof value==='number'&&Number.isFinite(value))next[key]=Math.max(meta.min,Math.min(meta.max,value));
   }
   if(VISUAL_PRESETS.some(item=>item.id===patch.style))next.style=patch.style;

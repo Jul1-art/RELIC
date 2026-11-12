@@ -119,40 +119,7 @@ export function createPlaceSearch({ world, places, onSelect, getBias, language }
       detail:en() ? 'Go to coordinates' : 'Aller aux coordonnées', source:'coordinates',
       range:world === 'earth' ? 3500 : 2500 }] : [];
   }
-  function show(results) {
-    candidates = results;
-    selected = -1;
-    list.replaceChildren(...results.map((place, index) => {
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.id = `place-option-${index}`;
-      button.setAttribute('role', 'option');
-      button.setAttribute('aria-selected', 'false');
-      const icon = document.createElement('span');
-      icon.className = 'place-icon';
-      icon.innerHTML = worldIcon(place.source === 'coordinates' ? 'location-dot' : place.source === 'nasa' ? 'globe' : 'magnifying-glass');
-      const copy = document.createElement('span');
-      const title = document.createElement('strong');
-      title.textContent = place.name;
-      const detail = document.createElement('small');
-      detail.textContent = place.detail || (en() ? 'Place' : 'Lieu');
-      copy.append(title, detail);
-      button.append(icon, copy);
-      button.addEventListener('click', () => { void choose(place); });
-      return button;
-    }));
-    list.hidden = !results.length;
-    input.setAttribute('aria-expanded', String(Boolean(results.length)));
-    input.removeAttribute('aria-activedescendant');
-  }
-  function highlight(index) {
-    if (!candidates.length) return;
-    selected = (index + candidates.length) % candidates.length;
-    [...list.children].forEach((button, i) => button.setAttribute('aria-selected', String(i === selected)));
-    const active = list.children[selected];
-    input.setAttribute('aria-activedescendant', active.id);
-    active.scrollIntoView({ block:'nearest' });
-  }
+  function show(results){candidates=results;list.hidden=true;list.replaceChildren();}
   async function choose(place) {
     ++generation;
     stopRequest();
@@ -205,20 +172,7 @@ export function createPlaceSearch({ world, places, onSelect, getBias, language }
       if (chooseFirst && local.length) await choose(local[0]);
     } finally { submit.disabled = false; }
   }
-  function onInput() {
-    stopRequest();
-    const serial = ++generation;
-    const query = input.value.trim();
-    currentQuery = query;
-    remoteReady = false;
-    setStatus();
-    const local = [...coordinates(query), ...localMatches(query)];
-    show(local);
-    const hasExactSite = local.some(place => place.source === 'nasa' && fold(place.name.split(' · ')[0]) === fold(query));
-    if (world === 'earth' && query.length >= 3 && !coordinates(query).length && !hasExactSite) {
-      timer = setTimeout(() => { void update(query, serial); }, 450);
-    }
-  }
+  function onInput(){stopRequest();++generation;close();setStatus();submit.disabled=false;}
   form.addEventListener('submit', event => {
     event.preventDefault();
     const query = input.value.trim();
@@ -243,14 +197,10 @@ export function createPlaceSearch({ world, places, onSelect, getBias, language }
   input.addEventListener('input', onInput);
   input.addEventListener('focus', () => {
     setExpanded(true);
-    if (!input.value.trim()) show(localMatches(''));
+
   });
   input.addEventListener('keydown', event => {
-    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-      event.preventDefault();
-      if (list.hidden) show([...coordinates(input.value.trim()), ...localMatches(input.value.trim())]);
-      highlight(selected + (event.key === 'ArrowDown' ? 1 : -1));
-    } else if (event.key === 'Escape') {
+    if (event.key === 'Escape') {
       event.preventDefault(); event.stopPropagation(); setExpanded(false);
       if (form.dataset.dashboardSearch !== 'persistent') toggle.focus();
     }
@@ -271,9 +221,9 @@ export function createPlaceSearch({ world, places, onSelect, getBias, language }
       : (en() ? 'Search for a place' : 'Rechercher un lieu'));
     input.setAttribute('aria-label', en() ? 'Search for a place' : 'Rechercher un lieu');
     input.placeholder = world === 'earth'
-      ? (en() ? 'City, address, landmark or coordinates…' : 'Ville, adresse, lieu ou coordonnées…')
+      ? (en() ? 'Search any location…' : 'Rechercher un lieu…')
       : (en() ? 'NASA site or coordinates…' : 'Site NASA ou coordonnées…');
-    submit.textContent = en() ? 'Go' : 'Aller';
+    submit.innerHTML = worldIcon('magnifying-glass');
     submit.setAttribute('aria-label',en()?'Go to this location':'Aller à ce lieu');
     form.querySelector('.place-search-credit').textContent = world === 'earth'
       ? (en() ? 'Places © OpenStreetMap contributors · Photon / GeoNames' : 'Lieux © contributeurs OpenStreetMap · Photon / GeoNames')
@@ -281,6 +231,7 @@ export function createPlaceSearch({ world, places, onSelect, getBias, language }
     setStatus(statusKey);
     if (!list.hidden) show([...coordinates(currentQuery), ...localMatches(currentQuery)]);
   }
+  for(const key of ['role','aria-autocomplete','aria-controls','aria-expanded'])input.removeAttribute(key);
   setLanguage();
   setExpanded(false);
   return { setLanguage, close, setStatus };

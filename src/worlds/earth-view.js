@@ -166,7 +166,7 @@ async function start() {
     window.addEventListener('pagehide',disposeCameraControls,{once:true});
     overviewFraming = createOverviewFraming(viewer, Cesium, { ellipsoid:Cesium.Ellipsoid.WGS84, longitude:12, latitude:25 });
     overviewFraming.show();
-    inspection=createStandaloneInspectionControls({onVisualSettings:settings=>satellites?.setDetection(settings.detection!==false),Cesium,viewer,body:'earth',ellipsoid:Cesium.Ellipsoid.WGS84,getLanguage,
+    inspection=createStandaloneInspectionControls({onVisualSettings:settings=>{satellites?.setDetection(settings.detection!==false);satellites?.setDetectionSettings(settings);},Cesium,viewer,body:'earth',ellipsoid:Cesium.Ellipsoid.WGS84,getLanguage,
       beforeOrientation:()=>{siteFocusSerial++;overviewFraming?.stop();},
       onReset:()=>$('#reset-view').click(),
       onLocate:value=>selectSite({...value,name:value.name||value.label||`${value.lat}, ${value.lon}`}),
