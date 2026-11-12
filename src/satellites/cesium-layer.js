@@ -1,4 +1,4 @@
-import {createSatelliteDetection} from './detection.js';
+import {createSatelliteDetection,createSatelliteBrackets} from './detection.js';
 /** RELIC host adapter for God's Eye View satellite rendering (MIT).
  * Uses GEV's point sizes/palette, red ISS, synchronous orbit primitives,
  * GMST ring rotation and round-robin propagation of the dense catalogue.
@@ -10,6 +10,7 @@ import {createSatellitePanel} from './panel.js';
 import {STARLINK_COLOR,STARLINK_POINT_SIZE,constellationRadius,constellationViewDistance} from './constellation-view.js';
 export function createEarthSatellites({Cesium:C,viewer,host=document.body,getLanguage,onLanguageChange,onInteraction=()=>{},now=()=>Date.now()}){
  const scene=viewer.scene,points=scene.primitives.add(new C.PointPrimitiveCollection()),labels=scene.primitives.add(new C.LabelCollection());
+ const brackets=createSatelliteBrackets({Cesium:C,viewer});
  const byId=new Map(),rings=new Map(),samples=new Map(),classes=Object.fromEntries(SATELLITE_CLASS_IDS.map(id=>[id,true]));
  const colors=Object.fromEntries(SATELLITE_CLASS_IDS.map(id=>[id,C.Color.fromCssColorString(SATELLITE_CLASS_DISPLAY[id].color)]));
  colors.starlink=C.Color.fromCssColorString(STARLINK_COLOR);
@@ -29,6 +30,7 @@ export function createEarthSatellites({Cesium:C,viewer,host=document.body,getLan
    const point=byId.get(row.id);if(!point)return;
    const pos=sample(row,date);point.show=visible(row)&&Boolean(pos);
    if(pos)point.position=C.Cartesian3.fromElements(pos.x,pos.y,pos.z,pointScratch);
+   brackets.update(row.id,point.position,point.show);
    return pos;
  }
  const panel=createSatellitePanel({host,getLanguage,onLanguageChange,
@@ -45,9 +47,9 @@ export function createEarthSatellites({Cesium:C,viewer,host=document.body,getLan
  function rebuild(records){
    const token=++revision;clearTimeout(buildTimer);
    rows=[...records.values()];cursor=0;
-   for(const [id,point]of byId)if(!records.has(id)){points.remove(point);byId.delete(id);samples.delete(id);hideRing(id);}
+   for(const [id,point]of byId)if(!records.has(id)){points.remove(point);brackets.remove(id);byId.delete(id);samples.delete(id);hideRing(id);}
    for(const id of rings.keys())hideRing(id);
-   if(selected){selected=records.get(selected.id)||null;panel.select(selected);if(!selected)stopFollowing();}
+   if(selected){selected=records.get(selected.id)||null;panel.select(selected);brackets.setSelected(selected?.id??null);if(!selected)stopFollowing();}
    let offset=0,lastBuildRender=0;
    function chunk(){
      if(disposed||token!==revision)return;
@@ -84,7 +86,7 @@ export function createEarthSatellites({Cesium:C,viewer,host=document.body,getLan
  }
  function hideRing(id){const ring=rings.get(id);if(ring){scene.primitives.remove(ring.primitive);rings.delete(id);}}
  function syncVisibility(){
-   for(const row of rows){const point=byId.get(row.id);if(point)point.show=visible(row)&&samples.has(row.id);}
+   for(const row of rows){const point=byId.get(row.id);if(point){point.show=visible(row)&&samples.has(row.id);brackets.setVisible(row.id,point.show);}}
    for(const ring of rings.values())ring.primitive.show=visible(ring.row);
    syncLabels();request();
  }
@@ -102,14 +104,14 @@ export function createEarthSatellites({Cesium:C,viewer,host=document.body,getLan
  function select(id,follow=false){
    const row=catalog.records.get(Number(id));if(!row)return false;
    if(selected?.id!==row.id){stopFollowing();if(selected?.id!==ISS_NORAD)hideRing(selected?.id);}
-   selected=row;shown=true;classes[row.satelliteClass]=true;panel.setVisibility(true);panel.setClasses(classes);updatePoint(row,new Date(now()));syncVisibility();panel.select(row);showRing(row);
+   selected=row;brackets.setSelected(row.id);shown=true;classes[row.satelliteClass]=true;panel.setVisibility(true);panel.setClasses(classes);updatePoint(row,new Date(now()));syncVisibility();panel.select(row);showRing(row);
    if(follow)startFollowing();request();return true;
  }
  function showStarlinkConstellation(){
    if(disposed||!rows.some(row=>row.satelliteClass==='starlink'))return false;
    stopFollowing();onInteraction();viewer.camera.cancelFlight();
    if(selected?.id!==ISS_NORAD)hideRing(selected?.id);
-   selected=null;panel.select(null);shown=true;
+   selected=null;brackets.setSelected(null);panel.select(null);shown=true;
    for(const id of SATELLITE_CLASS_IDS)classes[id]=id==='starlink'||id==='stations';
    panel.setVisibility(true);panel.setClasses(classes);syncVisibility();
    const camera=viewer.camera,frustum=camera.frustum;
@@ -169,14 +171,14 @@ export function createEarthSatellites({Cesium:C,viewer,host=document.body,getLan
  const visibility=()=>{if(!document.hidden)request();};document.addEventListener('visibilitychange',visibility);
  void catalog.refresh();
  return {select,stopFollowing,showStarlinkConstellation,
-   setDetection(value){detectionShown=Boolean(value);detection.setEnabled(value);syncLabels();request();},
+   setDetection(value){detectionShown=Boolean(value);detection.setEnabled(value);brackets.setEnabled(value&&!paused);syncLabels();request();},
    handleClick(position){
      const id=scene.pick(position)?.id;
      return typeof id==='string'&&id.startsWith('relic-satellite:')?select(Number(id.slice('relic-satellite:'.length)),true):false;
    },
-   pause(value=true){paused=Boolean(value);detection.setEnabled(!paused&&detectionShown);if(paused)stopFollowing();else request();},
+   pause(value=true){paused=Boolean(value);detection.setEnabled(!paused&&detectionShown);brackets.setEnabled(!paused&&detectionShown);if(paused)stopFollowing();else request();},
    dispose(){
-     if(disposed)return;stopFollowing();disposed=true;++revision;clearInterval(timer);clearTimeout(buildTimer);catalog.dispose();removePreRender();detection.dispose();panel.dispose();
+     if(disposed)return;stopFollowing();disposed=true;++revision;clearInterval(timer);clearTimeout(buildTimer);catalog.dispose();removePreRender();detection.dispose();brackets.dispose();panel.dispose();
      for(const type of ['pointerdown','wheel'])scene.canvas.removeEventListener(type,interrupt);
      document.removeEventListener('visibilitychange',visibility);
      if(!viewer.isDestroyed()){for(const id of [...rings.keys()])hideRing(id);scene.primitives.remove(points);scene.primitives.remove(labels);viewer.creditDisplay?.removeStaticCredit(credit);}

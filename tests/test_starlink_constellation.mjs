@@ -71,7 +71,7 @@ async function layerFixture(){
  const viewer={scene:{primitives:primitiveCollection,canvas,requestRender(){},preRender:{addEventListener:callback=>{preRender=callback;return()=>preRender=null;}}},isDestroyed:()=>false,entities:{remove(){}},camera:{positionWC:new Vector(18000000,0,0),upWC:Vector.UNIT_Z,frustum:{fovy:Math.PI/3,aspectRatio:390/844},cancelFlight(){},lookAtTransform(){},flyTo:options=>flyTo=options}};
  const panel={update(){},select(){},setVisibility(){},setClasses(){},setFollowing(){},position(){},dispose(){}};
  const exported={
-  './detection.js':{createSatelliteDetection:()=>({setEnabled(){},dispose(){}})},
+  './detection.js':{createSatelliteBrackets:()=>({update(){},remove(){},setVisible(){},setSelected(){},setEnabled(){},dispose(){}}),createSatelliteDetection:()=>({setEnabled(){},dispose(){}})},
   './catalog.js':{REFRESH_MS:21600000,createSatelliteCatalog:options=>{onCatalog=options.onChange;return {get records(){return currentRecords;},refresh:async()=>{},dispose(){}};}},
   './orbits.js':{ISS_NORAD:25544,COVERAGE_MS:14*86400000,propagatePosition:satrec=>satrec.position,computeOrbitPath:()=>({points:[]}),orbitRotation:()=>0},
   '../../vendor/gods-eye-view/satellites/classes.js':{SATELLITE_CLASS_IDS,SATELLITE_CLASS_DISPLAY},

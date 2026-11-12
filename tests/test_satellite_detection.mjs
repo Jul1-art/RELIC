@@ -24,3 +24,30 @@ test('detection keeps names on the visible side, bounds work and clears when dis
  overlay.setEnabled(false);assert.equal(canvas.hidden,true);time+=200;callback();assert.equal(texts.length,size);
  overlay.dispose();assert.equal(removed,true);assert.equal(callback,null);
 });
+
+test('every satellite gets a GPU bracket beyond label limits, even at overlapping positions',async()=>{
+ const {createSatelliteBrackets}=await import('../src/satellites/detection.js');
+ const images=[],collections=[];
+ class Billboards{
+  items=[];show=true;
+  add(value){const frame={...value,setImage:(id,image)=>images.push([id,image])};this.items.push(frame);return frame;}
+  remove(frame){this.items.splice(this.items.indexOf(frame),1);}
+ }
+ const ctx={beginPath(){},moveTo(){},lineTo(){},stroke(){}};
+ const image={getContext:()=>ctx};
+ const viewer={isDestroyed:()=>false,scene:{primitives:{add(value){collections.push(value);return value;},remove(value){collections.splice(collections.indexOf(value),1);}}}};
+ const frames=createSatelliteBrackets({Cesium:{...Cesium,BillboardCollection:Billboards},viewer,documentRef:{createElement:()=>image}});
+ const position=new Cesium.Cartesian3(6800000,0,0);
+ for(let id=1;id<=1500;id++)frames.update(id,position,true);
+ assert.equal(collections[0].items.length,1500,'frame coverage is not limited by the 600-name scan or 48-name cap');
+ assert.ok(collections[0].items.every(frame=>frame.show));
+ assert.equal(new Set(images.map(([id])=>id)).size,1,'all frames reuse one texture-atlas entry');
+ assert.equal(new Set(images.map(([,image])=>image)).size,1);
+ const first=collections[0].items[0];frames.update(1,new Cesium.Cartesian3(7000000,1,2),false);
+ assert.equal(first.position.x,7000000);assert.equal(first.show,false);
+ frames.setVisible(1,true);assert.equal(first.show,true);
+ frames.setSelected(1);assert.equal(first.color,Cesium.Color.WHITE);
+ frames.setEnabled(false);assert.equal(collections[0].show,false);
+ frames.remove(1);assert.equal(collections[0].items.length,1499);
+ frames.dispose();assert.equal(collections.length,0);
+});

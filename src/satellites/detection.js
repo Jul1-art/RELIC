@@ -1,6 +1,6 @@
 import {appendCornerBracket,composeLabel,acquireAlpha} from '../../vendor/gods-eye-view/detection/detectionDraw.js';
 
-/** Bounded Canvas2D adapter for GEV's original detection geometry and labels. */
+/** Bounded name overlay. Every visible point receives its own GPU bracket below. */
 export function createSatelliteDetection({Cesium:C,viewer,getCandidates,getPoint,getSelected,now=()=>performance.now(),documentRef=document}){
  const canvas=documentRef.createElement('canvas');canvas.className='relic-satellite-detection';canvas.setAttribute('aria-hidden','true');
  viewer.container.append(canvas);const ctx=canvas.getContext('2d');
@@ -31,8 +31,6 @@ export function createSatelliteDetection({Cesium:C,viewer,getCandidates,getPoint
    occupied.push({x,y});drawn++;
    if(!seen.has(row.id))seen.set(row.id,time);
    ctx.globalAlpha=acquireAlpha(seen.get(row.id),time,180);
-   ctx.strokeStyle=row.id===25544?'#ff5555':selected?.id===row.id?'#fff':'#00d4ff';
-   ctx.beginPath();appendCornerBracket(ctx,x,y,8,8);ctx.stroke();
    const label=composeLabel({id:row.name,klass:row.satelliteClass,metric:`NORAD ${row.id}`});
    const right=x+14+label.primary.length*6>width-6,tx=right?x-14:x+14;
    ctx.textAlign=right?'right':'left';
@@ -47,4 +45,36 @@ export function createSatelliteDetection({Cesium:C,viewer,getCandidates,getPoint
  }
  const remove=viewer.scene.postRender.addEventListener(render);
  return {setEnabled(value){enabled=Boolean(value);canvas.hidden=!enabled;last=-Infinity;if(!enabled)clear();},render,dispose(){disposed=true;remove();seen.clear();canvas.remove();}};
+}
+
+/** One instanced, depth-tested frame per satellite, independent of label limits.
+ * All billboards share one atlas image drawn with GEV's original corner geometry.
+ * Projection and motion follow Cesium's point positions on the GPU each frame.
+ */
+export function createSatelliteBrackets({Cesium:C,viewer,documentRef=document}){
+ const image=documentRef.createElement('canvas');image.width=image.height=20;
+ const ctx=image.getContext('2d');ctx.strokeStyle='#fff';ctx.lineWidth=1.25;
+ ctx.beginPath();appendCornerBracket(ctx,10,10,8,8);ctx.stroke();
+ const collection=viewer.scene.primitives.add(new C.BillboardCollection()),frames=new Map();
+ const regular=C.Color.fromCssColorString('#00d4ff'),iss=C.Color.fromCssColorString('#ff5555');
+ let selected=null,disposed=false;
+ const color=id=>id===25544?iss:id===selected?C.Color.WHITE:regular;
+ return {
+  update(id,position,show){
+   if(disposed)return;
+   let frame=frames.get(id);
+   if(!frame){
+    frame=collection.add({id:`relic-satellite:${id}`,position,show:Boolean(show),width:20,height:20,
+     horizontalOrigin:C.HorizontalOrigin.CENTER,verticalOrigin:C.VerticalOrigin.CENTER,
+     color:color(id),disableDepthTestDistance:0});
+    // A stable ID prevents one duplicate texture-atlas entry per satellite.
+    frame.setImage('relic-satellite-bracket-v1',image);frames.set(id,frame);
+   }else{frame.position=position;frame.show=Boolean(show);}
+  },
+  setVisible(id,value){const frame=frames.get(id);if(frame)frame.show=Boolean(value);},
+  setSelected(id){const previous=selected;selected=id;for(const key of [previous,id]){const frame=frames.get(key);if(frame)frame.color=color(key);}},
+  setEnabled(value){collection.show=Boolean(value);},
+  remove(id){const frame=frames.get(id);if(frame){collection.remove(frame);frames.delete(id);}},
+  dispose(){if(disposed)return;disposed=true;if(!viewer.isDestroyed())viewer.scene.primitives.remove(collection);frames.clear();},
+ };
 }
