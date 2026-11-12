@@ -101,3 +101,18 @@ test('a growing catalogue renders every Starlink point even when its first ISS r
  }finally{f.layer.dispose();}
  assert.equal(f.viewer.scene.primitives.length,0);assert.equal(f.preRender,null);assert.equal(f.events.size,0);
 });
+
+test('All classes restores other satellites after Starlink view without changing catalogue size',async()=>{
+ const f=await layerFixture(),other=SATELLITE_CLASS_IDS.find(id=>!['stations','starlink'].includes(id));
+ const records=new Map([
+  [25544,{id:25544,name:'ISS',satelliteClass:'stations',epoch:now,satrec:{position:{x:6800000,y:0,z:0}}}],
+  [45544,{id:45544,name:'STARLINK',satelliteClass:'starlink',epoch:now,satrec:{a:1.1,ecco:.001,position:{x:6900000,y:0,z:0}}}],
+  [55544,{id:55544,name:'OTHER',satelliteClass:other,epoch:now,satrec:{position:{x:7000000,y:0,z:0}}}],
+ ]);
+ try{
+  f.publish(records);assert.equal(f.points.items.filter(point=>point.show).length,3);
+  f.layer.showStarlinkConstellation();assert.equal(f.points.items.filter(point=>point.show).length,2);
+  f.panelHandlers.onResetFilters();assert.equal(f.points.items.filter(point=>point.show).length,3);
+  assert.equal(f.points.length,3);
+ }finally{f.layer.dispose();}
+});

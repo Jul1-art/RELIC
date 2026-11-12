@@ -23,3 +23,20 @@ test('panel exposes the live ISS, class filters, search, and follow commands wit
   panel.setClasses({stations:true});assert.equal(input.checked,true);panel.collapse();assert.equal(root.open,false);panel.dispose();assert.equal(root.removed,true);assert.equal(disposed,true);
  }finally{globalThis.document=previous;}
 });
+
+test('satellite controls mount inside the parent Display section with distinct catalogue and enabled counts',()=>{
+ const previous=globalThis.document,slot=new Node('div'),parentHead=new Node('head'),body=new Node('body');
+ const ownerWindow={location:{origin:'https://relic.test'},addEventListener(){},removeEventListener(){}};
+ const owner={head:parentHead,defaultView:ownerWindow,createElement:tag=>new Node(tag),querySelector:query=>query==='#inspection-satellite-controls'?slot:null};ownerWindow.document=owner;
+ globalThis.document={body,head:new Node('head'),documentElement:{lang:'en'},defaultView:{location:{origin:'https://relic.test'},parent:ownerWindow},createElement:tag=>new Node(tag),querySelector:()=>null};
+ try{
+  let resets=0;const panel=createSatellitePanel({getLanguage:()=> 'en',onResetFilters:()=>resets++});
+  const root=slot.children[0];assert.ok(root.className.includes('satellite-panel-inline'));assert.equal(root.hidden,false);assert.equal(root.open,true);assert.equal(root.children[0].hidden,true);
+  panel.update({records:new Map([[25544,row],[45544,{...row,id:45544,satelliteClass:'starlink'}]]),status:'partial',sources:[{id:'active',status:'retained',received:2,accepted:2}]});panel.setPopulation(1);
+  assert.equal(find(root,'satellite-loaded-total').textContent,'2');assert.equal(find(root,'satellite-enabled-total').textContent,'1');
+  assert.equal(find(root,'satellite-feed-status').textContent,'Previous data retained');
+  find(root,'satellite-reset-filters').emit('click');assert.equal(resets,1);
+  panel.collapse();assert.equal(root.open,true,'inline controls cannot collapse behind a hidden launcher');
+  panel.dispose();assert.equal(root.removed,true);
+ }finally{globalThis.document=previous;}
+});

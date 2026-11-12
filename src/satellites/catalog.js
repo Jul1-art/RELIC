@@ -30,7 +30,8 @@ export function mergeCatalogGroups(groups){
   return records;
 }
 export function createSatelliteCatalog({fetchImpl=globalThis.fetch,now=()=>Date.now(),onChange=()=>{},cacheStorage=globalThis.caches}={}){
-  let disposed=false,pending=null,lastRefresh=0,status='loading',failedGroups=[],records=new Map(),controller=null;
+  let disposed=false,pending=null,lastRefresh=0,status='loading',failedGroups=[],records=new Map(),controller=null,nextRetryAt=0;
+  const snapshots=new Map(),sources=new Map(GROUPS.map(id=>[id,{id,status:'pending',received:0,accepted:0}]));
   async function read(group,signal){
     const url=new URL(`api/celestrak/${group}`,APP_ROOT).href;
     let cache,cached;
@@ -39,7 +40,11 @@ export function createSatelliteCatalog({fetchImpl=globalThis.fetch,now=()=>Date.
     if(age>=0&&age<REFRESH_MS)return {text:await cached.text(),stale:false};
     try{
       const response=await fetchImpl(url,{signal:AbortSignal.any([signal,AbortSignal.timeout(30000)]),credentials:'same-origin',cache:'no-store'});
-      if(!response.ok)throw Error(`Catalogue unavailable (${response.status})`);
+      if(!response.ok){
+        const error=Error(`Catalogue unavailable (${response.status})`),retry=response.headers.get('Retry-After');
+        error.retryAt=now()+Math.max(60000,/^\d+$/.test(retry||'')?Number(retry)*1000:Date.parse(retry||'')-now()||0);
+        error.throttled=[403,429].includes(response.status)||(response.status===503&&Boolean(retry));throw error;
+      }
       const text=await response.text();
       if(!parseTleText(text).length)throw Error('Catalogue contains no valid TLEs');
       const stale=response.headers.get('X-TLE-Cache')==='STALE-ERROR';
@@ -51,16 +56,19 @@ export function createSatelliteCatalog({fetchImpl=globalThis.fetch,now=()=>Date.
       throw error;
     }
   }
-  function publish(){if(!disposed)onChange({records,status,failedGroups,lastRefresh});}
+  function publish(){if(!disposed)onChange({records,status,failedGroups:[...failedGroups],lastRefresh,nextRetryAt,sources:[...sources.values()]});}
+  const usableSnapshot=id=>snapshots.get(id)?.records.some(row=>Math.abs(now()-row.epoch)<=COVERAGE_MS);
+  function merged(){return mergeCatalogGroups([...snapshots.values()].map(group=>({...group,records:group.records.filter(row=>Math.abs(now()-row.epoch)<=COVERAGE_MS)})));}
   async function refresh(){
     if(disposed||pending)return pending;
     controller=new AbortController();const signal=controller.signal,initialLoad=records.size===0;
-    status=records.size?'refreshing':'loading';publish();
+    status=records.size?'refreshing':'loading';nextRetryAt=0;publish();
     pending=(async()=>{
-      const groups=[];failedGroups=[];let stale=false;
+      let successes=0;failedGroups=[];let stale=false;
       // A single request at a time avoids parallel provider-throttle bursts.
       for(const group of GROUPS){
         if(disposed)return;
+        sources.set(group,{...sources.get(group),status:'loading'});publish();
         try{
           const result=await read(group,signal);if(disposed)return;
           const entries=parseTleText(result.text),parsed=[];
@@ -71,26 +79,32 @@ export function createSatelliteCatalog({fetchImpl=globalThis.fetch,now=()=>Date.
             await new Promise(resolve=>setTimeout(resolve,0));
           }
           if(!parsed.length)throw Error('No elements within propagation coverage');
-          groups.push({group,records:parsed});stale ||= result.stale;
+          snapshots.set(group,{group,records:parsed});successes++;stale ||= result.stale;
+          sources.set(group,{id:group,status:result.stale?'stale':'ready',received:entries.length,accepted:parsed.length,filtered:entries.length-parsed.length});
           // Show the ISS and the complete dense shell as soon as their own
           // feeds arrive; unrelated groups must not delay the Starlink view.
-          if(initialLoad&&['stations','starlink','active'].includes(group)){records=mergeCatalogGroups(groups);publish();}
+          if(initialLoad&&['stations','starlink','active'].includes(group)){records=merged();publish();}
         }catch(error){
           if(signal.aborted)return;
           failedGroups.push(group);
+          sources.set(group,{...sources.get(group),status:usableSnapshot(group)?'retained':'unavailable'});
+          nextRetryAt=Math.max(nextRetryAt,Number(error.retryAt)||now()+60000);
           // A per-host throttle applies to every group. Stop, do not hammer it.
-          if(error.message.includes('(429)')||error.message.includes('(403)'))break;
+          if(error.throttled||error.message.includes('(429)')||error.message.includes('(403)')){
+            for(const deferred of GROUPS.slice(GROUPS.indexOf(group)+1)){failedGroups.push(deferred);sources.set(deferred,{...sources.get(deferred),status:usableSnapshot(deferred)?'retained':'deferred'});}
+            break;
+          }
         }
         // Parsing thousands of SGP4 records yields between source groups.
         await new Promise(resolve=>setTimeout(resolve,0));
       }
       if(disposed)return;
-      if(groups.length){records=mergeCatalogGroups(groups);lastRefresh=now();status=failedGroups.length?'partial':stale?'stale':'ready';}
-      else status=records.size?'stale':'unavailable';
+      if(successes){records=merged();lastRefresh=now();status=failedGroups.length?'partial':stale?'stale':'ready';}
+      else{records=merged();status=records.size?'stale':'unavailable';}
       publish();
     })().finally(()=>{pending=null;});
     return pending;
   }
-  return {refresh,get records(){return records;},get status(){return status;},get lastRefresh(){return lastRefresh;},
+  return {refresh,get records(){return records;},get status(){return status;},get lastRefresh(){return lastRefresh;},get nextRetryAt(){return nextRetryAt;},
     dispose(){disposed=true;controller?.abort();}};
 }

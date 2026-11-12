@@ -47,5 +47,22 @@ test('provider errors are reported and last cached TLEs are marked stale',async(
 });
 test('disposal aborts requests and prevents late catalogue publication',async()=>{
  let signal,updates=0;const catalog=createSatelliteCatalog({now,cacheStorage:null,fetchImpl:async(url,options)=>{signal=options.signal;return new Promise((resolve,reject)=>signal.addEventListener('abort',()=>reject(new DOMException('Aborted','AbortError'))));},onChange:()=>updates++});
- const pending=catalog.refresh();await new Promise(resolve=>setTimeout(resolve,0));catalog.dispose();await pending;assert.equal(signal.aborted,true);assert.equal(updates,1);
+ const pending=catalog.refresh();await new Promise(resolve=>setTimeout(resolve,0));const beforeDispose=updates;catalog.dispose();await pending;assert.equal(signal.aborted,true);assert.equal(updates,beforeDispose);
+});
+
+test('a failed complete feed never replaces valid full coverage with only the Starlink subset',async()=>{
+ let time=+date,failed=false,state;
+ const starlink=tle.replace('ISS (ZARYA)','STARLINK-TEST').replaceAll('25544','45544');
+ const science=tle.replace('ISS (ZARYA)','SCIENCE-TEST').replaceAll('25544','55544');
+ const catalog=createSatelliteCatalog({now:()=>time,cacheStorage:null,onChange:value=>state=value,fetchImpl:async url=>{
+  const group=String(url).split('/').pop();
+  if(group==='active')return failed?new Response('',{status:503,headers:{'Retry-After':'120'}}):new Response([tle,starlink,science].join('\n'));
+  return new Response(group==='starlink'?starlink:tle);
+ }});
+ await catalog.refresh();assert.equal(catalog.records.size,3);assert.equal(state.sources.find(source=>source.id==='active').status,'ready');
+ failed=true;time+=3600000;await catalog.refresh();
+ assert.equal(catalog.records.size,3);assert.ok(catalog.records.has(55544));assert.equal(catalog.status,'partial');
+ assert.equal(state.sources.find(source=>source.id==='active').status,'retained');assert.equal(catalog.nextRetryAt,time+120000);
+ time+=15*86400000;await catalog.refresh();assert.equal(catalog.records.size,0,'expired elements are not retained as current positions');
+ catalog.dispose();
 });
