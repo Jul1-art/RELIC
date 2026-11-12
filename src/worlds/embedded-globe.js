@@ -1,3 +1,4 @@
+import {installAdaptiveWorldQuality} from './world-performance.js';
 import {createEarthSatellites} from '../satellites/cesium-layer.js';
 import * as Cesium from '../../vendor/cesium/index.js';
 import {getCesiumToken,validateCesiumToken} from '../core/api-config.js';
@@ -25,6 +26,7 @@ const credits=document.querySelector('#credits');
 let sourceCredit;
 let viewer,tileset,buildings,celestial,effects,disposed=false,ready=false,paused=false,focus={id:body},sourceMode='imagery',sourceLabel='',ionStatus='loading';
 let lastState=0,lastFrame=null,globalGrid=null,geography={lat:18,lon:0},lastHeading=0;
+let adaptiveQuality;
 let cameraMotion,lastCameraAction=null,arrivalPlayed=false;
 let defaultFov=Math.PI/3,disposeCameraControls;
 const maximumFrameRange=()=>globeZoomOutLimit(radius,viewer?.camera.frustum.fovy||Math.PI/3)+radius*2;
@@ -324,7 +326,7 @@ function receive(event){
   else if(action==='northUp')northUp();
   else if(action==='reveal')reveal();
 }
-function dispose(){if(disposed)return;disposed=true;cameraMotion?.cancel();disposeCameraControls?.();satellites?.dispose();creditObserver.disconnect();window.removeEventListener('message',receive);earth3D?.destroy();effects?.destroy();celestial?.dispose();if(viewer&&!viewer.isDestroyed())viewer.destroy();}
+function dispose(){if(disposed)return;disposed=true;adaptiveQuality?.dispose();cameraMotion?.cancel();disposeCameraControls?.();satellites?.dispose();creditObserver.disconnect();window.removeEventListener('message',receive);earth3D?.destroy();effects?.destroy();celestial?.dispose();if(viewer&&!viewer.isDestroyed())viewer.destroy();}
 async function start(){
   try{
     viewer=new Cesium.Viewer('globe',{ellipsoid,globe:new Cesium.Globe(ellipsoid),mapProjection:new Cesium.GeographicProjection(ellipsoid),
@@ -345,7 +347,8 @@ async function start(){
     if(scene.skyAtmosphere)scene.skyAtmosphere.show=false;if(scene.sun)scene.sun.show=false;if(scene.moon)scene.moon.show=false;
     scene.globe.showGroundAtmosphere=false;scene.fog.enabled=false;
     disposeCameraControls=installGlobeCameraControls(viewer,{radius});
-    viewer.resolutionScale=Math.min(devicePixelRatio||1,compact?1.35:1.8);viewer.targetFrameRate=compact?45:60;
+    adaptiveQuality=installAdaptiveWorldQuality(viewer,{compact});
+    const resizeQuality=()=>adaptiveQuality.resize({compact});window.addEventListener('resize',resizeQuality,{passive:true});const disposeQuality=adaptiveQuality.dispose;adaptiveQuality.dispose=()=>{window.removeEventListener('resize',resizeQuality);disposeQuality();};
     viewer.camera.percentageChanged=.002;
     const interaction=()=>{cameraMotion.cancel();viewer.camera.cancelFlight();post('interaction');};
     const touchPoints=new Map();let touchLook=null,touchDirty=false;

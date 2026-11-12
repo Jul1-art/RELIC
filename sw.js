@@ -1,8 +1,8 @@
 /* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'inspection-20261112-v65-public';
-const INTERFACE_RELEASE = 'inspection-20261112-v65';
+const VERSION = 'inspection-20261112-v66-public';
+const INTERFACE_RELEASE = 'inspection-20261112-v66';
 const CLIENT_VERSION_TIMEOUT = 650;
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
@@ -30,6 +30,7 @@ const CORE = [
 // Requested only when the visitor explicitly saves the film for offline use.
 // This also covers a first visit whose early imports preceded worker control.
 const OFFLINE_CORE = [
+  'src/satellites/propagation-worker.js','vendor/gods-eye-view/detection/detectionPolicy.js','vendor/gods-eye-view/detection/labelArbiter.js','vendor/gods-eye-view/detection/keyhole.js',
   'src/satellites/detection.js','vendor/gods-eye-view/detection/detectionDraw.js','vendor/gods-eye-view/detection/i18n.js',
   ...CORE,
   'assets/ui/worlds/earth-apollo17.jpg','assets/ui/worlds/saturn-cassini.jpg','src/ui/world-thumbnails.js','src/ui/inspection-shell.js','src/ui/inspection-shell.css','src/ui/inspection-controls.js','src/ui/visual-effects.js',

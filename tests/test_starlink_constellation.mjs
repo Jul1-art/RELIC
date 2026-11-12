@@ -64,7 +64,7 @@ class Vector{
 class Collection{items=[];add(value){this.items.push(value);return value;}remove(value){this.items=this.items.filter(item=>item!==value);}get length(){return this.items.length;}}
 class Color{constructor(css){this.css=css;}withAlpha(alpha){return {css:this.css,alpha};}static fromCssColorString(css){return new Color(css);}static WHITE=new Color('#fff');static BLACK=new Color('#000');}
 
-async function layerFixture(){
+async function layerFixture({WorkerImpl}={}){
  let onCatalog,panelHandlers,currentRecords=new Map(),flyTo,preRender;
  const C={PointPrimitiveCollection:Collection,LabelCollection:Collection,Cartesian3:Vector,Cartesian2:class{constructor(x,y){Object.assign(this,{x,y});}},Credit:class{},Color,LabelStyle:{FILL_AND_OUTLINE:1},Matrix4:{IDENTITY:{}},Matrix3:{}};
  const primitiveCollection=new Collection(),events=new Map(),canvas={clientWidth:390,clientHeight:844,addEventListener:(type,callback)=>events.set(type,callback),removeEventListener:type=>events.delete(type)};
@@ -78,8 +78,8 @@ async function layerFixture(){
   './panel.js?v=63':{createSatellitePanel:options=>{panelHandlers=options;return panel;}},
   './constellation-view.js':{STARLINK_COLOR,STARLINK_POINT_SIZE,constellationRadius,constellationViewDistance},
  };
- const context=vm.createContext({document:{body:{},hidden:false,documentElement:{dataset:{motion:'reduced'}},addEventListener(){},removeEventListener(){}},performance,setTimeout,clearTimeout,setInterval:()=>1,clearInterval(){}});
- const module=new vm.SourceTextModule(await readFile(new URL('../src/satellites/cesium-layer.js',import.meta.url),'utf8'),{context});
+ const context=vm.createContext({URL,Worker:WorkerImpl,document:{body:{},hidden:false,documentElement:{dataset:{motion:'reduced'}},addEventListener(){},removeEventListener(){}},performance,setTimeout,clearTimeout,setInterval:()=>1,clearInterval(){}});
+ const module=new vm.SourceTextModule(await readFile(new URL('../src/satellites/cesium-layer.js',import.meta.url),'utf8'),{context,initializeImportMeta:meta=>{meta.url=new URL('../src/satellites/cesium-layer.js',import.meta.url).href;}});
  await module.link(name=>{const values=exported[name];assert.ok(values,name);return new vm.SyntheticModule(Object.keys(values),function(){for(const [key,value]of Object.entries(values))this.setExport(key,value);},{context});});await module.evaluate();
  const layer=module.namespace.createEarthSatellites({Cesium:C,viewer,now:()=>now});
  return {layer,viewer,points:primitiveCollection.items[0],panelHandlers,events,get flyTo(){return flyTo;},get preRender(){return preRender;},publish(records){currentRecords=records;onCatalog({records,status:'loading'});}};
@@ -114,5 +114,24 @@ test('All classes restores other satellites after Starlink view without changing
   f.layer.showStarlinkConstellation();assert.equal(f.points.items.filter(point=>point.show).length,2);
   f.panelHandlers.onResetFilters();assert.equal(f.points.items.filter(point=>point.show).length,3);
   assert.equal(f.points.length,3);
+ }finally{f.layer.dispose();}
+});
+
+
+test('worker snapshots keep every point and recover to propagation fallback on worker failure',async()=>{
+ let worker,terminated=0;
+ class FakeWorker{messages=[];constructor(){worker=this;}postMessage(message){this.messages.push(message);}terminate(){terminated++;}}
+ const f=await layerFixture({WorkerImpl:FakeWorker});
+ try{
+  const records=new Map();for(let i=0;i<1000;i++)records.set(50000+i,{id:50000+i,name:`SAT-${i}`,satelliteClass:'starlink',epoch:now,satrec:{position:{x:6900000,y:i,z:0}}});
+  f.publish(records);await until(()=>f.points.length===1000);
+  assert.equal(worker.messages[0].type,'catalog');assert.equal(worker.messages[0].rows.length,1000);
+  const sample=worker.messages.find(message=>message.type==='sample'),data=new Float64Array(1000*8);
+  for(let i=0;i<1000;i++)data.set([6900000,i,0,0,0,500000,7500,now],i*8);
+  worker.onmessage({data:{revision:sample.revision,data}});
+  for(let i=0;i<20;i++)f.preRender();
+  assert.equal(f.points.items.filter(point=>point.show).length,1000);assert.equal(f.points.items[999].position.y,999);
+  const expired=new Float64Array(data);expired[999*8]=NaN;worker.onmessage({data:{revision:sample.revision,data:expired}});for(let i=0;i<20;i++)f.preRender();assert.equal(f.points.items.filter(point=>point.show).length,999,'Expired orbital elements hide their old point');
+  worker.onerror();assert.equal(terminated,1);f.preRender();assert.equal(f.points.length,1000);
  }finally{f.layer.dispose();}
 });

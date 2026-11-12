@@ -13,7 +13,7 @@ export function createSatelliteDetection({Cesium:C,viewer,getCandidates,getPoint
  function clear(){ctx?.clearRect(0,0,canvas.width,canvas.height);}
  function render(){
   if(disposed||!enabled||!ctx)return;
-  const time=now();if(time-last<100)return;last=time;
+  const time=now();if(time-last<(width<1100?160:100))return;last=time;
   const w=viewer.canvas.clientWidth,h=viewer.canvas.clientHeight,dpr=Math.min(globalThis.devicePixelRatio||1,1.5);
   if(w!==width||h!==height||dpr!==ratio){width=w;height=h;ratio=dpr;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);}
   ctx.setTransform(ratio,0,0,ratio,0,0);ctx.clearRect(0,0,width,height);

@@ -15,6 +15,37 @@ export function createEarthSatellites({Cesium:C,viewer,host=document.body,getLan
  const colors=Object.fromEntries(SATELLITE_CLASS_IDS.map(id=>[id,C.Color.fromCssColorString(SATELLITE_CLASS_DISPLAY[id].color)]));
  colors.starlink=C.Color.fromCssColorString(STARLINK_COLOR);
  const pointScratch=new C.Cartesian3();
+ // A single worker owns dense SGP4 propagation. Unsupported/blocked workers
+ // retain the bounded main-thread fallback; selected objects remain immediate.
+ let worker=null,workerBusy=false,workerBuffer=null,workerCursor=0,lastWorkerAt=-Infinity,lastPriorityAt=-Infinity;
+ function sampleWorker(){
+  if(!worker||workerBusy||workerBuffer||disposed||paused||!shown||document.hidden||!rows.length)return;
+  workerBusy=true;lastWorkerAt=now();worker.postMessage({type:'sample',revision,at:lastWorkerAt});
+ }
+ function stopWorker(){worker?.terminate();worker=null;workerBusy=false;workerBuffer=null;request();}
+ try{if(typeof Worker==='function'){
+  worker=new Worker(new URL('./propagation-worker.js',import.meta.url),{type:'module'});
+  worker.onmessage=({data})=>{if(disposed||data.revision!==revision)return;workerBusy=false;workerBuffer=data.data;workerCursor=0;request();};
+  worker.onerror=()=>{stopWorker();};
+ }}catch{worker=null;}
+ function applySample(row,pos){
+  const point=byId.get(row.id);if(!point)return;
+  samples.set(row.id,pos);const wasShown=point.show;point.show=visible(row);
+  if(point.show!==wasShown)enabledCount+=point.show?1:-1;
+  point.position=C.Cartesian3.fromElements(pos.x,pos.y,pos.z,pointScratch);brackets.update(row.id,point.position,point.show);
+ }
+ function drainWorker(){
+  if(!workerBuffer)return;
+  const start=performance.now();let processed=0;
+  for(;workerCursor<rows.length;workerCursor++){
+   const i=workerCursor*8,row=rows[workerCursor];
+   if(Number.isFinite(workerBuffer[i])&&row.id!==ISS_NORAD&&row.id!==selected?.id){const pos=samples.get(row.id)||{};Object.assign(pos,{x:workerBuffer[i],y:workerBuffer[i+1],z:workerBuffer[i+2],latitude:workerBuffer[i+3],longitude:workerBuffer[i+4],altitude:workerBuffer[i+5],speedMps:workerBuffer[i+6],at:workerBuffer[i+7]});applySample(row,pos);}
+   if(!Number.isFinite(workerBuffer[i])){const point=byId.get(row.id);if(point?.show){point.show=false;enabledCount--;brackets.setVisible(row.id,false);}samples.delete(row.id);}
+   if(++processed>=400||performance.now()-start>=1.5){workerCursor++;break;}
+  }
+  if(workerCursor>=rows.length){workerBuffer=null;sampleWorker();}
+  else request();
+ }
  const issColor=C.Color.fromCssColorString('#ff4444');
  const credit=new C.Credit('Satellite orbits · <a href="https://celestrak.org/" target="_blank" rel="noopener noreferrer">CelesTrak</a> · SGP4 / satellite.js · <a href="https://github.com/bilawalsidhu/gods-eye-view" target="_blank" rel="noopener noreferrer">God’s Eye View / Bilawal Sidhu · MIT</a>',false);
  viewer.creditDisplay?.addStaticCredit(credit);
@@ -48,19 +79,21 @@ export function createEarthSatellites({Cesium:C,viewer,host=document.body,getLan
  }});
  function rebuild(records){
    const token=++revision;clearTimeout(buildTimer);
-   rows=[...records.values()];cursor=0;
+   rows=[...records.values()];cursor=0;workerBuffer=null;workerCursor=0;workerBusy=false;
+   if(worker){worker.postMessage({type:'catalog',revision:token,rows:rows.map(({satrec,epoch})=>({satrec,epoch}))});sampleWorker();}
    for(const [id,point]of byId)if(!records.has(id)){if(point.show)enabledCount--;points.remove(point);brackets.remove(id);byId.delete(id);samples.delete(id);hideRing(id);}
    for(const id of rings.keys())hideRing(id);
    if(selected){selected=records.get(selected.id)||null;panel.select(selected);brackets.setSelected(selected?.id??null);if(!selected)stopFollowing();}
    let offset=0,lastBuildRender=0;
    function chunk(){
      if(disposed||token!==revision)return;
-     const end=Math.min(rows.length,offset+200),date=new Date(now());
+     const end=Math.min(rows.length,offset+80),date=new Date(now());const chunkStart=performance.now();
      for(;offset<end;offset++){
        const row=rows[offset];let point=byId.get(row.id);
        if(!point){point=points.add({id:`relic-satellite:${row.id}`,show:false,position:C.Cartesian3.ZERO,pixelSize:row.id===ISS_NORAD?12:row.satelliteClass==='stations'?8:row.satelliteClass==='starlink'?STARLINK_POINT_SIZE:5,
          color:row.id===ISS_NORAD?issColor:colors[row.satelliteClass],outlineColor:row.satelliteClass==='starlink'?C.Color.fromCssColorString(STARLINK_COLOR).withAlpha(.3):C.Color.WHITE.withAlpha(.3),outlineWidth:row.id===ISS_NORAD?2:row.satelliteClass==='starlink'?.5:0,disableDepthTestDistance:0});byId.set(row.id,point);}
-       point.color=row.id===ISS_NORAD?issColor:colors[row.satelliteClass];updatePoint(row,date);
+       point.color=row.id===ISS_NORAD?issColor:colors[row.satelliteClass];if(!worker||row.id===ISS_NORAD||row.id===selected?.id)updatePoint(row,date);
+       if(performance.now()-chunkStart>=2){offset++;break;}
      }
      if(now()-lastBuildRender>=80||offset===rows.length){syncLabels();panel.setPopulation?.(enabledCount);request();lastBuildRender=now();}
      if(offset<rows.length)buildTimer=setTimeout(chunk,0);
@@ -139,16 +172,17 @@ export function createEarthSatellites({Cesium:C,viewer,host=document.body,getLan
  function tick(){
    if(disposed||paused||document.hidden||viewer.useDefaultRenderLoop===false)return;
    const time=now(),date=new Date(time);
-   const iss=catalog.records.get(ISS_NORAD);if(iss)updatePoint(iss,date);
-   if(selected&&selected.id!==ISS_NORAD)updatePoint(selected,date);
+   if(time-lastPriorityAt>=100){lastPriorityAt=time;const iss=catalog.records.get(ISS_NORAD);if(iss)updatePoint(iss,date);
+   if(selected&&selected.id!==ISS_NORAD)updatePoint(selected,date);}
+   drainWorker();if(worker&&!workerBusy&&!workerBuffer&&time-lastWorkerAt>=250)sampleWorker();
    if(following!==null&&!byId.get(following)?.show)stopFollowing();
    // Same round-robin principle as GEV dense mode; bound main-thread work even
    // when the complete active feed contains tens of thousands of satellites.
-   if(shown){const start=performance.now(),budget=Math.max(1,Math.ceil(rows.length/20));
+   if(shown&&!worker){const start=performance.now(),budget=Math.max(1,Math.ceil(rows.length/20));
      for(let i=0;i<budget&&rows.length;i++){
        if(cursor>=rows.length)cursor=0;const row=rows[cursor++];
        if(row.id!==ISS_NORAD&&row.id!==selected?.id&&classes[row.satelliteClass])updatePoint(row,date);
-       if(performance.now()-start>3)break;
+       if(performance.now()-start>1.5)break;
      }
    }
    syncLabels();
@@ -182,7 +216,7 @@ export function createEarthSatellites({Cesium:C,viewer,host=document.body,getLan
    },
    pause(value=true){paused=Boolean(value);detection.setEnabled(!paused&&detectionShown);brackets.setEnabled(!paused&&detectionShown);if(paused)stopFollowing();else request();},
    dispose(){
-     if(disposed)return;stopFollowing();disposed=true;++revision;clearInterval(timer);clearTimeout(buildTimer);catalog.dispose();removePreRender();detection.dispose();brackets.dispose();panel.dispose();
+     if(disposed)return;stopFollowing();disposed=true;++revision;worker?.terminate();worker=null;workerBuffer=null;clearInterval(timer);clearTimeout(buildTimer);catalog.dispose();removePreRender();detection.dispose();brackets.dispose();panel.dispose();
      for(const type of ['pointerdown','wheel'])scene.canvas.removeEventListener(type,interrupt);
      document.removeEventListener('visibilitychange',visibility);
      if(!viewer.isDestroyed()){for(const id of [...rings.keys()])hideRing(id);scene.primitives.remove(points);scene.primitives.remove(labels);viewer.creditDisplay?.removeStaticCredit(credit);}

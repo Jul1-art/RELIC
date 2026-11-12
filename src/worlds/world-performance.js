@@ -8,6 +8,7 @@ export function configureWorldPerformance(viewer, { onSuspend = () => {}, loadin
   let removeRenderError;
   let viewportObserver;
   const alive = () => !disposed && !viewer.isDestroyed();
+  const adaptive=installAdaptiveWorldQuality(viewer);
 
   function quality() {
     if (!alive() || graphicsFailed) return;
@@ -16,12 +17,7 @@ export function configureWorldPerformance(viewer, { onSuspend = () => {}, loadin
     const height = Math.max(1, viewport?.clientHeight || innerHeight);
     const high = document.documentElement.dataset.quality === 'high';
     const compact = matchMedia('(pointer: coarse)').matches || width <= 760;
-    const budget = high ? (compact ? 2400000 : 5500000) : (compact ? 1200000 : 3000000);
-    const ratio = Math.min(devicePixelRatio || 1, high ? 2 : compact ? 1.35 : 1.5,
-      Math.sqrt(budget / (width * height)));
-    viewer.useBrowserRecommendedResolution = true;
-    viewer.resolutionScale = Math.max(.75, ratio);
-    viewer.targetFrameRate = compact && !high ? 45 : 60;
+    adaptive.resize({compact,high});
     viewer.scene.requestRenderMode = true;
     viewer.scene.maximumRenderTimeChange = Infinity;
     viewer.scene.globe.maximumScreenSpaceError = high ? (compact ? 2 : 1.5) : (compact ? 3 : 2);
@@ -64,6 +60,7 @@ export function configureWorldPerformance(viewer, { onSuspend = () => {}, loadin
     removeFirstFrame?.(); removeRenderError?.();
     loading?.dispose();
     viewportObserver?.disconnect();
+    adaptive.dispose();
   }
   window.addEventListener('resize', quality, { passive:true });
   window.addEventListener('relic-preferences-change', quality);
@@ -206,4 +203,29 @@ export function flyToLocation(viewer, Cesium, { lat, lon, ellipsoid, range, dura
     if (Math.abs(measuredHeight - initialHeight) > 2) fly(measuredHeight, .3);
   });
   timeout = setTimeout(finish, 1800);
+}
+/** Keep a 60 Hz interaction target while adapting pixel cost, never catalogue
+ * completeness. Samples measure actual render work, excluding idle intervals. */
+export function installAdaptiveWorldQuality(viewer,{compact=false,high=false}={}){
+ let scale=1,cost=0,count=0,fast=0,start=0,disposed=false,lastFrame=0,slow=0,continuous=0;
+ function resize(options={}){
+  compact=options.compact??compact;high=options.high??high;
+  const width=Math.max(1,viewer.canvas?.clientWidth||viewer.scene.canvas.clientWidth||1),height=Math.max(1,viewer.canvas?.clientHeight||viewer.scene.canvas.clientHeight||1);
+  const pixels=compact?(high?1500000:1000000):(high?5500000:3000000);
+  scale=Math.max(.65,Math.min(globalThis.devicePixelRatio||1,compact?1.25:1.5,Math.sqrt(pixels/(width*height))));
+  viewer.useBrowserRecommendedResolution=true;viewer.resolutionScale=scale;viewer.targetFrameRate=60;
+ }
+ resize();
+ const before=viewer.scene.preRender.addEventListener(()=>{start=performance.now();});
+ const after=viewer.scene.postRender.addEventListener(()=>{
+  if(disposed||!start||document.hidden)return;
+  const stamp=performance.now(),elapsed=stamp-start,gap=stamp-lastFrame;lastFrame=stamp;start=0;if(!Number.isFinite(elapsed))return;
+  if(gap>0&&gap<100){continuous++;if(gap>22)slow++;}
+  cost+=elapsed;count++;if(count<24)return;
+  const mean=cost/count,missedBudget=continuous>=12&&slow/continuous>.35;cost=0;count=0;slow=0;continuous=0;
+  if((mean>12||missedBudget)&&scale>.65){scale=Math.max(.65,scale*.9);viewer.resolutionScale=scale;fast=0;viewer.scene.requestRender();}
+  else if(mean<7&&++fast>=6){fast=0;const previous=scale;resize();scale=Math.min(scale,previous*1.05);viewer.resolutionScale=scale;}
+  else if(mean>=7)fast=0;
+ });
+ return {resize,dispose(){disposed=true;before();after();}};
 }

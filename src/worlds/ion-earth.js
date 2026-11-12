@@ -6,12 +6,14 @@ export const ION_EARTH_ASSET_ID=2275207;
 
 export function earthTilesOptions(compact=false){
   return {showCreditsOnScreen:true,enableCollision:true,
-    maximumScreenSpaceError:compact?12:8,
-    cacheBytes:(compact?128:320)*1024*1024,
-    maximumCacheOverflowBytes:(compact?32:96)*1024*1024,
+    maximumScreenSpaceError:compact?16:8,
+    cacheBytes:(compact?96:320)*1024*1024,
+    maximumCacheOverflowBytes:(compact?24:96)*1024*1024,
     cullRequestsWhileMoving:true,cullRequestsWhileMovingMultiplier:24,
-    preloadFlightDestinations:true,preloadWhenHidden:false,
-    foveatedScreenSpaceError:true,foveatedConeSize:.2,foveatedTimeDelay:.15,
+    preloadFlightDestinations:!compact,preloadWhenHidden:false,
+    foveatedScreenSpaceError:true,foveatedConeSize:compact?.15:.2,foveatedTimeDelay:compact?.25:.15,
+    progressiveResolutionHeightFraction:compact?.3:.5,
+    dynamicScreenSpaceError:compact,dynamicScreenSpaceErrorDensity:2e-4,dynamicScreenSpaceErrorFactor:24,
   };
 }
 

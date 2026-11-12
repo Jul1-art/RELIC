@@ -43,6 +43,7 @@ async function fixture(body){
     './ion-earth.js':ionEarth,
     './inspection-effects.js':inspectionEffects,
     './inspection-camera-motion.js':inspectionCameraMotion,
+    './world-performance.js':{installAdaptiveWorldQuality(){}},
   };
   const module=new vm.SourceTextModule(instrumented,{context});
   await module.link(name=>{

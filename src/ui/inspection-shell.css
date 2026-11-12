@@ -978,3 +978,19 @@ html[data-theme=day] body.has-inspection-shell #relic-action-rail .rail-button:i
 #inspection-location .inspection-location-search{flex-basis:275px}
 #inspection-location .inspection-location-search .pd-command input{flex:1;min-width:0;width:220px!important;font-size:15px!important}
 @media(max-width:700px){#inspection-location .inspection-location-search{flex-basis:auto}.relic-inspection-shell .inspection-modules .inspection-module-label{white-space:normal;overflow:visible;text-overflow:clip;font-size:8px;letter-spacing:.2px}.relic-inspection-shell .inspection-modules .inspection-module-toggle{padding:7px 6px;gap:3px}}
+/* Compact GEV controls: preserve the joined-card design without tall buttons. */
+.relic-inspection-shell #inspection-display .inspection-effect-toggle{min-height:32px;padding:7px 10px;gap:7px;font-size:9px;letter-spacing:1.3px}
+#inspection-display .inspection-effect-toggle .pp-icon{font-size:13px}
+#inspection-display .inspection-effect-slider{min-height:27px;padding:5px 9px;gap:6px}
+#inspection-display .inspection-effect-slider .pp-slider-mini-label{font-size:8px}
+#inspection-display .inspection-effect-slider output{font-size:9px}
+.inspection-effect-card{margin-bottom:5px}
+#inspection-location .inspection-tray-popover{width:min(720px,calc(100vw - 24px));padding:9px 10px;border-radius:8px}
+#inspection-location .inspection-location-search{flex-basis:226px;padding-right:8px}
+#inspection-location .inspection-location-search .pd-command :is(.pd-atlas-field,.place-search-field){height:30px!important}
+#inspection-location .inspection-location-search .pd-command :is(.pd-atlas-field,.place-search-field) button{width:30px!important;height:30px!important;min-width:30px;min-height:30px;border-radius:6px!important;font-size:15px}
+#inspection-location .inspection-location-search .pd-command input{height:30px!important;width:180px!important;padding:4px 8px!important;font-size:12px!important}
+#inspection-location .inspection-location-pill{min-height:30px;padding:5px 9px;font-size:10px;border-radius:4px}
+#inspection-location .inspection-location-row{gap:8px}
+@media(pointer:coarse){.relic-inspection-shell #inspection-display .inspection-effect-toggle{min-height:40px}#inspection-display .inspection-effect-slider{min-height:34px}}
+@media(max-width:700px){#inspection-location .inspection-location-search{flex-basis:auto;padding-bottom:7px}#inspection-location .inspection-location-search .pd-command input{font-size:16px!important;width:auto!important}#inspection-location .inspection-location-pill{min-height:36px}#inspection-location .inspection-location-search .pd-command :is(.pd-atlas-field,.place-search-field){height:36px!important}#inspection-location .inspection-location-search .pd-command :is(.pd-atlas-field,.place-search-field) button{width:36px!important;height:36px!important}}
