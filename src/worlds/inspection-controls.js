@@ -4,7 +4,7 @@ import { navigateTo } from '../ui/navigation.js';
 import { appURL } from '../core/paths.js';
 import {createInspectionCameraMotion,OBLIQUE_PITCH,STRAIGHT_DOWN_PITCH,OBLIQUE_THRESHOLD} from './inspection-camera-motion.js';
 
-export function createStandaloneInspectionControls({Cesium,viewer,body,ellipsoid,getLanguage,readFrame,orient,beforeOrientation=()=>{},onReset,onLocate}) {
+export function createStandaloneInspectionControls({Cesium,viewer,body,ellipsoid,getLanguage,readFrame,orient,beforeOrientation=()=>{},onReset,onLocate,onVisualSettings=()=>{}}) {
   const {camera,scene}=viewer;
   const effects=createCesiumInspectionEffects({Cesium,viewer});
   function surfaceFrame() {
@@ -56,7 +56,7 @@ export function createStandaloneInspectionControls({Cesium,viewer,body,ellipsoid
       cameraAction:destination?.action??null,cameraMotion:Boolean(destination),
       orientationTargetTiltDeg:destination?Cesium.Math.toDegrees(destination.pitch)+90:null,
       orientationTargetHeadingDeg:destination?Cesium.Math.toDegrees(Cesium.Math.zeroToTwoPi(destination.heading)):null,
-      capabilities:{orbits:false,moons:false,labels:false,lighting:scene.globe.show}};
+      capabilities:{detection:body==='earth',orbits:false,moons:false,labels:false,lighting:scene.globe.show}};
   }
   function execute(action,value){
     if(viewer.isDestroyed())return false;
@@ -80,7 +80,7 @@ export function createStandaloneInspectionControls({Cesium,viewer,body,ellipsoid
     return false;
   }
   const controls=connectInspectionControls({getState:state,execute,getLanguage,initialSettings:readInspectionLink(location.href),
-    applySettings(settings){effects.setSettings(settings);document.documentElement.dataset.visualPreset=settings.style;}});
+    applySettings(settings){effects.setSettings(settings);onVisualSettings(settings);document.documentElement.dataset.visualPreset=settings.style;}});
   let wasMoving=false,lastCameraPublish=0;
   const removePostRender=scene.postRender.addEventListener(()=>{
     const moving=Boolean(orientationMotion.destination),now=performance.now();

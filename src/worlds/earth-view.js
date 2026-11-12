@@ -1,3 +1,4 @@
+import {createEarthSatellites} from '../satellites/cesium-layer.js';
 import {installGlobeCameraControls} from './globe-camera-controls.js';
 import * as Cesium from '../../vendor/cesium/index.js';
 Cesium.Ion.defaultAccessToken = ''; // RELIC uses only a user-supplied token for optional ion assets.
@@ -17,6 +18,7 @@ const $ = selector => document.querySelector(selector);
 const viewLoading = createViewLoading({ element:$('#earth-loading'), errorElement:$('#earth-error'), getLanguage });
 const input = $('#place-input');
 
+let satellites;
 let viewer;
 let inspection;
 let disposeSceneTheme = () => {};
@@ -137,6 +139,9 @@ async function start() {
       showRenderLoopErrors:false,
       msaaSamples:window.innerWidth <= 760 ? 1 : 2,
     });
+    satellites=createEarthSatellites({Cesium,viewer,getLanguage,onLanguageChange,onInteraction:()=>{siteFocusSerial++;overviewFraming?.stop();}});
+    const satellitePicker=new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+    satellitePicker.setInputAction(event=>satellites?.handleClick(event.position),Cesium.ScreenSpaceEventType.LEFT_CLICK);
     initializeProviderCredits({elements:[$('.earth-attribution'), $('#cesium-credits')]});
     configureWorldPerformance(viewer, {
       loading:viewLoading,
@@ -161,7 +166,7 @@ async function start() {
     window.addEventListener('pagehide',disposeCameraControls,{once:true});
     overviewFraming = createOverviewFraming(viewer, Cesium, { ellipsoid:Cesium.Ellipsoid.WGS84, longitude:12, latitude:25 });
     overviewFraming.show();
-    inspection=createStandaloneInspectionControls({Cesium,viewer,body:'earth',ellipsoid:Cesium.Ellipsoid.WGS84,getLanguage,
+    inspection=createStandaloneInspectionControls({onVisualSettings:settings=>satellites?.setDetection(settings.detection!==false),Cesium,viewer,body:'earth',ellipsoid:Cesium.Ellipsoid.WGS84,getLanguage,
       beforeOrientation:()=>{siteFocusSerial++;overviewFraming?.stop();},
       onReset:()=>$('#reset-view').click(),
       onLocate:value=>selectSite({...value,name:value.name||value.label||`${value.lat}, ${value.lon}`}),
@@ -228,7 +233,7 @@ $('#google3d-toggle').addEventListener('click', async () => {
   await google3D.enable();
 });
 start();
-window.addEventListener('pagehide', event => { if (!event.persisted) { disposeSceneTheme(); inspection?.destroy(); } });
+window.addEventListener('pagehide', event => { if (!event.persisted) { disposeSceneTheme(); satellites?.dispose(); inspection?.destroy(); } });
 startLiveData($('#earth-live-data'), () => 'earth');
 onLanguageChange(lang => {
   viewLoading.refresh();

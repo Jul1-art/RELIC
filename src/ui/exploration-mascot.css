@@ -102,3 +102,11 @@ body .relic-exploration-mascot.spacey-guiding {
 .mascot-portal::after{content:'';position:absolute;inset:15% 12%;border-radius:50%;background:radial-gradient(circle at 21% 48%,#e8ffff 0 1px,transparent 1.5px),radial-gradient(circle at 69% 35%,#8fefff 0 1px,transparent 1.5px),radial-gradient(circle at 51% 71%,#bffaff 0 .7px,transparent 1.2px)}
 .mascot-emergence{position:relative;z-index:0}
 .mascot-portal-lip{z-index:1;border:2px solid #80f2ff;border-top-color:transparent;border-left-color:#48cfdf99;border-right-color:#48cfdf99;box-shadow:0 3px 9px #21d8ef6b}
+
+/* Override the world's general button gestures, including on iOS. */
+body .relic-exploration-mascot,
+body.relic-world .relic-exploration-mascot,
+body .relic-exploration-mascot.spacey-guiding {
+  touch-action: none;
+  -webkit-touch-callout: none;
+}

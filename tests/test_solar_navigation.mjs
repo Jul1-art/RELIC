@@ -119,3 +119,11 @@ test('line and page wheel inputs use the same bounded easing path, and disposing
     const after=f.element.emit('wheel',{deltaY:-1,deltaMode});assert.equal(after.immediate,undefined);assert.equal(f.element.tabIndex,-1);
   }
 });
+
+test('a pinch released before the next frame retains its final zoom',()=>{
+  const f=fixture(),initial=f.controls.getDistance();
+  f.element.emit('pointerdown',touch(30,400,320));f.element.emit('pointerdown',touch(31,600,320));
+  f.element.emit('pointermove',touch(30,350,320));f.element.emit('pointermove',touch(31,650,320));
+  f.element.emit('pointerup',touch(31,650,320));f.element.emit('pointerup',touch(30,350,320));
+  f.tick(180);assert.ok(f.controls.getDistance()<initial*.8);f.cleanup();
+});

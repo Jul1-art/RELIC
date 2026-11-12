@@ -28,6 +28,7 @@ import requests
 from .live_sources import horizons, noaa_swpc
 from .live_sources.cache import LiveCache
 from .live_sources.planetary_ephemeris import PlanetaryEphemeris
+from .live_sources.satellites import SatelliteFeeds, GROUPS as SATELLITE_GROUPS
 from .earth_surface import correct_runways
 from .place_search import search_places
 from .planetary_patches import JEZERO, TYCHO, blend_patch, tycho_image_tile
@@ -46,6 +47,7 @@ EARTH_TILES = CACHE / "height-tiles-earth-v4"
 EARTH_TILES.mkdir(exist_ok=True)
 LIVE = LiveCache(CACHE / "live-v1")
 PLANETARY_EPHEMERIS = PlanetaryEphemeris(LIVE)
+SATELLITE_FEEDS = SatelliteFeeds(CACHE / "satellites-v1")
 SIZE = 65
 MOLA128 = "https://pds-geosciences.wustl.edu/mgs/urn-nasa-pds-mgs_mola_topography_derived/meg128"
 SRTM = "https://step.esa.int/auxdata/dem/SRTMGL1"
@@ -401,6 +403,30 @@ class Handler(SimpleHTTPRequestHandler):
             return self.send_error(403, "Private or invalid path")
         parsed_url = urlparse(self.path)
         route = parsed_url.path
+        if route.startswith("/api/celestrak/"):
+            group = route.rsplit("/", 1)[-1]
+            if self.headers.get("Sec-Fetch-Site") == "cross-site":
+                return self.send_error(403, "Same-origin requests only")
+            if group not in SATELLITE_GROUPS or parsed_url.query:
+                return self.send_error(400, "Unknown satellite group")
+            try:
+                feed = SATELLITE_FEEDS.read(group)
+            except RuntimeError:
+                self.send_response(503)
+                self.send_header("Retry-After", "60")
+                self.send_header("Cache-Control", "no-store")
+                self.end_headers()
+                return
+            raw = feed["text"].encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "text/plain; charset=utf-8")
+            self.send_header("Content-Length", str(len(raw)))
+            self.send_header("Cache-Control", "no-store")
+            self.send_header("X-TLE-Cache", feed["state"])
+            self.send_header("X-TLE-Fetched-Ms", str(int(feed["at"] * 1000)))
+            self.end_headers()
+            self.wfile.write(raw)
+            return
         if route == "/api/places":
             query = parse_qs(parsed_url.query)
             try:

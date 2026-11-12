@@ -1,13 +1,14 @@
 /* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'inspection-20261112-v59-public';
-const INTERFACE_RELEASE = 'inspection-20261112-v59';
+const VERSION = 'inspection-20261112-v60-public';
+const INTERFACE_RELEASE = 'inspection-20261112-v60';
 const CLIENT_VERSION_TIMEOUT = 650;
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
 const APP_PREFIX = `relic-atlas-${encodeURIComponent(SCOPE.pathname)}-`;
 const SHELL = `${APP_PREFIX}${VERSION}-shell`;
+const INCOMPLETE_INSTALL = new URL('__incomplete-install__',SCOPE).href;
 // Large, unchanged libraries and textures survive interface-only releases.
 const ASSETS = `${APP_PREFIX}cesium-1.138-three-164-assets-v1`;
 const local = path => new URL(path, SCOPE).href;
@@ -29,6 +30,7 @@ const CORE = [
 // Requested only when the visitor explicitly saves the film for offline use.
 // This also covers a first visit whose early imports preceded worker control.
 const OFFLINE_CORE = [
+  'src/satellites/detection.js','vendor/gods-eye-view/detection/detectionDraw.js','vendor/gods-eye-view/detection/i18n.js',
   ...CORE,
   'assets/ui/worlds/earth-apollo17.jpg','assets/ui/worlds/saturn-cassini.jpg','src/ui/world-thumbnails.js','src/ui/inspection-shell.js','src/ui/inspection-shell.css','src/ui/inspection-controls.js','src/ui/visual-effects.js',
   'src/ui/inspection-motion.js','src/ui/inspection-motion.css',
@@ -79,6 +81,8 @@ const OFFLINE_CORE = [
   'intro/assets/vendor/hls.full.mjs', 'intro/assets/vendor/fontawesome-solid.js',
   'intro/assets/prologue/poster-v9-hd50.jpg',
   'intro/assets/prologue/sources-v9.json', 'intro/assets/prologue/encoding-v9-hd50.json',
+  'src/satellites/constellation-view.js', 'src/satellites/orbits.js', 'src/satellites/catalog.js', 'src/satellites/panel.js', 'src/satellites/cesium-layer.js', 'src/satellites/satellites.css',
+  'vendor/satellite/satellite.es.js', 'vendor/gods-eye-view/satellites/tle.js', 'vendor/gods-eye-view/satellites/classes.js',
   'vendor/three.module.js', 'vendor/OrbitControls.js',
 ].map(path => /^https?:/.test(path) ? path : local(path));
 
@@ -249,12 +253,17 @@ async function warm(urls, reload = false) {
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const failures = await warm(CORE);
-    if (failures.length) throw new Error('The application update will wait until its navigation files are available.');
+    if (failures.length) {
+      // Stay waiting: keep the working worker and its navigation caches intact.
+      await (await caches.open(SHELL)).put(INCOMPLETE_INSTALL,new Response('pending'));
+      return;
+    }
     await self.skipWaiting();
   })());
 });
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {
+    if(await (await caches.open(SHELL)).match(INCOMPLETE_INSTALL))return;
     const names = await caches.keys();
     await Promise.all(names.filter(name => name.startsWith(APP_PREFIX) && ![SHELL, ASSETS].includes(name)).map(name => caches.delete(name)));
     await self.clients.claim();

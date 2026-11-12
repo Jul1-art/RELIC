@@ -21,6 +21,13 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
     const motion=document.documentElement.dataset.motion;
     return motion==='reduced'||(!motion&&systemMotion.matches);
   }
+  function constrain(left,top,box) {
+    const viewport=window.visualViewport;
+    const minX=(viewport?.offsetLeft||0)+8,minY=(viewport?.offsetTop||0)+8;
+    const maxX=Math.max(minX,(viewport?.offsetLeft||0)+(viewport?.width||innerWidth)-box.width-8);
+    const maxY=Math.max(minY,(viewport?.offsetTop||0)+(viewport?.height||innerHeight)-box.height-8);
+    return {left:Math.max(minX,Math.min(maxX,left)),top:Math.max(minY,Math.min(maxY,top))};
+  }
   function place(left,top) {
     x=left;y=top;
     button.style.translate=`${x}px ${y}px`;
@@ -35,8 +42,9 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
   function moveTo(target) {
     cancelMovement();
     const box=button.getBoundingClientRect();
-    const destinationX=x+Math.max(8,Math.min(innerWidth-box.width-8,target.x))-box.left;
-    const destinationY=y+Math.max(8,Math.min(innerHeight-box.height-8,target.y))-box.top;
+    const destination=constrain(target.x,target.y,box);
+    const destinationX=x+destination.left-box.left;
+    const destinationY=y+destination.top-box.top;
     const originX=x,originY=y,distance=Math.hypot(destinationX-x,destinationY-y);
     if(reducedMotion()||distance<8){
       place(destinationX,destinationY);
@@ -130,9 +138,12 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
   let dragStartX=0,dragStartY=0;
   let dragOffsetLeft=0,dragOffsetTop=0;
   let hasDragged=false;
+  let suppressClickUntil=0;
+  const viewport=window.visualViewport;
 
   function onPointerDown(event) {
-    if(guiding||arriving||disposed||(event.button!==undefined&&event.button!==0))return;
+    if(activePointerId!==null||guiding||arriving||disposed||(event.button!==undefined&&event.button!==0))return;
+    event.stopPropagation();
     activePointerId=event.pointerId;
     dragStartX=event.clientX;
     dragStartY=event.clientY;
@@ -145,6 +156,8 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
 
   function onPointerMove(event) {
     if(activePointerId!==event.pointerId||guiding)return;
+    event.preventDefault();
+    event.stopPropagation();
     const dx=event.clientX-dragStartX;
     const dy=event.clientY-dragStartY;
     if(!hasDragged&&Math.hypot(dx,dy)>=5){
@@ -154,8 +167,7 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
     }
     if(hasDragged){
       const box=button.getBoundingClientRect();
-      const targetLeft=Math.max(8,Math.min(innerWidth-box.width-8,event.clientX-dragOffsetLeft));
-      const targetTop=Math.max(8,Math.min(innerHeight-box.height-8,event.clientY-dragOffsetTop));
+      const {left:targetLeft,top:targetTop}=constrain(event.clientX-dragOffsetLeft,event.clientY-dragOffsetTop,box);
       place(x+(targetLeft-box.left),y+(targetTop-box.top));
       if(dx>2)sprite.setPose('front_right','walking');
       else if(dx<-2)sprite.setPose('front_left','walking');
@@ -164,25 +176,25 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
 
   function onPointerUp(event) {
     if(activePointerId!==event.pointerId)return;
+    event.stopPropagation();
     activePointerId=null;
     try{button.releasePointerCapture(event.pointerId);}catch{}
     if(hasDragged){
       button.classList.remove('mascot-dragging');
       sprite.setPose('front','idle');
-      const suppressClick=(e)=>{
-        e.preventDefault();
-        e.stopPropagation();
-      };
-      button.addEventListener('click',suppressClick,{capture:true,once:true});
-      setTimeout(()=>button.removeEventListener('click',suppressClick,{capture:true}),50);
+      suppressClickUntil=performance.now()+700;
     }
+  }
+
+  function cancelDrag() {
+    if(activePointerId===null)return;
+    onPointerUp({pointerId:activePointerId,stopPropagation(){}});
   }
 
   function onResize() {
     if(guiding||disposed)return;
     const box=button.getBoundingClientRect();
-    const clampedX=Math.max(8,Math.min(innerWidth-box.width-8,box.left));
-    const clampedY=Math.max(8,Math.min(innerHeight-box.height-8,box.top));
+    const {left:clampedX,top:clampedY}=constrain(box.left,box.top,box);
     if(clampedX!==box.left||clampedY!==box.top){
       place(x+(clampedX-box.left),y+(clampedY-box.top));
     }
@@ -192,9 +204,15 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
   button.addEventListener('pointermove',onPointerMove);
   button.addEventListener('pointerup',onPointerUp);
   button.addEventListener('pointercancel',onPointerUp);
+  button.addEventListener('lostpointercapture',cancelDrag);
+  window.addEventListener('blur',cancelDrag);
+  viewport?.addEventListener('resize',onResize);
   window.addEventListener('resize',onResize);
 
-  button.addEventListener('click',()=>{if(!guiding&&!arriving)tour.replay();});
+  button.addEventListener('click',event=>{
+    if(event.detail!==0&&performance.now()<suppressClickUntil){event.preventDefault();event.stopPropagation();return;}
+    if(!guiding&&!arriving)tour.replay();
+  });
   styles.addEventListener('load',()=>{styled=true;refresh();},{once:true});
   document.head.append(styles);
   document.body.append(button);
@@ -209,7 +227,7 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
     setSuspended(value){
       if(suspended===value)return;
       suspended=value;
-      if(value)cancelMovement();
+      if(value){cancelDrag();cancelMovement();}
       refresh();
     },
     dispose(){
@@ -224,6 +242,9 @@ export function createExplorationMascot({loading,getLanguage,onLanguageChange}) 
       button.removeEventListener('pointermove',onPointerMove);
       button.removeEventListener('pointerup',onPointerUp);
       button.removeEventListener('pointercancel',onPointerUp);
+      button.removeEventListener('lostpointercapture',cancelDrag);
+      window.removeEventListener('blur',cancelDrag);
+      viewport?.removeEventListener('resize',onResize);
       window.removeEventListener('resize',onResize);
       tour.dispose();
       observer.disconnect();

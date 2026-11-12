@@ -2,7 +2,7 @@ import {normalizeVisualSettings} from './visual-effects.js';
 
 const MODES=new Set(['normal','crt','nvg','flir','anime','noir']);
 const CAMERA=new Set(['tilt','north','reset','home','locate']);
-const FLAGS=new Set(['stars','lighting','moons','orbits','labels','bloom','sharpen','scope']);
+const FLAGS=new Set(['stars','lighting','detection','moons','orbits','labels','bloom','sharpen','scope']);
 const NUMBERS=new Set(['bloomIntensity','sharpenIntensity','scopeFeather','exposure','contrast']);
 const number=value=>typeof value==='number'&&Number.isFinite(value);
 

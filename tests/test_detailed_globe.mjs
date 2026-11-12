@@ -5,12 +5,12 @@ import {readFile} from 'node:fs/promises';
 import {normalizeVisualSettings} from '../src/ui/visual-effects.js';
 
 async function fixture(){
-  const messages=[],states=[],listeners=new Map(),frames=[];
+  const messages=[],states=[],listeners=new Map(),frames=[],observers=[];
   const document={documentElement:{dataset:{theme:'night',motion:'full'}},querySelector:()=>true,createElement(tag){
     const value={tag,classList:{add(){}},setAttribute(){},remove(){this.removed=true;},contentWindow:{postMessage:(message,origin)=>messages.push({message,origin})}};
     if(tag==='iframe')frames.push(value);return value;
   }};
-  const context=vm.createContext({URL,document,location:{origin:'https://example.invalid'},window:{addEventListener:(type,cb)=>listeners.set(type,cb),removeEventListener:type=>listeners.delete(type)},setTimeout:()=>1,clearTimeout(){}});
+  const context=vm.createContext({MutationObserver:class{constructor(callback){this.callback=callback;observers.push(this);}observe(){}disconnect(){this.disconnected=true;}},URL,document,location:{origin:'https://example.invalid'},window:{addEventListener:(type,cb)=>listeners.set(type,cb),removeEventListener:type=>listeners.delete(type)},setTimeout:()=>1,clearTimeout(){}});
   const source=await readFile(new URL('../src/atlas/detailed-globe.js',import.meta.url),'utf8');
   const module=new vm.SourceTextModule(source,{context,initializeImportMeta(meta){meta.url='https://example.invalid/RELIC/src/atlas/detailed-globe.js';}});
   await module.link(name=>{
@@ -19,7 +19,7 @@ async function fixture(){
   });await module.evaluate();
   const globe=module.namespace.createDetailedGlobe({host:{append(){}},onState:state=>states.push(state)});
   const receive=(frame,type,state,origin='https://example.invalid')=>listeners.get('message')({origin,source:frame.contentWindow,data:{channel:'relic-detailed-globe-v15',type,state}});
-  return {globe,frames,messages,states,receive,listeners,document};
+  return {globe,frames,messages,states,receive,listeners,document,observers};
 }
 
 test('lazy detail view accepts only the current same-origin frame and releases replaced WebGL frames',async()=>{
@@ -88,4 +88,12 @@ test('replacing a globe cancels its blend and discards its pending arrival fligh
   assert.equal(f.globe.active,false);
   assert.ok(!f.messages.some(row=>row.message.action==='reveal'));
   f.globe.dispose();
+});
+
+
+test('satellite panel language follows host language changes and releases its observer',async()=>{
+  const f=await fixture();f.document.documentElement.lang='fr';f.globe.setFocus({id:'earth'});f.receive(f.frames[0],'boot');
+  assert.equal(f.messages.find(row=>row.message.action==='theme').message.language,'fr');
+  f.document.documentElement.lang='en';f.observers[0].callback();assert.equal(f.messages.at(-1).message.language,'en');
+  f.globe.dispose();assert.equal(f.observers[0].disconnected,true);
 });

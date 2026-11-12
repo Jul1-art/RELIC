@@ -16,7 +16,7 @@ export function createDetailedGlobe({host,onState=()=>{},onInteraction=()=>{},on
   const origin=location.origin;
   const theme=()=>document.documentElement?.dataset.theme==='day'?'day':'night';
   const send=(action,payload={})=>frame?.contentWindow?.postMessage({channel:CHANNEL,action,...payload},origin);
-  const updateTheme=()=>send('theme',{value:theme(),motion:document.documentElement.dataset.motion});
+  const updateTheme=()=>send('theme',{value:theme(),motion:document.documentElement.dataset.motion,language:document.documentElement.lang});
   function teardown(){
     clearTimeout(timer);blend?.cancel();blend=null;
     if(frame){send('dispose');frame.remove();}
@@ -75,6 +75,7 @@ export function createDetailedGlobe({host,onState=()=>{},onInteraction=()=>{},on
   }
   window.addEventListener('message',receive);
   window.addEventListener('relic-preferences-change',updateTheme);
+  const languageObserver=new MutationObserver(updateTheme);languageObserver.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
   const command=(action,value)=>{if(!active)return false;arrival=false;send(action,{value});return true;};
   return {setFocus,hide,reveal,setVisualSettings(value){visualSettings=normalizeVisualSettings(value,visualSettings);send('visualSettings',{value:visualSettings});},setContext(context){if(current)current.context=context;send('context',{context});},lookAt:id=>command('lookAt',id),lookAround:(yaw,pitch)=>command('look',{yaw,pitch}),
     get active(){return active;},get loading(){return loading;},
@@ -84,6 +85,6 @@ export function createDetailedGlobe({host,onState=()=>{},onInteraction=()=>{},on
     toggleViewTilt:()=>command('toggleViewTilt'),northUp:()=>command('northUp'),
     turn:degrees=>command('turn',degrees),move:direction=>command('move',direction),topDown:()=>command('topDown'),resetView:()=>command('resetView'),
     pause(value=true){if(value)arrival=false;send('pause',{value:Boolean(value)});},
-    dispose(){hide();disposed=true;window.removeEventListener('message',receive);window.removeEventListener('relic-preferences-change',updateTheme);}
+    dispose(){hide();disposed=true;languageObserver.disconnect();window.removeEventListener('message',receive);window.removeEventListener('relic-preferences-change',updateTheme);}
   };
 }

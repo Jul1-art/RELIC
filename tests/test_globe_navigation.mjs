@@ -198,7 +198,7 @@ test('a surface drag after free look keeps the grabbed geography under the point
 test('matched two-finger vertical motion changes the sightline while preserving the observer location',()=>{
   const f=fixture(),position=f.camera.position.clone(),orientation=f.camera.quaternion.clone(),touch=(x,y,id)=>f.event(x,y,{pointerType:'touch',pointerId:id});
   f.handlers.get('pointerdown')(touch(450,320,1));f.handlers.get('pointerdown')(touch(510,320,2));
-  f.handlers.get('pointermove')(touch(450,390,1));f.handlers.get('pointermove')(touch(510,390,2));
+  f.handlers.get('pointermove')(touch(450,390,1));f.handlers.get('pointermove')(touch(510,390,2));f.nav.enforce();
   assert.equal(f.nav.getViewState().freeLook,true);assert.ok(f.camera.position.distanceTo(position)<1e-12);assert.ok(f.camera.quaternion.angleTo(orientation)>.1);
   f.handlers.get('pointerup')(touch(510,390,2));f.handlers.get('pointerup')(touch(450,390,1));f.nav.dispose();
 });
@@ -224,7 +224,7 @@ test('Ctrl or middle drag keeps the optional surface-pivot orbit gesture',()=>{
 test('two-finger vertical motion tilts, twist turns, and pinch zooms without losing the globe',()=>{
   const f=fixture(),touch=(x,y,id)=>f.event(x,y,{pointerType:'touch',pointerId:id});
   f.handlers.get('pointerdown')(touch(450,320,1));f.handlers.get('pointerdown')(touch(510,320,2));
-  f.handlers.get('pointermove')(touch(420,390,1));f.handlers.get('pointermove')(touch(550,420,2));
+  f.handlers.get('pointermove')(touch(420,390,1));f.handlers.get('pointermove')(touch(550,420,2));f.nav.enforce();
   const state=f.nav.getViewState();assert.ok(state.tiltDeg>5);assert.notEqual(state.headingDeg,0);assert.ok(f.camera.position.length()<3);
   assert.ok(f.point(new THREE.Vector2()));f.handlers.get('pointerup')(touch(550,420,2));f.handlers.get('pointerup')(touch(420,390,1));assert.equal(f.controls.enabled,true);f.nav.dispose();
 });
@@ -249,4 +249,41 @@ test('the vendored OrbitControls cannot introduce idle drift in a tilted surface
   for(let i=0;i<1000;i++){controls.update();nav.enforce();}
   assert.deepEqual(camera.position.toArray(),freePosition);assert.deepEqual(camera.quaternion.toArray(),freeQuaternion);assert.deepEqual(camera.up.toArray(),freeUp);
   nav.dispose();controls.dispose();
+});
+
+test('parallel finger movement is coalesced without transient pinch or roll',()=>{
+  const f=fixture(),position=f.camera.position.clone(),touch=(x,y,id)=>f.event(x,y,{pointerType:'touch',pointerId:id});
+  f.handlers.get('pointerdown')(touch(420,320,1));f.handlers.get('pointerdown')(touch(540,320,2));
+  f.handlers.get('pointermove')(touch(460,350,1));
+  assert.deepEqual(f.camera.position.toArray(),position.toArray());
+  f.handlers.get('pointermove')(touch(580,350,2));f.nav.enforce();
+  assert.ok(f.camera.position.distanceTo(position)<1e-12);
+  const reference=fixture();reference.nav.lookAround(-40/640*180,30/640*180);
+  assert.ok(f.camera.quaternion.angleTo(reference.camera.quaternion)<1e-7,'Parallel movement must match a single look gesture without transient roll');
+  reference.nav.dispose();
+  f.handlers.get('pointerup')(touch(580,350,2));f.handlers.get('pointerup')(touch(460,350,1));f.nav.dispose();
+});
+
+test('pinch release flushes pending zoom and lost capture restores controls',()=>{
+  const f=fixture(),touch=(x,y,id)=>f.event(x,y,{pointerType:'touch',pointerId:id});
+  f.handlers.get('pointerdown')(touch(420,320,1));f.handlers.get('pointerdown')(touch(540,320,2));
+  f.handlers.get('pointermove')(touch(380,320,1));f.handlers.get('pointermove')(touch(580,320,2));
+  f.handlers.get('pointerup')(touch(580,320,2));
+  assert.ok(f.camera.position.length()<3);
+  f.handlers.get('lostpointercapture')(touch(380,320,1));assert.equal(f.controls.enabled,true);
+  f.nav.dispose();
+});
+
+test('two-finger translation moves the planet in the direction of the fingers on both axes',()=>{
+  for(const [dx,dy] of [[40,0],[-40,0],[0,30],[0,-30]]){
+    const f=fixture(),touch=(x,y,id)=>f.event(x,y,{pointerType:'touch',pointerId:id});
+    const before=f.focus.center.clone().project(f.camera),position=f.camera.position.clone();
+    f.handlers.get('pointerdown')(touch(420,320,1));f.handlers.get('pointerdown')(touch(540,320,2));
+    f.handlers.get('pointermove')(touch(420+dx,320+dy,1));f.handlers.get('pointermove')(touch(540+dx,320+dy,2));f.nav.enforce();
+    const after=f.focus.center.clone().project(f.camera);
+    if(dx)assert.ok((after.x-before.x)*dx>0,'Horizontal scene motion follows the fingers');
+    if(dy)assert.ok((after.y-before.y)*dy<0,'Screen Y increases downwards');
+    assert.ok(f.camera.position.distanceTo(position)<1e-12);
+    f.handlers.get('pointerup')(touch(540+dx,320+dy,2));f.handlers.get('pointerup')(touch(420+dx,320+dy,1));f.nav.dispose();
+  }
 });

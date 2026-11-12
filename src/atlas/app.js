@@ -622,7 +622,7 @@ function getInspectionState(){
     cameraMotion:Boolean(navigation?.cameraMotion||navigation?.cameraAction||flight),cameraAction:navigation?.cameraAction||flight?.action,
     orientationTargetTiltDeg:navigation?.orientationTargetTiltDeg,orientationTargetHeadingDeg:navigation?.orientationTargetHeadingDeg,
     rangeMeters:native?.rangeMeters||(navigation?.rangeWorld&&detail.radiusKm?navigation.rangeWorld/detail.size*detail.radiusKm*1000:undefined),
-    capabilities:{
+    capabilities:{detection:selected==='earth'&&Boolean(native),
       orbits:!native&&satellites.length>0,
       moons:native?['earth','mars'].includes(parent):satellites.some(row=>row.id!==selected)||(!naturalSystems&&selected==='earth'),
       lighting:!['ion-photorealistic','ion-3d-tiles'].includes(native?.sourceMode),
@@ -1247,6 +1247,12 @@ function animate(time) {
   if (document.hidden) {
     qualityWindowStart = time; qualityFrameTime = 0; qualityFrameCount = 0;
     return;
+  }
+  // Cesium owns the visible inspection frame. Do not recompute hundreds of
+  // hidden moons, labels and Three.js scene transforms behind it every frame.
+  if(detailedGlobe.active){
+    if(time-lastClockRefresh>500){simulationControls.refresh();updateScaleNote();livePanel?.render();lastClockRefresh=time;}
+    viewLoading.ready();return;
   }
   if (dt > 0 && dt < .08) { qualityFrameTime += dt; qualityFrameCount++; }
   if (time - qualityWindowStart >= 2400) {

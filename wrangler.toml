@@ -1,9 +1,12 @@
 name = "relic"
 compatibility_date = "2026-10-14"
 workers_dev = true
+main = "workers/index.js"
 
 [assets]
 directory = "./dist"
+binding = "ASSETS"
+run_worker_first = ["/api/*"]
 
 [build]
 command = "node tools/build_static.mjs"

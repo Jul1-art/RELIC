@@ -30,6 +30,7 @@ async function fixture(body){
     ResizeObserver:class{observe(){}},
   });
   const dependencies={
+    '../satellites/cesium-layer.js':{createEarthSatellites(){}},
     '../../vendor/cesium/index.js':Cesium,
     '../core/api-config.js':{getCesiumToken(){},validateCesiumToken(){}},
     '../atlas/surface-imagery.js':{SURFACE_SOURCES:{}},

@@ -19,6 +19,7 @@ export const VISUAL_SETTINGS=Object.freeze({
   lighting:{type:'boolean',default:true,label:'Sunlight',fr:'Éclairage solaire'},
   moons:{type:'boolean',default:true,label:'Moons',fr:'Lunes'},
   orbits:{type:'boolean',default:true,label:'Orbits',fr:'Orbites'},
+  detection:{type:'boolean',default:true,label:'Satellite detection',fr:'Détection des satellites'},
   labels:{type:'boolean',default:true,label:'Labels',fr:'Noms'},
   bloom:{type:'boolean',default:false,label:'Bloom',fr:'Halo lumineux'},
   sharpen:{type:'boolean',default:true,label:'Sharpen',fr:'Netteté'},

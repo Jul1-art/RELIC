@@ -56,15 +56,18 @@ export function createSolarNavigation({THREE,camera,controls,element,isActive=()
     }
     camera.lookAt(controls.target);camera.updateMatrixWorld(true);return true;
   }
-  function update(dt=1/60){
-    if(!active()){if(wasActive)refresh();return;}
-    if(!wasActive)refresh();
+  function samplePinch(){
     const nextTouch=metrics();
     if(nextTouch&&touchFrame&&nextTouch.spread>12&&touchFrame.spread>12){
       const factor=touchFrame.spread/nextTouch.spread;
       if(Math.abs(Math.log(factor))>.0005)queueZoom(factor,ndc(nextTouch.x,nextTouch.y),'touch');
     }
     touchFrame=nextTouch;
+  }
+  function update(dt=1/60){
+    if(!active()){if(wasActive)refresh();return;}
+    if(!wasActive)refresh();
+    samplePinch();
     if(desiredDistance!==null){
       const current=distance(),wanted=bounded(desiredDistance),log=current>0?Math.log(wanted/current):0;
       const amount=Math.min(.16,Math.max(-.16,log*(1-Math.exp(-16*Math.max(0,Math.min(.05,dt))))));
@@ -94,6 +97,8 @@ export function createSolarNavigation({THREE,camera,controls,element,isActive=()
     const point=pointers.get(event.pointerId);if(!point)return;
     point.x=event.clientX??point.x;point.y=event.clientY??point.y;
     if(Math.hypot(point.x-point.startX,point.y-point.startY)>(point.type==='touch'?7:5))point.dragged=true;
+    // Retain the final pinch sample even when release precedes the next render.
+    if(active())samplePinch();
     lastRelease={id:event.pointerId,at:now(),blocked:point.blocked||point.dragged||event.type==='pointercancel'};
     pointers.delete(event.pointerId);touchFrame=metrics();
     if(active()&&touchPoints().length<2)controls.enableZoom=true;
@@ -113,7 +118,7 @@ export function createSolarNavigation({THREE,camera,controls,element,isActive=()
     event.preventDefault();event.stopPropagation();
   }
   const contextmenu=event=>{if(active())event.preventDefault();};
-  const handlers={pointerdown:pointerDown,pointermove:pointerMove,pointerup:pointerEnd,pointercancel:pointerEnd,wheel,keydown,contextmenu};
+  const handlers={pointerdown:pointerDown,pointermove:pointerMove,pointerup:pointerEnd,pointercancel:pointerEnd,lostpointercapture:pointerEnd,wheel,keydown,contextmenu};
   for(const [type,handler] of Object.entries(handlers))element.addEventListener(type,handler,{capture:true,passive:false});
   if(!Number.isFinite(originalTabIndex)||originalTabIndex<0)element.tabIndex=0;
   refresh();

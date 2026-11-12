@@ -69,7 +69,7 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  const settingsForm=node('div','inspection-display-controls');display.body.append(settingsForm);
  const controls=new Map(),styleControls=new Map();
  const sceneGroup=makeGroup('scene'),imageGroup=makeGroup('image'),styleGroup=makeGroup('style');settingsForm.append(sceneGroup.element,imageGroup.element,styleGroup.element);
- for(const key of ['stars','lighting','labels','moons','orbits']){
+ for(const key of ['stars','lighting','labels','detection','moons','orbits']){
   const descriptor=VISUAL_SETTINGS[key]||{type:'boolean',default:true,label:COPY.en[key==='moons'?'moonsSetting':key]||key,fr:COPY.fr[key==='moons'?'moonsSetting':key]||key};
   controls.set(key,makeSetting(key,descriptor,sceneGroup.body));
  }

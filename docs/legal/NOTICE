@@ -20,3 +20,12 @@ The music is edited, mixed and attenuated beneath narration and archive audio.
 NASA, ESA, JPL, Cesium, Google, Esri, SpaceX and other provider names identify
 the sources or services used. Their names and marks remain subject to their
 respective rights. No endorsement or official affiliation is implied.
+
+
+Earth satellite tracking adapts God's Eye View by Bilawal Sidhu (MIT),
+commit 10a788db78f0657e2eb5f8cdd830e6417aed354d. Satellite-specific original
+sources, license, modifications and provenance are retained under
+vendor/gods-eye-view/satellites/. SGP4 uses satellite.js 6.0.2 (MIT), with its
+license in vendor/satellite/LICENSE.md. Public orbital elements are provided
+by CelesTrak under that provider's terms; the MIT code license does not grant
+rights to third-party data.

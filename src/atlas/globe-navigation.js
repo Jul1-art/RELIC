@@ -33,6 +33,7 @@ export function createGlobeNavigation({THREE,camera,controls,domElement,getFocus
   const orientationDuration=650,obliqueTilt=55*radians,straightDownTilt=1*radians,obliqueThreshold=30*radians;
   let orientation=null;
   let anchor=null,previousCentroid=null,previousSpread=0,previousAngle=0,dragId=null,dragMode='grab',savedEnabled=true,disposed=false,frame=null,freeLook=null;
+  let pendingTouch=false;
   const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
   function focus(){
     const value=getFocus?.();
@@ -157,6 +158,7 @@ export function createGlobeNavigation({THREE,camera,controls,domElement,getFocus
     return {minimum,maximum:Math.max(minimum,Number.isFinite(controls.maxDistance)?controls.maxDistance:minimum*10000)};
   }
   function enforce(time){
+    if(pendingTouch)flushTouch();
     const value=focus();if(!value)return false;
     if(orientation&&Number.isFinite(time))advanceOrientation(time,value);
     const {minimum}=limits(value);offset.copy(camera.position).sub(value.center);
@@ -268,20 +270,37 @@ export function createGlobeNavigation({THREE,camera,controls,domElement,getFocus
   function consume(event){event.preventDefault();event.stopImmediatePropagation();}
   function down(event){
     const value=focus();if(!value||event.pointerType!=='touch'&&![0,1,2].includes(event.button))return;
+    flushTouch();
     orientation=null;
     const point={x:event.clientX,y:event.clientY},orient=event.button===2||event.shiftKey,orbit=event.button===1||event.ctrlKey;
     const onSurface=hit(toNdc(point),value);
     if(!pointers.size&&!orient&&!orbit&&!onSurface&&event.pointerType!=='touch'&&!freeLook)return;
     if(!pointers.size){onInteraction();savedEnabled=controls.enabled;controls.enabled=false;dragId=value.id;dragMode=orbit?'orbit':orient||!onSurface?'look':'grab';}
-    pointers.set(event.pointerId,point);domElement.setPointerCapture?.(event.pointerId);refreshGrab();consume(event);
+    pointers.set(event.pointerId,point);try{domElement.setPointerCapture?.(event.pointerId);}catch{}refreshGrab();consume(event);
   }
   function move(event){
     if(!pointers.has(event.pointerId))return;
     const value=focus();if(!value||value.id!==dragId){reset();return;}
-    pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});const current=centroid(),currentNdc=toNdc(current).clone();
+    pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
+    if(event.pointerType==='touch'&&pointers.size>1){
+      pendingTouch=true;consume(event);return;
+    }
+    applyGesture(value);consume(event);
+  }
+  function flushTouch(){
+    if(!pendingTouch)return;
+    pendingTouch=false;
+    const value=focus();
+    if(value&&value.id===dragId&&pointers.size>1)applyGesture(value);
+  }
+  function applyGesture(value){
+    const current=centroid(),currentNdc=toNdc(current).clone();
     if(pointers.size>1||dragMode==='look'){
       const height=Math.max(1,domElement.getBoundingClientRect().height),dx=current.x-previousCentroid.x,dy=current.y-previousCentroid.y;
-      if(Math.abs(dx)>.01||Math.abs(dy)>.01)lookAround(dx/height*180,-dy/height*180);
+      // Touch dragging moves the scene with the fingers; mouse free-look
+      // continues to turn the observer toward the pointer.
+      const direction=pointers.size>1?-1:1;
+      if(Math.abs(dx)>.01||Math.abs(dy)>.01)lookAround(direction*dx/height*180,-direction*dy/height*180);
       if(pointers.size>1){
         const twist=angle(),delta=Math.atan2(Math.sin(twist-previousAngle),Math.cos(twist-previousAngle));
         if(Math.abs(delta)>.0001)lookAround(0,0,-delta/radians);previousAngle=twist;
@@ -297,22 +316,25 @@ export function createGlobeNavigation({THREE,camera,controls,domElement,getFocus
       a.set(1,0,0).applyQuaternion(camera.quaternion);quaternion.setFromAxisAngle(a,-dy);rotateCamera(quaternion,value);
     }
     const distance=spread();if(previousSpread>8&&distance>8)zoom(previousSpread/distance,pointers.size>1?undefined:currentNdc);
-    previousCentroid=current;previousSpread=distance;anchor=hit(currentNdc,value);enforce();consume(event);
+    previousCentroid=current;previousSpread=distance;anchor=hit(currentNdc,value);enforce();
   }
   function up(event){
     if(!pointers.has(event.pointerId))return;
+    flushTouch();
     pointers.delete(event.pointerId);try{domElement.releasePointerCapture?.(event.pointerId);}catch{}
     if(pointers.size){refreshGrab();dragMode=anchor?'grab':'look';}else{controls.enabled=savedEnabled;anchor=null;dragId=null;previousCentroid=null;previousSpread=0;}
     consume(event);
   }
   function doubleClick(event){if(focusPoint(toNdc({x:event.clientX,y:event.clientY})))consume(event);}
   function contextMenu(event){if(focus())event.preventDefault();}
-  const listeners={pointerdown:down,pointermove:move,pointerup:up,pointercancel:up,dblclick:doubleClick,contextmenu:contextMenu};
+  const listeners={pointerdown:down,pointermove:move,pointerup:up,pointercancel:up,lostpointercapture:up,dblclick:doubleClick,contextmenu:contextMenu};
   for(const [type,handler] of Object.entries(listeners))domElement.addEventListener(type,handler,{capture:true,passive:false});
   function reset(){
+    pendingTouch=false;
     if(pointers.size)controls.enabled=savedEnabled;
-    for(const id of pointers.keys())try{domElement.releasePointerCapture?.(id);}catch{}
-    pointers.clear();frame=null;freeLook=null;orientation=null;anchor=null;previousCentroid=null;previousSpread=0;dragId=null;
+    const captured=[...pointers.keys()];pointers.clear();
+    for(const id of captured)try{domElement.releasePointerCapture?.(id);}catch{}
+    frame=null;freeLook=null;orientation=null;anchor=null;previousCentroid=null;previousSpread=0;dragId=null;
     camera.up.copy(originalUp);camera.near=originalNear;camera.updateProjectionMatrix();
   }
   function getSurfaceCoordinates(){

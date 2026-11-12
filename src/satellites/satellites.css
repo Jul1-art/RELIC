@@ -1,0 +1,59 @@
+/* GEV satellite class palette, compact layer chip, class toggles and tracked
+   data card. Host adapter for RELIC's existing inspection dock and safe areas. */
+.relic-satellites{position:fixed;z-index:14;top:calc(84px + env(safe-area-inset-top,0px));left:max(16px,env(safe-area-inset-left,0px));width:min(300px,calc(100vw - 32px));color:#e7edf5;background:rgba(8,13,21,.94);border:1px solid #9fb3c438;border-radius:12px;box-shadow:0 10px 35px #0005;font:12px/1.45 system-ui,sans-serif;backdrop-filter:blur(14px);color-scheme:dark}
+.relic-satellites *{box-sizing:border-box}
+.relic-satellites:not([open]){width:max-content;max-width:calc(100vw - 32px)}
+.relic-satellites summary{display:flex;align-items:center;gap:12px;min-height:44px;padding:10px 14px;cursor:pointer;list-style:none;touch-action:manipulation}
+.relic-satellites summary::-webkit-details-marker{display:none}
+.satellite-title{font-weight:750;letter-spacing:.08em;text-transform:uppercase;font-size:11px}
+.satellite-count{color:#9fb3c4;font:11px ui-monospace,monospace}
+.satellite-body{padding:0 12px 12px;max-height:min(65dvh,600px);overflow:auto;overscroll-behavior:contain}
+.satellite-status{font-size:11px;color:#9fb3c4;margin:0 0 10px}
+.satellite-status[data-state=unavailable],.satellite-status[data-state=partial],.satellite-status[data-state=stale]{color:#f0c17d}
+.relic-satellites button,.satellite-search{border:1px solid #9fb3c438;background:#ffffff08;border-radius:7px;color:inherit;font:inherit;min-height:44px;padding:8px 10px;touch-action:manipulation}
+.relic-satellites button{cursor:pointer}
+.relic-satellites button:hover{background:#ffffff14}
+.relic-satellites button:disabled{opacity:.4;cursor:default}
+.relic-satellites :focus-visible{outline:2px solid #4fd8ff;outline-offset:2px}
+.satellite-toolbar{display:flex;gap:6px;margin-bottom:10px}
+.satellite-toolbar button{flex:1;font-size:11px}
+.satellite-iss{border-color:#ff44447a!important}
+.satellite-filters{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:10px}
+.satellite-class{display:flex;align-items:center;gap:6px;min-height:40px;font-size:11px;cursor:pointer}
+.satellite-class input{accent-color:var(--satellite-color);width:16px;height:16px;margin:0}
+.satellite-class-name{color:var(--satellite-color)}
+.satellite-class-count{margin-left:auto;color:#9fb3c4;font:10px ui-monospace,monospace}
+.satellite-search{width:100%;font-size:12px}
+.satellite-results{display:grid;gap:4px;margin-top:6px;max-height:180px;overflow:auto}
+.satellite-results[hidden],.satellite-card[hidden],.satellite-refresh[hidden]{display:none}
+.satellite-result{text-align:left;font-size:11px!important}
+.satellite-card{border-top:1px solid #9fb3c42b;margin-top:12px;padding-top:12px}
+.satellite-name{font-size:13px;margin:0 0 8px;overflow-wrap:anywhere}
+.satellite-metrics{display:grid;grid-template-columns:auto 1fr;gap:5px 8px;font-size:10px}
+.satellite-metrics dt{color:#9fb3c4}.satellite-metrics dd{margin:0;text-align:right;font-family:ui-monospace,monospace}
+.satellite-follow{width:100%}.satellite-follow[aria-pressed=true]{border-color:#4fd8ff}
+.satellite-foot{font-size:10px;color:#9fb3c4;margin-bottom:6px}
+.satellite-source{display:flex;flex-wrap:wrap;gap:3px 12px;font-size:9px;margin:0}.satellite-source a{color:#9fb3c4}
+[data-theme=day] .relic-satellites{background:#fffffff5;color:#182331;color-scheme:light}
+@media(max-width:700px){.relic-satellites{top:calc(66px + env(safe-area-inset-top,0px));left:max(8px,env(safe-area-inset-left,0px));width:min(286px,calc(100vw - 16px))}.satellite-body{max-height:55dvh}}
+@media(max-height:500px){.relic-satellites{top:max(8px,env(safe-area-inset-top,0px))}.satellite-body{max-height:65dvh}}
+
+/* The dense shell gets a visible cyan identity at Earth scale. */
+.satellite-starlink-count{color:#80dfff;font:10px ui-monospace,monospace;white-space:nowrap}
+.satellite-starlink-count[hidden]{display:none}
+.relic-satellites .satellite-starlink{display:block;width:100%;margin-bottom:8px;border-color:#80dfff80;color:#b2efff;background:#4fd8ff12;font-weight:650}
+.relic-satellites .satellite-starlink:hover{background:#4fd8ff25}
+[data-theme=day] .satellite-starlink-count{color:#00648a}
+[data-theme=day] .relic-satellites .satellite-starlink{color:#005e83}
+
+.relic-satellite-detection{position:absolute;inset:0;z-index:5;width:100%;height:100%;pointer-events:none}
+.relic-satellite-detection[hidden]{display:none}
+/* Keep the satellite launcher clear of the mobile Display / World data row. */
+@media(max-width:700px){
+ .relic-satellites{top:calc(116px + env(safe-area-inset-top,0px))}
+ .relic-satellites:not([open]){width:52px;max-width:52px}
+ .relic-satellites:not([open]) summary{flex-direction:column;justify-content:center;gap:2px;min-height:52px;padding:6px 4px}
+ .relic-satellites:not([open]) .satellite-title{font-size:7px;letter-spacing:0}
+ .relic-satellites:not([open]) .satellite-count{font-size:10px}
+ .relic-satellites:not([open]) .satellite-starlink-count{display:none}
+}
