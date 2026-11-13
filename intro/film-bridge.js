@@ -100,10 +100,20 @@ function offlineCopy() {
 }
 
 async function showOffline({ trigger } = {}) {
-  const copy = offlineCopy();
-  const { dialog, content } = createDialog(copy.title, trigger);
-  paragraph(content, copy.lead, 'relic-dialog-lead'); paragraph(content, copy.copy);
-  const card = document.createElement('div'); card.className = 'relic-offline-card'; content.append(card);
+  const copy = offlineCopy(),fr=french();
+  const { dialog, content } = createDialog(fr?'Télécharger le film':'Download the film', trigger);
+  paragraph(content,fr?'Un fichier vidéo à garder sur votre appareil.':'A video file to keep on your device.','relic-dialog-lead');
+  const file=PROLOGUE_MEDIA.downloads?.mp4;
+  if(file){
+    const card=document.createElement('section');card.className='relic-offline-card relic-file-card';content.append(card);
+    paragraph(card,'MP4 · 1080p50 · EN + FR','relic-offline-badge');
+    paragraph(card,fr?'Pistes audio et sous-titres en français et en anglais, sélectionnables dans votre lecteur vidéo.':'English and French audio and subtitle tracks, selectable in your video player.');
+    const link=document.createElement('a');link.className='relic-dialog-primary relic-file-download';link.href=file.url;link.download=file.filename;link.textContent=fr?'Télécharger le MP4':'Download MP4';
+    card.append(link);paragraph(card,`${new Intl.NumberFormat(getLanguage(),{maximumFractionDigits:0}).format(file.bytes/1e6)} MB`,'relic-dialog-note');
+  }
+  const browser=document.createElement('details');browser.className='relic-browser-save';const summary=document.createElement('summary');summary.textContent=fr?'Lecture hors ligne dans ce navigateur':'Offline viewing in this browser';browser.append(summary);content.append(browser);
+  paragraph(browser,fr?'Copie conservée par le navigateur, sans fichier dans vos téléchargements.':'A browser-managed copy, without a file in your Downloads folder.');
+  const card = document.createElement('div'); card.className = 'relic-offline-card'; browser.append(card);
   paragraph(card, 'EN + FR · 1080p50 HD', 'relic-offline-badge');
   const statusText = paragraph(card, copy.preparing); statusText.role = 'status'; statusText.setAttribute('aria-live', 'polite');
   const progress = document.createElement('progress'); progress.max = 1; progress.value = 0; progress.hidden = true; card.append(progress);
@@ -113,7 +123,7 @@ async function showOffline({ trigger } = {}) {
   const download = document.createElement('button'); download.type = 'button'; download.className = 'relic-dialog-primary'; download.textContent = copy.download; download.disabled = true;
   const cancel = document.createElement('button'); cancel.type = 'button'; cancel.textContent = copy.cancel; cancel.hidden = true;
   const remove = document.createElement('button'); remove.type = 'button'; remove.textContent = copy.remove; remove.hidden = true;
-  actions.append(download, cancel, remove); paragraph(content, copy.note, 'relic-dialog-note');
+  actions.append(download, cancel, remove); paragraph(browser, copy.note, 'relic-dialog-note');
   let state = { state:'loading', ready:false, bytes:0 }, attempt = null;
   const update = value => {
     if (!dialog.open) return;
@@ -151,7 +161,7 @@ async function showOffline({ trigger } = {}) {
     catch (error) { if (error.name !== 'AbortError') showError(error); await refresh(); }
     finally { attempt = null; }
   });
-  await refresh();
+  browser.addEventListener('toggle',()=>{if(browser.open)void refresh();});
 }
 
 const film = createPrologue({

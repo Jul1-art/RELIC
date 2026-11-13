@@ -3703,7 +3703,23 @@ export const PROLOGUE_MEDIA=Object.freeze({
   },
   "width": 1920,
   "height": 1080,
-  "fps": 50
+  "fps": 50,
+  "downloads": {
+    "mp4": {
+      "filename": "RELIC-film-1080p50-EN-FR.mp4",
+      "bytes": 233320997,
+      "sha256": "56f8e94852f6ae0fb5498ada50040fad87aa914b6be6011b69d7a5dbd97526ad",
+      "url": "https://github.com/Jul1-art/RELIC/releases/download/film-v12-0-hd50/RELIC-film-1080p50-EN-FR.mp4",
+      "audioLanguages": [
+        "en",
+        "fr"
+      ],
+      "subtitleLanguages": [
+        "en",
+        "fr"
+      ]
+    }
+  }
 }
 );
 export const PROLOGUE=Object.freeze(PROLOGUE_MEDIA.captions.en);

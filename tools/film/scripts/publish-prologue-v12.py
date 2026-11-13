@@ -12,6 +12,8 @@ publisher=module('clauses','tools/film/scripts/publish-prologue-v10.py');timing=
 plan=read(ROOT/'tools/film/scripts/prologue-edit-v12.json');script=read(ROOT/'tools/film/scripts/prologue-narration-v12.json');manifest=read(work/'narration/manifest.json');alignment=read(work/'alignment-report.json');assert alignment['passed'];picture=read(work/'picture-report.json');assert picture['passed']
 media=read(ROOT/'tools/film/reference/prologue-player-v11-1.json');assert media['revision']=='11.1-hd50';old=copy.deepcopy(media)
 media.update(revision='12.0-hd50',duration=731,hls=f'./assets/prologue/{release}/en.m3u8',offline={'id':'relic-documentary-v12-hd50-'+sha(work/'master-en.m4a')[:20]})
+download=ROOT/'tools/film/scripts/prologue-download-v12.json'
+if download.exists():media['downloads']={'mp4':read(download)}
 for lang in ['en','fr']:media['languages'][lang]['hls']=f'./assets/prologue/{release}/{lang}.m3u8'
 oldscenes={s['id']:s for s in old['scenes']};media['scenes']=[]
 for shot in plan['shots']:
