@@ -773,8 +773,8 @@ function selectBody(id,recenter=false,{preserveCamera=false}={}) {
     nav.scrollTo({ left, behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
   }
   updateDetail(id);
-  setDetailsCollapsed(false);
-  if(id!=='overview')openInformation();
+  setDetailsCollapsed(true);
+  window.dispatchEvent(new CustomEvent('planet-dashboard-panel',{detail:{open:false}}));
   controls.enableDamping=id==='overview';
   controls.zoomToCursor=id==='overview';
   controls.screenSpacePanning=id!=='overview';
@@ -1222,7 +1222,7 @@ window.addEventListener('relic-film-state', event => {
   filmActive = event.detail?.active === true;
   window.__relicFilmActive=filmActive;
   syncSceneActivity();
-  if(!filmActive&&selected!=='overview')requestAnimationFrame(openInformation);
+
 });
 renderer.domElement.addEventListener('webglcontextlost', event => {
   event.preventDefault();

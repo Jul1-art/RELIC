@@ -109,14 +109,14 @@ export function initializePlanetDashboard(options = {}) {
     if(!oldMain.children.length)oldMain.remove();
   }
   document.body.prepend(root);document.body.classList.add('has-planet-dashboard');
-  let open=!matchMedia('(max-width: 960px)').matches;
+  let open=false;
   function setPanel(value){open=Boolean(value)&&body!=='overview';root.dataset.panelOpen=String(open);panelButton.setAttribute('aria-expanded',String(open));panelButton.setAttribute('aria-label',open?text('Hide view data','Masquer les données'):text('Show view data','Afficher les données'));inspector.inert=!open;}
   function setBody(next){
     if(!BODIES.includes(next))return;
     const previous=body;body=next;if(previous!==next)atlasSearch?.dispatchEvent(new Event('dashboard-context-change'));document.body.dataset.dashboardBody=next;root.dataset.dashboardBody=next;select.value=next;
     commandLabel.textContent=atlas&&next==='overview'?text('Choose a world to explore','Choisissez un monde à explorer'):text('Explore your current world','Explorez votre monde');
     panelButton.hidden=next==='overview';
-    if(next==='overview')setPanel(false);else if(previous!==next&&!matchMedia('(max-width: 960px)').matches)setPanel(true);
+    if(next==='overview'||previous!==next)setPanel(false);
     if(atlasSearch)atlasSearch.querySelector('input').placeholder=['overview','earth'].includes(next)?text('Search any location…','Rechercher un lieu…'):text('Enter latitude, longitude','Saisir latitude, longitude');
     render();
   }

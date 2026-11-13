@@ -50,7 +50,9 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  const worldName=node('div','inspection-world-name');worldName.hidden=true;
  const arrival=node('div','inspection-world-arrival');arrival.hidden=true;arrival.setAttribute('role','status');const arrivalName=node('span','inspection-arrival-name');arrival.append(arrivalName);
  const fps=node('output','inspection-fps');fps.textContent='— FPS';fps.title='Actual 3D frames rendered per second. Idle views render fewer frames.';
- let arrivalBody=null,waitingArrival=false;
+ let arrivalBody=null,waitingArrival=false,arrivalLocked=false;
+ const inertBeforeArrival=new Map();
+ const arrivalObserver=new MutationObserver(records=>{if(!arrivalLocked)return;for(const record of records)if(inertBeforeArrival.has(record.target)&&!record.target.inert)inertBeforeArrival.set(record.target,false);makeBackgroundInert();});
  const actions=new Map();
  for(const key of ['share','tilt','north','reset']){
   const button=node('button','inspection-round');button.type='button';button.dataset.inspectionAction=key;button.innerHTML=glyph(key);
@@ -196,12 +198,13 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
  const contentObserver=new MutationObserver(()=>{if(active)organizeData();});contentObserver.observe(inspector,{childList:true,subtree:true});
  const themeObserver=new MutationObserver(render);themeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
  const formObserver=new MutationObserver(()=>{if(active&&openPanels.has('location')){if(command.hidden)command.hidden=false;if(command.inert)command.inert=false;}});formObserver.observe(command,{attributes:true,attributeFilter:['hidden','inert']});
- arrival.addEventListener('transitionend',event=>{if(event.target===arrival&&!waitingArrival&&arrival.classList.contains('is-leaving'))arrival.hidden=true;});
+ arrival.addEventListener('transitionend',event=>{if(event.target===arrival&&!waitingArrival&&arrival.classList.contains('is-leaving')){arrival.hidden=true;lockBackground(false);}});
+ for(const type of ['pointerdown','pointermove','pointerup','click','dblclick','contextmenu','touchstart','touchmove','touchend','wheel','keydown','keyup'])listen(window,type,event=>{if(arrivalLocked){if(event.cancelable)event.preventDefault();event.stopImmediatePropagation();}},{capture:true,passive:false});
  const unsubscribe=onLanguageChange(()=>{render();renderDestinations();});
  refresh();render();
  events.dispatchEvent(new CustomEvent('relic-inspection-mounted'));
  return {element:root,get active(){return active;},refresh,update,show,close,openLocation:opener=>show('location',opener),openData:opener=>show('data',opener),
-  dispose(){if(disposed)return;disposed=true;cancelAnimationFrame(focusFrame);clearTimeout(feedbackTimer);for(const remove of removers)remove();for(const controller of disclosures)controller.destroy();observer.disconnect();contentObserver.disconnect();themeObserver.disconnect();formObserver.disconnect();unsubscribe?.();restore();for(const marker of markers.values())marker.remove();root.remove();document.body.classList.remove('has-inspection-shell');},
+  dispose(){if(disposed)return;lockBackground(false);arrivalObserver.disconnect();disposed=true;cancelAnimationFrame(focusFrame);clearTimeout(feedbackTimer);for(const remove of removers)remove();for(const controller of disclosures)controller.destroy();observer.disconnect();contentObserver.disconnect();themeObserver.disconnect();formObserver.disconnect();unsubscribe?.();restore();for(const marker of markers.values())marker.remove();root.remove();document.body.classList.remove('has-inspection-shell');},
  };
 
  function emit(action,value){if(disposed)return;events.dispatchEvent(new CustomEvent('relic-inspection-command',{detail:{action,value}}));}
@@ -385,14 +388,26 @@ export function createInspectionShell({dashboard=document.querySelector('.planet
    }
   }
  }
+ function makeBackgroundInert(){
+  for(const item of [...document.body.children,...root.children]){
+   if(item===root||item===arrival||item===fps||!('inert' in item))continue;
+   if(!inertBeforeArrival.has(item))inertBeforeArrival.set(item,item.inert);
+   if(!item.inert)item.inert=true;
+  }
+ }
+ function lockBackground(value){
+  if(arrivalLocked===value){if(value)makeBackgroundInert();return;}arrivalLocked=value;
+  if(value){document.activeElement?.blur?.();makeBackgroundInert();arrivalObserver.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['inert']});}
+  else{arrivalObserver.disconnect();for(const [item,wasInert]of inertBeforeArrival)item.inert=wasInert;inertBeforeArrival.clear();}
+ }
  function syncWorldName(){
   const inspecting=state.body&&state.body!=='overview';const name=state.name||'';
   worldName.textContent=name;worldName.hidden=!inspecting||!name;
   if(state.body!==arrivalBody){arrivalBody=state.body;waitingArrival=Boolean(inspecting&&name);fps.textContent='— FPS';arrival.classList.remove('is-leaving');}
   arrivalName.textContent=name;
-  if(waitingArrival){arrival.hidden=false;arrival.classList.remove('is-leaving');
-   if(!state.loading&&!state.cameraMotion){waitingArrival=false;arrival.classList.add('is-leaving');if(document.documentElement.dataset.motion==='reduced'||matchMedia('(prefers-reduced-motion: reduce)').matches)arrival.hidden=true;}
-  }else if(!inspecting){arrival.hidden=true;arrival.classList.remove('is-leaving');}
+  if(waitingArrival){arrival.hidden=false;lockBackground(true);arrival.classList.remove('is-leaving');
+   if(!state.loading&&!state.cameraMotion){waitingArrival=false;arrival.classList.add('is-leaving');if(document.documentElement.dataset.motion==='reduced'||matchMedia('(prefers-reduced-motion: reduce)').matches){arrival.hidden=true;lockBackground(false);}}
+  }else if(!inspecting){arrival.hidden=true;lockBackground(false);arrival.classList.remove('is-leaving');}
  }
  function selectDataTab(key){
   dataTab=key;dataContent.dataset.tab=key;dataContent.setAttribute('aria-labelledby',`inspection-tab-${key}`);

@@ -1004,3 +1004,9 @@ html[data-theme=day] body.has-inspection-shell #relic-action-rail .rail-button:i
 @media(prefers-reduced-motion:reduce){.inspection-world-arrival{transition:none}}
 .inspection-world-arrival{z-index:120}
 .inspection-fps{z-index:121}
+/* The arrival surface captures input; inert also covers the live Cesium frame. */
+.inspection-world-arrival{pointer-events:auto;touch-action:none;cursor:wait}
+#inspection-location .inspection-tray-popover{width:fit-content;max-width:min(720px,calc(100vw - 24px))}
+#inspection-location .inspection-location-row{width:max-content;max-width:100%}
+#inspection-location .inspection-location-pills{flex:0 1 auto;width:max-content;max-width:calc(100% - 234px)}
+@media(max-width:700px){#inspection-location .inspection-tray-popover{position:fixed;left:12px;right:12px;width:auto;max-width:none;transform:none}#inspection-location .inspection-location-row{width:100%}#inspection-location .inspection-location-pills{width:100%;max-width:100%}}
