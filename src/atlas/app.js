@@ -551,7 +551,7 @@ function makeNativeContext(id){
     return {...row,positionKm:parentPosition&&relative?{x:parentPosition.x+relative.x,y:parentPosition.y-relative.z,z:parentPosition.z+relative.y}:null};
   }).filter(row=>row.positionKm);
   const context=makeCelestialContext({selected:id,date,getState:(body,date)=>planetaryEphemeris.getState(body,date),companions,getName:body=>displayBody(bodyData(body)||{id:body,name:body}).name});
-  return inspectionSettings.moons===false?context.filter(row=>row.id==='sun'||Object.hasOwn(physicalBodies,row.id)):context;
+  return inspectionSettings.moons===false?context.filter(row=>row.id!=='moon'&&(row.id==='sun'||Object.hasOwn(physicalBodies,row.id))):context;
 }
 function focusDetailedView(id,{lat,lon,range,direction,heading,tilt,animateArrival=false}={}){
   if(!['earth','moon','mars'].includes(id)){detailedGlobe.hide();return;}
@@ -607,8 +607,8 @@ function syncInspectionScene(){
   labelHost.hidden=active||!showLabels;
   moon.visible=!naturalSystems&&(selected==='moon'||(selected==='earth'&&inspectionSettings.moons!==false));
   solarIllumination.setEnabled(!active||inspectionSettings.lighting!==false);
-  naturalSystems?.setDisplay({moons:!active||inspectionSettings.moons!==false,orbits:!active||inspectionSettings.orbits!==false,labels:showLabels});
-  comet?.setLabels(showLabels);
+  naturalSystems?.setDisplay({moons:!active||inspectionSettings.moons!==false,orbits:!active||(inspectionSettings.moons!==false&&inspectionSettings.orbits!==false),labels:!active||inspectionSettings.moons!==false});
+  comet?.setLabels(true);
 }
 function getInspectionState(){
   if(!isWorldInspection())return {body:selected,capabilities:{tilt:true,north:true}};

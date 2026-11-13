@@ -229,10 +229,12 @@ export async function openSources(trigger) {
   paragraph(content, french()
     ? `Un documentaire de ${minutes} min ${String(seconds).padStart(2, '0')}, exporté en 1080p50 à partir des meilleures sources disponibles. Les archives de définition inférieure sont agrandies et leur cadence adaptée ; cela ne recrée pas de détails manquants. Les origines et certaines missions utilisent des animations ; les dinosaures sont des reconstitutions. La narration nouvelle utilise des voix de synthèse en anglais et en français. Les voix historiques sont des enregistrements originaux.`
     : `A ${minutes}-minute ${seconds}-second documentary exported at 1080p50 from the best available source footage. Lower-resolution archives are upscaled and their frame rates resampled; this does not recreate missing detail. The origins and some missions use animations; dinosaurs are reconstructed. New narration uses synthetic voices in English and French. Historical voices are original recordings.`);
-  paragraph(content,'“Helios” — Scott Buckley · CC BY 4.0','relic-sources-music');
+  paragraph(content,'“Helios” · “The Climb” · “Aurora” — Scott Buckley · CC BY 4.0','relic-sources-music');
   const filmSources = document.createElement('div'); filmSources.className = 'relic-sources-links'; content.append(filmSources);
   for (const [label,url] of [
     ['Scott Buckley · Helios','https://www.scottbuckley.com.au/library/helios/'],
+    ['Scott Buckley · The Climb','https://www.scottbuckley.com.au/library/the-climb/'],
+    ['Scott Buckley · Aurora','https://www.scottbuckley.com.au/library/aurora/'],
     ['Font Awesome Free · icons','https://fontawesome.com/license/free'],
     ['Kokoro · synthetic narration','https://huggingface.co/hexgrad/Kokoro-82M'],
     [french() ? 'Provenance, dates et licences' : 'Provenance, dates and licenses',new URL('assets/prologue/sources-v9.json',INTRO_ROOT).href],

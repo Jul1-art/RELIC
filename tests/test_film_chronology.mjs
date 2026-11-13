@@ -5,8 +5,8 @@ import { PROLOGUE_MEDIA } from '../intro/prologue-data-v8.js';
 
 const readJSON = async path => JSON.parse(await readFile(new URL(path, import.meta.url), 'utf8'));
 const chronology = await readJSON('../tools/film/scripts/prologue-chronology-v9.json');
-const production = await readJSON('../tools/film/scripts/prologue-edit-v11.json');
-const narration = await readJSON('../tools/film/scripts/prologue-narration-v11.json');
+const production = await readJSON('../tools/film/scripts/prologue-edit-v12.json');
+const narration = await readJSON('../tools/film/scripts/prologue-narration-v12.json');
 const encoding = await readJSON('../intro/assets/prologue/encoding-v9-hd50.json');
 const close = (actual, expected, message) => assert(Math.abs(actual - expected) < 0.000001, message ?? `${actual} != ${expected}`);
 
@@ -43,11 +43,11 @@ test('the chronological edit partitions every second of the existing film exactl
 });
 
 test('the active production plan and player scenes share the complete chronological timeline', () => {
-  assert.equal(PROLOGUE_MEDIA.revision, '11.1-hd50');
+  assert.equal(PROLOGUE_MEDIA.revision, '12.0-hd50');
   assert.equal(PROLOGUE_MEDIA.revision, production.revision);
   assert.equal(encoding.revision, production.revision);
-  assert.equal(PROLOGUE_MEDIA.duration, 746);
-  assert.equal(production.duration, 746);
+  assert.equal(PROLOGUE_MEDIA.duration, 731);
+  assert.equal(production.duration, 731);
   continuous(PROLOGUE_MEDIA.scenes, production.duration, 'player scenes');
   continuous(production.shots, production.duration, 'production shots');
   assert.deepEqual(PROLOGUE_MEDIA.scenes.map(item => item.id), production.shots.map(item => item.id));
@@ -132,31 +132,30 @@ test('Webb leads directly to one wide solar view and the RELIC card, without old
   const ending = production.shots.slice(production.shots.findIndex(shot=>shot.id==='webb'));
   assert.deepEqual(ending.map(shot=>shot.id),['webb','webb-deployment','webb-observatory','solar-system','relic']);
   assert.equal(ending.at(-1).source,'black');
-  close(ending.at(-1).start,736);
-  close(ending.at(-1).end,746);
+  close(ending.at(-1).start,721);
+  close(ending.at(-1).end,731);
   close(ending.at(-1).duration,10);
   const wide=ending.find(shot=>shot.id==='solar-system');
-  close(wide.start,713);
-  close(wide.end,736);
-  close(wide.fadeOut,1.6);
+  close(wide.start,707);
+  close(wide.end,721);
+  close(wide.fadeOut,2);
   assert.equal(wide.source,'v9-0');
   assert(wide.sourceStart>=548,'Exclude the Mars close-up retained at the beginning of the old wide shot');
   assert(wide.sourceStart+wide.sourceDuration<=561);
   const reflection=narration.lines.find(row=>row.id==='journeys-leave-traces');
-  for(const text of Object.values(reflection.text)) assert.match(text,/Titan/);
-  assert.match(reflection.text.en,/interstellar/);
-  assert.match(reflection.text.fr,/interstellaire/);
+  assert.match(reflection.text.en,/Every mission leaves a trace.*RELIC.*Your journey starts here/);
+  assert.match(reflection.text.fr,/Chaque mission laisse une trace.*RELIC/);
   for(const cues of Object.values(PROLOGUE_MEDIA.captions)) {
     const cards=cues.filter(cue=>cue.kind==='end');
     assert.equal(cards.length,1);
-    close(cards[0].start,736,'The final caption must not turn the preceding wide shot into a brand card');
-    close(cards[0].end,746);
+    close(cards[0].start,721,'The final caption must not turn the preceding wide shot into a brand card');
+    close(cards[0].end,731);
   }
 });
 
 test('all narration and music finish before the silent RELIC logo-and-name card',()=>{
   const brand=scene('relic');
-  close(production.musicEnd,735.4);
+  close(production.musicEnd,720.8);
   assert(production.musicEnd<brand.start);
   assert(production.musicFinalFadeSeconds>=4);
   for(const line of narration.lines) {
@@ -179,8 +178,8 @@ test('Sputnik introduces its genuine worldwide radio signal before playing it wi
   assert(introduction);
   close(introduction.start,123.1);
   close(introduction.end,131.4);
-  assert.match(introduction.text.en,/Listen.*radio beeps.*received around the world/);
-  assert.match(introduction.text.fr,/Écoutez.*bips radio.*captés dans le monde entier/);
+  assert.equal(introduction.text.en,'In 1957, Sputnik became the first artificial satellite.');
+  assert(!/Écoutez|bips radio/.test(introduction.text.fr));
   const signal=production.archivalAudio.find(row=>row.id==='sputnik-original-signal');
   assert(signal);
   assert.equal(signal.source,'asset');
@@ -252,7 +251,8 @@ test('historical corrections distinguish the two Shuttle losses and identify the
   assert.match(text('retiring-the-shuttle').en,/Columbia.*2003/);
   assert.match(text('rivals-build-together').en,/Fifteen.*United States, Russia, Canada, Japan.*eleven European/);
   assert.match(text('von-braun-postwar').en,/Nazi.*von Braun.*V2/);
-  assert.match(text('falcon-ongoing').en,/continue today/);
+  assert(!narration.lines.some(row=>['falcon-ongoing','falcon-reuse','voyager-power'].includes(row.id)));
+  assert(!production.shots.some(row=>row.id==='iss-life'));
 });
 
 test('scene kickers are absent and ISS is identified in the main subtitle track',()=>{
@@ -264,4 +264,12 @@ test('scene kickers are absent and ISS is identified in the main subtitle track'
     assert(name.start>=scene('iss-whole').start && name.end<=scene('iss-whole').end);
     assert(Object.values(name.title).includes('International Space Station'));
   }
+});
+
+
+test('requested narration removals apply to both active captions and recorded script',()=>{
+ const en=PROLOGUE_MEDIA.captions.en.map(c=>c.title?.en||'').join(' ');
+ for(const phrase of ['Listen to its radio beeps','turned that promise','Nuclear generators provide electricity','The probe would descend','This reconstruction follows','descended under parachute and','After separating, the boosters','Recovering these stages','These flights from 2019','Falcon launches and booster recoveries'])assert(!en.includes(phrase),phrase);
+ assert.match(en,/On 14 January 2005, Huygens landed on Titan/);
+ assert.equal(encoding.quality.narrationAlignment.paragraphs.length,narration.lines.length*2);
 });

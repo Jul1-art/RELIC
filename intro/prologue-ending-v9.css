@@ -24,3 +24,12 @@
  .intro.prologue[data-cue-kind=end] .prologue-gate-actions{gap:8px}
  .intro.prologue[data-cue-kind=end] .prologue-gate-actions .prologue-enter{min-height:40px;padding-block:8px}
 }
+/* Closing signature: one measured reveal, then a stable invitation to explore. */
+.intro.prologue[data-cue-kind=end] .prologue-caption{gap:19px}
+.intro.prologue[data-cue-kind=end] img.prologue-endmark{width:clamp(118px,12vw,168px);transform:translateY(calc((1 - var(--end-progress,1)) * 12px)) scale(calc(.94 + var(--end-progress,1) * .06));filter:drop-shadow(0 0 28px #ffffff12)}
+.intro.prologue[data-cue-kind=end] #intro-line{font-weight:300;letter-spacing:.3em;padding-left:.3em;font-size:clamp(30px,3vw,44px)}
+.intro.prologue[data-cue-kind=end] .prologue-gate{margin-top:23px}
+.intro.prologue[data-cue-kind=end] .prologue-enter{min-width:176px;border-radius:24px!important;padding:12px 24px!important;transition:background .2s,border-color .2s,transform .2s}
+.intro.prologue[data-cue-kind=end] .prologue-enter:hover{transform:translateY(-2px)}
+@media(max-height:500px) and (orientation:landscape){.intro.prologue[data-cue-kind=end] img.prologue-endmark{width:64px}.intro.prologue[data-cue-kind=end] .prologue-caption{gap:12px}.intro.prologue[data-cue-kind=end] .prologue-gate{margin-top:4px}}
+@media(prefers-reduced-motion:reduce){.intro.prologue[data-cue-kind=end] img.prologue-endmark,.intro.prologue[data-cue-kind=end] .prologue-enter:hover{transform:none}}

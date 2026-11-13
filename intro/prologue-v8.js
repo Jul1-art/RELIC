@@ -555,10 +555,10 @@ export function createPrologue({
       const staticEnding = ending && (Boolean(reducedMotion()) || video.paused || video.ended);
       element.style.setProperty('--end-progress', endProgress.toFixed(4));
       element.style.setProperty('--end-picture-opacity', (ending ? staticEnding ? 0 : 1 - smooth(endTime / 1.4) : 1).toFixed(4));
-      element.style.setProperty('--end-mark-opacity', (staticEnding ? 1 : ending ? smooth((endTime - .8) / 1.4) : 0).toFixed(4));
-      element.style.setProperty('--end-word-opacity', (staticEnding ? 1 : ending ? smooth((endTime - 1.4) / 1.4) : 0).toFixed(4));
+      element.style.setProperty('--end-mark-opacity', (staticEnding ? 1 : ending ? smooth((endTime - .15) / 1.3) : 0).toFixed(4));
+      element.style.setProperty('--end-word-opacity', (staticEnding ? 1 : ending ? smooth((endTime - .7) / 1.2) : 0).toFixed(4));
       element.style.setProperty('--end-rule-progress', (staticEnding ? 1 : ending ? smooth((endTime - 1.8) / 1.2) : 0).toFixed(4));
-      element.style.setProperty('--end-enter-opacity', (staticEnding ? 1 : ending ? smooth((endTime - 2.8) / .8) : 1).toFixed(4));
+      element.style.setProperty('--end-enter-opacity', (staticEnding ? 1 : ending ? smooth((endTime - 2.2) / 1) : 1).toFixed(4));
       // Archive captions follow every spoken word, including short radio calls.
       // Keep the entire clause visible for its complete cue instead of spending
       // most of a brief quotation on an entrance/exit animation.

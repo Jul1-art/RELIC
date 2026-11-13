@@ -115,7 +115,7 @@ export function createCelestialScene({Cesium,viewer,onSelect=()=>{}}){
       if(pixels>=1.2)ensureSphere(record).show=true;
       else if(record.sphere)record.sphere.show=false;
       record.point.show=pixels<1.2&&!occluded;
-      record.label.show=labelsVisible&&pixels>=2.5&&!occluded&&pixels<height*.35;
+      record.label.show=(!['mercury','venus','earth','mars','jupiter','saturn','uranus','neptune'].includes(record.row.id)||labelsVisible)&&pixels>=2.5&&!occluded&&pixels<height*.35;
       if(record.label.show){
         C.Cartesian3.subtract(origin,position,towardCamera);C.Cartesian3.normalize(towardCamera,towardCamera);
         C.Cartesian3.multiplyByScalar(towardCamera,record.row.radiusMeters*1.025,towardCamera);

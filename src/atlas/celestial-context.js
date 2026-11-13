@@ -31,7 +31,7 @@ export function makeCelestialContext({selected,date,getState,getName=id=>id,comp
     const fixed=sceneToBodyFixed(relative,basis),worldBasis=bodyOrientationBasis(row.id,date)||IDENTITY;
     const axis=vector=>sceneToBodyFixed(vector,basis);
     const sun=axis(eclipticToScene({x:-row.positionKm.x,y:-row.positionKm.y,z:-row.positionKm.z})),length=Math.hypot(sun.x,sun.y,sun.z);
-    return {id:row.id,name:row.name||getName(row.id),radiusMeters:row.radiusKm*1000,
+    return {id:row.id,naturalMoon:row.id==='moon'||Boolean(row.parent),name:row.name||getName(row.id),radiusMeters:row.radiusKm*1000,
       position:{x:fixed.x*1000,y:fixed.y*1000,z:fixed.z*1000},
       axes:{x:axis(worldBasis.x),y:axis({x:-worldBasis.z.x,y:-worldBasis.z.y,z:-worldBasis.z.z}),z:axis(worldBasis.y)},
       sunDirection:length?{x:sun.x/length,y:sun.y/length,z:sun.z/length}:null,

@@ -11,3 +11,7 @@ html[data-motion=reduced] body.atlas-page .planet-dashboard #planet-labels .plan
 html body.atlas-page .planet-dashboard #planet-labels[hidden]{display:none!important}
 
 html body.atlas-page #imagery-credit[data-source-detail]{display:none!important}
+/* World names are floating text, without chips or frames. Satellite detections
+   retain their dedicated brackets. */
+html body.atlas-page .planet-label,html body.atlas-page .natural-moon-label,html body.atlas-page .comet-site-label{background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+html body.atlas-page .planet-label::before{display:none!important}

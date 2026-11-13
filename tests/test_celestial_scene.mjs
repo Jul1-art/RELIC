@@ -84,3 +84,14 @@ test('day and night markers contrast with their sky without changing celestial g
   assert.deepEqual(sphere.modelMatrix,matrix);assert.equal(sphere.geometryInstances.geometry._radii.x,6371000);
   f.celestial.setTheme('night');assert.deepEqual(point.color,Cesium.Color.WHITE);assert.deepEqual(label.outlineColor,Cesium.Color.BLACK);f.celestial.dispose();
 });
+
+test('Labels hides planetary names while natural moon and probe names remain visible',()=>{
+ const f=fixture();
+ f.celestial.setBodies([earth,{...earth,id:'moon',name:'Moon',radiusMeters:1737400,position:{x:8e7,y:0,z:0}},{...earth,id:'philae',name:'Philae'}]);
+ const labels=[...f.owned].filter(value=>value.items)[1];
+ assert(labels.items.every(label=>label.show));f.celestial.setLabelsVisible(false);
+ assert.equal(labels.items.find(label=>label.id==='earth').show,false);
+ assert.equal(labels.items.find(label=>label.id==='moon').show,true);
+ assert.equal(labels.items.find(label=>label.id==='philae').show,true);
+ f.celestial.dispose();
+});

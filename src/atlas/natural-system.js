@@ -120,7 +120,7 @@ export async function createNaturalSystems({THREE,scene,planetGroups,planets,get
   return chosen;
  }
  function updateLabels(){
-  labelLayer.hidden=focus!=='overview'&&!display.labels;
+  labelLayer.hidden=focus!=='overview'&&(!display.moons||!display.labels);
   if(labelLayer.hidden)return;
   const parentFocus=parentOf(focus)||focus;const selected=states.get(focus);let candidates=[];
   if(focus!=='overview'&&!(selected&&camera.position.distanceTo(selected.position)<selected.radius*12))candidates=[...(selected?[selected]:[]),...([...states.values()].filter(s=>s.major&&visibleMoon(s)&&s.row.parent===parentFocus&&s!==selected))].slice(0,10);
