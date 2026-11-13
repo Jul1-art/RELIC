@@ -46,7 +46,7 @@ export function registerApplicationWorker() {
   if (!globalThis.isSecureContext || !('serviceWorker' in navigator)) return Promise.resolve(null);
   if (!workerRegistration) {
     workerRegistration = navigator.serviceWorker.register(new URL('sw.js', APP_ROOT).href, { scope:APP_ROOT.pathname })
-      .catch(() => null);
+      .catch(() => { workerRegistration = null; return null; });
   }
   return workerRegistration;
 }

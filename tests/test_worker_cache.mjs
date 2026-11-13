@@ -167,3 +167,36 @@ test('a temporarily missing navigation file leaves the working update and its ca
  assert.equal(client.navigations.length,0);assert.equal(client.posts.length,0);
  assert.ok(w.stores.has('relic-atlas-%2FRELIC%2F-old-shell'));
 });
+
+test('canonical same-origin HTML redirects can install and play offline',async()=>{
+ const w=await worker();
+ w.setServe(async request=>{
+  const path=new URL(request.url).pathname;
+  const response=new Response(path.endsWith('.html')?'<title>RELIC</title><main>viewer</main>':'asset',{headers:{'Content-Type':path.endsWith('.html')?'text/html':'application/javascript'}});
+  if(path.endsWith('.html')){Object.defineProperty(response,'redirected',{value:true});Object.defineProperty(response,'url',{value:request.url.endsWith('index.html')?origin:request.url.replace(/\.html$/,'')});}
+  return response;
+ });
+ await w.dispatch('install');await w.dispatch('activate');
+ assert(![...w.stores.values()].some(store=>[...store.keys()].some(key=>key.endsWith('__incomplete-install__'))));
+ w.setServe(async()=>{throw Error('offline');});
+ const document=await w.dispatch('fetch',{request:w.request('pages/earth',{navigate:true})});assert.match(await document.text(),/RELIC/);
+});
+
+test('authentication and external redirects cannot populate the offline navigation cache',async()=>{
+ const w=await worker();
+ w.setServe(async()=>{const response=new Response('<title>RELIC login</title>',{headers:{'Content-Type':'text/html'}});Object.defineProperty(response,'redirected',{value:true});Object.defineProperty(response,'url',{value:origin+'login'});return response;});
+ await w.dispatch('install');assert([...w.stores.values()].some(store=>[...store.keys()].some(key=>key.endsWith('__incomplete-install__'))));
+});
+
+test('redirected HTML is materialized so manual-mode offline navigation can use it',async()=>{
+ const w=await worker();
+ function redirectedHTML(url){
+  const response=new Response('<title>RELIC</title><main>viewer</main>',{headers:{'Content-Type':'text/html','Content-Encoding':'gzip'}});
+  Object.defineProperty(response,'redirected',{value:true});Object.defineProperty(response,'url',{value:url});Object.defineProperty(response,'clone',{value:()=>redirectedHTML(url)});return response;
+ }
+ w.setServe(async request=>request.url.endsWith('.html')?redirectedHTML(request.url.endsWith('index.html')?origin:request.url.replace(/\.html$/,'')):new Response('asset'));
+ await w.dispatch('install');
+ w.setServe(async()=>{throw Error('offline');});
+ const result=await w.dispatch('fetch',{request:w.request('',{navigate:true})});
+ assert.equal(result.redirected,false);assert.equal(result.headers.get('Content-Encoding'),null);assert.match(await result.text(),/RELIC/);
+});

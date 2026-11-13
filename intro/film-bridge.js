@@ -89,13 +89,13 @@ function offlineCopy() {
     preparing:'Préparation…', ready:'Le film est disponible hors ligne.', missing:'Pas encore téléchargé.', stale:'Une nouvelle version du film est disponible.',
     download:'Télécharger', update:'Mettre à jour', remove:'Supprimer', cancel:'Annuler le téléchargement', loading:'Téléchargement en cours…',
     note:'Votre navigateur peut libérer cet espace si l’appareil manque de stockage. Les données en direct et les cartes distantes nécessitent une connexion.',
-    unsupported:'Ce navigateur ne permet pas de garder le film hors ligne.', noSpace:'L’espace disponible est insuffisant.', unavailable:'Le téléchargement a échoué. Vérifiez la connexion puis réessayez.', connect:'Connectez-vous pour télécharger le film.',
+    unsupported:'Ce navigateur ne permet pas de garder le film hors ligne.', noSpace:'L’espace disponible est insuffisant.', unavailable:'Le téléchargement n’a pas abouti. Réessayez.', worker:'La préparation hors ligne n’est pas encore prête. Réessayez après la mise à jour de la page.', integrity:'Les fichiers reçus ne correspondent pas à cette version du film. Rechargez la page puis réessayez.', connect:'Connectez-vous pour télécharger le film.',
   } : {
     title:'The film, anywhere.', lead:'The complete film, even without a connection.', copy:'Save the English and French versions on this device. Downloading starts only when you choose.',
     preparing:'Getting ready…', ready:'The film is available offline.', missing:'Not downloaded yet.', stale:'A new version of the film is available.',
     download:'Download', update:'Update', remove:'Remove', cancel:'Cancel download', loading:'Downloading…',
     note:'Your browser may free this space if your device runs low on storage. Live data and remote maps need a connection.',
-    unsupported:'This browser cannot keep the film offline.', noSpace:'There is not enough free storage.', unavailable:'The download failed. Check your connection and try again.', connect:'Connect to download the film.',
+    unsupported:'This browser cannot keep the film offline.', noSpace:'There is not enough free storage.', unavailable:'The download did not complete. Please try again.', worker:'Offline storage is not ready yet. Try again after the page finishes updating.', integrity:'The received files do not match this film version. Reload the page and try again.', connect:'Connect to download the film.',
   };
 }
 
@@ -124,17 +124,17 @@ async function showOffline({ trigger } = {}) {
       : state.supported === false ? copy.unsupported : state.state === 'stale' ? copy.stale : navigator.onLine === false ? copy.connect : copy.missing;
     size.textContent = state.bytes ? `${new Intl.NumberFormat(getLanguage(), { maximumFractionDigits:0 }).format(state.bytes / 1e6)} MB` : '';
     download.hidden = state.ready || busy;
-    download.disabled = state.state === 'loading' || state.supported === false || navigator.onLine === false;
+    download.disabled = state.state === 'loading' || state.supported === false;
     download.textContent = state.state === 'stale' ? copy.update : copy.download;
     cancel.hidden = !busy; remove.hidden = busy || !(state.removable || state.ready);
   };
   const showError = error => {
     errorText.hidden = false;
-    errorText.textContent = error.code === 'storage-full' ? copy.noSpace : error.code === 'unsupported' ? copy.unsupported : copy.unavailable;
+    errorText.textContent = error.code === 'storage-full' ? copy.noSpace : error.code === 'unsupported' ? copy.unsupported : error.code === 'worker-not-ready' ? copy.worker : error.code === 'integrity' ? copy.integrity : copy.unavailable;
   };
   const refresh = async () => {
     try { await ensureFilmWorker(); update(await offlineFilm.getStatus(PROLOGUE_MEDIA)); }
-    catch (error) { update({ state:'unsupported', supported:false }); showError(error); }
+    catch (error) { update({ state:'error', supported:error.code!=='unsupported' }); showError(error); }
   };
   const unsubscribe = offlineFilm.subscribe(update);
   dialog.addEventListener('close', () => { unsubscribe(); attempt?.abort(); offlineFilm.cancel(PROLOGUE_MEDIA); }, { once:true });

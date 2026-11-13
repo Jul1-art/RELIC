@@ -1,8 +1,8 @@
 /* RELIC application cache. Movie storage remains an explicit, separate action. */
 importScripts('./intro/film-cache.js');
 
-const VERSION = 'inspection-20261113-v69-public';
-const INTERFACE_RELEASE = 'inspection-20261113-v69';
+const VERSION = 'inspection-20261113-v71-public';
+const INTERFACE_RELEASE = 'inspection-20261113-v71';
 const CLIENT_VERSION_TIMEOUT = 650;
 const SCOPE = new URL('./', self.registration.scope);
 const FILM_SCOPE = new URL('intro/', SCOPE).href;
@@ -129,6 +129,9 @@ async function upgradeOpenInterfaces() {
   }));
 }
 
+// Saving the film requires its code and player UI, not planetary terrain,
+// moon textures or comet models. Those remain online exploration resources.
+const OFFLINE_FILM_CORE=OFFLINE_CORE.filter(value=>{const path=new URL(value).pathname;return !path.startsWith(new URL('assets/',SCOPE).pathname)||CORE.includes(value);});
 const pending = new Map();
 let cooldownUntil = 0;
 let cooldownLoaded;
@@ -140,9 +143,18 @@ function belongsToApp(url) {
     && !EXCLUDED_PATH.test(url.pathname)
     && ![...url.searchParams.keys()].some(key => PRIVATE_QUERY.test(key));
 }
+function publicPagePath(url){
+  if(!belongsToApp(url)||url.hash)return null;
+  const relative=url.pathname.slice(SCOPE.pathname.length);
+  if(relative===''||relative==='index.html')return SCOPE.pathname;
+  if(/^pages\/(earth|terrain|globe)(?:\.html)?$/.test(relative))return SCOPE.pathname+relative.replace(/\.html$/,'');
+  return null;
+}
 function cacheKey(request) {
   const url = new URL(typeof request === 'string' ? request : request.url);
-  if (url.pathname === SCOPE.pathname) url.pathname = new URL('index.html', SCOPE).pathname;
+  const page=publicPagePath(new URL(url.origin+url.pathname));
+  if(page===SCOPE.pathname)url.pathname=new URL('index.html',SCOPE).pathname;
+  else if(page)url.pathname=page+'.html';
   // Planet/coordinate parameters alter the viewer state, not its static HTML.
   if (/\.html$/i.test(url.pathname) || [...url.searchParams.keys()].every(key => key === 'v')) url.search = '';
   return url.href;
@@ -154,7 +166,12 @@ function immutable(url) {
     || (url.pathname.startsWith(new URL('assets/', SCOPE).pathname) && !/\.(?:json|webmanifest)$/i.test(url.pathname));
 }
 async function cacheable(response, url) {
-  if (!response?.ok || response.redirected || response.type === 'opaque') return false;
+  if (!response?.ok || response.type === 'opaque') return false;
+  if(response.redirected){
+    let destination;try{destination=new URL(response.url);}catch{return false;}
+    const expected=publicPagePath(url);
+    if(!expected||destination.origin!==SCOPE.origin||destination.pathname!==expected||destination.search!==url.search||destination.hash||!/text\/html/i.test(response.headers.get('Content-Type')||''))return false;
+  }
   if (/private|no-store/i.test(response.headers.get('Cache-Control') || '')) return false;
   if (Number(response.headers.get('Content-Length') || 0) > MAX_ASSET_BYTES) return false;
   if (/text\/html/i.test(response.headers.get('Content-Type') || '')) {
@@ -215,7 +232,15 @@ async function load(request, { reload = false } = {}) {
   if (pending.has(key)) return (await pending.get(key)).clone();
   const operation = (async () => {
     try {
-      const response = await fetch(normalized, { cache:reload ? 'reload' : immutable(url) ? 'default' : 'no-cache' });
+      let response = await fetch(normalized, { cache:reload ? 'reload' : immutable(url) ? 'default' : 'no-cache' });
+      // Navigation requests may use redirect:manual. A cached redirected
+      // response cannot be returned for those requests: materialize only the
+      // validated canonical public HTML as an ordinary response first.
+      if(response.redirected&&await cacheable(response,url)){
+        const body=await response.arrayBuffer(),headers=new Headers(response.headers);
+        headers.delete('Content-Encoding');headers.delete('Transfer-Encoding');headers.set('Content-Length',String(body.byteLength));
+        response=new Response(body,{status:response.status,statusText:response.statusText,headers});
+      }
       const html = /text\/html/i.test(response.headers.get('Content-Type') || '');
       const ratePage = html && /rate limit exceeded|too many requests/i.test(await response.clone().text());
       if (response.status === 429 || response.status === 503 || ratePage) {
@@ -275,7 +300,7 @@ self.addEventListener('message', event => {
   if (event.data?.type === 'RELIC_FILM_OFFLINE_PING') {
     event.ports?.[0]?.postMessage({ type:'RELIC_FILM_OFFLINE_READY', version:1 });
   } else if (event.data?.type === 'RELIC_CACHE_OFFLINE_SHELL') {
-    if (!offlineWarm) offlineWarm = warm(OFFLINE_CORE).finally(() => { offlineWarm = null; });
+    if (!offlineWarm) offlineWarm = warm(OFFLINE_FILM_CORE).finally(() => { offlineWarm = null; });
     event.waitUntil(offlineWarm.then(failures => {
       event.ports?.[0]?.postMessage(failures.length ? { ok:false, error:'Some application files are not available for offline playback.' } : { ok:true });
     }, () => event.ports?.[0]?.postMessage({ ok:false, error:'The application could not be saved offline.' })));
