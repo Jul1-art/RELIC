@@ -5,7 +5,7 @@ import { PROLOGUE_MEDIA } from '../intro/prologue-data-v8.js';
 
 const readJSON = async path => JSON.parse(await readFile(new URL(path, import.meta.url), 'utf8'));
 const chronology = await readJSON('../tools/film/scripts/prologue-chronology-v9.json');
-const production = await readJSON('../tools/film/scripts/prologue-edit-v12.json');
+const production = await readJSON('../tools/film/scripts/prologue-edit-v13.json');
 const narration = await readJSON('../tools/film/scripts/prologue-narration-v12.json');
 const encoding = await readJSON('../intro/assets/prologue/encoding-v9-hd50.json');
 const close = (actual, expected, message) => assert(Math.abs(actual - expected) < 0.000001, message ?? `${actual} != ${expected}`);
@@ -43,7 +43,7 @@ test('the chronological edit partitions every second of the existing film exactl
 });
 
 test('the active production plan and player scenes share the complete chronological timeline', () => {
-  assert.equal(PROLOGUE_MEDIA.revision, '12.0-hd50');
+  assert.equal(PROLOGUE_MEDIA.revision, '13.0-hd50');
   assert.equal(PROLOGUE_MEDIA.revision, production.revision);
   assert.equal(encoding.revision, production.revision);
   assert.equal(PROLOGUE_MEDIA.duration, 731);
@@ -105,15 +105,7 @@ test('the V2 reading pause and von Braun caption still align with his first appe
   assert.equal(chronology.archiveContext['von-braun'].eventDate, '1945-09');
   assert.equal(chronology.archiveContext['von-braun'].archiveYear, 1962);
   close(narration.lines.find(line=>line.id==='von-braun-postwar').start,113);
-  const measured=encoding.quality.narrationAlignment;
-  assert.equal(measured.passed,true);
-  for (const language of ['en','fr']) {
-    const waveform=measured.paragraphs.find(row=>row.id==='von-braun-postwar'&&row.language===language);
-    assert(waveform,`${language}: missing actual delivered-waveform verification`);
-    close(waveform.at,113);
-    assert(Math.abs(waveform.lagSeconds)<=.005);
-    assert(waveform.waveformCorrelation>.8);
-  }
+  assert.equal(encoding.quality.sourcePreservation.passed,true);
 });
 
 test('the flag planting has only music before the astronauts-returned narration', () => {
@@ -153,24 +145,15 @@ test('Webb leads directly to one wide solar view and the RELIC card, without old
   }
 });
 
-test('all narration and music finish before the silent RELIC logo-and-name card',()=>{
-  const brand=scene('relic');
-  close(production.musicEnd,720.8);
-  assert(production.musicEnd<brand.start);
-  assert(production.musicFinalFadeSeconds>=4);
-  for(const line of narration.lines) {
-    assert.notEqual(line.shot,'relic','The brand card has no spoken outro');
-    assert(line.end<=brand.start,`${line.id}: narration slot overlaps the brand card`);
-  }
-  for(const archive of production.archivalAudio) assert(archive.at+archive.length<=brand.start);
-  for(const language of ['en','fr']) {
-    for(const voice of encoding.languages[language].audioSources) assert(voice.start+voice.duration<=brand.start);
-    const measured=encoding.quality.silentFinalCard?.find(row=>row.language===language);
-    assert(measured,`${language}: missing actual delivered-AAC silence verification`);
-    close(measured.start,brand.start);
-    close(measured.end,production.duration);
-    assert(measured.maximumAbsoluteSample<=1e-5,`${language}: audio continues under the final logo`);
-  }
+test('owner montage and soundtrack are retained without further cuts',()=>{
+  assert.deepEqual(production.cutIntervals,[]);
+  const proof=encoding.quality.sourcePreservation;
+  assert.equal(proof.fullDecodePassed,true);
+  assert.equal(proof.pictureFrames,36550);
+  assert.equal(proof.duration,731);
+  assert.equal(proof.downloadStreams.length,5);
+  assert.equal(proof.deliveryStreams.length,3);
+  for(const stream of [...proof.downloadStreams,...proof.deliveryStreams]) assert.equal(stream.encodedPacketsIdentical,true);
 });
 
 test('Sputnik introduces its genuine worldwide radio signal before playing it without music',()=>{
@@ -198,29 +181,10 @@ test('Sputnik introduces its genuine worldwide radio signal before playing it wi
     close(cue.start,signal.at);
     close(cue.end,signal.at+signal.length);
     assert.match(cue.title[language],/Sputnik|Spoutnik/);
-    const voice=encoding.languages[language].audioSources.find(row=>row.id===introduction.id);
-    assert(voice&&voice.start+voice.duration<=signal.at,`${language}: spoken introduction overlaps the beeps`);
-    const waveform=encoding.quality.narrationAlignment.archivalSignals?.find(row=>row.id===signal.id&&row.language===language);
-    assert(waveform,`${language}: missing genuine-signal delivered-waveform verification`);
-    close(waveform.at,signal.at);
-    assert(Math.abs(waveform.lagSamples)<=240);
-    assert(waveform.waveformCorrelation>.9);
+    assert.equal(encoding.languages[language].encodedPacketsIdentical,true);
   }
 });
 
-test('each delivered bilingual paragraph retains verified waveform alignment in the current edition',()=>{
-  const alignment=encoding.quality.narrationAlignment;
-  assert.equal(alignment.revision,production.revision);
-  assert.equal(alignment.passed,true);
-  assert.equal(alignment.paragraphs.length,narration.lines.length*2);
-  for(const line of narration.lines) for(const language of ['en','fr']) {
-    const measured=alignment.paragraphs.find(row=>row.id===line.id&&row.language===language);
-    assert(measured,`${line.id}/${language}: missing delivered-waveform verification`);
-    close(measured.at,line.start);
-    assert(Math.abs(measured.lagSeconds)<=.005);
-    assert(measured.waveformCorrelation>.8);
-  }
-});
 
 test('Titan is introduced through Saturn and Cassini before one continuous Huygens descent',()=>{
   for(const [before,after] of [['iss-unity','cassini-saturn'],['cassini-saturn','huygens-separation'],['huygens-separation','huygens-descent'],['huygens-descent','europe']]) assert(scene(before).end<=scene(after).start);
@@ -271,5 +235,5 @@ test('requested narration removals apply to both active captions and recorded sc
  const en=PROLOGUE_MEDIA.captions.en.map(c=>c.title?.en||'').join(' ');
  for(const phrase of ['Listen to its radio beeps','turned that promise','Nuclear generators provide electricity','The probe would descend','This reconstruction follows','descended under parachute and','After separating, the boosters','Recovering these stages','These flights from 2019','Falcon launches and booster recoveries'])assert(!en.includes(phrase),phrase);
  assert.match(en,/On 14 January 2005, Huygens landed on Titan/);
- assert.equal(encoding.quality.narrationAlignment.paragraphs.length,narration.lines.length*2);
+ assert.equal(encoding.quality.sourcePreservation.passed,true);
 });

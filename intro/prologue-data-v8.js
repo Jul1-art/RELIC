@@ -1,21 +1,21 @@
-/** Documentary: scene-bound bilingual narration and verified media clock. */
+/** Owner-supplied film; encoded media preserved without further cuts. */
 export const PROLOGUE_MEDIA=Object.freeze({
-  "revision": "12.0-hd50",
+  "revision": "13.0-hd50",
   "duration": 731,
   "preview": false,
   "encoding": "./assets/prologue/encoding-v9-hd50.json",
   "sources": "./assets/prologue/sources-v9.json",
   "poster": "./assets/prologue/poster-v9-hd50.jpg",
   "language": "en",
-  "hls": "./assets/prologue/v12-0-hd50/en.m3u8",
+  "hls": "./assets/prologue/v13-0-hd50/en.m3u8",
   "languages": {
     "en": {
       "language": "en",
-      "hls": "./assets/prologue/v12-0-hd50/en.m3u8"
+      "hls": "./assets/prologue/v13-0-hd50/en.m3u8"
     },
     "fr": {
       "language": "fr",
-      "hls": "./assets/prologue/v12-0-hd50/fr.m3u8"
+      "hls": "./assets/prologue/v13-0-hd50/fr.m3u8"
     }
   },
   "scenes": [
@@ -3699,7 +3699,7 @@ export const PROLOGUE_MEDIA=Object.freeze({
     ]
   },
   "offline": {
-    "id": "relic-documentary-v12-hd50-6934c0d0ad20de71880c"
+    "id": "relic-documentary-v13-0b304c6b359a35f94692"
   },
   "width": 1920,
   "height": 1080,
@@ -3707,9 +3707,9 @@ export const PROLOGUE_MEDIA=Object.freeze({
   "downloads": {
     "mp4": {
       "filename": "RELIC-film-1080p50-EN-FR.mp4",
-      "bytes": 233320997,
-      "sha256": "56f8e94852f6ae0fb5498ada50040fad87aa914b6be6011b69d7a5dbd97526ad",
-      "url": "https://github.com/Jul1-art/RELIC/releases/download/film-v12-0-hd50/RELIC-film-1080p50-EN-FR.mp4",
+      "bytes": 244878905,
+      "sha256": "fd3ed2a9de33131be392e27abe589c51d9c2ff2dbe1f25569ce3293c2802330b",
+      "url": "https://github.com/Jul1-art/RELIC/releases/download/film-v13-0-hd50/RELIC-film-1080p50-EN-FR.mp4",
       "audioLanguages": [
         "en",
         "fr"
@@ -3719,7 +3719,8 @@ export const PROLOGUE_MEDIA=Object.freeze({
         "fr"
       ]
     }
-  }
+  },
+  "bakedEndCard": true
 }
 );
 export const PROLOGUE=Object.freeze(PROLOGUE_MEDIA.captions.en);

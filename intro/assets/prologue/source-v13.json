@@ -1,0 +1,9 @@
+{
+  "revision": "13.0-hd50",
+  "sourceKind": "owner-provided MP4",
+  "sourceSha256": "0b304c6b359a35f946921c06f23614357ead2a793c15e9ba61ed643d48e7f0ec",
+  "sourceBytes": 244855635,
+  "duration": 731,
+  "cutIntervals": [],
+  "policy": "Owner confirmed the ISS runner is already absent; preserve this exact montage and both supplied audio tracks."
+}

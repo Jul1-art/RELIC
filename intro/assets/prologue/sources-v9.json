@@ -812,9 +812,9 @@
   },
   "offlineContext": "Voluntary full download, size/SHA-256 verification, shared video and localized mixed audio. A new edition is not marked available until its own complete files have been verified.",
   "schema": "relic.prologue.sources.v9",
-  "version": 12,
-  "revision": "12.0-hd50",
-  "checkedOn": "2026-11-13",
+  "version": 13,
+  "revision": "13.0-hd50",
+  "checkedOn": "2026-11-14",
   "preview": false,
   "sourcesPending": false,
   "narrativeAudioPending": false,
@@ -829,11 +829,11 @@
     "height": 1080,
     "fps": 50,
     "languages": {
-      "en": "v12-0-hd50/en.m3u8",
-      "fr": "v12-0-hd50/fr.m3u8"
+      "en": "v13-0-hd50/en.m3u8",
+      "fr": "v13-0-hd50/fr.m3u8"
     },
     "encodingManifest": "encoding-v9-hd50.json",
-    "sourcePolicy": "Checked V11.1 picture packets retained, ISS runner removed, closing shot shortened and faded; both mixed AAC tracks rebuilt from stock narration, genuine retained archives and three licensed scores.",
+    "sourcePolicy": "Owner confirmed the ISS runner is already absent; preserve this exact montage and both supplied audio tracks.",
     "encodingManifestSha256": "4d394d0b721fe1c025cd0db2e3e9ada070807ab64515af3b0f6c48ac6cbad5b2",
     "totalBytes": 238146536,
     "fileCount": 290
@@ -1402,1647 +1402,6 @@
         }
       }
     ]
-  },
-  "narration": {
-    "synthetic": true,
-    "voices": {
-      "en": "af_heart",
-      "fr": "ff_siwis"
-    },
-    "paragraphs": [
-      {
-        "id": "a-world-and-a-question",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "Millions of years later, humanity transformed this same world, and learned to reach beyond it.",
-        "at": 88.9,
-        "end": 94.41733333333335,
-        "duration": 5.517333333333333,
-        "sha256": "09e06e761f40c6ca27f9ba315e7215f32c7df86db4b55671b0467f609d2d353b"
-      },
-      {
-        "id": "a-world-and-a-question",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Des millions d’années plus tard, l’humanité transformait cette même planète, puis apprenait à explorer au-delà.",
-        "at": 88.9,
-        "end": 95.12133333333334,
-        "duration": 6.221333333333333,
-        "sha256": "b4226c68be462699134bb604ffbd1e38f9dee28682a489bc339305702a9e53d9"
-      },
-      {
-        "id": "war-rockets",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "In 1944, Nazi Germany deployed the V1 cruise missile and the V2 ballistic rocket.",
-        "at": 99.5,
-        "end": 106.31866666666667,
-        "duration": 6.818666666666667,
-        "sha256": "2780b4ddccbfa7fd3cf62f2a5a70c4827e31f50f2a36c500e5cf3365cd0e8734"
-      },
-      {
-        "id": "war-rockets",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "En 1944, l’Allemagne nazie déploie le missile de croisière V1 et la fusée balistique V2.",
-        "at": 99.5,
-        "end": 106.148,
-        "duration": 6.648,
-        "sha256": "edadd08888dc458af33fc963c91a530067fd53130b224edb997914341d5577e2"
-      },
-      {
-        "id": "von-braun-postwar",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "A Nazi engineer, Wernher von Braun led development of the V2. After the war, he joined the American programme.",
-        "at": 113.0,
-        "end": 120.50133333333333,
-        "duration": 7.501333333333333,
-        "sha256": "0b8075ebeb7128b4fddcea5906ef8a94eba73207f8d687491c4a24f145759111"
-      },
-      {
-        "id": "von-braun-postwar",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Ingénieur nazi, Wernher von Braun dirige le développement de la V2. Après la guerre, il rejoint le programme américain.",
-        "at": 113.0,
-        "end": 120.352,
-        "duration": 7.352,
-        "sha256": "bc542859fc3aec151794f2f5bed96dc0449115bf62dd71cf120a40883b1a9e9b"
-      },
-      {
-        "id": "a-signal-around-earth",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "In 1957, Sputnik became the first artificial satellite.",
-        "at": 123.1,
-        "end": 127.764,
-        "duration": 4.664,
-        "sha256": "6ea8d2fde353191cac51f3e30b7abe4298c3b7e3834b7f71ace54e75254c6d63"
-      },
-      {
-        "id": "a-signal-around-earth",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "En 1957, Spoutnik devient le premier satellite artificiel.",
-        "at": 123.1,
-        "end": 127.84933333333333,
-        "duration": 4.749333333333333,
-        "sha256": "4e9d8d03476f81bc2966fb695930492fe4a0b6d678a06e84cb42a9273ae364cf"
-      },
-      {
-        "id": "laika",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "Could a living passenger survive in orbit? Laika became the first dog to circle Earth, but did not survive the journey.",
-        "at": 135.5,
-        "end": 142.916,
-        "duration": 7.416,
-        "sha256": "83e5ef531cbc582df7099e968865eb2a16996463f91efe0a712ad7ca9d8712cc"
-      },
-      {
-        "id": "laika",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Un être vivant pouvait-il survivre en orbite ? Laïka devient la première chienne à tourner autour de la Terre, sans survivre au voyage.",
-        "at": 135.5,
-        "end": 143.53466666666668,
-        "duration": 8.034666666666666,
-        "sha256": "91cc0b1d9a7a1262bca27098a6884a93ba40f84ba78cdd814409f579e135be55"
-      },
-      {
-        "id": "gagarin",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "Yuri Gagarin, the first human in space.",
-        "at": 147.1,
-        "end": 149.69466666666665,
-        "duration": 2.5946666666666665,
-        "sha256": "5ab51737d791fcfc4fd0949e9b7afa40d9f54292e041607e818e8d95eb68fb91"
-      },
-      {
-        "id": "gagarin",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Youri Gagarine, premier humain dans l’espace.",
-        "at": 147.1,
-        "end": 149.716,
-        "duration": 2.616,
-        "sha256": "d1ad31bff4f423d412551e4247e025dd6bffbb976533145ed8fb5bb24666eb94"
-      },
-      {
-        "id": "a-destination",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "In 1961, the United States set a new destination beyond Earth orbit: the Moon.",
-        "at": 161.5,
-        "end": 167.72133333333332,
-        "duration": 6.221333333333333,
-        "sha256": "e5afe04fc050ab3194cc70b6f85c6591d4610c53e364e8381ae807a5a4f5078f"
-      },
-      {
-        "id": "a-destination",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "En 1961, les États-Unis fixent un objectif au-delà de l’orbite terrestre : la Lune.",
-        "at": 161.5,
-        "end": 167.61466666666666,
-        "duration": 6.1146666666666665,
-        "sha256": "51566c8916cd8e1393a8bf4c2036b54116aea822cd17af0af7c1032fec322b20"
-      },
-      {
-        "id": "tereshkova-first-woman",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "On 16 June 1963, Valentina Tereshkova became the first woman in space. Aboard Vostok 6, she orbited Earth forty-eight times.",
-        "at": 189.5,
-        "end": 200.09466666666665,
-        "duration": 10.594666666666667,
-        "sha256": "09a06c992dfa52cab2eca1731f5361c8d6490d11bfcf6f64c3d3f0ac47c365ee"
-      },
-      {
-        "id": "tereshkova-first-woman",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Le 16 juin 1963, Valentina Terechkova devient la première femme dans l’espace. À bord de Vostok 6, elle accomplit quarante-huit orbites autour de la Terre.",
-        "at": 189.5,
-        "end": 200.372,
-        "duration": 10.872,
-        "sha256": "efe3cdcb5f262d5f9511d673568fae8ed1aa1191819501c5156fc30300a0c702"
-      },
-      {
-        "id": "leonov-first-spacewalk",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "On 18 March 1965, Alexei Leonov left his Voskhod 2 spacecraft. For the first time, a human floated outside a spacecraft in orbit.",
-        "at": 203.5,
-        "end": 214.20133333333334,
-        "duration": 10.701333333333332,
-        "sha256": "12e2f1527704543b8f12739e7f37833870f59f9a18994ac9fac0bc3bf7f73102"
-      },
-      {
-        "id": "leonov-first-spacewalk",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Le 18 mars 1965, Alexeï Leonov sort du vaisseau Voskhod 2. Pour la première fois, un être humain évolue à l’extérieur d’un vaisseau en orbite.",
-        "at": 203.5,
-        "end": 213.96666666666667,
-        "duration": 10.466666666666667,
-        "sha256": "e9f15ee17d4114248d83d202c900e3159302a27b92b5ecbbd29f968ec664a2d5"
-      },
-      {
-        "id": "apollo8-first-orbit",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "On 24 December 1968, Apollo 8 became the first crewed mission to orbit the Moon.",
-        "at": 217.4,
-        "end": 223.77066666666667,
-        "duration": 6.370666666666667,
-        "sha256": "19c05f616f3e61ea834ceeed6f4a33a782cb661d5c8eda98e310d8823ae9ba6d"
-      },
-      {
-        "id": "apollo8-first-orbit",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Le 24 décembre 1968, Apollo 8 devient la première mission habitée en orbite autour de la Lune.",
-        "at": 217.4,
-        "end": 224.88,
-        "duration": 7.48,
-        "sha256": "9afc48c19c648bc70bae11f335dffe3864d29efc88d3324eb0ef110b978cf4a1"
-      },
-      {
-        "id": "apollo8-earthrise",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "Bill Anders photographed Earth rising above the lunar horizon. Earthrise offered a new view of our home.",
-        "at": 227.4,
-        "end": 233.728,
-        "duration": 6.328,
-        "sha256": "bc8a8f6bb116c7f47e5b48d3496653874a1818b33b2b4f0f4562ef323d252a46"
-      },
-      {
-        "id": "apollo8-earthrise",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Bill Anders photographie la Terre au-dessus de l’horizon lunaire. Earthrise offre un nouveau regard sur notre planète.",
-        "at": 227.4,
-        "end": 235.02933333333334,
-        "duration": 7.629333333333333,
-        "sha256": "ffd69f36bcd65e7ab90307c6c25ee4a450ad6b485a87fda8d400ef298e89b881"
-      },
-      {
-        "id": "a-promise-becomes-a-journey",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "In 1969, Apollo 11 set course for the Moon. Saturn V carried three astronauts on the mission.",
-        "at": 237.5,
-        "end": 244.916,
-        "duration": 7.416,
-        "sha256": "2cbb6c00f5c597f8fb07ea0ca5abddbd524d4c115f09710d0a321b9f144620ba"
-      },
-      {
-        "id": "a-promise-becomes-a-journey",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "En 1969, Apollo 11 prend la direction de la Lune. Saturn V emporte trois astronautes pour cette mission.",
-        "at": 237.5,
-        "end": 245.492,
-        "duration": 7.992,
-        "sha256": "f8472a44ab063b9c03cfe94115c32b2d1a76fcdc8d3552af99db0ccc14350027"
-      },
-      {
-        "id": "two-go-down-one-stays",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "On 20 July 1969, Eagle separated from Columbia. Michael Collins stayed in lunar orbit while Neil Armstrong and Buzz Aldrin descended to the surface.",
-        "at": 265.5,
-        "end": 276.64933333333335,
-        "duration": 11.149333333333333,
-        "sha256": "7c1c5509fd99759cc17248db126ea97a3d997147a3b916dc9687587ef77a2b34"
-      },
-      {
-        "id": "two-go-down-one-stays",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Le 20 juillet 1969, Eagle se sépare de Columbia. Michael Collins reste en orbite lunaire pendant que Neil Armstrong et Buzz Aldrin descendent vers la surface.",
-        "at": 265.5,
-        "end": 277.48133333333334,
-        "duration": 11.981333333333334,
-        "sha256": "a914e2456c861e2f8532f9e80926d4c77ddf5f867000aa469c59981d173b3efb"
-      },
-      {
-        "id": "the-first-machines-left-behind",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "The astronauts returned to Earth. But much of their equipment stayed on the Moon, where instruments continued their measurements after the crews had gone.",
-        "at": 301.5,
-        "end": 309.5346666666667,
-        "duration": 8.034666666666666,
-        "sha256": "ff410f8493b933dac64be7d49a6715e9b9015adc3ec33efe9411a37df442df72"
-      },
-      {
-        "id": "the-first-machines-left-behind",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Les astronautes sont revenus sur Terre. Mais une grande partie du matériel est restée sur la Lune, où les instruments ont poursuivi leurs mesures après leur départ.",
-        "at": 301.5,
-        "end": 310.94266666666664,
-        "duration": 9.442666666666666,
-        "sha256": "7d5c952b10f2c0532b53538a4c128a37ec89a1b2e99b278dc041fb2bde4d8865"
-      },
-      {
-        "id": "voyager2-departure",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "Launched in August 1977, Voyager 2 would explore Jupiter, Saturn, Uranus and Neptune.",
-        "at": 315.15,
-        "end": 322.2673333333333,
-        "duration": 7.117333333333334,
-        "sha256": "c9d621e94a6d00fac5f446ea5157f94b94c16549c067ff1f44364ebe0d8c9f3b"
-      },
-      {
-        "id": "voyager2-departure",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "En août 1977, Voyager 2 décolle. Elle explorera Jupiter, Saturne, Uranus et Neptune.",
-        "at": 315.15,
-        "end": 322.09666666666664,
-        "duration": 6.946666666666666,
-        "sha256": "0e106133b432eec09bf0fbf1b77b01c3a41b3c27d4e3d30d460685b78539b567"
-      },
-      {
-        "id": "voyager1-departure",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "Voyager 1 followed in September, on a faster route through the Solar System.",
-        "at": 323.3,
-        "end": 328.156,
-        "duration": 4.856,
-        "sha256": "6676325a069ec2b8861bfd594b33d84d22af31b9dc99b9b1440c47c395296e96"
-      },
-      {
-        "id": "voyager1-departure",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Voyager 1 la suit en septembre, sur une trajectoire plus rapide à travers le Système solaire.",
-        "at": 323.3,
-        "end": 329.244,
-        "duration": 5.944,
-        "sha256": "8ae4f2a4d7a8392eb5f6b24c69988e2737745daf8f25d81761f9f54d5423714c"
-      },
-      {
-        "id": "voyager-instruments",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "Cameras and scientific instruments send their measurements to Earth through a large radio antenna.",
-        "at": 331.3,
-        "end": 337.1586666666667,
-        "duration": 5.858666666666666,
-        "sha256": "611e588c0c27769fd21c790a44745fa6804cc25fc16869c3ac48687a72525826"
-      },
-      {
-        "id": "voyager-instruments",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Caméras et instruments scientifiques transmettent leurs mesures à la Terre grâce à une grande antenne radio.",
-        "at": 331.3,
-        "end": 337.26533333333333,
-        "duration": 5.965333333333334,
-        "sha256": "fc2b2e12f48675f1ef9a03aff372e7f8bc6f72785e285eb16fbab7a5eeb25dd2"
-      },
-      {
-        "id": "carrier-tests",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "On Earth, NASA tested another path: Enterprise, carried aboard a modified Boeing 747.",
-        "at": 347.1,
-        "end": 354.132,
-        "duration": 7.032,
-        "sha256": "624829e45d018ab6030952691846f2bcce7d868e1999d9727c4dc74e34ddae0e"
-      },
-      {
-        "id": "carrier-tests",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Sur Terre, la NASA teste une autre voie : Enterprise, transportée sur un Boeing 747 modifié.",
-        "at": 347.1,
-        "end": 354.06800000000004,
-        "duration": 6.968,
-        "sha256": "dfb19de7983e39cb4eb2a07d6abfed43e83d48218fa0a22bb440a27c38595d59"
-      },
-      {
-        "id": "shuttle-first-orbit",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "On 12 April 1981, Columbia launched the first orbital Shuttle flight. The mission succeeded, landing two days later. The programme could begin.",
-        "at": 355.4,
-        "end": 365.80266666666665,
-        "duration": 10.402666666666667,
-        "sha256": "124b03a66420e158665b1d1745c27ff70faa7a7308dbeb204a321bc14779bcd8"
-      },
-      {
-        "id": "shuttle-first-orbit",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Le 12 avril 1981, Columbia effectue le premier vol orbital d’une navette. La mission réussit et atterrit deux jours plus tard. Le programme peut commencer.",
-        "at": 355.4,
-        "end": 365.76,
-        "duration": 10.36,
-        "sha256": "5af320262b0f2014188fae2ee657977d08181332ffbc03aa359b77d21c5b1383"
-      },
-      {
-        "id": "challenger-date",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "Nearly five years later, on 28 January 1986, Challenger launched with seven people aboard.",
-        "at": 371.3,
-        "end": 378.6306666666667,
-        "duration": 7.330666666666667,
-        "sha256": "c2e676a6cb06b5ca5b49e61e910563fbce44c9f7827236bf8f56a3a054de738d"
-      },
-      {
-        "id": "challenger-date",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Près de cinq ans plus tard, le 28 janvier 1986, Challenger décolle avec sept personnes à bord.",
-        "at": 371.3,
-        "end": 378.332,
-        "duration": 7.032,
-        "sha256": "059bf0c795416409051d5ce7f6fe93628c05a45024ce02b9c04333b220b981aa"
-      },
-      {
-        "id": "the-cost-of-flight",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "Challenger broke apart seventy-three seconds after launch. All seven crew members died.",
-        "at": 387.4,
-        "end": 392.78933333333333,
-        "duration": 5.389333333333333,
-        "sha256": "bce706a5bcbfcaaead0b244c0d1e743a09360bd7350fb8566b9ac1653835a56e"
-      },
-      {
-        "id": "the-cost-of-flight",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Challenger se disloque soixante-treize secondes après le décollage. Les sept membres d’équipage meurent.",
-        "at": 387.4,
-        "end": 393.30133333333333,
-        "duration": 5.9013333333333335,
-        "sha256": "45f9f7403a493df5f66d7c98fce2cf55ab1f62aae3b390fa086f273b2d44533f"
-      },
-      {
-        "id": "a-new-view",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "After flights resumed, a Shuttle crew deployed Hubble in 1990. Above the atmosphere, it could observe the universe more clearly.",
-        "at": 395.5,
-        "end": 404.324,
-        "duration": 8.824,
-        "sha256": "f9a38c8bd067db9c1ad5f89c4ad1abc5ef5e3b9fc60ab9cd6e5d6c1f3ea984d8"
-      },
-      {
-        "id": "a-new-view",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Après la reprise des vols, une navette déploie Hubble en 1990. Au-dessus de l’atmosphère, il peut mieux observer l’univers.",
-        "at": 395.5,
-        "end": 404.26,
-        "duration": 8.76,
-        "sha256": "5c68196564018df5b6af00aab08e61ac6d2d96d062ab55785f36f6e08718580b"
-      },
-      {
-        "id": "rivals-build-together",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "In 1998, Russia and the United States joined the first Station modules. Fifteen partner countries cooperate: the United States, Russia, Canada, Japan, and eleven European nations, including France, Germany and Italy.",
-        "at": 409.3,
-        "end": 424.5026666666667,
-        "duration": 15.202666666666667,
-        "sha256": "83a47e1286e11dcea15bb09b6fcb01b5f01aba48d2ee473902ece7273d9a7694"
-      },
-      {
-        "id": "rivals-build-together",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "En 1998, la Russie et les États-Unis assemblent les premiers modules de l’ISS. Quinze pays partenaires coopèrent : États-Unis, Russie, Canada, Japon et onze pays européens, dont la France, l’Allemagne et l’Italie.",
-        "at": 409.3,
-        "end": 422.348,
-        "duration": 13.048,
-        "sha256": "bfe7255b72343d17209e18ef21246398e13ae2b1b47e193f4e09de9ceb809f27"
-      },
-      {
-        "id": "cassini-arrives-saturn",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "Beyond Earth orbit, Cassini reached Saturn in 2004. This American, European and Italian mission carried a small European probe: Huygens.",
-        "at": 429.4,
-        "end": 439.5466666666666,
-        "duration": 10.146666666666667,
-        "sha256": "53ef6d12ddc41fc026e1fe27cd405a8eb402e15b1600aa94e9e1b2bae5ea95d5"
-      },
-      {
-        "id": "cassini-arrives-saturn",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Au-delà de l’orbite terrestre, Cassini atteint Saturne en 2004. Cette mission américaine, européenne et italienne transporte une petite sonde européenne : Huygens.",
-        "at": 429.4,
-        "end": 439.99466666666666,
-        "duration": 10.594666666666667,
-        "sha256": "ad69202af1d414e8ce1e2e283fe4b39a6099047d35a69f3cbe36593c51edab7d"
-      },
-      {
-        "id": "huygens-released",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "Cassini released Huygens towards Titan, Saturn’s largest moon.",
-        "at": 441.3,
-        "end": 445.3453333333334,
-        "duration": 4.045333333333334,
-        "sha256": "95db1b81693ecae44cc9db22760875aa36905ea0c50f1beb1ce31a31d358d535"
-      },
-      {
-        "id": "huygens-released",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Cassini libère Huygens vers Titan, la plus grande lune de Saturne.",
-        "at": 441.3,
-        "end": 445.26,
-        "duration": 3.96,
-        "sha256": "00f04615ad708700c9813e0058a8dd123fc92343d9ad664ed3206643932b9b19"
-      },
-      {
-        "id": "huygens-titan",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "On 14 January 2005, Huygens landed on Titan. Its measurements revealed channels and rounded pebbles, shaped by flowing methane.",
-        "at": 451.3,
-        "end": 460.84933333333333,
-        "duration": 9.549333333333333,
-        "sha256": "79658532e5520659cdfbe99de6af986b4957ae21a9fcb6fe5db57588d2f862b9"
-      },
-      {
-        "id": "huygens-titan",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Le 14 janvier 2005, Huygens se pose sur Titan. Ses mesures révèlent des chenaux et des galets arrondis, façonnés par du méthane liquide.",
-        "at": 451.3,
-        "end": 460.6573333333333,
-        "duration": 9.357333333333333,
-        "sha256": "03c16f555ac067cdb497ebbb6e561e967aa46bb2c4d53f54260541357f34e55c"
-      },
-      {
-        "id": "a-shared-laboratory",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "Back in Earth orbit, cooperation continued. In 2008, Europe added Columbus, the Station’s science laboratory.",
-        "at": 467.3,
-        "end": 475.42,
-        "duration": 8.12,
-        "sha256": "bdf654abbf8c7626d81ee9d01ca23acb085364e65de823a6f13e85f229ada905"
-      },
-      {
-        "id": "a-shared-laboratory",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "En orbite terrestre, la coopération continue. En 2008, l’Europe ajoute Columbus, laboratoire scientifique de l’ISS.",
-        "at": 467.3,
-        "end": 474.9293333333333,
-        "duration": 7.629333333333333,
-        "sha256": "4642f9a1a60ba6ae2e0ea3b06b69db733601193dbf6d5d539f81896718d91130"
-      },
-      {
-        "id": "retiring-the-shuttle",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "After Challenger in 1986, Columbia was lost during re-entry in 2003. Safety concerns and costs helped end the Shuttle programme. Its final flight landed in 2011.",
-        "at": 489.3,
-        "end": 502.5826666666667,
-        "duration": 13.282666666666668,
-        "sha256": "8990bb2defcab3244f498b336a31d2a470ab6195324ea653d785e598a582b933"
-      },
-      {
-        "id": "retiring-the-shuttle",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Après Challenger en 1986, Columbia est perdue au retour sur Terre en 2003. La sécurité et les coûts contribuent à l’arrêt du programme. Le dernier vol s’achève en 2011.",
-        "at": 489.3,
-        "end": 501.17466666666667,
-        "duration": 11.874666666666666,
-        "sha256": "12c3e6699d0511979de6daa6416ed8836f687ef19d26df89f7a2f8c7be5c0329"
-      },
-      {
-        "id": "keeping-the-outpost-alive",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "After the Shuttle retired, Russia’s Soyuz carried all arriving Station crews until 2020.",
-        "at": 505.3,
-        "end": 511.94800000000004,
-        "duration": 6.648,
-        "sha256": "204cccc2c0657232c0d275f66d876ac41d6adf4a9e5c38279df3c04082c86e35"
-      },
-      {
-        "id": "keeping-the-outpost-alive",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Après les navettes, le Soyouz russe transporte seul les équipages de la Station jusqu’en 2020.",
-        "at": 505.3,
-        "end": 511.0946666666667,
-        "duration": 5.794666666666667,
-        "sha256": "6a9ca7c60a0e20ef76616db46beabd573cac42775f030126322d39b2b709dbdb"
-      },
-      {
-        "id": "the-long-journey-continues",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "In 2012, Voyager 1 crossed the heliopause, beyond the solar wind. It entered interstellar space, while still travelling within the Sun’s vast gravitational domain.",
-        "at": 513.4,
-        "end": 524.784,
-        "duration": 11.384,
-        "sha256": "1c25eed1861f1c5bcc95bfbdaf5c631298a054b320422605f3ac0ff21aa25bbe"
-      },
-      {
-        "id": "the-long-journey-continues",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "En 2012, Voyager 1 franchit l’héliopause, au-delà du vent solaire. Il entre dans l’espace interstellaire, tout en restant dans le vaste domaine gravitationnel du Soleil.",
-        "at": 513.4,
-        "end": 523.952,
-        "duration": 10.552,
-        "sha256": "03882411fe53b901ede71a43c5b4f4b07f7173ed731c0dba03576ed445dcf1b3"
-      },
-      {
-        "id": "rosetta-arrival",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "On 6 August 2014, Europe’s Rosetta reached comet 67P and began studying it up close.",
-        "at": 527.2,
-        "end": 534.5093333333334,
-        "duration": 7.309333333333333,
-        "sha256": "69c95c3284eaacfad02aae7e2a40a48bdadf0f94201b8d354c018be1db50875b"
-      },
-      {
-        "id": "rosetta-arrival",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Le 6 août 2014, la sonde européenne Rosetta rejoint la comète 67P et commence à l’étudier de près.",
-        "at": 527.2,
-        "end": 534.552,
-        "duration": 7.352,
-        "sha256": "1e982eee9b9fa221b2bca46234148ba007f155cf19e84654df13283b27a11456"
-      },
-      {
-        "id": "rosetta-observes",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "For just over three months, Rosetta observed the comet before releasing its lander, Philae.",
-        "at": 535.2,
-        "end": 540.5893333333333,
-        "duration": 5.389333333333333,
-        "sha256": "07130e46b72cab8734c416cbd3bc75bdbc96ba0452bfb7140c5a1985f9fcb6e3"
-      },
-      {
-        "id": "rosetta-observes",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Pendant un peu plus de trois mois, Rosetta observe la comète avant de libérer son module Philae.",
-        "at": 535.2,
-        "end": 540.6320000000001,
-        "duration": 5.432,
-        "sha256": "e0aec429b3dc2f28656225a5cff3775d505b8ae698c73e998c870c5044925121"
-      },
-      {
-        "id": "philae-release",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "On 12 November, Philae separated from Rosetta. It fell slowly towards the surface, without an engine to control its descent.",
-        "at": 543.3,
-        "end": 551.6333333333333,
-        "duration": 8.333333333333334,
-        "sha256": "3c98c98fc942bd7b0e1517e0c70fdcd24e8aa8a50e620400ca19526a70746517"
-      },
-      {
-        "id": "philae-release",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Le 12 novembre, Philae se détache de Rosetta. Il descend lentement vers la surface, sans moteur pour contrôler sa chute.",
-        "at": 543.3,
-        "end": 550.6946666666666,
-        "duration": 7.394666666666667,
-        "sha256": "e02ea7405991dbbc8d363a056a35506550d33a755cc9f2d51e960cf5fb7d887f"
-      },
-      {
-        "id": "philae-real-landing",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "Its anchoring harpoons failed to fire. Philae bounced twice before stopping in shadow. It sent measurements, but too little sunlight soon exhausted its battery.",
-        "at": 555.3,
-        "end": 565.1266666666667,
-        "duration": 9.826666666666666,
-        "sha256": "be7762b3342317d5829d15dc9b3fc6383b258cd50ce8797b1cb07aed2e4c1db8"
-      },
-      {
-        "id": "philae-real-landing",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Ses harpons d’ancrage ne se déclenchent pas. Philae rebondit deux fois avant de s’immobiliser dans l’ombre. Il transmet des mesures, mais le manque de soleil épuise bientôt sa batterie.",
-        "at": 555.3,
-        "end": 565.6813333333333,
-        "duration": 10.381333333333334,
-        "sha256": "5a40cee667ee70dd71a104c97c9369e483c9139c4d7a366c8ab7011f4c07bc0a"
-      },
-      {
-        "id": "rosetta-final-descent",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "Rosetta kept studying the comet for two more years. On 30 September 2016, it made a controlled descent to the surface, sending increasingly close images. Contact ended the mission. Rosetta and Philae remain there.",
-        "at": 569.4,
-        "end": 584.3893333333333,
-        "duration": 14.989333333333333,
-        "sha256": "726199bd81d3c5acebdc6341b2a30e488a318216148b6022821ba02ed0706dd2"
-      },
-      {
-        "id": "rosetta-final-descent",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Rosetta poursuit l’étude de la comète pendant deux ans. Le 30 septembre 2016, elle descend de façon contrôlée vers la surface et transmet des images toujours plus proches. Le contact met fin à la mission. Rosetta et Philae restent sur la comète.",
-        "at": 569.4,
-        "end": 584.3253333333333,
-        "duration": 14.925333333333333,
-        "sha256": "7519d661a5afcb8f45609bc136e1c1d1e1e294184b9140b79a5d08df3a4242ef"
-      },
-      {
-        "id": "change4-farside",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "After a comet, another robotic first took place on the Moon. On 3 January 2019, China’s Chang’e 4 made the first soft landing on its far side.",
-        "at": 593.3,
-        "end": 603.5319999999999,
-        "duration": 10.232,
-        "sha256": "73c41ec2102ec33bab0d5a3b7e5807dce4f6637d001f5fdbe9e1a61c9147af00"
-      },
-      {
-        "id": "change4-farside",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Après une comète, une autre première robotique se joue sur la Lune. Le 3 janvier 2019, la sonde chinoise Chang’e 4 réalise le premier atterrissage en douceur sur sa face cachée.",
-        "at": 593.3,
-        "end": 604.876,
-        "duration": 11.576,
-        "sha256": "df98aef380bfb7b9525ee6bdb2d0119d2c0115820c7f0675041da758a5f8981c"
-      },
-      {
-        "id": "returning-launchers",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "On Earth, another transformation gathered pace. SpaceX, founded by Elon Musk, developed reusable launchers to carry satellites and spacecraft into orbit.",
-        "at": 607.4,
-        "end": 617.824,
-        "duration": 10.424,
-        "sha256": "cb2e9e5ebb749d865961fb31d0baab547b8a05c117bc9b81f95966744b32beee"
-      },
-      {
-        "id": "returning-launchers",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Sur Terre, une autre transformation s’accélère. SpaceX, fondée par Elon Musk, développe des lanceurs réutilisables pour envoyer satellites et vaisseaux en orbite.",
-        "at": 607.4,
-        "end": 617.9306666666666,
-        "duration": 10.530666666666667,
-        "sha256": "3614d8e7b125812afdf0faaf8332b8c09158129964474d7f5013322285a548a1"
-      },
-      {
-        "id": "a-question-on-mars",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "In 2021, Perseverance approached Mars to search for signs of ancient life.",
-        "at": 645.4,
-        "end": 650.9599999999999,
-        "duration": 5.56,
-        "sha256": "88f758d66b10115b083930c25d1237eceee91d32511369ab9e7ce836b399f54b"
-      },
-      {
-        "id": "a-question-on-mars",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "En 2021, Perseverance approche de Mars pour chercher les traces d’une vie ancienne.",
-        "at": 645.4,
-        "end": 650.4266666666666,
-        "duration": 5.026666666666666,
-        "sha256": "20fe1a3fb43820a92378759a2d12bf7ef5bebbf941809595c3c927b1291dafce"
-      },
-      {
-        "id": "looking-back-through-time",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "In December 2021, NASA, ESA and Canada launched the James Webb Space Telescope, an infrared observatory designed to study the distant universe.",
-        "at": 665.5,
-        "end": 676.564,
-        "duration": 11.064,
-        "sha256": "f6805be42d6031303041d261cd1731a1a9030861a788b2dc11741cc5c46e9ceb"
-      },
-      {
-        "id": "looking-back-through-time",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "En décembre 2021, la NASA, l’ESA et le Canada lancent le télescope spatial James Webb, un observatoire infrarouge conçu pour étudier l’univers lointain.",
-        "at": 665.5,
-        "end": 676.5,
-        "duration": 11.0,
-        "sha256": "355a871052ec97a00586d99f55c7653b6746a008086711a8732ad4fc888ef522"
-      },
-      {
-        "id": "webb-deployment",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "Its six-and-a-half-metre mirror unfolded in space, behind a five-layer sunshield. Keeping its instruments cold lets Webb detect faint infrared light from early galaxies and study the atmospheres of planets around other stars.",
-        "at": 677.4,
-        "end": 692.1973333333333,
-        "duration": 14.797333333333333,
-        "sha256": "0d94753f8e4d264573491fdfecc8f8c99a6827fcb5ad653faf72d02af41817f5"
-      },
-      {
-        "id": "webb-deployment",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Son miroir de six mètres cinquante se déploie dans l’espace, derrière un pare-soleil à cinq couches. Ses instruments refroidis captent la faible lumière infrarouge des premières galaxies et étudient les atmosphères de planètes autour d’autres étoiles.",
-        "at": 677.4,
-        "end": 691.536,
-        "duration": 14.136,
-        "sha256": "b4423d4092c91a040c7f13bcdad0e99105dfe63f8fde25d44a2e3083914926c0"
-      },
-      {
-        "id": "webb-location",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "Webb observes from around the Sun–Earth L2 point, one and a half million kilometres from Earth. It joins generations of machines sent beyond our world.",
-        "at": 695.3,
-        "end": 705.276,
-        "duration": 9.976,
-        "sha256": "6d92c090fd40101c2d1763e56fd4808d8855d55bba90e62d2dc2d50bc21f0756"
-      },
-      {
-        "id": "webb-location",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Webb observe autour du point L2 du système Soleil-Terre, à un million et demi de kilomètres de la Terre. Il rejoint des générations de machines envoyées au-delà de notre monde.",
-        "at": 695.3,
-        "end": 706.5773333333333,
-        "duration": 11.277333333333333,
-        "sha256": "f9bc238f1b737bc3512e3a9e64bd25b1e6689f9ec90f0a0fda56192a14f29285"
-      },
-      {
-        "id": "journeys-leave-traces",
-        "language": "en",
-        "voice": "af_heart",
-        "text": "Every mission leaves a trace. From Earth orbit to distant worlds, RELIC brings their stories together. Your journey starts here.",
-        "at": 707.3,
-        "end": 714.9079999999999,
-        "duration": 7.608,
-        "sha256": "06ce544ce03bdfd1fd39072a86bd107d717fd268dc05acd2412d7a80bc1ec266"
-      },
-      {
-        "id": "journeys-leave-traces",
-        "language": "fr",
-        "voice": "ff_siwis",
-        "text": "Chaque mission laisse une trace. De l’orbite terrestre aux mondes lointains, RELIC rassemble leurs histoires. Votre voyage commence ici.",
-        "at": 707.3,
-        "end": 715.0573333333333,
-        "duration": 7.757333333333333,
-        "sha256": "187777b7b2f4f9d2d94425eb286377e0ef72ad1eba727154c10b3e3adaeb8c23"
-      }
-    ],
-    "alignment": {
-      "revision": "12.0-hd50",
-      "paragraphs": [
-        {
-          "id": "a-world-and-a-question",
-          "language": "en",
-          "at": 88.9,
-          "waveformCorrelation": 0.9780810356825336,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "war-rockets",
-          "language": "en",
-          "at": 99.5,
-          "waveformCorrelation": 0.9769333450113697,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "von-braun-postwar",
-          "language": "en",
-          "at": 113.0,
-          "waveformCorrelation": 0.9701370782992529,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "a-signal-around-earth",
-          "language": "en",
-          "at": 123.1,
-          "waveformCorrelation": 0.9778308390896043,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "laika",
-          "language": "en",
-          "at": 135.5,
-          "waveformCorrelation": 0.9870990145409256,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "gagarin",
-          "language": "en",
-          "at": 147.1,
-          "waveformCorrelation": 0.9891082877535018,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "a-destination",
-          "language": "en",
-          "at": 161.5,
-          "waveformCorrelation": 0.9862589718309116,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "tereshkova-first-woman",
-          "language": "en",
-          "at": 189.5,
-          "waveformCorrelation": 0.9895085903140479,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "leonov-first-spacewalk",
-          "language": "en",
-          "at": 203.5,
-          "waveformCorrelation": 0.9842382439231409,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "apollo8-first-orbit",
-          "language": "en",
-          "at": 217.4,
-          "waveformCorrelation": 0.9788933328419821,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "apollo8-earthrise",
-          "language": "en",
-          "at": 227.4,
-          "waveformCorrelation": 0.9821375005107476,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "a-promise-becomes-a-journey",
-          "language": "en",
-          "at": 237.5,
-          "waveformCorrelation": 0.9411844249844082,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "two-go-down-one-stays",
-          "language": "en",
-          "at": 265.5,
-          "waveformCorrelation": 0.9709859468823998,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "the-first-machines-left-behind",
-          "language": "en",
-          "at": 301.5,
-          "waveformCorrelation": 0.9651909772351616,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "voyager2-departure",
-          "language": "en",
-          "at": 315.15,
-          "waveformCorrelation": 0.9645249068734167,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "voyager1-departure",
-          "language": "en",
-          "at": 323.3,
-          "waveformCorrelation": 0.9655037095660626,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "voyager-instruments",
-          "language": "en",
-          "at": 331.3,
-          "waveformCorrelation": 0.9778491485426738,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "carrier-tests",
-          "language": "en",
-          "at": 347.1,
-          "waveformCorrelation": 0.9761054186201402,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "shuttle-first-orbit",
-          "language": "en",
-          "at": 355.4,
-          "waveformCorrelation": 0.9849710739991534,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "challenger-date",
-          "language": "en",
-          "at": 371.3,
-          "waveformCorrelation": 0.9859255497737403,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "the-cost-of-flight",
-          "language": "en",
-          "at": 387.4,
-          "waveformCorrelation": 0.9992186769821118,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "a-new-view",
-          "language": "en",
-          "at": 395.5,
-          "waveformCorrelation": 0.9799093754673368,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "rivals-build-together",
-          "language": "en",
-          "at": 409.3,
-          "waveformCorrelation": 0.985356695922578,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "cassini-arrives-saturn",
-          "language": "en",
-          "at": 429.4,
-          "waveformCorrelation": 0.9802500745344729,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "huygens-released",
-          "language": "en",
-          "at": 441.3,
-          "waveformCorrelation": 0.9580929287027934,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "huygens-titan",
-          "language": "en",
-          "at": 451.3,
-          "waveformCorrelation": 0.989146683002212,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "a-shared-laboratory",
-          "language": "en",
-          "at": 467.3,
-          "waveformCorrelation": 0.9828792577690451,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "retiring-the-shuttle",
-          "language": "en",
-          "at": 489.3,
-          "waveformCorrelation": 0.9857850330867987,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "keeping-the-outpost-alive",
-          "language": "en",
-          "at": 505.3,
-          "waveformCorrelation": 0.9614770878717521,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "the-long-journey-continues",
-          "language": "en",
-          "at": 513.4,
-          "waveformCorrelation": 0.9867338662375538,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "rosetta-arrival",
-          "language": "en",
-          "at": 527.2,
-          "waveformCorrelation": 0.9734346867404815,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "rosetta-observes",
-          "language": "en",
-          "at": 535.2,
-          "waveformCorrelation": 0.9821200840952996,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "philae-release",
-          "language": "en",
-          "at": 543.3,
-          "waveformCorrelation": 0.9811914710401101,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "philae-real-landing",
-          "language": "en",
-          "at": 555.3,
-          "waveformCorrelation": 0.9835555154516771,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "rosetta-final-descent",
-          "language": "en",
-          "at": 569.4,
-          "waveformCorrelation": 0.9838623776100824,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "change4-farside",
-          "language": "en",
-          "at": 593.3,
-          "waveformCorrelation": 0.9933644288118416,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "returning-launchers",
-          "language": "en",
-          "at": 607.4,
-          "waveformCorrelation": 0.965637561391191,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "a-question-on-mars",
-          "language": "en",
-          "at": 645.4,
-          "waveformCorrelation": 0.9716385116832992,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "looking-back-through-time",
-          "language": "en",
-          "at": 665.5,
-          "waveformCorrelation": 0.9365451322579282,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "webb-deployment",
-          "language": "en",
-          "at": 677.4,
-          "waveformCorrelation": 0.9677200368291454,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "webb-location",
-          "language": "en",
-          "at": 695.3,
-          "waveformCorrelation": 0.9798738523529018,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "journeys-leave-traces",
-          "language": "en",
-          "at": 707.3,
-          "waveformCorrelation": 0.9855378829134238,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "a-world-and-a-question",
-          "language": "fr",
-          "at": 88.9,
-          "waveformCorrelation": 0.9845123272864837,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "war-rockets",
-          "language": "fr",
-          "at": 99.5,
-          "waveformCorrelation": 0.984978687106137,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "von-braun-postwar",
-          "language": "fr",
-          "at": 113.0,
-          "waveformCorrelation": 0.990271070123139,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "a-signal-around-earth",
-          "language": "fr",
-          "at": 123.1,
-          "waveformCorrelation": 0.9857741075643394,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "laika",
-          "language": "fr",
-          "at": 135.5,
-          "waveformCorrelation": 0.987594701990365,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "gagarin",
-          "language": "fr",
-          "at": 147.1,
-          "waveformCorrelation": 0.9920015344981099,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "a-destination",
-          "language": "fr",
-          "at": 161.5,
-          "waveformCorrelation": 0.9896786047074092,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "tereshkova-first-woman",
-          "language": "fr",
-          "at": 189.5,
-          "waveformCorrelation": 0.9937364413175805,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "leonov-first-spacewalk",
-          "language": "fr",
-          "at": 203.5,
-          "waveformCorrelation": 0.9841575663266665,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "apollo8-first-orbit",
-          "language": "fr",
-          "at": 217.4,
-          "waveformCorrelation": 0.9871995240840454,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "apollo8-earthrise",
-          "language": "fr",
-          "at": 227.4,
-          "waveformCorrelation": 0.98924290578179,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "a-promise-becomes-a-journey",
-          "language": "fr",
-          "at": 237.5,
-          "waveformCorrelation": 0.9749920923328985,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "two-go-down-one-stays",
-          "language": "fr",
-          "at": 265.5,
-          "waveformCorrelation": 0.9697764321205297,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "the-first-machines-left-behind",
-          "language": "fr",
-          "at": 301.5,
-          "waveformCorrelation": 0.9924235621790036,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "voyager2-departure",
-          "language": "fr",
-          "at": 315.15,
-          "waveformCorrelation": 0.9750403846317459,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "voyager1-departure",
-          "language": "fr",
-          "at": 323.3,
-          "waveformCorrelation": 0.9754304968078491,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "voyager-instruments",
-          "language": "fr",
-          "at": 331.3,
-          "waveformCorrelation": 0.9735763911141956,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "carrier-tests",
-          "language": "fr",
-          "at": 347.1,
-          "waveformCorrelation": 0.9763683305715214,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "shuttle-first-orbit",
-          "language": "fr",
-          "at": 355.4,
-          "waveformCorrelation": 0.9838052102151372,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "challenger-date",
-          "language": "fr",
-          "at": 371.3,
-          "waveformCorrelation": 0.9916235805501428,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "the-cost-of-flight",
-          "language": "fr",
-          "at": 387.4,
-          "waveformCorrelation": 0.9999650137407475,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "a-new-view",
-          "language": "fr",
-          "at": 395.5,
-          "waveformCorrelation": 0.9904141170264331,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "rivals-build-together",
-          "language": "fr",
-          "at": 409.3,
-          "waveformCorrelation": 0.9835146424046511,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "cassini-arrives-saturn",
-          "language": "fr",
-          "at": 429.4,
-          "waveformCorrelation": 0.9832396953747862,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "huygens-released",
-          "language": "fr",
-          "at": 441.3,
-          "waveformCorrelation": 0.9675333426302466,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "huygens-titan",
-          "language": "fr",
-          "at": 451.3,
-          "waveformCorrelation": 0.9853877945846999,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "a-shared-laboratory",
-          "language": "fr",
-          "at": 467.3,
-          "waveformCorrelation": 0.9897657473911631,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "retiring-the-shuttle",
-          "language": "fr",
-          "at": 489.3,
-          "waveformCorrelation": 0.9868284878937603,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "keeping-the-outpost-alive",
-          "language": "fr",
-          "at": 505.3,
-          "waveformCorrelation": 0.983413338972328,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "the-long-journey-continues",
-          "language": "fr",
-          "at": 513.4,
-          "waveformCorrelation": 0.9884939310459564,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "rosetta-arrival",
-          "language": "fr",
-          "at": 527.2,
-          "waveformCorrelation": 0.9787059739158509,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "rosetta-observes",
-          "language": "fr",
-          "at": 535.2,
-          "waveformCorrelation": 0.9770816016210482,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "philae-release",
-          "language": "fr",
-          "at": 543.3,
-          "waveformCorrelation": 0.9869054506563193,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "philae-real-landing",
-          "language": "fr",
-          "at": 555.3,
-          "waveformCorrelation": 0.9797400178160901,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "rosetta-final-descent",
-          "language": "fr",
-          "at": 569.4,
-          "waveformCorrelation": 0.9806444060824596,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "change4-farside",
-          "language": "fr",
-          "at": 593.3,
-          "waveformCorrelation": 0.9948364262392484,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "returning-launchers",
-          "language": "fr",
-          "at": 607.4,
-          "waveformCorrelation": 0.9841100339134853,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "a-question-on-mars",
-          "language": "fr",
-          "at": 645.4,
-          "waveformCorrelation": 0.9811080348461406,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "looking-back-through-time",
-          "language": "fr",
-          "at": 665.5,
-          "waveformCorrelation": 0.9775216908070687,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "webb-deployment",
-          "language": "fr",
-          "at": 677.4,
-          "waveformCorrelation": 0.9760848799182695,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "webb-location",
-          "language": "fr",
-          "at": 695.3,
-          "waveformCorrelation": 0.9859120698651631,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        },
-        {
-          "id": "journeys-leave-traces",
-          "language": "fr",
-          "at": 707.3,
-          "waveformCorrelation": 0.9920702548925432,
-          "lagSamples": 0,
-          "lagSeconds": 0.0,
-          "passed": true
-        }
-      ],
-      "archivalSignals": [
-        {
-          "id": "sputnik-original-signal",
-          "language": "en",
-          "at": 131.7,
-          "waveformCorrelation": 0.9910998534608172,
-          "lagSamples": 0
-        },
-        {
-          "id": "sputnik-original-signal",
-          "language": "fr",
-          "at": 131.7,
-          "waveformCorrelation": 0.9975948130585592,
-          "lagSamples": 0
-        }
-      ],
-      "passed": true,
-      "silentFinalCard": [
-        {
-          "language": "en",
-          "start": 721,
-          "end": 731,
-          "maximumAbsoluteSample": 0.0
-        },
-        {
-          "language": "fr",
-          "start": 721,
-          "end": 731,
-          "maximumAbsoluteSample": 0.0
-        }
-      ]
-    }
   },
   "syntheticNarrationApproved": true,
   "historicalVoicesSynthesized": false,
@@ -3892,7 +2251,7 @@
       }
     }
   ],
-  "endingTreatment": "Short closing reflection, wide solar view fading to black over two seconds, new ambient score fading out over five seconds, then a silent animated RELIC logo and Explore button.",
+  "endingTreatment": "Supplied closing montage retained. Application branding is shown once.",
   "historicalAudioWindows": [
     {
       "id": "sputnik-original-signal",
@@ -3968,681 +2327,6 @@
       "retainedSourceStart": 659
     }
   ],
-  "audioTimeline": {
-    "en": {
-      "fullDecodePassed": true,
-      "sampleRate": 48000,
-      "channels": 2,
-      "decodedSamples": 35088384,
-      "decodedSeconds": 731.008,
-      "samplePeak": 0.8011913895606995,
-      "duration": 731,
-      "audioSources": [
-        {
-          "id": "a-world-and-a-question",
-          "start": 88.9,
-          "duration": 5.517333333333333,
-          "sha256": "09e06e761f40c6ca27f9ba315e7215f32c7df86db4b55671b0467f609d2d353b",
-          "voice": "af_heart"
-        },
-        {
-          "id": "war-rockets",
-          "start": 99.5,
-          "duration": 6.818666666666667,
-          "sha256": "2780b4ddccbfa7fd3cf62f2a5a70c4827e31f50f2a36c500e5cf3365cd0e8734",
-          "voice": "af_heart"
-        },
-        {
-          "id": "von-braun-postwar",
-          "start": 113.0,
-          "duration": 7.501333333333333,
-          "sha256": "0b8075ebeb7128b4fddcea5906ef8a94eba73207f8d687491c4a24f145759111",
-          "voice": "af_heart"
-        },
-        {
-          "id": "a-signal-around-earth",
-          "start": 123.1,
-          "duration": 4.664,
-          "sha256": "6ea8d2fde353191cac51f3e30b7abe4298c3b7e3834b7f71ace54e75254c6d63",
-          "voice": "af_heart"
-        },
-        {
-          "id": "laika",
-          "start": 135.5,
-          "duration": 7.416,
-          "sha256": "83e5ef531cbc582df7099e968865eb2a16996463f91efe0a712ad7ca9d8712cc",
-          "voice": "af_heart"
-        },
-        {
-          "id": "gagarin",
-          "start": 147.1,
-          "duration": 2.5946666666666665,
-          "sha256": "5ab51737d791fcfc4fd0949e9b7afa40d9f54292e041607e818e8d95eb68fb91",
-          "voice": "af_heart"
-        },
-        {
-          "id": "a-destination",
-          "start": 161.5,
-          "duration": 6.221333333333333,
-          "sha256": "e5afe04fc050ab3194cc70b6f85c6591d4610c53e364e8381ae807a5a4f5078f",
-          "voice": "af_heart"
-        },
-        {
-          "id": "tereshkova-first-woman",
-          "start": 189.5,
-          "duration": 10.594666666666667,
-          "sha256": "09a06c992dfa52cab2eca1731f5361c8d6490d11bfcf6f64c3d3f0ac47c365ee",
-          "voice": "af_heart"
-        },
-        {
-          "id": "leonov-first-spacewalk",
-          "start": 203.5,
-          "duration": 10.701333333333332,
-          "sha256": "12e2f1527704543b8f12739e7f37833870f59f9a18994ac9fac0bc3bf7f73102",
-          "voice": "af_heart"
-        },
-        {
-          "id": "apollo8-first-orbit",
-          "start": 217.4,
-          "duration": 6.370666666666667,
-          "sha256": "19c05f616f3e61ea834ceeed6f4a33a782cb661d5c8eda98e310d8823ae9ba6d",
-          "voice": "af_heart"
-        },
-        {
-          "id": "apollo8-earthrise",
-          "start": 227.4,
-          "duration": 6.328,
-          "sha256": "bc8a8f6bb116c7f47e5b48d3496653874a1818b33b2b4f0f4562ef323d252a46",
-          "voice": "af_heart"
-        },
-        {
-          "id": "a-promise-becomes-a-journey",
-          "start": 237.5,
-          "duration": 7.416,
-          "sha256": "2cbb6c00f5c597f8fb07ea0ca5abddbd524d4c115f09710d0a321b9f144620ba",
-          "voice": "af_heart"
-        },
-        {
-          "id": "two-go-down-one-stays",
-          "start": 265.5,
-          "duration": 11.149333333333333,
-          "sha256": "7c1c5509fd99759cc17248db126ea97a3d997147a3b916dc9687587ef77a2b34",
-          "voice": "af_heart"
-        },
-        {
-          "id": "the-first-machines-left-behind",
-          "start": 301.5,
-          "duration": 8.034666666666666,
-          "sha256": "ff410f8493b933dac64be7d49a6715e9b9015adc3ec33efe9411a37df442df72",
-          "voice": "af_heart"
-        },
-        {
-          "id": "voyager2-departure",
-          "start": 315.15,
-          "duration": 7.117333333333334,
-          "sha256": "c9d621e94a6d00fac5f446ea5157f94b94c16549c067ff1f44364ebe0d8c9f3b",
-          "voice": "af_heart"
-        },
-        {
-          "id": "voyager1-departure",
-          "start": 323.3,
-          "duration": 4.856,
-          "sha256": "6676325a069ec2b8861bfd594b33d84d22af31b9dc99b9b1440c47c395296e96",
-          "voice": "af_heart"
-        },
-        {
-          "id": "voyager-instruments",
-          "start": 331.3,
-          "duration": 5.858666666666666,
-          "sha256": "611e588c0c27769fd21c790a44745fa6804cc25fc16869c3ac48687a72525826",
-          "voice": "af_heart"
-        },
-        {
-          "id": "carrier-tests",
-          "start": 347.1,
-          "duration": 7.032,
-          "sha256": "624829e45d018ab6030952691846f2bcce7d868e1999d9727c4dc74e34ddae0e",
-          "voice": "af_heart"
-        },
-        {
-          "id": "shuttle-first-orbit",
-          "start": 355.4,
-          "duration": 10.402666666666667,
-          "sha256": "124b03a66420e158665b1d1745c27ff70faa7a7308dbeb204a321bc14779bcd8",
-          "voice": "af_heart"
-        },
-        {
-          "id": "challenger-date",
-          "start": 371.3,
-          "duration": 7.330666666666667,
-          "sha256": "c2e676a6cb06b5ca5b49e61e910563fbce44c9f7827236bf8f56a3a054de738d",
-          "voice": "af_heart"
-        },
-        {
-          "id": "the-cost-of-flight",
-          "start": 387.4,
-          "duration": 5.389333333333333,
-          "sha256": "bce706a5bcbfcaaead0b244c0d1e743a09360bd7350fb8566b9ac1653835a56e",
-          "voice": "af_heart"
-        },
-        {
-          "id": "a-new-view",
-          "start": 395.5,
-          "duration": 8.824,
-          "sha256": "f9a38c8bd067db9c1ad5f89c4ad1abc5ef5e3b9fc60ab9cd6e5d6c1f3ea984d8",
-          "voice": "af_heart"
-        },
-        {
-          "id": "rivals-build-together",
-          "start": 409.3,
-          "duration": 15.202666666666667,
-          "sha256": "83a47e1286e11dcea15bb09b6fcb01b5f01aba48d2ee473902ece7273d9a7694",
-          "voice": "af_heart"
-        },
-        {
-          "id": "cassini-arrives-saturn",
-          "start": 429.4,
-          "duration": 10.146666666666667,
-          "sha256": "53ef6d12ddc41fc026e1fe27cd405a8eb402e15b1600aa94e9e1b2bae5ea95d5",
-          "voice": "af_heart"
-        },
-        {
-          "id": "huygens-released",
-          "start": 441.3,
-          "duration": 4.045333333333334,
-          "sha256": "95db1b81693ecae44cc9db22760875aa36905ea0c50f1beb1ce31a31d358d535",
-          "voice": "af_heart"
-        },
-        {
-          "id": "huygens-titan",
-          "start": 451.3,
-          "duration": 9.549333333333333,
-          "sha256": "79658532e5520659cdfbe99de6af986b4957ae21a9fcb6fe5db57588d2f862b9",
-          "voice": "af_heart"
-        },
-        {
-          "id": "a-shared-laboratory",
-          "start": 467.3,
-          "duration": 8.12,
-          "sha256": "bdf654abbf8c7626d81ee9d01ca23acb085364e65de823a6f13e85f229ada905",
-          "voice": "af_heart"
-        },
-        {
-          "id": "retiring-the-shuttle",
-          "start": 489.3,
-          "duration": 13.282666666666668,
-          "sha256": "8990bb2defcab3244f498b336a31d2a470ab6195324ea653d785e598a582b933",
-          "voice": "af_heart"
-        },
-        {
-          "id": "keeping-the-outpost-alive",
-          "start": 505.3,
-          "duration": 6.648,
-          "sha256": "204cccc2c0657232c0d275f66d876ac41d6adf4a9e5c38279df3c04082c86e35",
-          "voice": "af_heart"
-        },
-        {
-          "id": "the-long-journey-continues",
-          "start": 513.4,
-          "duration": 11.384,
-          "sha256": "1c25eed1861f1c5bcc95bfbdaf5c631298a054b320422605f3ac0ff21aa25bbe",
-          "voice": "af_heart"
-        },
-        {
-          "id": "rosetta-arrival",
-          "start": 527.2,
-          "duration": 7.309333333333333,
-          "sha256": "69c95c3284eaacfad02aae7e2a40a48bdadf0f94201b8d354c018be1db50875b",
-          "voice": "af_heart"
-        },
-        {
-          "id": "rosetta-observes",
-          "start": 535.2,
-          "duration": 5.389333333333333,
-          "sha256": "07130e46b72cab8734c416cbd3bc75bdbc96ba0452bfb7140c5a1985f9fcb6e3",
-          "voice": "af_heart"
-        },
-        {
-          "id": "philae-release",
-          "start": 543.3,
-          "duration": 8.333333333333334,
-          "sha256": "3c98c98fc942bd7b0e1517e0c70fdcd24e8aa8a50e620400ca19526a70746517",
-          "voice": "af_heart"
-        },
-        {
-          "id": "philae-real-landing",
-          "start": 555.3,
-          "duration": 9.826666666666666,
-          "sha256": "be7762b3342317d5829d15dc9b3fc6383b258cd50ce8797b1cb07aed2e4c1db8",
-          "voice": "af_heart"
-        },
-        {
-          "id": "rosetta-final-descent",
-          "start": 569.4,
-          "duration": 14.989333333333333,
-          "sha256": "726199bd81d3c5acebdc6341b2a30e488a318216148b6022821ba02ed0706dd2",
-          "voice": "af_heart"
-        },
-        {
-          "id": "change4-farside",
-          "start": 593.3,
-          "duration": 10.232,
-          "sha256": "73c41ec2102ec33bab0d5a3b7e5807dce4f6637d001f5fdbe9e1a61c9147af00",
-          "voice": "af_heart"
-        },
-        {
-          "id": "returning-launchers",
-          "start": 607.4,
-          "duration": 10.424,
-          "sha256": "cb2e9e5ebb749d865961fb31d0baab547b8a05c117bc9b81f95966744b32beee",
-          "voice": "af_heart"
-        },
-        {
-          "id": "a-question-on-mars",
-          "start": 645.4,
-          "duration": 5.56,
-          "sha256": "88f758d66b10115b083930c25d1237eceee91d32511369ab9e7ce836b399f54b",
-          "voice": "af_heart"
-        },
-        {
-          "id": "looking-back-through-time",
-          "start": 665.5,
-          "duration": 11.064,
-          "sha256": "f6805be42d6031303041d261cd1731a1a9030861a788b2dc11741cc5c46e9ceb",
-          "voice": "af_heart"
-        },
-        {
-          "id": "webb-deployment",
-          "start": 677.4,
-          "duration": 14.797333333333333,
-          "sha256": "0d94753f8e4d264573491fdfecc8f8c99a6827fcb5ad653faf72d02af41817f5",
-          "voice": "af_heart"
-        },
-        {
-          "id": "webb-location",
-          "start": 695.3,
-          "duration": 9.976,
-          "sha256": "6d92c090fd40101c2d1763e56fd4808d8855d55bba90e62d2dc2d50bc21f0756",
-          "voice": "af_heart"
-        },
-        {
-          "id": "journeys-leave-traces",
-          "start": 707.3,
-          "duration": 7.608,
-          "sha256": "06ce544ce03bdfd1fd39072a86bd107d717fd268dc05acd2412d7a80bc1ec266",
-          "voice": "af_heart"
-        }
-      ]
-    },
-    "fr": {
-      "fullDecodePassed": true,
-      "sampleRate": 48000,
-      "channels": 2,
-      "decodedSamples": 35088384,
-      "decodedSeconds": 731.008,
-      "samplePeak": 0.8107898831367493,
-      "duration": 731,
-      "audioSources": [
-        {
-          "id": "a-world-and-a-question",
-          "start": 88.9,
-          "duration": 6.221333333333333,
-          "sha256": "b4226c68be462699134bb604ffbd1e38f9dee28682a489bc339305702a9e53d9",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "war-rockets",
-          "start": 99.5,
-          "duration": 6.648,
-          "sha256": "edadd08888dc458af33fc963c91a530067fd53130b224edb997914341d5577e2",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "von-braun-postwar",
-          "start": 113.0,
-          "duration": 7.352,
-          "sha256": "bc542859fc3aec151794f2f5bed96dc0449115bf62dd71cf120a40883b1a9e9b",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "a-signal-around-earth",
-          "start": 123.1,
-          "duration": 4.749333333333333,
-          "sha256": "4e9d8d03476f81bc2966fb695930492fe4a0b6d678a06e84cb42a9273ae364cf",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "laika",
-          "start": 135.5,
-          "duration": 8.034666666666666,
-          "sha256": "91cc0b1d9a7a1262bca27098a6884a93ba40f84ba78cdd814409f579e135be55",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "gagarin",
-          "start": 147.1,
-          "duration": 2.616,
-          "sha256": "d1ad31bff4f423d412551e4247e025dd6bffbb976533145ed8fb5bb24666eb94",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "a-destination",
-          "start": 161.5,
-          "duration": 6.1146666666666665,
-          "sha256": "51566c8916cd8e1393a8bf4c2036b54116aea822cd17af0af7c1032fec322b20",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "tereshkova-first-woman",
-          "start": 189.5,
-          "duration": 10.872,
-          "sha256": "efe3cdcb5f262d5f9511d673568fae8ed1aa1191819501c5156fc30300a0c702",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "leonov-first-spacewalk",
-          "start": 203.5,
-          "duration": 10.466666666666667,
-          "sha256": "e9f15ee17d4114248d83d202c900e3159302a27b92b5ecbbd29f968ec664a2d5",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "apollo8-first-orbit",
-          "start": 217.4,
-          "duration": 7.48,
-          "sha256": "9afc48c19c648bc70bae11f335dffe3864d29efc88d3324eb0ef110b978cf4a1",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "apollo8-earthrise",
-          "start": 227.4,
-          "duration": 7.629333333333333,
-          "sha256": "ffd69f36bcd65e7ab90307c6c25ee4a450ad6b485a87fda8d400ef298e89b881",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "a-promise-becomes-a-journey",
-          "start": 237.5,
-          "duration": 7.992,
-          "sha256": "f8472a44ab063b9c03cfe94115c32b2d1a76fcdc8d3552af99db0ccc14350027",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "two-go-down-one-stays",
-          "start": 265.5,
-          "duration": 11.981333333333334,
-          "sha256": "a914e2456c861e2f8532f9e80926d4c77ddf5f867000aa469c59981d173b3efb",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "the-first-machines-left-behind",
-          "start": 301.5,
-          "duration": 9.442666666666666,
-          "sha256": "7d5c952b10f2c0532b53538a4c128a37ec89a1b2e99b278dc041fb2bde4d8865",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "voyager2-departure",
-          "start": 315.15,
-          "duration": 6.946666666666666,
-          "sha256": "0e106133b432eec09bf0fbf1b77b01c3a41b3c27d4e3d30d460685b78539b567",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "voyager1-departure",
-          "start": 323.3,
-          "duration": 5.944,
-          "sha256": "8ae4f2a4d7a8392eb5f6b24c69988e2737745daf8f25d81761f9f54d5423714c",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "voyager-instruments",
-          "start": 331.3,
-          "duration": 5.965333333333334,
-          "sha256": "fc2b2e12f48675f1ef9a03aff372e7f8bc6f72785e285eb16fbab7a5eeb25dd2",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "carrier-tests",
-          "start": 347.1,
-          "duration": 6.968,
-          "sha256": "dfb19de7983e39cb4eb2a07d6abfed43e83d48218fa0a22bb440a27c38595d59",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "shuttle-first-orbit",
-          "start": 355.4,
-          "duration": 10.36,
-          "sha256": "5af320262b0f2014188fae2ee657977d08181332ffbc03aa359b77d21c5b1383",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "challenger-date",
-          "start": 371.3,
-          "duration": 7.032,
-          "sha256": "059bf0c795416409051d5ce7f6fe93628c05a45024ce02b9c04333b220b981aa",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "the-cost-of-flight",
-          "start": 387.4,
-          "duration": 5.9013333333333335,
-          "sha256": "45f9f7403a493df5f66d7c98fce2cf55ab1f62aae3b390fa086f273b2d44533f",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "a-new-view",
-          "start": 395.5,
-          "duration": 8.76,
-          "sha256": "5c68196564018df5b6af00aab08e61ac6d2d96d062ab55785f36f6e08718580b",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "rivals-build-together",
-          "start": 409.3,
-          "duration": 13.048,
-          "sha256": "bfe7255b72343d17209e18ef21246398e13ae2b1b47e193f4e09de9ceb809f27",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "cassini-arrives-saturn",
-          "start": 429.4,
-          "duration": 10.594666666666667,
-          "sha256": "ad69202af1d414e8ce1e2e283fe4b39a6099047d35a69f3cbe36593c51edab7d",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "huygens-released",
-          "start": 441.3,
-          "duration": 3.96,
-          "sha256": "00f04615ad708700c9813e0058a8dd123fc92343d9ad664ed3206643932b9b19",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "huygens-titan",
-          "start": 451.3,
-          "duration": 9.357333333333333,
-          "sha256": "03c16f555ac067cdb497ebbb6e561e967aa46bb2c4d53f54260541357f34e55c",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "a-shared-laboratory",
-          "start": 467.3,
-          "duration": 7.629333333333333,
-          "sha256": "4642f9a1a60ba6ae2e0ea3b06b69db733601193dbf6d5d539f81896718d91130",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "retiring-the-shuttle",
-          "start": 489.3,
-          "duration": 11.874666666666666,
-          "sha256": "12c3e6699d0511979de6daa6416ed8836f687ef19d26df89f7a2f8c7be5c0329",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "keeping-the-outpost-alive",
-          "start": 505.3,
-          "duration": 5.794666666666667,
-          "sha256": "6a9ca7c60a0e20ef76616db46beabd573cac42775f030126322d39b2b709dbdb",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "the-long-journey-continues",
-          "start": 513.4,
-          "duration": 10.552,
-          "sha256": "03882411fe53b901ede71a43c5b4f4b07f7173ed731c0dba03576ed445dcf1b3",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "rosetta-arrival",
-          "start": 527.2,
-          "duration": 7.352,
-          "sha256": "1e982eee9b9fa221b2bca46234148ba007f155cf19e84654df13283b27a11456",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "rosetta-observes",
-          "start": 535.2,
-          "duration": 5.432,
-          "sha256": "e0aec429b3dc2f28656225a5cff3775d505b8ae698c73e998c870c5044925121",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "philae-release",
-          "start": 543.3,
-          "duration": 7.394666666666667,
-          "sha256": "e02ea7405991dbbc8d363a056a35506550d33a755cc9f2d51e960cf5fb7d887f",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "philae-real-landing",
-          "start": 555.3,
-          "duration": 10.381333333333334,
-          "sha256": "5a40cee667ee70dd71a104c97c9369e483c9139c4d7a366c8ab7011f4c07bc0a",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "rosetta-final-descent",
-          "start": 569.4,
-          "duration": 14.925333333333333,
-          "sha256": "7519d661a5afcb8f45609bc136e1c1d1e1e294184b9140b79a5d08df3a4242ef",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "change4-farside",
-          "start": 593.3,
-          "duration": 11.576,
-          "sha256": "df98aef380bfb7b9525ee6bdb2d0119d2c0115820c7f0675041da758a5f8981c",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "returning-launchers",
-          "start": 607.4,
-          "duration": 10.530666666666667,
-          "sha256": "3614d8e7b125812afdf0faaf8332b8c09158129964474d7f5013322285a548a1",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "a-question-on-mars",
-          "start": 645.4,
-          "duration": 5.026666666666666,
-          "sha256": "20fe1a3fb43820a92378759a2d12bf7ef5bebbf941809595c3c927b1291dafce",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "looking-back-through-time",
-          "start": 665.5,
-          "duration": 11.0,
-          "sha256": "355a871052ec97a00586d99f55c7653b6746a008086711a8732ad4fc888ef522",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "webb-deployment",
-          "start": 677.4,
-          "duration": 14.136,
-          "sha256": "b4423d4092c91a040c7f13bcdad0e99105dfe63f8fde25d44a2e3083914926c0",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "webb-location",
-          "start": 695.3,
-          "duration": 11.277333333333333,
-          "sha256": "f9bc238f1b737bc3512e3a9e64bd25b1e6689f9ec90f0a0fda56192a14f29285",
-          "voice": "ff_siwis"
-        },
-        {
-          "id": "journeys-leave-traces",
-          "start": 707.3,
-          "duration": 7.757333333333333,
-          "sha256": "187777b7b2f4f9d2d94425eb286377e0ef72ad1eba727154c10b3e3adaeb8c23",
-          "voice": "ff_siwis"
-        }
-      ]
-    }
-  },
-  "musicTimeline": [
-    {
-      "file": "helios.oga",
-      "at": 0,
-      "sourceIn": 0,
-      "length": 243,
-      "fadeIn": 3,
-      "fadeOut": 6,
-      "license": "CC BY 4.0",
-      "author": "Scott Buckley"
-    },
-    {
-      "file": "theclimb.oga",
-      "at": 237,
-      "sourceIn": 35,
-      "length": 143.65,
-      "fadeIn": 6,
-      "fadeOut": 4,
-      "license": "CC BY 4.0",
-      "author": "Scott Buckley"
-    },
-    {
-      "file": "aurora.mp3",
-      "at": 395.3,
-      "sourceIn": 40,
-      "length": 145,
-      "fadeIn": 4,
-      "fadeOut": 8,
-      "license": "CC BY 4.0",
-      "author": "Scott Buckley"
-    },
-    {
-      "file": "helios.oga",
-      "at": 533,
-      "sourceIn": 120,
-      "length": 86,
-      "fadeIn": 8,
-      "fadeOut": 8,
-      "license": "CC BY 4.0",
-      "author": "Scott Buckley"
-    },
-    {
-      "file": "theclimb.oga",
-      "at": 607,
-      "sourceIn": 90,
-      "length": 67,
-      "fadeIn": 8,
-      "fadeOut": 8,
-      "license": "CC BY 4.0",
-      "author": "Scott Buckley"
-    },
-    {
-      "file": "aurora.mp3",
-      "at": 665,
-      "sourceIn": 200,
-      "length": 55.8,
-      "fadeIn": 8,
-      "fadeOut": 5,
-      "license": "CC BY 4.0",
-      "author": "Scott Buckley"
-    }
-  ],
-  "musicContext": "Long eased score crossfades, smooth narration ducking, deliberate radio/remembrance silences, five-second closing music fade and silent final brand.",
   "editTimeline": [
     {
       "id": "prologue",
@@ -9036,5 +6720,2333 @@
       "sha256": "311ae35bf827be51372da47693357f79b8022b704d833cd26d547bbf67c117ed",
       "adaptations": "Excerpted, normalized, crossfaded and ducked under narration."
     }
-  ]
+  ],
+  "sourcePreservation": {
+    "revision": "13.0-hd50",
+    "sourceKind": "owner-provided MP4",
+    "sourceSha256": "0b304c6b359a35f946921c06f23614357ead2a793c15e9ba61ed643d48e7f0ec",
+    "sourceBytes": 244855635,
+    "duration": 731,
+    "cutIntervals": [],
+    "policy": "Owner confirmed the ISS runner is already absent; preserve this exact montage and both supplied audio tracks."
+  },
+  "inheritedV12SoundtrackDocumentation": {
+    "narration": {
+      "synthetic": true,
+      "voices": {
+        "en": "af_heart",
+        "fr": "ff_siwis"
+      },
+      "paragraphs": [
+        {
+          "id": "a-world-and-a-question",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "Millions of years later, humanity transformed this same world, and learned to reach beyond it.",
+          "at": 88.9,
+          "end": 94.41733333333335,
+          "duration": 5.517333333333333,
+          "sha256": "09e06e761f40c6ca27f9ba315e7215f32c7df86db4b55671b0467f609d2d353b"
+        },
+        {
+          "id": "a-world-and-a-question",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Des millions d’années plus tard, l’humanité transformait cette même planète, puis apprenait à explorer au-delà.",
+          "at": 88.9,
+          "end": 95.12133333333334,
+          "duration": 6.221333333333333,
+          "sha256": "b4226c68be462699134bb604ffbd1e38f9dee28682a489bc339305702a9e53d9"
+        },
+        {
+          "id": "war-rockets",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "In 1944, Nazi Germany deployed the V1 cruise missile and the V2 ballistic rocket.",
+          "at": 99.5,
+          "end": 106.31866666666667,
+          "duration": 6.818666666666667,
+          "sha256": "2780b4ddccbfa7fd3cf62f2a5a70c4827e31f50f2a36c500e5cf3365cd0e8734"
+        },
+        {
+          "id": "war-rockets",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "En 1944, l’Allemagne nazie déploie le missile de croisière V1 et la fusée balistique V2.",
+          "at": 99.5,
+          "end": 106.148,
+          "duration": 6.648,
+          "sha256": "edadd08888dc458af33fc963c91a530067fd53130b224edb997914341d5577e2"
+        },
+        {
+          "id": "von-braun-postwar",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "A Nazi engineer, Wernher von Braun led development of the V2. After the war, he joined the American programme.",
+          "at": 113.0,
+          "end": 120.50133333333333,
+          "duration": 7.501333333333333,
+          "sha256": "0b8075ebeb7128b4fddcea5906ef8a94eba73207f8d687491c4a24f145759111"
+        },
+        {
+          "id": "von-braun-postwar",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Ingénieur nazi, Wernher von Braun dirige le développement de la V2. Après la guerre, il rejoint le programme américain.",
+          "at": 113.0,
+          "end": 120.352,
+          "duration": 7.352,
+          "sha256": "bc542859fc3aec151794f2f5bed96dc0449115bf62dd71cf120a40883b1a9e9b"
+        },
+        {
+          "id": "a-signal-around-earth",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "In 1957, Sputnik became the first artificial satellite.",
+          "at": 123.1,
+          "end": 127.764,
+          "duration": 4.664,
+          "sha256": "6ea8d2fde353191cac51f3e30b7abe4298c3b7e3834b7f71ace54e75254c6d63"
+        },
+        {
+          "id": "a-signal-around-earth",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "En 1957, Spoutnik devient le premier satellite artificiel.",
+          "at": 123.1,
+          "end": 127.84933333333333,
+          "duration": 4.749333333333333,
+          "sha256": "4e9d8d03476f81bc2966fb695930492fe4a0b6d678a06e84cb42a9273ae364cf"
+        },
+        {
+          "id": "laika",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "Could a living passenger survive in orbit? Laika became the first dog to circle Earth, but did not survive the journey.",
+          "at": 135.5,
+          "end": 142.916,
+          "duration": 7.416,
+          "sha256": "83e5ef531cbc582df7099e968865eb2a16996463f91efe0a712ad7ca9d8712cc"
+        },
+        {
+          "id": "laika",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Un être vivant pouvait-il survivre en orbite ? Laïka devient la première chienne à tourner autour de la Terre, sans survivre au voyage.",
+          "at": 135.5,
+          "end": 143.53466666666668,
+          "duration": 8.034666666666666,
+          "sha256": "91cc0b1d9a7a1262bca27098a6884a93ba40f84ba78cdd814409f579e135be55"
+        },
+        {
+          "id": "gagarin",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "Yuri Gagarin, the first human in space.",
+          "at": 147.1,
+          "end": 149.69466666666665,
+          "duration": 2.5946666666666665,
+          "sha256": "5ab51737d791fcfc4fd0949e9b7afa40d9f54292e041607e818e8d95eb68fb91"
+        },
+        {
+          "id": "gagarin",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Youri Gagarine, premier humain dans l’espace.",
+          "at": 147.1,
+          "end": 149.716,
+          "duration": 2.616,
+          "sha256": "d1ad31bff4f423d412551e4247e025dd6bffbb976533145ed8fb5bb24666eb94"
+        },
+        {
+          "id": "a-destination",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "In 1961, the United States set a new destination beyond Earth orbit: the Moon.",
+          "at": 161.5,
+          "end": 167.72133333333332,
+          "duration": 6.221333333333333,
+          "sha256": "e5afe04fc050ab3194cc70b6f85c6591d4610c53e364e8381ae807a5a4f5078f"
+        },
+        {
+          "id": "a-destination",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "En 1961, les États-Unis fixent un objectif au-delà de l’orbite terrestre : la Lune.",
+          "at": 161.5,
+          "end": 167.61466666666666,
+          "duration": 6.1146666666666665,
+          "sha256": "51566c8916cd8e1393a8bf4c2036b54116aea822cd17af0af7c1032fec322b20"
+        },
+        {
+          "id": "tereshkova-first-woman",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "On 16 June 1963, Valentina Tereshkova became the first woman in space. Aboard Vostok 6, she orbited Earth forty-eight times.",
+          "at": 189.5,
+          "end": 200.09466666666665,
+          "duration": 10.594666666666667,
+          "sha256": "09a06c992dfa52cab2eca1731f5361c8d6490d11bfcf6f64c3d3f0ac47c365ee"
+        },
+        {
+          "id": "tereshkova-first-woman",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Le 16 juin 1963, Valentina Terechkova devient la première femme dans l’espace. À bord de Vostok 6, elle accomplit quarante-huit orbites autour de la Terre.",
+          "at": 189.5,
+          "end": 200.372,
+          "duration": 10.872,
+          "sha256": "efe3cdcb5f262d5f9511d673568fae8ed1aa1191819501c5156fc30300a0c702"
+        },
+        {
+          "id": "leonov-first-spacewalk",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "On 18 March 1965, Alexei Leonov left his Voskhod 2 spacecraft. For the first time, a human floated outside a spacecraft in orbit.",
+          "at": 203.5,
+          "end": 214.20133333333334,
+          "duration": 10.701333333333332,
+          "sha256": "12e2f1527704543b8f12739e7f37833870f59f9a18994ac9fac0bc3bf7f73102"
+        },
+        {
+          "id": "leonov-first-spacewalk",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Le 18 mars 1965, Alexeï Leonov sort du vaisseau Voskhod 2. Pour la première fois, un être humain évolue à l’extérieur d’un vaisseau en orbite.",
+          "at": 203.5,
+          "end": 213.96666666666667,
+          "duration": 10.466666666666667,
+          "sha256": "e9f15ee17d4114248d83d202c900e3159302a27b92b5ecbbd29f968ec664a2d5"
+        },
+        {
+          "id": "apollo8-first-orbit",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "On 24 December 1968, Apollo 8 became the first crewed mission to orbit the Moon.",
+          "at": 217.4,
+          "end": 223.77066666666667,
+          "duration": 6.370666666666667,
+          "sha256": "19c05f616f3e61ea834ceeed6f4a33a782cb661d5c8eda98e310d8823ae9ba6d"
+        },
+        {
+          "id": "apollo8-first-orbit",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Le 24 décembre 1968, Apollo 8 devient la première mission habitée en orbite autour de la Lune.",
+          "at": 217.4,
+          "end": 224.88,
+          "duration": 7.48,
+          "sha256": "9afc48c19c648bc70bae11f335dffe3864d29efc88d3324eb0ef110b978cf4a1"
+        },
+        {
+          "id": "apollo8-earthrise",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "Bill Anders photographed Earth rising above the lunar horizon. Earthrise offered a new view of our home.",
+          "at": 227.4,
+          "end": 233.728,
+          "duration": 6.328,
+          "sha256": "bc8a8f6bb116c7f47e5b48d3496653874a1818b33b2b4f0f4562ef323d252a46"
+        },
+        {
+          "id": "apollo8-earthrise",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Bill Anders photographie la Terre au-dessus de l’horizon lunaire. Earthrise offre un nouveau regard sur notre planète.",
+          "at": 227.4,
+          "end": 235.02933333333334,
+          "duration": 7.629333333333333,
+          "sha256": "ffd69f36bcd65e7ab90307c6c25ee4a450ad6b485a87fda8d400ef298e89b881"
+        },
+        {
+          "id": "a-promise-becomes-a-journey",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "In 1969, Apollo 11 set course for the Moon. Saturn V carried three astronauts on the mission.",
+          "at": 237.5,
+          "end": 244.916,
+          "duration": 7.416,
+          "sha256": "2cbb6c00f5c597f8fb07ea0ca5abddbd524d4c115f09710d0a321b9f144620ba"
+        },
+        {
+          "id": "a-promise-becomes-a-journey",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "En 1969, Apollo 11 prend la direction de la Lune. Saturn V emporte trois astronautes pour cette mission.",
+          "at": 237.5,
+          "end": 245.492,
+          "duration": 7.992,
+          "sha256": "f8472a44ab063b9c03cfe94115c32b2d1a76fcdc8d3552af99db0ccc14350027"
+        },
+        {
+          "id": "two-go-down-one-stays",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "On 20 July 1969, Eagle separated from Columbia. Michael Collins stayed in lunar orbit while Neil Armstrong and Buzz Aldrin descended to the surface.",
+          "at": 265.5,
+          "end": 276.64933333333335,
+          "duration": 11.149333333333333,
+          "sha256": "7c1c5509fd99759cc17248db126ea97a3d997147a3b916dc9687587ef77a2b34"
+        },
+        {
+          "id": "two-go-down-one-stays",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Le 20 juillet 1969, Eagle se sépare de Columbia. Michael Collins reste en orbite lunaire pendant que Neil Armstrong et Buzz Aldrin descendent vers la surface.",
+          "at": 265.5,
+          "end": 277.48133333333334,
+          "duration": 11.981333333333334,
+          "sha256": "a914e2456c861e2f8532f9e80926d4c77ddf5f867000aa469c59981d173b3efb"
+        },
+        {
+          "id": "the-first-machines-left-behind",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "The astronauts returned to Earth. But much of their equipment stayed on the Moon, where instruments continued their measurements after the crews had gone.",
+          "at": 301.5,
+          "end": 309.5346666666667,
+          "duration": 8.034666666666666,
+          "sha256": "ff410f8493b933dac64be7d49a6715e9b9015adc3ec33efe9411a37df442df72"
+        },
+        {
+          "id": "the-first-machines-left-behind",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Les astronautes sont revenus sur Terre. Mais une grande partie du matériel est restée sur la Lune, où les instruments ont poursuivi leurs mesures après leur départ.",
+          "at": 301.5,
+          "end": 310.94266666666664,
+          "duration": 9.442666666666666,
+          "sha256": "7d5c952b10f2c0532b53538a4c128a37ec89a1b2e99b278dc041fb2bde4d8865"
+        },
+        {
+          "id": "voyager2-departure",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "Launched in August 1977, Voyager 2 would explore Jupiter, Saturn, Uranus and Neptune.",
+          "at": 315.15,
+          "end": 322.2673333333333,
+          "duration": 7.117333333333334,
+          "sha256": "c9d621e94a6d00fac5f446ea5157f94b94c16549c067ff1f44364ebe0d8c9f3b"
+        },
+        {
+          "id": "voyager2-departure",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "En août 1977, Voyager 2 décolle. Elle explorera Jupiter, Saturne, Uranus et Neptune.",
+          "at": 315.15,
+          "end": 322.09666666666664,
+          "duration": 6.946666666666666,
+          "sha256": "0e106133b432eec09bf0fbf1b77b01c3a41b3c27d4e3d30d460685b78539b567"
+        },
+        {
+          "id": "voyager1-departure",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "Voyager 1 followed in September, on a faster route through the Solar System.",
+          "at": 323.3,
+          "end": 328.156,
+          "duration": 4.856,
+          "sha256": "6676325a069ec2b8861bfd594b33d84d22af31b9dc99b9b1440c47c395296e96"
+        },
+        {
+          "id": "voyager1-departure",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Voyager 1 la suit en septembre, sur une trajectoire plus rapide à travers le Système solaire.",
+          "at": 323.3,
+          "end": 329.244,
+          "duration": 5.944,
+          "sha256": "8ae4f2a4d7a8392eb5f6b24c69988e2737745daf8f25d81761f9f54d5423714c"
+        },
+        {
+          "id": "voyager-instruments",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "Cameras and scientific instruments send their measurements to Earth through a large radio antenna.",
+          "at": 331.3,
+          "end": 337.1586666666667,
+          "duration": 5.858666666666666,
+          "sha256": "611e588c0c27769fd21c790a44745fa6804cc25fc16869c3ac48687a72525826"
+        },
+        {
+          "id": "voyager-instruments",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Caméras et instruments scientifiques transmettent leurs mesures à la Terre grâce à une grande antenne radio.",
+          "at": 331.3,
+          "end": 337.26533333333333,
+          "duration": 5.965333333333334,
+          "sha256": "fc2b2e12f48675f1ef9a03aff372e7f8bc6f72785e285eb16fbab7a5eeb25dd2"
+        },
+        {
+          "id": "carrier-tests",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "On Earth, NASA tested another path: Enterprise, carried aboard a modified Boeing 747.",
+          "at": 347.1,
+          "end": 354.132,
+          "duration": 7.032,
+          "sha256": "624829e45d018ab6030952691846f2bcce7d868e1999d9727c4dc74e34ddae0e"
+        },
+        {
+          "id": "carrier-tests",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Sur Terre, la NASA teste une autre voie : Enterprise, transportée sur un Boeing 747 modifié.",
+          "at": 347.1,
+          "end": 354.06800000000004,
+          "duration": 6.968,
+          "sha256": "dfb19de7983e39cb4eb2a07d6abfed43e83d48218fa0a22bb440a27c38595d59"
+        },
+        {
+          "id": "shuttle-first-orbit",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "On 12 April 1981, Columbia launched the first orbital Shuttle flight. The mission succeeded, landing two days later. The programme could begin.",
+          "at": 355.4,
+          "end": 365.80266666666665,
+          "duration": 10.402666666666667,
+          "sha256": "124b03a66420e158665b1d1745c27ff70faa7a7308dbeb204a321bc14779bcd8"
+        },
+        {
+          "id": "shuttle-first-orbit",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Le 12 avril 1981, Columbia effectue le premier vol orbital d’une navette. La mission réussit et atterrit deux jours plus tard. Le programme peut commencer.",
+          "at": 355.4,
+          "end": 365.76,
+          "duration": 10.36,
+          "sha256": "5af320262b0f2014188fae2ee657977d08181332ffbc03aa359b77d21c5b1383"
+        },
+        {
+          "id": "challenger-date",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "Nearly five years later, on 28 January 1986, Challenger launched with seven people aboard.",
+          "at": 371.3,
+          "end": 378.6306666666667,
+          "duration": 7.330666666666667,
+          "sha256": "c2e676a6cb06b5ca5b49e61e910563fbce44c9f7827236bf8f56a3a054de738d"
+        },
+        {
+          "id": "challenger-date",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Près de cinq ans plus tard, le 28 janvier 1986, Challenger décolle avec sept personnes à bord.",
+          "at": 371.3,
+          "end": 378.332,
+          "duration": 7.032,
+          "sha256": "059bf0c795416409051d5ce7f6fe93628c05a45024ce02b9c04333b220b981aa"
+        },
+        {
+          "id": "the-cost-of-flight",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "Challenger broke apart seventy-three seconds after launch. All seven crew members died.",
+          "at": 387.4,
+          "end": 392.78933333333333,
+          "duration": 5.389333333333333,
+          "sha256": "bce706a5bcbfcaaead0b244c0d1e743a09360bd7350fb8566b9ac1653835a56e"
+        },
+        {
+          "id": "the-cost-of-flight",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Challenger se disloque soixante-treize secondes après le décollage. Les sept membres d’équipage meurent.",
+          "at": 387.4,
+          "end": 393.30133333333333,
+          "duration": 5.9013333333333335,
+          "sha256": "45f9f7403a493df5f66d7c98fce2cf55ab1f62aae3b390fa086f273b2d44533f"
+        },
+        {
+          "id": "a-new-view",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "After flights resumed, a Shuttle crew deployed Hubble in 1990. Above the atmosphere, it could observe the universe more clearly.",
+          "at": 395.5,
+          "end": 404.324,
+          "duration": 8.824,
+          "sha256": "f9a38c8bd067db9c1ad5f89c4ad1abc5ef5e3b9fc60ab9cd6e5d6c1f3ea984d8"
+        },
+        {
+          "id": "a-new-view",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Après la reprise des vols, une navette déploie Hubble en 1990. Au-dessus de l’atmosphère, il peut mieux observer l’univers.",
+          "at": 395.5,
+          "end": 404.26,
+          "duration": 8.76,
+          "sha256": "5c68196564018df5b6af00aab08e61ac6d2d96d062ab55785f36f6e08718580b"
+        },
+        {
+          "id": "rivals-build-together",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "In 1998, Russia and the United States joined the first Station modules. Fifteen partner countries cooperate: the United States, Russia, Canada, Japan, and eleven European nations, including France, Germany and Italy.",
+          "at": 409.3,
+          "end": 424.5026666666667,
+          "duration": 15.202666666666667,
+          "sha256": "83a47e1286e11dcea15bb09b6fcb01b5f01aba48d2ee473902ece7273d9a7694"
+        },
+        {
+          "id": "rivals-build-together",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "En 1998, la Russie et les États-Unis assemblent les premiers modules de l’ISS. Quinze pays partenaires coopèrent : États-Unis, Russie, Canada, Japon et onze pays européens, dont la France, l’Allemagne et l’Italie.",
+          "at": 409.3,
+          "end": 422.348,
+          "duration": 13.048,
+          "sha256": "bfe7255b72343d17209e18ef21246398e13ae2b1b47e193f4e09de9ceb809f27"
+        },
+        {
+          "id": "cassini-arrives-saturn",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "Beyond Earth orbit, Cassini reached Saturn in 2004. This American, European and Italian mission carried a small European probe: Huygens.",
+          "at": 429.4,
+          "end": 439.5466666666666,
+          "duration": 10.146666666666667,
+          "sha256": "53ef6d12ddc41fc026e1fe27cd405a8eb402e15b1600aa94e9e1b2bae5ea95d5"
+        },
+        {
+          "id": "cassini-arrives-saturn",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Au-delà de l’orbite terrestre, Cassini atteint Saturne en 2004. Cette mission américaine, européenne et italienne transporte une petite sonde européenne : Huygens.",
+          "at": 429.4,
+          "end": 439.99466666666666,
+          "duration": 10.594666666666667,
+          "sha256": "ad69202af1d414e8ce1e2e283fe4b39a6099047d35a69f3cbe36593c51edab7d"
+        },
+        {
+          "id": "huygens-released",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "Cassini released Huygens towards Titan, Saturn’s largest moon.",
+          "at": 441.3,
+          "end": 445.3453333333334,
+          "duration": 4.045333333333334,
+          "sha256": "95db1b81693ecae44cc9db22760875aa36905ea0c50f1beb1ce31a31d358d535"
+        },
+        {
+          "id": "huygens-released",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Cassini libère Huygens vers Titan, la plus grande lune de Saturne.",
+          "at": 441.3,
+          "end": 445.26,
+          "duration": 3.96,
+          "sha256": "00f04615ad708700c9813e0058a8dd123fc92343d9ad664ed3206643932b9b19"
+        },
+        {
+          "id": "huygens-titan",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "On 14 January 2005, Huygens landed on Titan. Its measurements revealed channels and rounded pebbles, shaped by flowing methane.",
+          "at": 451.3,
+          "end": 460.84933333333333,
+          "duration": 9.549333333333333,
+          "sha256": "79658532e5520659cdfbe99de6af986b4957ae21a9fcb6fe5db57588d2f862b9"
+        },
+        {
+          "id": "huygens-titan",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Le 14 janvier 2005, Huygens se pose sur Titan. Ses mesures révèlent des chenaux et des galets arrondis, façonnés par du méthane liquide.",
+          "at": 451.3,
+          "end": 460.6573333333333,
+          "duration": 9.357333333333333,
+          "sha256": "03c16f555ac067cdb497ebbb6e561e967aa46bb2c4d53f54260541357f34e55c"
+        },
+        {
+          "id": "a-shared-laboratory",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "Back in Earth orbit, cooperation continued. In 2008, Europe added Columbus, the Station’s science laboratory.",
+          "at": 467.3,
+          "end": 475.42,
+          "duration": 8.12,
+          "sha256": "bdf654abbf8c7626d81ee9d01ca23acb085364e65de823a6f13e85f229ada905"
+        },
+        {
+          "id": "a-shared-laboratory",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "En orbite terrestre, la coopération continue. En 2008, l’Europe ajoute Columbus, laboratoire scientifique de l’ISS.",
+          "at": 467.3,
+          "end": 474.9293333333333,
+          "duration": 7.629333333333333,
+          "sha256": "4642f9a1a60ba6ae2e0ea3b06b69db733601193dbf6d5d539f81896718d91130"
+        },
+        {
+          "id": "retiring-the-shuttle",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "After Challenger in 1986, Columbia was lost during re-entry in 2003. Safety concerns and costs helped end the Shuttle programme. Its final flight landed in 2011.",
+          "at": 489.3,
+          "end": 502.5826666666667,
+          "duration": 13.282666666666668,
+          "sha256": "8990bb2defcab3244f498b336a31d2a470ab6195324ea653d785e598a582b933"
+        },
+        {
+          "id": "retiring-the-shuttle",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Après Challenger en 1986, Columbia est perdue au retour sur Terre en 2003. La sécurité et les coûts contribuent à l’arrêt du programme. Le dernier vol s’achève en 2011.",
+          "at": 489.3,
+          "end": 501.17466666666667,
+          "duration": 11.874666666666666,
+          "sha256": "12c3e6699d0511979de6daa6416ed8836f687ef19d26df89f7a2f8c7be5c0329"
+        },
+        {
+          "id": "keeping-the-outpost-alive",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "After the Shuttle retired, Russia’s Soyuz carried all arriving Station crews until 2020.",
+          "at": 505.3,
+          "end": 511.94800000000004,
+          "duration": 6.648,
+          "sha256": "204cccc2c0657232c0d275f66d876ac41d6adf4a9e5c38279df3c04082c86e35"
+        },
+        {
+          "id": "keeping-the-outpost-alive",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Après les navettes, le Soyouz russe transporte seul les équipages de la Station jusqu’en 2020.",
+          "at": 505.3,
+          "end": 511.0946666666667,
+          "duration": 5.794666666666667,
+          "sha256": "6a9ca7c60a0e20ef76616db46beabd573cac42775f030126322d39b2b709dbdb"
+        },
+        {
+          "id": "the-long-journey-continues",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "In 2012, Voyager 1 crossed the heliopause, beyond the solar wind. It entered interstellar space, while still travelling within the Sun’s vast gravitational domain.",
+          "at": 513.4,
+          "end": 524.784,
+          "duration": 11.384,
+          "sha256": "1c25eed1861f1c5bcc95bfbdaf5c631298a054b320422605f3ac0ff21aa25bbe"
+        },
+        {
+          "id": "the-long-journey-continues",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "En 2012, Voyager 1 franchit l’héliopause, au-delà du vent solaire. Il entre dans l’espace interstellaire, tout en restant dans le vaste domaine gravitationnel du Soleil.",
+          "at": 513.4,
+          "end": 523.952,
+          "duration": 10.552,
+          "sha256": "03882411fe53b901ede71a43c5b4f4b07f7173ed731c0dba03576ed445dcf1b3"
+        },
+        {
+          "id": "rosetta-arrival",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "On 6 August 2014, Europe’s Rosetta reached comet 67P and began studying it up close.",
+          "at": 527.2,
+          "end": 534.5093333333334,
+          "duration": 7.309333333333333,
+          "sha256": "69c95c3284eaacfad02aae7e2a40a48bdadf0f94201b8d354c018be1db50875b"
+        },
+        {
+          "id": "rosetta-arrival",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Le 6 août 2014, la sonde européenne Rosetta rejoint la comète 67P et commence à l’étudier de près.",
+          "at": 527.2,
+          "end": 534.552,
+          "duration": 7.352,
+          "sha256": "1e982eee9b9fa221b2bca46234148ba007f155cf19e84654df13283b27a11456"
+        },
+        {
+          "id": "rosetta-observes",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "For just over three months, Rosetta observed the comet before releasing its lander, Philae.",
+          "at": 535.2,
+          "end": 540.5893333333333,
+          "duration": 5.389333333333333,
+          "sha256": "07130e46b72cab8734c416cbd3bc75bdbc96ba0452bfb7140c5a1985f9fcb6e3"
+        },
+        {
+          "id": "rosetta-observes",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Pendant un peu plus de trois mois, Rosetta observe la comète avant de libérer son module Philae.",
+          "at": 535.2,
+          "end": 540.6320000000001,
+          "duration": 5.432,
+          "sha256": "e0aec429b3dc2f28656225a5cff3775d505b8ae698c73e998c870c5044925121"
+        },
+        {
+          "id": "philae-release",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "On 12 November, Philae separated from Rosetta. It fell slowly towards the surface, without an engine to control its descent.",
+          "at": 543.3,
+          "end": 551.6333333333333,
+          "duration": 8.333333333333334,
+          "sha256": "3c98c98fc942bd7b0e1517e0c70fdcd24e8aa8a50e620400ca19526a70746517"
+        },
+        {
+          "id": "philae-release",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Le 12 novembre, Philae se détache de Rosetta. Il descend lentement vers la surface, sans moteur pour contrôler sa chute.",
+          "at": 543.3,
+          "end": 550.6946666666666,
+          "duration": 7.394666666666667,
+          "sha256": "e02ea7405991dbbc8d363a056a35506550d33a755cc9f2d51e960cf5fb7d887f"
+        },
+        {
+          "id": "philae-real-landing",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "Its anchoring harpoons failed to fire. Philae bounced twice before stopping in shadow. It sent measurements, but too little sunlight soon exhausted its battery.",
+          "at": 555.3,
+          "end": 565.1266666666667,
+          "duration": 9.826666666666666,
+          "sha256": "be7762b3342317d5829d15dc9b3fc6383b258cd50ce8797b1cb07aed2e4c1db8"
+        },
+        {
+          "id": "philae-real-landing",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Ses harpons d’ancrage ne se déclenchent pas. Philae rebondit deux fois avant de s’immobiliser dans l’ombre. Il transmet des mesures, mais le manque de soleil épuise bientôt sa batterie.",
+          "at": 555.3,
+          "end": 565.6813333333333,
+          "duration": 10.381333333333334,
+          "sha256": "5a40cee667ee70dd71a104c97c9369e483c9139c4d7a366c8ab7011f4c07bc0a"
+        },
+        {
+          "id": "rosetta-final-descent",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "Rosetta kept studying the comet for two more years. On 30 September 2016, it made a controlled descent to the surface, sending increasingly close images. Contact ended the mission. Rosetta and Philae remain there.",
+          "at": 569.4,
+          "end": 584.3893333333333,
+          "duration": 14.989333333333333,
+          "sha256": "726199bd81d3c5acebdc6341b2a30e488a318216148b6022821ba02ed0706dd2"
+        },
+        {
+          "id": "rosetta-final-descent",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Rosetta poursuit l’étude de la comète pendant deux ans. Le 30 septembre 2016, elle descend de façon contrôlée vers la surface et transmet des images toujours plus proches. Le contact met fin à la mission. Rosetta et Philae restent sur la comète.",
+          "at": 569.4,
+          "end": 584.3253333333333,
+          "duration": 14.925333333333333,
+          "sha256": "7519d661a5afcb8f45609bc136e1c1d1e1e294184b9140b79a5d08df3a4242ef"
+        },
+        {
+          "id": "change4-farside",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "After a comet, another robotic first took place on the Moon. On 3 January 2019, China’s Chang’e 4 made the first soft landing on its far side.",
+          "at": 593.3,
+          "end": 603.5319999999999,
+          "duration": 10.232,
+          "sha256": "73c41ec2102ec33bab0d5a3b7e5807dce4f6637d001f5fdbe9e1a61c9147af00"
+        },
+        {
+          "id": "change4-farside",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Après une comète, une autre première robotique se joue sur la Lune. Le 3 janvier 2019, la sonde chinoise Chang’e 4 réalise le premier atterrissage en douceur sur sa face cachée.",
+          "at": 593.3,
+          "end": 604.876,
+          "duration": 11.576,
+          "sha256": "df98aef380bfb7b9525ee6bdb2d0119d2c0115820c7f0675041da758a5f8981c"
+        },
+        {
+          "id": "returning-launchers",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "On Earth, another transformation gathered pace. SpaceX, founded by Elon Musk, developed reusable launchers to carry satellites and spacecraft into orbit.",
+          "at": 607.4,
+          "end": 617.824,
+          "duration": 10.424,
+          "sha256": "cb2e9e5ebb749d865961fb31d0baab547b8a05c117bc9b81f95966744b32beee"
+        },
+        {
+          "id": "returning-launchers",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Sur Terre, une autre transformation s’accélère. SpaceX, fondée par Elon Musk, développe des lanceurs réutilisables pour envoyer satellites et vaisseaux en orbite.",
+          "at": 607.4,
+          "end": 617.9306666666666,
+          "duration": 10.530666666666667,
+          "sha256": "3614d8e7b125812afdf0faaf8332b8c09158129964474d7f5013322285a548a1"
+        },
+        {
+          "id": "a-question-on-mars",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "In 2021, Perseverance approached Mars to search for signs of ancient life.",
+          "at": 645.4,
+          "end": 650.9599999999999,
+          "duration": 5.56,
+          "sha256": "88f758d66b10115b083930c25d1237eceee91d32511369ab9e7ce836b399f54b"
+        },
+        {
+          "id": "a-question-on-mars",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "En 2021, Perseverance approche de Mars pour chercher les traces d’une vie ancienne.",
+          "at": 645.4,
+          "end": 650.4266666666666,
+          "duration": 5.026666666666666,
+          "sha256": "20fe1a3fb43820a92378759a2d12bf7ef5bebbf941809595c3c927b1291dafce"
+        },
+        {
+          "id": "looking-back-through-time",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "In December 2021, NASA, ESA and Canada launched the James Webb Space Telescope, an infrared observatory designed to study the distant universe.",
+          "at": 665.5,
+          "end": 676.564,
+          "duration": 11.064,
+          "sha256": "f6805be42d6031303041d261cd1731a1a9030861a788b2dc11741cc5c46e9ceb"
+        },
+        {
+          "id": "looking-back-through-time",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "En décembre 2021, la NASA, l’ESA et le Canada lancent le télescope spatial James Webb, un observatoire infrarouge conçu pour étudier l’univers lointain.",
+          "at": 665.5,
+          "end": 676.5,
+          "duration": 11.0,
+          "sha256": "355a871052ec97a00586d99f55c7653b6746a008086711a8732ad4fc888ef522"
+        },
+        {
+          "id": "webb-deployment",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "Its six-and-a-half-metre mirror unfolded in space, behind a five-layer sunshield. Keeping its instruments cold lets Webb detect faint infrared light from early galaxies and study the atmospheres of planets around other stars.",
+          "at": 677.4,
+          "end": 692.1973333333333,
+          "duration": 14.797333333333333,
+          "sha256": "0d94753f8e4d264573491fdfecc8f8c99a6827fcb5ad653faf72d02af41817f5"
+        },
+        {
+          "id": "webb-deployment",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Son miroir de six mètres cinquante se déploie dans l’espace, derrière un pare-soleil à cinq couches. Ses instruments refroidis captent la faible lumière infrarouge des premières galaxies et étudient les atmosphères de planètes autour d’autres étoiles.",
+          "at": 677.4,
+          "end": 691.536,
+          "duration": 14.136,
+          "sha256": "b4423d4092c91a040c7f13bcdad0e99105dfe63f8fde25d44a2e3083914926c0"
+        },
+        {
+          "id": "webb-location",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "Webb observes from around the Sun–Earth L2 point, one and a half million kilometres from Earth. It joins generations of machines sent beyond our world.",
+          "at": 695.3,
+          "end": 705.276,
+          "duration": 9.976,
+          "sha256": "6d92c090fd40101c2d1763e56fd4808d8855d55bba90e62d2dc2d50bc21f0756"
+        },
+        {
+          "id": "webb-location",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Webb observe autour du point L2 du système Soleil-Terre, à un million et demi de kilomètres de la Terre. Il rejoint des générations de machines envoyées au-delà de notre monde.",
+          "at": 695.3,
+          "end": 706.5773333333333,
+          "duration": 11.277333333333333,
+          "sha256": "f9bc238f1b737bc3512e3a9e64bd25b1e6689f9ec90f0a0fda56192a14f29285"
+        },
+        {
+          "id": "journeys-leave-traces",
+          "language": "en",
+          "voice": "af_heart",
+          "text": "Every mission leaves a trace. From Earth orbit to distant worlds, RELIC brings their stories together. Your journey starts here.",
+          "at": 707.3,
+          "end": 714.9079999999999,
+          "duration": 7.608,
+          "sha256": "06ce544ce03bdfd1fd39072a86bd107d717fd268dc05acd2412d7a80bc1ec266"
+        },
+        {
+          "id": "journeys-leave-traces",
+          "language": "fr",
+          "voice": "ff_siwis",
+          "text": "Chaque mission laisse une trace. De l’orbite terrestre aux mondes lointains, RELIC rassemble leurs histoires. Votre voyage commence ici.",
+          "at": 707.3,
+          "end": 715.0573333333333,
+          "duration": 7.757333333333333,
+          "sha256": "187777b7b2f4f9d2d94425eb286377e0ef72ad1eba727154c10b3e3adaeb8c23"
+        }
+      ],
+      "alignment": {
+        "revision": "12.0-hd50",
+        "paragraphs": [
+          {
+            "id": "a-world-and-a-question",
+            "language": "en",
+            "at": 88.9,
+            "waveformCorrelation": 0.9780810356825336,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "war-rockets",
+            "language": "en",
+            "at": 99.5,
+            "waveformCorrelation": 0.9769333450113697,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "von-braun-postwar",
+            "language": "en",
+            "at": 113.0,
+            "waveformCorrelation": 0.9701370782992529,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "a-signal-around-earth",
+            "language": "en",
+            "at": 123.1,
+            "waveformCorrelation": 0.9778308390896043,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "laika",
+            "language": "en",
+            "at": 135.5,
+            "waveformCorrelation": 0.9870990145409256,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "gagarin",
+            "language": "en",
+            "at": 147.1,
+            "waveformCorrelation": 0.9891082877535018,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "a-destination",
+            "language": "en",
+            "at": 161.5,
+            "waveformCorrelation": 0.9862589718309116,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "tereshkova-first-woman",
+            "language": "en",
+            "at": 189.5,
+            "waveformCorrelation": 0.9895085903140479,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "leonov-first-spacewalk",
+            "language": "en",
+            "at": 203.5,
+            "waveformCorrelation": 0.9842382439231409,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "apollo8-first-orbit",
+            "language": "en",
+            "at": 217.4,
+            "waveformCorrelation": 0.9788933328419821,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "apollo8-earthrise",
+            "language": "en",
+            "at": 227.4,
+            "waveformCorrelation": 0.9821375005107476,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "a-promise-becomes-a-journey",
+            "language": "en",
+            "at": 237.5,
+            "waveformCorrelation": 0.9411844249844082,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "two-go-down-one-stays",
+            "language": "en",
+            "at": 265.5,
+            "waveformCorrelation": 0.9709859468823998,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "the-first-machines-left-behind",
+            "language": "en",
+            "at": 301.5,
+            "waveformCorrelation": 0.9651909772351616,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "voyager2-departure",
+            "language": "en",
+            "at": 315.15,
+            "waveformCorrelation": 0.9645249068734167,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "voyager1-departure",
+            "language": "en",
+            "at": 323.3,
+            "waveformCorrelation": 0.9655037095660626,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "voyager-instruments",
+            "language": "en",
+            "at": 331.3,
+            "waveformCorrelation": 0.9778491485426738,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "carrier-tests",
+            "language": "en",
+            "at": 347.1,
+            "waveformCorrelation": 0.9761054186201402,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "shuttle-first-orbit",
+            "language": "en",
+            "at": 355.4,
+            "waveformCorrelation": 0.9849710739991534,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "challenger-date",
+            "language": "en",
+            "at": 371.3,
+            "waveformCorrelation": 0.9859255497737403,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "the-cost-of-flight",
+            "language": "en",
+            "at": 387.4,
+            "waveformCorrelation": 0.9992186769821118,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "a-new-view",
+            "language": "en",
+            "at": 395.5,
+            "waveformCorrelation": 0.9799093754673368,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "rivals-build-together",
+            "language": "en",
+            "at": 409.3,
+            "waveformCorrelation": 0.985356695922578,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "cassini-arrives-saturn",
+            "language": "en",
+            "at": 429.4,
+            "waveformCorrelation": 0.9802500745344729,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "huygens-released",
+            "language": "en",
+            "at": 441.3,
+            "waveformCorrelation": 0.9580929287027934,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "huygens-titan",
+            "language": "en",
+            "at": 451.3,
+            "waveformCorrelation": 0.989146683002212,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "a-shared-laboratory",
+            "language": "en",
+            "at": 467.3,
+            "waveformCorrelation": 0.9828792577690451,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "retiring-the-shuttle",
+            "language": "en",
+            "at": 489.3,
+            "waveformCorrelation": 0.9857850330867987,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "keeping-the-outpost-alive",
+            "language": "en",
+            "at": 505.3,
+            "waveformCorrelation": 0.9614770878717521,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "the-long-journey-continues",
+            "language": "en",
+            "at": 513.4,
+            "waveformCorrelation": 0.9867338662375538,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "rosetta-arrival",
+            "language": "en",
+            "at": 527.2,
+            "waveformCorrelation": 0.9734346867404815,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "rosetta-observes",
+            "language": "en",
+            "at": 535.2,
+            "waveformCorrelation": 0.9821200840952996,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "philae-release",
+            "language": "en",
+            "at": 543.3,
+            "waveformCorrelation": 0.9811914710401101,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "philae-real-landing",
+            "language": "en",
+            "at": 555.3,
+            "waveformCorrelation": 0.9835555154516771,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "rosetta-final-descent",
+            "language": "en",
+            "at": 569.4,
+            "waveformCorrelation": 0.9838623776100824,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "change4-farside",
+            "language": "en",
+            "at": 593.3,
+            "waveformCorrelation": 0.9933644288118416,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "returning-launchers",
+            "language": "en",
+            "at": 607.4,
+            "waveformCorrelation": 0.965637561391191,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "a-question-on-mars",
+            "language": "en",
+            "at": 645.4,
+            "waveformCorrelation": 0.9716385116832992,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "looking-back-through-time",
+            "language": "en",
+            "at": 665.5,
+            "waveformCorrelation": 0.9365451322579282,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "webb-deployment",
+            "language": "en",
+            "at": 677.4,
+            "waveformCorrelation": 0.9677200368291454,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "webb-location",
+            "language": "en",
+            "at": 695.3,
+            "waveformCorrelation": 0.9798738523529018,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "journeys-leave-traces",
+            "language": "en",
+            "at": 707.3,
+            "waveformCorrelation": 0.9855378829134238,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "a-world-and-a-question",
+            "language": "fr",
+            "at": 88.9,
+            "waveformCorrelation": 0.9845123272864837,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "war-rockets",
+            "language": "fr",
+            "at": 99.5,
+            "waveformCorrelation": 0.984978687106137,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "von-braun-postwar",
+            "language": "fr",
+            "at": 113.0,
+            "waveformCorrelation": 0.990271070123139,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "a-signal-around-earth",
+            "language": "fr",
+            "at": 123.1,
+            "waveformCorrelation": 0.9857741075643394,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "laika",
+            "language": "fr",
+            "at": 135.5,
+            "waveformCorrelation": 0.987594701990365,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "gagarin",
+            "language": "fr",
+            "at": 147.1,
+            "waveformCorrelation": 0.9920015344981099,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "a-destination",
+            "language": "fr",
+            "at": 161.5,
+            "waveformCorrelation": 0.9896786047074092,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "tereshkova-first-woman",
+            "language": "fr",
+            "at": 189.5,
+            "waveformCorrelation": 0.9937364413175805,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "leonov-first-spacewalk",
+            "language": "fr",
+            "at": 203.5,
+            "waveformCorrelation": 0.9841575663266665,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "apollo8-first-orbit",
+            "language": "fr",
+            "at": 217.4,
+            "waveformCorrelation": 0.9871995240840454,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "apollo8-earthrise",
+            "language": "fr",
+            "at": 227.4,
+            "waveformCorrelation": 0.98924290578179,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "a-promise-becomes-a-journey",
+            "language": "fr",
+            "at": 237.5,
+            "waveformCorrelation": 0.9749920923328985,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "two-go-down-one-stays",
+            "language": "fr",
+            "at": 265.5,
+            "waveformCorrelation": 0.9697764321205297,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "the-first-machines-left-behind",
+            "language": "fr",
+            "at": 301.5,
+            "waveformCorrelation": 0.9924235621790036,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "voyager2-departure",
+            "language": "fr",
+            "at": 315.15,
+            "waveformCorrelation": 0.9750403846317459,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "voyager1-departure",
+            "language": "fr",
+            "at": 323.3,
+            "waveformCorrelation": 0.9754304968078491,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "voyager-instruments",
+            "language": "fr",
+            "at": 331.3,
+            "waveformCorrelation": 0.9735763911141956,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "carrier-tests",
+            "language": "fr",
+            "at": 347.1,
+            "waveformCorrelation": 0.9763683305715214,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "shuttle-first-orbit",
+            "language": "fr",
+            "at": 355.4,
+            "waveformCorrelation": 0.9838052102151372,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "challenger-date",
+            "language": "fr",
+            "at": 371.3,
+            "waveformCorrelation": 0.9916235805501428,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "the-cost-of-flight",
+            "language": "fr",
+            "at": 387.4,
+            "waveformCorrelation": 0.9999650137407475,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "a-new-view",
+            "language": "fr",
+            "at": 395.5,
+            "waveformCorrelation": 0.9904141170264331,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "rivals-build-together",
+            "language": "fr",
+            "at": 409.3,
+            "waveformCorrelation": 0.9835146424046511,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "cassini-arrives-saturn",
+            "language": "fr",
+            "at": 429.4,
+            "waveformCorrelation": 0.9832396953747862,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "huygens-released",
+            "language": "fr",
+            "at": 441.3,
+            "waveformCorrelation": 0.9675333426302466,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "huygens-titan",
+            "language": "fr",
+            "at": 451.3,
+            "waveformCorrelation": 0.9853877945846999,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "a-shared-laboratory",
+            "language": "fr",
+            "at": 467.3,
+            "waveformCorrelation": 0.9897657473911631,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "retiring-the-shuttle",
+            "language": "fr",
+            "at": 489.3,
+            "waveformCorrelation": 0.9868284878937603,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "keeping-the-outpost-alive",
+            "language": "fr",
+            "at": 505.3,
+            "waveformCorrelation": 0.983413338972328,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "the-long-journey-continues",
+            "language": "fr",
+            "at": 513.4,
+            "waveformCorrelation": 0.9884939310459564,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "rosetta-arrival",
+            "language": "fr",
+            "at": 527.2,
+            "waveformCorrelation": 0.9787059739158509,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "rosetta-observes",
+            "language": "fr",
+            "at": 535.2,
+            "waveformCorrelation": 0.9770816016210482,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "philae-release",
+            "language": "fr",
+            "at": 543.3,
+            "waveformCorrelation": 0.9869054506563193,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "philae-real-landing",
+            "language": "fr",
+            "at": 555.3,
+            "waveformCorrelation": 0.9797400178160901,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "rosetta-final-descent",
+            "language": "fr",
+            "at": 569.4,
+            "waveformCorrelation": 0.9806444060824596,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "change4-farside",
+            "language": "fr",
+            "at": 593.3,
+            "waveformCorrelation": 0.9948364262392484,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "returning-launchers",
+            "language": "fr",
+            "at": 607.4,
+            "waveformCorrelation": 0.9841100339134853,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "a-question-on-mars",
+            "language": "fr",
+            "at": 645.4,
+            "waveformCorrelation": 0.9811080348461406,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "looking-back-through-time",
+            "language": "fr",
+            "at": 665.5,
+            "waveformCorrelation": 0.9775216908070687,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "webb-deployment",
+            "language": "fr",
+            "at": 677.4,
+            "waveformCorrelation": 0.9760848799182695,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "webb-location",
+            "language": "fr",
+            "at": 695.3,
+            "waveformCorrelation": 0.9859120698651631,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          },
+          {
+            "id": "journeys-leave-traces",
+            "language": "fr",
+            "at": 707.3,
+            "waveformCorrelation": 0.9920702548925432,
+            "lagSamples": 0,
+            "lagSeconds": 0.0,
+            "passed": true
+          }
+        ],
+        "archivalSignals": [
+          {
+            "id": "sputnik-original-signal",
+            "language": "en",
+            "at": 131.7,
+            "waveformCorrelation": 0.9910998534608172,
+            "lagSamples": 0
+          },
+          {
+            "id": "sputnik-original-signal",
+            "language": "fr",
+            "at": 131.7,
+            "waveformCorrelation": 0.9975948130585592,
+            "lagSamples": 0
+          }
+        ],
+        "passed": true,
+        "silentFinalCard": [
+          {
+            "language": "en",
+            "start": 721,
+            "end": 731,
+            "maximumAbsoluteSample": 0.0
+          },
+          {
+            "language": "fr",
+            "start": 721,
+            "end": 731,
+            "maximumAbsoluteSample": 0.0
+          }
+        ]
+      }
+    },
+    "audioTimeline": {
+      "en": {
+        "fullDecodePassed": true,
+        "sampleRate": 48000,
+        "channels": 2,
+        "decodedSamples": 35088384,
+        "decodedSeconds": 731.008,
+        "samplePeak": 0.8011913895606995,
+        "duration": 731,
+        "audioSources": [
+          {
+            "id": "a-world-and-a-question",
+            "start": 88.9,
+            "duration": 5.517333333333333,
+            "sha256": "09e06e761f40c6ca27f9ba315e7215f32c7df86db4b55671b0467f609d2d353b",
+            "voice": "af_heart"
+          },
+          {
+            "id": "war-rockets",
+            "start": 99.5,
+            "duration": 6.818666666666667,
+            "sha256": "2780b4ddccbfa7fd3cf62f2a5a70c4827e31f50f2a36c500e5cf3365cd0e8734",
+            "voice": "af_heart"
+          },
+          {
+            "id": "von-braun-postwar",
+            "start": 113.0,
+            "duration": 7.501333333333333,
+            "sha256": "0b8075ebeb7128b4fddcea5906ef8a94eba73207f8d687491c4a24f145759111",
+            "voice": "af_heart"
+          },
+          {
+            "id": "a-signal-around-earth",
+            "start": 123.1,
+            "duration": 4.664,
+            "sha256": "6ea8d2fde353191cac51f3e30b7abe4298c3b7e3834b7f71ace54e75254c6d63",
+            "voice": "af_heart"
+          },
+          {
+            "id": "laika",
+            "start": 135.5,
+            "duration": 7.416,
+            "sha256": "83e5ef531cbc582df7099e968865eb2a16996463f91efe0a712ad7ca9d8712cc",
+            "voice": "af_heart"
+          },
+          {
+            "id": "gagarin",
+            "start": 147.1,
+            "duration": 2.5946666666666665,
+            "sha256": "5ab51737d791fcfc4fd0949e9b7afa40d9f54292e041607e818e8d95eb68fb91",
+            "voice": "af_heart"
+          },
+          {
+            "id": "a-destination",
+            "start": 161.5,
+            "duration": 6.221333333333333,
+            "sha256": "e5afe04fc050ab3194cc70b6f85c6591d4610c53e364e8381ae807a5a4f5078f",
+            "voice": "af_heart"
+          },
+          {
+            "id": "tereshkova-first-woman",
+            "start": 189.5,
+            "duration": 10.594666666666667,
+            "sha256": "09a06c992dfa52cab2eca1731f5361c8d6490d11bfcf6f64c3d3f0ac47c365ee",
+            "voice": "af_heart"
+          },
+          {
+            "id": "leonov-first-spacewalk",
+            "start": 203.5,
+            "duration": 10.701333333333332,
+            "sha256": "12e2f1527704543b8f12739e7f37833870f59f9a18994ac9fac0bc3bf7f73102",
+            "voice": "af_heart"
+          },
+          {
+            "id": "apollo8-first-orbit",
+            "start": 217.4,
+            "duration": 6.370666666666667,
+            "sha256": "19c05f616f3e61ea834ceeed6f4a33a782cb661d5c8eda98e310d8823ae9ba6d",
+            "voice": "af_heart"
+          },
+          {
+            "id": "apollo8-earthrise",
+            "start": 227.4,
+            "duration": 6.328,
+            "sha256": "bc8a8f6bb116c7f47e5b48d3496653874a1818b33b2b4f0f4562ef323d252a46",
+            "voice": "af_heart"
+          },
+          {
+            "id": "a-promise-becomes-a-journey",
+            "start": 237.5,
+            "duration": 7.416,
+            "sha256": "2cbb6c00f5c597f8fb07ea0ca5abddbd524d4c115f09710d0a321b9f144620ba",
+            "voice": "af_heart"
+          },
+          {
+            "id": "two-go-down-one-stays",
+            "start": 265.5,
+            "duration": 11.149333333333333,
+            "sha256": "7c1c5509fd99759cc17248db126ea97a3d997147a3b916dc9687587ef77a2b34",
+            "voice": "af_heart"
+          },
+          {
+            "id": "the-first-machines-left-behind",
+            "start": 301.5,
+            "duration": 8.034666666666666,
+            "sha256": "ff410f8493b933dac64be7d49a6715e9b9015adc3ec33efe9411a37df442df72",
+            "voice": "af_heart"
+          },
+          {
+            "id": "voyager2-departure",
+            "start": 315.15,
+            "duration": 7.117333333333334,
+            "sha256": "c9d621e94a6d00fac5f446ea5157f94b94c16549c067ff1f44364ebe0d8c9f3b",
+            "voice": "af_heart"
+          },
+          {
+            "id": "voyager1-departure",
+            "start": 323.3,
+            "duration": 4.856,
+            "sha256": "6676325a069ec2b8861bfd594b33d84d22af31b9dc99b9b1440c47c395296e96",
+            "voice": "af_heart"
+          },
+          {
+            "id": "voyager-instruments",
+            "start": 331.3,
+            "duration": 5.858666666666666,
+            "sha256": "611e588c0c27769fd21c790a44745fa6804cc25fc16869c3ac48687a72525826",
+            "voice": "af_heart"
+          },
+          {
+            "id": "carrier-tests",
+            "start": 347.1,
+            "duration": 7.032,
+            "sha256": "624829e45d018ab6030952691846f2bcce7d868e1999d9727c4dc74e34ddae0e",
+            "voice": "af_heart"
+          },
+          {
+            "id": "shuttle-first-orbit",
+            "start": 355.4,
+            "duration": 10.402666666666667,
+            "sha256": "124b03a66420e158665b1d1745c27ff70faa7a7308dbeb204a321bc14779bcd8",
+            "voice": "af_heart"
+          },
+          {
+            "id": "challenger-date",
+            "start": 371.3,
+            "duration": 7.330666666666667,
+            "sha256": "c2e676a6cb06b5ca5b49e61e910563fbce44c9f7827236bf8f56a3a054de738d",
+            "voice": "af_heart"
+          },
+          {
+            "id": "the-cost-of-flight",
+            "start": 387.4,
+            "duration": 5.389333333333333,
+            "sha256": "bce706a5bcbfcaaead0b244c0d1e743a09360bd7350fb8566b9ac1653835a56e",
+            "voice": "af_heart"
+          },
+          {
+            "id": "a-new-view",
+            "start": 395.5,
+            "duration": 8.824,
+            "sha256": "f9a38c8bd067db9c1ad5f89c4ad1abc5ef5e3b9fc60ab9cd6e5d6c1f3ea984d8",
+            "voice": "af_heart"
+          },
+          {
+            "id": "rivals-build-together",
+            "start": 409.3,
+            "duration": 15.202666666666667,
+            "sha256": "83a47e1286e11dcea15bb09b6fcb01b5f01aba48d2ee473902ece7273d9a7694",
+            "voice": "af_heart"
+          },
+          {
+            "id": "cassini-arrives-saturn",
+            "start": 429.4,
+            "duration": 10.146666666666667,
+            "sha256": "53ef6d12ddc41fc026e1fe27cd405a8eb402e15b1600aa94e9e1b2bae5ea95d5",
+            "voice": "af_heart"
+          },
+          {
+            "id": "huygens-released",
+            "start": 441.3,
+            "duration": 4.045333333333334,
+            "sha256": "95db1b81693ecae44cc9db22760875aa36905ea0c50f1beb1ce31a31d358d535",
+            "voice": "af_heart"
+          },
+          {
+            "id": "huygens-titan",
+            "start": 451.3,
+            "duration": 9.549333333333333,
+            "sha256": "79658532e5520659cdfbe99de6af986b4957ae21a9fcb6fe5db57588d2f862b9",
+            "voice": "af_heart"
+          },
+          {
+            "id": "a-shared-laboratory",
+            "start": 467.3,
+            "duration": 8.12,
+            "sha256": "bdf654abbf8c7626d81ee9d01ca23acb085364e65de823a6f13e85f229ada905",
+            "voice": "af_heart"
+          },
+          {
+            "id": "retiring-the-shuttle",
+            "start": 489.3,
+            "duration": 13.282666666666668,
+            "sha256": "8990bb2defcab3244f498b336a31d2a470ab6195324ea653d785e598a582b933",
+            "voice": "af_heart"
+          },
+          {
+            "id": "keeping-the-outpost-alive",
+            "start": 505.3,
+            "duration": 6.648,
+            "sha256": "204cccc2c0657232c0d275f66d876ac41d6adf4a9e5c38279df3c04082c86e35",
+            "voice": "af_heart"
+          },
+          {
+            "id": "the-long-journey-continues",
+            "start": 513.4,
+            "duration": 11.384,
+            "sha256": "1c25eed1861f1c5bcc95bfbdaf5c631298a054b320422605f3ac0ff21aa25bbe",
+            "voice": "af_heart"
+          },
+          {
+            "id": "rosetta-arrival",
+            "start": 527.2,
+            "duration": 7.309333333333333,
+            "sha256": "69c95c3284eaacfad02aae7e2a40a48bdadf0f94201b8d354c018be1db50875b",
+            "voice": "af_heart"
+          },
+          {
+            "id": "rosetta-observes",
+            "start": 535.2,
+            "duration": 5.389333333333333,
+            "sha256": "07130e46b72cab8734c416cbd3bc75bdbc96ba0452bfb7140c5a1985f9fcb6e3",
+            "voice": "af_heart"
+          },
+          {
+            "id": "philae-release",
+            "start": 543.3,
+            "duration": 8.333333333333334,
+            "sha256": "3c98c98fc942bd7b0e1517e0c70fdcd24e8aa8a50e620400ca19526a70746517",
+            "voice": "af_heart"
+          },
+          {
+            "id": "philae-real-landing",
+            "start": 555.3,
+            "duration": 9.826666666666666,
+            "sha256": "be7762b3342317d5829d15dc9b3fc6383b258cd50ce8797b1cb07aed2e4c1db8",
+            "voice": "af_heart"
+          },
+          {
+            "id": "rosetta-final-descent",
+            "start": 569.4,
+            "duration": 14.989333333333333,
+            "sha256": "726199bd81d3c5acebdc6341b2a30e488a318216148b6022821ba02ed0706dd2",
+            "voice": "af_heart"
+          },
+          {
+            "id": "change4-farside",
+            "start": 593.3,
+            "duration": 10.232,
+            "sha256": "73c41ec2102ec33bab0d5a3b7e5807dce4f6637d001f5fdbe9e1a61c9147af00",
+            "voice": "af_heart"
+          },
+          {
+            "id": "returning-launchers",
+            "start": 607.4,
+            "duration": 10.424,
+            "sha256": "cb2e9e5ebb749d865961fb31d0baab547b8a05c117bc9b81f95966744b32beee",
+            "voice": "af_heart"
+          },
+          {
+            "id": "a-question-on-mars",
+            "start": 645.4,
+            "duration": 5.56,
+            "sha256": "88f758d66b10115b083930c25d1237eceee91d32511369ab9e7ce836b399f54b",
+            "voice": "af_heart"
+          },
+          {
+            "id": "looking-back-through-time",
+            "start": 665.5,
+            "duration": 11.064,
+            "sha256": "f6805be42d6031303041d261cd1731a1a9030861a788b2dc11741cc5c46e9ceb",
+            "voice": "af_heart"
+          },
+          {
+            "id": "webb-deployment",
+            "start": 677.4,
+            "duration": 14.797333333333333,
+            "sha256": "0d94753f8e4d264573491fdfecc8f8c99a6827fcb5ad653faf72d02af41817f5",
+            "voice": "af_heart"
+          },
+          {
+            "id": "webb-location",
+            "start": 695.3,
+            "duration": 9.976,
+            "sha256": "6d92c090fd40101c2d1763e56fd4808d8855d55bba90e62d2dc2d50bc21f0756",
+            "voice": "af_heart"
+          },
+          {
+            "id": "journeys-leave-traces",
+            "start": 707.3,
+            "duration": 7.608,
+            "sha256": "06ce544ce03bdfd1fd39072a86bd107d717fd268dc05acd2412d7a80bc1ec266",
+            "voice": "af_heart"
+          }
+        ]
+      },
+      "fr": {
+        "fullDecodePassed": true,
+        "sampleRate": 48000,
+        "channels": 2,
+        "decodedSamples": 35088384,
+        "decodedSeconds": 731.008,
+        "samplePeak": 0.8107898831367493,
+        "duration": 731,
+        "audioSources": [
+          {
+            "id": "a-world-and-a-question",
+            "start": 88.9,
+            "duration": 6.221333333333333,
+            "sha256": "b4226c68be462699134bb604ffbd1e38f9dee28682a489bc339305702a9e53d9",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "war-rockets",
+            "start": 99.5,
+            "duration": 6.648,
+            "sha256": "edadd08888dc458af33fc963c91a530067fd53130b224edb997914341d5577e2",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "von-braun-postwar",
+            "start": 113.0,
+            "duration": 7.352,
+            "sha256": "bc542859fc3aec151794f2f5bed96dc0449115bf62dd71cf120a40883b1a9e9b",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "a-signal-around-earth",
+            "start": 123.1,
+            "duration": 4.749333333333333,
+            "sha256": "4e9d8d03476f81bc2966fb695930492fe4a0b6d678a06e84cb42a9273ae364cf",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "laika",
+            "start": 135.5,
+            "duration": 8.034666666666666,
+            "sha256": "91cc0b1d9a7a1262bca27098a6884a93ba40f84ba78cdd814409f579e135be55",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "gagarin",
+            "start": 147.1,
+            "duration": 2.616,
+            "sha256": "d1ad31bff4f423d412551e4247e025dd6bffbb976533145ed8fb5bb24666eb94",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "a-destination",
+            "start": 161.5,
+            "duration": 6.1146666666666665,
+            "sha256": "51566c8916cd8e1393a8bf4c2036b54116aea822cd17af0af7c1032fec322b20",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "tereshkova-first-woman",
+            "start": 189.5,
+            "duration": 10.872,
+            "sha256": "efe3cdcb5f262d5f9511d673568fae8ed1aa1191819501c5156fc30300a0c702",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "leonov-first-spacewalk",
+            "start": 203.5,
+            "duration": 10.466666666666667,
+            "sha256": "e9f15ee17d4114248d83d202c900e3159302a27b92b5ecbbd29f968ec664a2d5",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "apollo8-first-orbit",
+            "start": 217.4,
+            "duration": 7.48,
+            "sha256": "9afc48c19c648bc70bae11f335dffe3864d29efc88d3324eb0ef110b978cf4a1",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "apollo8-earthrise",
+            "start": 227.4,
+            "duration": 7.629333333333333,
+            "sha256": "ffd69f36bcd65e7ab90307c6c25ee4a450ad6b485a87fda8d400ef298e89b881",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "a-promise-becomes-a-journey",
+            "start": 237.5,
+            "duration": 7.992,
+            "sha256": "f8472a44ab063b9c03cfe94115c32b2d1a76fcdc8d3552af99db0ccc14350027",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "two-go-down-one-stays",
+            "start": 265.5,
+            "duration": 11.981333333333334,
+            "sha256": "a914e2456c861e2f8532f9e80926d4c77ddf5f867000aa469c59981d173b3efb",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "the-first-machines-left-behind",
+            "start": 301.5,
+            "duration": 9.442666666666666,
+            "sha256": "7d5c952b10f2c0532b53538a4c128a37ec89a1b2e99b278dc041fb2bde4d8865",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "voyager2-departure",
+            "start": 315.15,
+            "duration": 6.946666666666666,
+            "sha256": "0e106133b432eec09bf0fbf1b77b01c3a41b3c27d4e3d30d460685b78539b567",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "voyager1-departure",
+            "start": 323.3,
+            "duration": 5.944,
+            "sha256": "8ae4f2a4d7a8392eb5f6b24c69988e2737745daf8f25d81761f9f54d5423714c",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "voyager-instruments",
+            "start": 331.3,
+            "duration": 5.965333333333334,
+            "sha256": "fc2b2e12f48675f1ef9a03aff372e7f8bc6f72785e285eb16fbab7a5eeb25dd2",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "carrier-tests",
+            "start": 347.1,
+            "duration": 6.968,
+            "sha256": "dfb19de7983e39cb4eb2a07d6abfed43e83d48218fa0a22bb440a27c38595d59",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "shuttle-first-orbit",
+            "start": 355.4,
+            "duration": 10.36,
+            "sha256": "5af320262b0f2014188fae2ee657977d08181332ffbc03aa359b77d21c5b1383",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "challenger-date",
+            "start": 371.3,
+            "duration": 7.032,
+            "sha256": "059bf0c795416409051d5ce7f6fe93628c05a45024ce02b9c04333b220b981aa",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "the-cost-of-flight",
+            "start": 387.4,
+            "duration": 5.9013333333333335,
+            "sha256": "45f9f7403a493df5f66d7c98fce2cf55ab1f62aae3b390fa086f273b2d44533f",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "a-new-view",
+            "start": 395.5,
+            "duration": 8.76,
+            "sha256": "5c68196564018df5b6af00aab08e61ac6d2d96d062ab55785f36f6e08718580b",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "rivals-build-together",
+            "start": 409.3,
+            "duration": 13.048,
+            "sha256": "bfe7255b72343d17209e18ef21246398e13ae2b1b47e193f4e09de9ceb809f27",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "cassini-arrives-saturn",
+            "start": 429.4,
+            "duration": 10.594666666666667,
+            "sha256": "ad69202af1d414e8ce1e2e283fe4b39a6099047d35a69f3cbe36593c51edab7d",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "huygens-released",
+            "start": 441.3,
+            "duration": 3.96,
+            "sha256": "00f04615ad708700c9813e0058a8dd123fc92343d9ad664ed3206643932b9b19",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "huygens-titan",
+            "start": 451.3,
+            "duration": 9.357333333333333,
+            "sha256": "03c16f555ac067cdb497ebbb6e561e967aa46bb2c4d53f54260541357f34e55c",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "a-shared-laboratory",
+            "start": 467.3,
+            "duration": 7.629333333333333,
+            "sha256": "4642f9a1a60ba6ae2e0ea3b06b69db733601193dbf6d5d539f81896718d91130",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "retiring-the-shuttle",
+            "start": 489.3,
+            "duration": 11.874666666666666,
+            "sha256": "12c3e6699d0511979de6daa6416ed8836f687ef19d26df89f7a2f8c7be5c0329",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "keeping-the-outpost-alive",
+            "start": 505.3,
+            "duration": 5.794666666666667,
+            "sha256": "6a9ca7c60a0e20ef76616db46beabd573cac42775f030126322d39b2b709dbdb",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "the-long-journey-continues",
+            "start": 513.4,
+            "duration": 10.552,
+            "sha256": "03882411fe53b901ede71a43c5b4f4b07f7173ed731c0dba03576ed445dcf1b3",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "rosetta-arrival",
+            "start": 527.2,
+            "duration": 7.352,
+            "sha256": "1e982eee9b9fa221b2bca46234148ba007f155cf19e84654df13283b27a11456",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "rosetta-observes",
+            "start": 535.2,
+            "duration": 5.432,
+            "sha256": "e0aec429b3dc2f28656225a5cff3775d505b8ae698c73e998c870c5044925121",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "philae-release",
+            "start": 543.3,
+            "duration": 7.394666666666667,
+            "sha256": "e02ea7405991dbbc8d363a056a35506550d33a755cc9f2d51e960cf5fb7d887f",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "philae-real-landing",
+            "start": 555.3,
+            "duration": 10.381333333333334,
+            "sha256": "5a40cee667ee70dd71a104c97c9369e483c9139c4d7a366c8ab7011f4c07bc0a",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "rosetta-final-descent",
+            "start": 569.4,
+            "duration": 14.925333333333333,
+            "sha256": "7519d661a5afcb8f45609bc136e1c1d1e1e294184b9140b79a5d08df3a4242ef",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "change4-farside",
+            "start": 593.3,
+            "duration": 11.576,
+            "sha256": "df98aef380bfb7b9525ee6bdb2d0119d2c0115820c7f0675041da758a5f8981c",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "returning-launchers",
+            "start": 607.4,
+            "duration": 10.530666666666667,
+            "sha256": "3614d8e7b125812afdf0faaf8332b8c09158129964474d7f5013322285a548a1",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "a-question-on-mars",
+            "start": 645.4,
+            "duration": 5.026666666666666,
+            "sha256": "20fe1a3fb43820a92378759a2d12bf7ef5bebbf941809595c3c927b1291dafce",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "looking-back-through-time",
+            "start": 665.5,
+            "duration": 11.0,
+            "sha256": "355a871052ec97a00586d99f55c7653b6746a008086711a8732ad4fc888ef522",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "webb-deployment",
+            "start": 677.4,
+            "duration": 14.136,
+            "sha256": "b4423d4092c91a040c7f13bcdad0e99105dfe63f8fde25d44a2e3083914926c0",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "webb-location",
+            "start": 695.3,
+            "duration": 11.277333333333333,
+            "sha256": "f9bc238f1b737bc3512e3a9e64bd25b1e6689f9ec90f0a0fda56192a14f29285",
+            "voice": "ff_siwis"
+          },
+          {
+            "id": "journeys-leave-traces",
+            "start": 707.3,
+            "duration": 7.757333333333333,
+            "sha256": "187777b7b2f4f9d2d94425eb286377e0ef72ad1eba727154c10b3e3adaeb8c23",
+            "voice": "ff_siwis"
+          }
+        ]
+      }
+    },
+    "musicTimeline": [
+      {
+        "file": "helios.oga",
+        "at": 0,
+        "sourceIn": 0,
+        "length": 243,
+        "fadeIn": 3,
+        "fadeOut": 6,
+        "license": "CC BY 4.0",
+        "author": "Scott Buckley"
+      },
+      {
+        "file": "theclimb.oga",
+        "at": 237,
+        "sourceIn": 35,
+        "length": 143.65,
+        "fadeIn": 6,
+        "fadeOut": 4,
+        "license": "CC BY 4.0",
+        "author": "Scott Buckley"
+      },
+      {
+        "file": "aurora.mp3",
+        "at": 395.3,
+        "sourceIn": 40,
+        "length": 145,
+        "fadeIn": 4,
+        "fadeOut": 8,
+        "license": "CC BY 4.0",
+        "author": "Scott Buckley"
+      },
+      {
+        "file": "helios.oga",
+        "at": 533,
+        "sourceIn": 120,
+        "length": 86,
+        "fadeIn": 8,
+        "fadeOut": 8,
+        "license": "CC BY 4.0",
+        "author": "Scott Buckley"
+      },
+      {
+        "file": "theclimb.oga",
+        "at": 607,
+        "sourceIn": 90,
+        "length": 67,
+        "fadeIn": 8,
+        "fadeOut": 8,
+        "license": "CC BY 4.0",
+        "author": "Scott Buckley"
+      },
+      {
+        "file": "aurora.mp3",
+        "at": 665,
+        "sourceIn": 200,
+        "length": 55.8,
+        "fadeIn": 8,
+        "fadeOut": 5,
+        "license": "CC BY 4.0",
+        "author": "Scott Buckley"
+      }
+    ],
+    "musicContext": "Long eased score crossfades, smooth narration ducking, deliberate radio/remembrance silences, five-second closing music fade and silent final brand."
+  },
+  "soundtrack": "Complete owner-provided bilingual mix, retained without editing. Earlier music and narration documentation is inherited provenance, not a new measurement of this mix."
 }
